@@ -1,0 +1,10 @@
+.interaction-axiom {
+  align-items: center;
+  background-color: #f9f7f1;
+  border-radius: 5px;
+  column-gap: 30px;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  width: 100%;
+}

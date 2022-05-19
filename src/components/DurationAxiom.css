@@ -1,0 +1,19 @@
+.duration-axiom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f9f7f1;
+  border-radius: 5px;
+  column-gap: 20px;
+  height: 95px;
+  justify-content: center;
+  width: 100%;
+}
+
+.mid-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 7px;
+}

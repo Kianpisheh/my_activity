@@ -1,0 +1,71 @@
+.main-container {
+  display: flex;
+  column-gap: 20px;
+}
+
+.Axiom-pane {
+  align-items: center;
+  background-color: #f0ede4;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: flex-start;
+  padding-bottom: 15px;
+}
+
+.Axioms-container {
+  align-items: center;
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  width: 100%;
+}
+
+.add-ui {
+  display: flex;
+  width: 100%;
+  column-gap: 10px;
+}
+
+.add-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 5px;
+  background-color: rgb(224, 222, 205);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 150px;
+  box-shadow: 2px 2px 3px rgba(134, 134, 130, 0.4);
+}
+
+.h-line {
+  border-bottom: 1px solid rgb(131, 128, 105);
+  width: 100%;
+}
+
+#activity-title {
+  display: flex;
+  font-size: 10pt;
+  justify-content: flex-start;
+  width: 85%;
+}
+
+#add-axiom-btn {
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background-color: #4d8e7f;
+  color: #f0ede4;
+  padding: 5px 6px 5px 6px;
+  font-size: 12px;
+  box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
+  height: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  align-self: center;
+  cursor: pointer;
+}

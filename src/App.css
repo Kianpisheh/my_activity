@@ -1,5 +1,8 @@
 .App {
+  display: flex;
+  column-gap: 20px;
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {

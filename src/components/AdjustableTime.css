@@ -1,0 +1,11 @@
+.time-distance-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  row-gap: 5px;
+}
+
+.time-adjust-checkbox {
+  opacity: 1;
+}

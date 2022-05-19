@@ -1,0 +1,60 @@
+.axiom-crafter-container {
+  background-color: #f0ede4;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  height: 200px;
+  align-self: flex-end;
+  justify-items: center;
+  align-items: center;
+  width: 170px;
+  row-gap: 15px;
+}
+
+.axiom-crafter-container ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 6px;
+  height: 85%;
+  width: 100%;
+  margin: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 15px;
+  overflow: auto;
+}
+
+.axiom-crafter-container ul li {
+  display: flex;
+  border-radius: 5px;
+  align-items: center;
+  justify-items: center;
+  background-color: #f9f7f1;
+  width: 85%;
+  align-self: center;
+  justify-self: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.axiom-crafter-container ul li text {
+  align-self: center;
+  justify-self: center;
+}
+
+#axiom-crafter-done-btn {
+  background-color: #8b8676;
+  color: #f0ede4;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 2px 2px 3px rgba(103, 98, 51, 0.4);
+  height: 25px;
+  width: 60px;
+  justify-self: end;
+  margin-bottom: 15px;
+  cursor: pointer;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
