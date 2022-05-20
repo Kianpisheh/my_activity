@@ -1,6 +1,6 @@
 import "./Axiom.css";
 
-import AxiomTypes from "../AxiomTypes";
+import AxiomTypes from "../model/AxiomTypes";
 import InteractionAxiom from "./InteractionAxiom";
 import TimeDistanceInteraction from "./TimeDistanceAxiom";
 import DurationAxiom from "./DurationAxiom";

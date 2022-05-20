@@ -4,15 +4,20 @@ import "./TimeDistanceAxiom.css";
 import AdjustableTime from "./AdjustableTime";
 
 function TimeDistanceInteraction(props) {
-    let events = props.data.events;
+    let events = [];
+    if (props.data != null) {
+        events = props.data.getEvents();
+    } else {
+        return;
+    }
 
     let axiomText = "";
-    if (props.data.th1 !== null) {
-        axiomText += props.data.th1 + " <"
+    if (props.data.getTh1() !== null) {
+        axiomText += props.data.getTh1() + " <"
     }
     axiomText += " duration";
-    if (props.data.th2 !== null) {
-        axiomText += " < " + props.data.th2;
+    if (props.data.getTh2() !== null) {
+        axiomText += " < " + props.data.getTh2();
     }
 
     return (

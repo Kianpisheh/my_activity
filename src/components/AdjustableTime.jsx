@@ -3,14 +3,14 @@ import { useState } from "react";
 import "./AdjustableTime.css";
 
 import ImagesObject from "./ImagesObject";
-import AxiomTypes from "../AxiomTypes";
+import AxiomTypes from "../model/AxiomTypes";
 
 function AdjustableTime(props) {
-    let th = props.data.th2;
+    let th = props.data.getTh2();
     if (props.title === "more than") {
-        th = props.data.th1;
+        th = props.data.getTh1();
     } else if (props.title === "less than") {
-        th = props.data.th2;
+        th = props.data.getTh2();
     }
     let active0 = true;
     if (th === null) {
@@ -29,9 +29,9 @@ function AdjustableTime(props) {
 
     let time = null;
     if (props.title === "more than") {
-        time = props.data.th1;
+        time = props.data.getTh1();
     } else if (props.title === "less than") {
-        time = props.data.th2;
+        time = props.data.getTh2();
     }
 
     return (
@@ -45,6 +45,7 @@ function AdjustableTime(props) {
                     type="image"
                     src={ImagesObject["decrease_sec"]}
                     className="sec-btn"
+                    alt="sec-btn"
                     style={{ width: 18, height: 18 }}
                     onMouseDown={() => {
                         if (active) {
@@ -61,6 +62,7 @@ function AdjustableTime(props) {
                     type="image"
                     src={ImagesObject["increase_sec"]}
                     className="sec-btn"
+                    alt="sec-btn"
                     style={{ width: 18, height: 18 }}
                     onMouseDown={() => {
                         if (active) {

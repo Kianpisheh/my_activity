@@ -1,0 +1,54 @@
+.activity-pane-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  width: 200px;
+  height: 220px;
+  background-color: #f0ede4;
+}
+
+#title {
+  align-self: flex-start;
+  margin-top: 15px;
+  margin-left: 15px;
+}
+
+.activities-container {
+  background-color: #f9f7f1;
+  width: 90%;
+  align-self: center;
+  height: fit-content;
+}
+
+.activities-container ul {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.activities-container ul li {
+  display: flex;
+  border-radius: 5px;
+  width: 85%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.activities-container ul li text {
+  font-size: 13px;
+}
+
+.add-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 100%;
+  border: none;
+  outline: none;
+  background-color: #4d8e7f;
+  box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
+  color: #f9f7f1;
+  font-weight: lighter;
+  align-self: center;
+  margin-top: -13px;
+}

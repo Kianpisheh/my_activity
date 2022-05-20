@@ -3,7 +3,13 @@ import "./InteractionAxiom.css"
 import ImagesObject from "./ImagesObject";
 
 function InteractionAxiom(props) {
-    let events = props.data.events;
+    let events = [];
+    if (props.data != null) {
+        events = props.data.getEvents();
+    } else {
+        return;
+    }
+
     let interactionIcons = [];
     for (let i = 0; i < events.length; i++) {
         interactionIcons.push(

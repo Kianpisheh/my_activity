@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AxiomTypes from "../AxiomTypes";
+import AxiomTypes from "../model/AxiomTypes";
 import "./AxiomCrafter.css";
 import ImagesObject from "./ImagesObject";
 

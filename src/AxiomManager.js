@@ -1,5 +1,5 @@
-import AxiomTypes from "./AxiomTypes";
-import AxiomData from "./AxiomData";
+import AxiomTypes from "./model/AxiomTypes";
+import AxiomData from "./model/AxiomData";
 
 class AxiomManager {
   static createAxiom(id, current_axioms, props) {
@@ -17,9 +17,9 @@ class AxiomManager {
   static findInteractionObjects(axioms) {
     let interactionAxioms = [];
     for (let i = 0; i < axioms.length; i++) {
-      if (axioms[i].type === AxiomTypes.TYPE_INTERACTION) {
-        for (let j = 0; j < axioms[i].events.length; j++) {
-          let e = axioms[i].events[j];
+      if (axioms[i].getType() === AxiomTypes.TYPE_INTERACTION) {
+        for (let j = 0; j < axioms[i].getEvents().length; j++) {
+          let e = axioms[i].getEvents()[j];
           if (!interactionAxioms.includes(e)) {
             interactionAxioms.push(e);
           }

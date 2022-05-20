@@ -4,7 +4,7 @@ import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
 import AxiomCrafter from "./AxiomCrafter";
 import ImagesObject from "./ImagesObject";
-import AxiomTypes from "../AxiomTypes";
+import AxiomTypes from "../model/AxiomTypes";
 
 function ActivityAxiomPane(props) {
     const [addMenuVisibility, setAddMenuVisibility] = useState("hidden");
@@ -15,16 +15,21 @@ function ActivityAxiomPane(props) {
         setAddMenuVisibility("hidden");
         setDefiningRule(true);
         setRuleType(AxiomTypes.TYPE_INTERACTION);
-    });
+    }, []);
     const createTimeConstraintAxiom = useCallback(() => {
         setAddMenuVisibility("hidden");
         setDefiningRule(true);
         setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
-    });
+    }, []);
 
     function handleAxiomCreation(data) {
         setDefiningRule(false);
         props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+    }
+
+    let axioms = []
+    if (props.activity != null) {
+        axioms = props.activity.getAxioms();
     }
 
     let activity = <p id="activity-title">Activity</p>;
@@ -32,14 +37,14 @@ function ActivityAxiomPane(props) {
     if (ruleType === AxiomTypes.TYPE_INTERACTION) {
         objectList = [...Object.keys(ImagesObject)];
     } else if (ruleType === AxiomTypes.TYPE_TIME_DISTANCE) {
-        objectList = AxiomManager.findInteractionObjects([...props.axioms]);
+        objectList = AxiomManager.findInteractionObjects([...axioms]);
     }
     return (
         <div className="main-container">
             <div className="Axiom-pane" style={{ width: props.width }}>
                 <div className="Axioms-container">
                     {activity}
-                    {props.axioms.map((axiom, idx) => (
+                    {axioms.map((axiom, idx) => (
                         <Axiom
                             id={idx}
                             key={idx}

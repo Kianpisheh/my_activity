@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { retrieveActivities } from "./APICalls/activityAPICalls";
 import "./App.css";
-import ActivityAxiomPane from "./components/ActivityAxiomPane";
 import AxiomManager from "./AxiomManager";
-import AxiomTypes from "./AxiomTypes";
+import AxiomTypes from "./model/AxiomTypes";
+import ActivityAxiomPane from "./components/ActivityAxiomPane";
+import ActivityPane from "./components/ActivityPane";
+import Activity from "./model/Activity";
 
 function App() {
   let database_axioms = [
@@ -23,8 +26,17 @@ function App() {
     },
   ];
 
+  const [activities, setActivities] = useState([]);
   const [axioms, setAxioms] = useState(database_axioms);
   const [nextId, setNextId] = useState(database_axioms.length);
+
+  let currentActivity = null;
+  activities.forEach((activity) => {
+    if (activity.name.equals("BrushingTeeth")) {
+      currentActivity = activity;
+      return;
+    }
+  });
 
   function handleAxiomPaneMessages(message, values) {
     if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
@@ -57,11 +69,27 @@ function App() {
     }
   }
 
+  // load activities
+  useEffect(() => {
+    let activitiesPromise = retrieveActivities(
+      "http://localhost:8082/activity"
+    );
+    activitiesPromise.then((data) => {
+      let activities = data.data;
+      let activityItems = [];
+      activities.forEach((activity) => {
+        activityItems.push(new Activity(activity));
+      });
+      setActivities(activityItems);
+    });
+  }, []);
+
   return (
     <div className="App">
+      <ActivityPane activities={activities}></ActivityPane>
       <ActivityAxiomPane
         width="400px"
-        axioms={axioms}
+        activity={currentActivity}
         sendMessage={handleAxiomPaneMessages}
       ></ActivityAxiomPane>
     </div>
