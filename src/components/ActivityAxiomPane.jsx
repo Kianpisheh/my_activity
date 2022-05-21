@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
-import AxiomManager from "../AxiomManager";
+import AxiomManager from "../model/AxiomManager";
 import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
 import AxiomCrafter from "./AxiomCrafter";
-import ImagesObject from "./ImagesObject";
+import EventIcons from "../Utils/EventIcons";
 import AxiomTypes from "../model/AxiomTypes";
 
 function ActivityAxiomPane(props) {
@@ -35,10 +35,11 @@ function ActivityAxiomPane(props) {
     let activity = <p id="activity-title">Activity</p>;
     var objectList = [];
     if (ruleType === AxiomTypes.TYPE_INTERACTION) {
-        objectList = [...Object.keys(ImagesObject)];
-    } else if (ruleType === AxiomTypes.TYPE_TIME_DISTANCE) {
+        objectList = [...Object.keys(EventIcons.getIcons())];
+    } else if (ruleType === AxiomTypes.TYPE_TIME_DISTANCE || ruleType === AxiomTypes.TYPE_DURATION) {
         objectList = AxiomManager.findInteractionObjects([...axioms]);
     }
+
     return (
         <div className="main-container">
             <div className="Axiom-pane" style={{ width: props.width }}>

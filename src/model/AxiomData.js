@@ -23,6 +23,14 @@ class AxiomData {
     return this.th2;
   }
 
+  setTh1(th1) {
+    this.th1 = th1;
+  }
+
+  setTh2(th2) {
+    this.th2 = th2;
+  }
+
   getID() {
     return this.id;
   }

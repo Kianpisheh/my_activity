@@ -1,21 +1,29 @@
 import { useState } from "react";
 import AxiomTypes from "../model/AxiomTypes";
 import "./AxiomCrafter.css";
-import ImagesObject from "./ImagesObject";
+import EventIcons from "../Utils/EventIcons";
 
 function AxiomCrafter(props) {
     const [selectedItems, setSelectedItems] = useState([]);
+
+    let initialTh1 = null;
+    let initialTh2 = null;
+    if (props.axiomType === AxiomTypes.TYPE_TIME_DISTANCE || props.axiomType === AxiomTypes.TYPE_DURATION) {
+        initialTh1 = 5;
+        initialTh2 = 20;
+    }
+
     return (
         <div className="axiom-crafter-container">
             <ul>
-                {props.objects.map((key) => {
+                {props.objects.map((key, idx) => {
                     let itemBorder = "none";
                     if (selectedItems.includes(key)) {
                         itemBorder = "2px solid #4D8E7F";
                     }
                     return (
                         <li
-                            key={key}
+                            key={idx}
                             style={{ border: itemBorder }}
                             onClick={() => {
                                 let new_items = addToSelected(
@@ -27,7 +35,7 @@ function AxiomCrafter(props) {
                             }}
                         >
                             <img
-                                src={ImagesObject[key]}
+                                src={EventIcons.get(key)}
                                 alt="XX"
                                 width={20}
                                 height={20}
@@ -39,7 +47,7 @@ function AxiomCrafter(props) {
             </ul>
             <button
                 id="axiom-crafter-done-btn"
-                onClick={() => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: null })}
+                onClick={() => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 })}
             >
                 Done
             </button>

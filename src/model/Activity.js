@@ -2,56 +2,78 @@ import AxiomData from "./AxiomData";
 import AxiomTypes from "./AxiomTypes";
 
 class Activity {
-  constructor(activityObj) {
-    this.name = activityObj["name"];
-    this.events = activityObj["events"];
-    this.constraints = activityObj["constraints"];
-  }
+	constructor(activityObj) {
+		this.name = activityObj["name"];
+		this.events = activityObj["events"];
+		this.constraints = activityObj["constraints"];
+		this.id = activityObj["id"];
+	}
 
-  getName() {
-    return this.name;
-  }
+	getID() {
+		return this.id;
+	}
 
-  getEvents() {
-    return this.events;
-  }
+	getName() {
+		return this.name;
+	}
 
-  getConstraints() {
-    return this.constraints;
-  }
+	getEvents() {
+		return this.events;
+	}
 
-  getAxioms() {
-    let axioms = [];
+	getConstraints() {
+		return this.constraints;
+	}
 
-    // the interaction axioms
-    axioms.push(
-      new AxiomData({
-        events: this.events,
-        type: AxiomTypes.TYPE_INTERACTION,
-      })
-    );
+	getAxioms() {
+		let axioms = [];
 
-    // temporal axioms
-    this.constraints.forEach((constraint) => {
-      let numEvents = constraint["events"].length;
-      let axiomType = "";
-      if (numEvents === 1) {
-        axiomType = AxiomTypes.TYPE_DURATION;
-      } else if (numEvents === 2) {
-        axiomType = AxiomTypes.TYPE_TIME_DISTANCE;
-      }
-      axioms.push(
-        new AxiomData({
-          events: constraint["events"],
-          type: axiomType,
-          th1: constraint["th1"],
-          th2: constraint["th2"],
-        })
-      );
-    });
+		// the interaction axioms
+		axioms.push(
+			new AxiomData({
+				events: this.events,
+				type: AxiomTypes.TYPE_INTERACTION,
+			})
+		);
 
-    return axioms;
-  }
+		// temporal axioms
+		this.constraints.forEach((constraint) => {
+			let numEvents = constraint["events"].length;
+			let axiomType = "";
+			if (numEvents === 1) {
+				axiomType = AxiomTypes.TYPE_DURATION;
+			} else if (numEvents === 2) {
+				axiomType = AxiomTypes.TYPE_TIME_DISTANCE;
+			}
+			axioms.push(
+				new AxiomData({
+					events: constraint["events"],
+					type: axiomType,
+					th1: constraint["th1"],
+					th2: constraint["th2"],
+				})
+			);
+		});
+
+		return axioms;
+	}
+
+	updateAxioms(new_axioms) {
+		let new_events = [];
+		let new_constraints = [];
+
+		new_axioms.forEach(axiom => {
+			let events = axiom["events"];
+			new_events = new_events.concat(events);
+			if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
+				let constraint = { type: axiom["type"], th1: axiom["th1"], th2: axiom["th2"], events: axiom["events"] }
+				new_constraints.push(constraint)
+			}
+		})
+		new_events = new Set(new_events);
+		this.events = Array.from(new_events);
+		this.constraints = [...new_constraints];
+	}
 }
 
 export default Activity;

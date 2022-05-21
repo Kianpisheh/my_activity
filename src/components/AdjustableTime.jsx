@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./AdjustableTime.css";
 
-import ImagesObject from "./ImagesObject";
+import EventIcons from "../Utils/EventIcons";
 import AxiomTypes from "../model/AxiomTypes";
 
 function AdjustableTime(props) {
@@ -43,14 +43,14 @@ function AdjustableTime(props) {
             <div className="time-distance-adjust">
                 <input
                     type="image"
-                    src={ImagesObject["decrease_sec"]}
+                    src={EventIcons.get("decrease_sec")}
                     className="sec-btn"
                     alt="sec-btn"
                     style={{ width: 18, height: 18 }}
                     onMouseDown={() => {
                         if (active) {
                             props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
-                                id: props.data.id,
+                                id: props.id,
                                 time: time - 1,
                                 type: props.title,
                             });
@@ -60,14 +60,14 @@ function AdjustableTime(props) {
                 <input id="sec" value={(time === null) ? "-------" : time + "  sec"} style={{ width: 45 }} />
                 <input
                     type="image"
-                    src={ImagesObject["increase_sec"]}
+                    src={EventIcons.get("increase_sec")}
                     className="sec-btn"
                     alt="sec-btn"
                     style={{ width: 18, height: 18 }}
                     onMouseDown={() => {
                         if (active) {
                             props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
-                                id: props.data.id,
+                                id: props.id,
                                 time: time + 1,
                                 type: props.title,
                             });
@@ -83,7 +83,7 @@ function AdjustableTime(props) {
                         props.messageCallback(
                             AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED,
                             {
-                                id: props.data.id,
+                                id: props.data.getID(),
                                 active: !active,
                                 time: time,
                                 type: props.title,

@@ -1,19 +1,24 @@
 import "./DurationAxiom.css"
 
-import ImagesObject from "./ImagesObject";
+import EventIcons from "../Utils/EventIcons";
 import AdjustableTime from "./AdjustableTime";
 
 function DurationAxiom(props) {
 
-    let events = props.data.events;
+    let events = [];
+    if (props.data != null) {
+        events = props.data.getEvents();
+    } else {
+        return;
+    }
 
     let axiomText = "";
-    if (props.data.th1 !== null) {
-        axiomText += props.data.th1 + " <"
+    if (props.data.getTh1() !== null) {
+        axiomText += props.data.getTh1() + " <"
     }
     axiomText += " duration";
-    if (props.data.th2 !== null) {
-        axiomText += " < " + props.data.th2;
+    if (props.data.getTh2() !== null) {
+        axiomText += " < " + props.data.getTh2();
     }
 
     return <div className="duration-axiom">
@@ -26,10 +31,10 @@ function DurationAxiom(props) {
             <img
                 width={30}
                 height={30}
-                src={ImagesObject[events[0]]}
+                src={EventIcons.get(events[0])}
                 alt="XX"
             ></img>
-            <img width={60} src={ImagesObject["time_distance"]} alt="XX"></img>
+            <img width={60} src={EventIcons.get("time_distance")} alt="XX"></img>
             <span style={{ fontSize: 12 }}>{axiomText}</span>
         </div>
         <AdjustableTime

@@ -1,4 +1,4 @@
-import ImagesObject from "./ImagesObject";
+import EventIcons from "../Utils/EventIcons";
 import "./TimeDistanceAxiom.css";
 
 import AdjustableTime from "./AdjustableTime";
@@ -23,6 +23,7 @@ function TimeDistanceInteraction(props) {
     return (
         <div className="time-distance-axiom">
             <AdjustableTime
+                id={props.id}
                 data={props.data}
                 title="more than"
                 messageCallback={props.messageCallback}
@@ -32,20 +33,21 @@ function TimeDistanceInteraction(props) {
                     <img
                         width={30}
                         height={30}
-                        src={ImagesObject[events[0]]}
+                        src={EventIcons.get(events[0])}
                         alt="XX"
                     ></img>
-                    <img width={60} src={ImagesObject["time_distance"]} alt="XX"></img>
+                    <img width={60} src={EventIcons.get("time_distance")} alt="XX"></img>
                     <img
                         width={30}
                         height={30}
-                        src={ImagesObject[events[1]]}
+                        src={EventIcons.get(events[1])}
                         alt="XX"
                     ></img>
                 </div>
                 <span style={{ fontSize: 12 }}>{axiomText}</span>
             </div>
             <AdjustableTime
+                id={props.id}
                 data={props.data}
                 title="less than"
                 messageCallback={props.messageCallback}
