@@ -23,6 +23,8 @@ function DurationAxiom(props) {
 
     return <div className="duration-axiom">
         <AdjustableTime
+            id={props.id}
+            key="more than"
             data={props.data}
             title="more than"
             messageCallback={props.messageCallback}
@@ -38,6 +40,8 @@ function DurationAxiom(props) {
             <span style={{ fontSize: 12 }}>{axiomText}</span>
         </div>
         <AdjustableTime
+            id={props.id}
+            key="less than"
             data={props.data}
             title="less than"
             messageCallback={props.messageCallback}

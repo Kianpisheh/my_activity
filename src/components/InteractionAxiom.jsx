@@ -10,7 +10,6 @@ function InteractionAxiom(props) {
         return;
     }
 
-    console.log(events);
     let interactionIcons = [];
     for (let i = 0; i < events.length; i++) {
         interactionIcons.push(

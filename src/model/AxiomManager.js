@@ -2,11 +2,10 @@ import AxiomTypes from "./AxiomTypes";
 import AxiomData from "./AxiomData";
 
 class AxiomManager {
-	static createAxiom(id, current_axioms, props) {
+	static createAxiom(current_axioms, props) {
 		let new_axioms = [...current_axioms];
 		new_axioms.push(
 			new AxiomData({
-				id: id,
 				events: props.events,
 				type: props.type,
 				th1: props.th1,
@@ -32,42 +31,37 @@ class AxiomManager {
 		return interactionAxioms;
 	}
 
-	static updateTimeConstraint(id, axioms, time, type) {
+	static updateTimeConstraint(idx, axioms, time, type) {
 		let new_axioms = [...axioms];
-		for (let i = 0; i < axioms.length; i++) {
-			if (new_axioms[i].getID() === id) {
-				if (type === "more than") {
-					if (time < new_axioms[i].getTh2()) {
-						new_axioms[i].setTh1(time);
-					}
-				} else if (type === "less than") {
-					if (time > new_axioms[i].getTh1()) {
-						new_axioms[i].setTh2(time);
-					}
-				}
+
+		if (type === "more than") {
+			if (time < new_axioms[idx].getTh2()) {
+				new_axioms[idx].setTh1(time);
+			}
+		} else if (type === "less than") {
+			if (time > new_axioms[idx].getTh1()) {
+				new_axioms[idx].setTh2(time);
 			}
 		}
+
 		return new_axioms;
 	}
 
-	static updateTimeConstraintStatus(id, axioms, active, type, time) {
+	static updateTimeConstraintStatus(idx, axioms, active, type, time) {
 		let new_axioms = [...axioms];
-		for (let i = 0; i < axioms.length; i++) {
-			if (new_axioms[i].getID() === id) {
-				if (active) {
-					if (type === "more than") {
-						new_axioms[i].setTh1(1);
-					} else if (type === "less than") {
-						let th2 = new_axioms[i].getTh1() === null ? 20 : new_axioms[i].getTh1() + 10;
-						new_axioms[i].setTh2(th2);
-					}
-				} else {
-					if (type === "more than") {
-						new_axioms[i].setTh1(null);
-					} else if (type === "less than") {
-						new_axioms[i].setTh2(null);
-					}
-				}
+
+		if (active) {
+			if (type === "more than") {
+				new_axioms[idx].setTh1(1);
+			} else if (type === "less than") {
+				let th2 = new_axioms[idx].getTh1() === null ? 20 : new_axioms[idx].getTh1() + 10;
+				new_axioms[idx].setTh2(th2);
+			}
+		} else {
+			if (type === "more than") {
+				new_axioms[idx].setTh1(null);
+			} else if (type === "less than") {
+				new_axioms[idx].setTh2(null);
 			}
 		}
 		return new_axioms;

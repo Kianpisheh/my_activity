@@ -4,7 +4,6 @@ class AxiomData {
     this.type = axiom["type"];
     this.th1 = axiom["th1"];
     this.th2 = axiom["th2"];
-    this.id = 0;
   }
 
   getType() {
@@ -29,10 +28,6 @@ class AxiomData {
 
   setTh2(th2) {
     this.th2 = th2;
-  }
-
-  getID() {
-    return this.id;
   }
 }
 

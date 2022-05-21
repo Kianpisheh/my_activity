@@ -20,9 +20,11 @@ function TimeDistanceInteraction(props) {
         axiomText += " < " + props.data.getTh2();
     }
 
+
     return (
         <div className="time-distance-axiom">
             <AdjustableTime
+                key={"more than"}
                 id={props.id}
                 data={props.data}
                 title="more than"
@@ -47,6 +49,7 @@ function TimeDistanceInteraction(props) {
                 <span style={{ fontSize: 12 }}>{axiomText}</span>
             </div>
             <AdjustableTime
+                key={"less than"}
                 id={props.id}
                 data={props.data}
                 title="less than"

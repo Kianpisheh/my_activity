@@ -9,17 +9,16 @@ import Activity from "./model/Activity";
 
 function App() {
 	const [activities, setActivities] = useState([]);
-	const [nextId, setNextId] = useState(0);
 	const [currentActivtyId, setCurrentActivityId] = useState(-1);
 
 	function handleAxiomPaneMessages(message, values) {
 		if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
-			let new_axioms = AxiomManager.createAxiom(nextId, currentActivity.getAxioms(), values);
+			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
 			let new_activitieis = [...activities];
 			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
 			setActivities(new_activitieis);
 		} else if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
-			let new_axioms = AxiomManager.createAxiom(nextId, currentActivity.getAxioms(), values);
+			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
 			let new_activitieis = [...activities];
 			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
 			setActivities(new_activitieis);
@@ -68,7 +67,6 @@ function App() {
 				activityItems.push(new Activity(activity));
 			});
 			setActivities(activityItems);
-			setNextId(activities.length);
 		});
 	}, []);
 
