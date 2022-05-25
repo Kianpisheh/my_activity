@@ -9,19 +9,19 @@ import Activity from "./model/Activity";
 
 function App() {
 	const [activities, setActivities] = useState([]);
-	const [currentActivtyId, setCurrentActivityId] = useState(-1);
+	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 
 	function handleAxiomPaneMessages(message, values) {
 		if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
 			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
-			let new_activitieis = [...activities];
-			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
-			setActivities(new_activitieis);
+			let newActivities = [...activities];
+			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
+			setActivities(newActivities);
 		} else if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
 			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
-			let new_activitieis = [...activities];
-			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
-			setActivities(new_activitieis);
+			let newActivities = [...activities];
+			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
+			setActivities(newActivities);
 		} else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
 			let new_axioms = AxiomManager.updateTimeConstraint(
 				values.id,
@@ -29,9 +29,9 @@ function App() {
 				values.time,
 				values.type
 			);
-			let new_activitieis = [...activities];
-			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
-			setActivities(new_activitieis);
+			let newActivities = [...activities];
+			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
+			setActivities(newActivities);
 		} else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED) {
 			let new_axioms = AxiomManager.updateTimeConstraintStatus(
 				values.id,
@@ -40,19 +40,40 @@ function App() {
 				values.type,
 				values.time
 			);
-			let new_activitieis = [...activities];
-			new_activitieis[currentActivtyId].updateAxioms(new_axioms);
-			setActivities(new_activitieis);
+			let newActivities = [...activities];
+			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
+			setActivities(newActivities);
+		} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
+			let newActivities = [...activities];
+			newActivities[currentActivtyIdx]['name'] = values["title"];
+			console.log("update")
+			setActivities(newActivities);
 		}
 	}
 
 	let currentActivity = null;
-	if (currentActivtyId >= 0) {
-		currentActivity = activities[currentActivtyId];
+	if (currentActivtyIdx >= 0) {
+		currentActivity = activities[currentActivtyIdx];
 	}
 
-	function handleActivitySelection(activityID) {
-		setCurrentActivityId(activityID);
+	function handleActivityListChange(message, activityID) {
+		if (message === AxiomTypes.MSG_CHANGE_CURRENT_ACTIVITY) {
+			setCurrentActivityIdx(activityID);
+		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
+			let new_activities = [...activities];
+			let new_id = Activity.getUniqieID(activities);
+			new_activities.push(new Activity({
+				id: new_id, name: "New activity", events: ["stove"], constraints: []
+			}));
+			setActivities(new_activities);
+			// TODO: update server
+		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
+			let new_activities = [...activities];
+			new_activities = new_activities.filter((activity) => { return activity.getID() !== activityID });
+			setActivities(new_activities);
+			setCurrentActivityIdx(new_activities.length - 1);
+			// TODO: update server
+		}
 	}
 
 	// load activities
@@ -74,7 +95,7 @@ function App() {
 		<div className="App">
 			<ActivityPane
 				activities={activities}
-				onActivitiySelection={handleActivitySelection}
+				onActivitiyListChange={handleActivityListChange}
 			></ActivityPane>
 			{currentActivity && (
 				<ActivityAxiomPane

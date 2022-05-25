@@ -74,6 +74,18 @@ class Activity {
 		this.events = Array.from(new_events);
 		this.constraints = [...new_constraints];
 	}
+
+
+	static getUniqieID(activities) {
+		let idsList = []
+		activities.forEach(activtiy => {
+			idsList.push(activtiy["id"]);
+		})
+		let ids = new Int32Array(idsList);
+		ids = ids.sort();
+		return ids[ids.length - 1] + 1; // new_id = id_max + 1
+	}
+
 }
 
 export default Activity;

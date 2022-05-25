@@ -6,6 +6,10 @@ export default {
   MSG_CREATE_NEW_AXIOM: "create-new-axiom",
   MSG_TIME_CONSTRAINT_UPDATED: "time-constraint-updated",
   MSG_TIME_CONSTRAINT_STATUS_UPDATED: "time-constraint-status-updated",
+  MSG_ADD_ACTIVITY: "add_activity",
+  MSG_REMOVE_ACTIVITY: "remove_activity",
+  MSG_CHANGE_CURRENT_ACTIVITY: "change_current_activity",
+  MSG_ACTIVITY_TITLE_UPDATED: "activtity_title_updated",
   VALUE_DEFAULT_TH1: 10,
   VALUE_DEFAULT_TH2: 20,
 };
