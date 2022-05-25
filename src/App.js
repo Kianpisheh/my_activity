@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { retrieveActivities } from "./APICalls/activityAPICalls";
+
 import "./App.css";
+
 import AxiomManager from "./model/AxiomManager";
 import AxiomTypes from "./model/AxiomTypes";
+import Activity from "./model/Activity";
+import ActivityInstanceEvent from "./model/ActivityInstanceEvent";
+import ActivityInstance from "./model/ActivityInstance";
+
 import ActivityAxiomPane from "./components/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane";
-import Activity from "./model/Activity";
+import ActivityInstanceVis from "./components/ActivityInstanceVis";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -13,12 +19,18 @@ function App() {
 
 	function handleAxiomPaneMessages(message, values) {
 		if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
-			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
+			let new_axioms = AxiomManager.createAxiom(
+				currentActivity.getAxioms(),
+				values
+			);
 			let newActivities = [...activities];
 			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
 			setActivities(newActivities);
 		} else if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
-			let new_axioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
+			let new_axioms = AxiomManager.createAxiom(
+				currentActivity.getAxioms(),
+				values
+			);
 			let newActivities = [...activities];
 			newActivities[currentActivtyIdx].updateAxioms(new_axioms);
 			setActivities(newActivities);
@@ -45,8 +57,8 @@ function App() {
 			setActivities(newActivities);
 		} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
 			let newActivities = [...activities];
-			newActivities[currentActivtyIdx]['name'] = values["title"];
-			console.log("update")
+			newActivities[currentActivtyIdx]["name"] = values["title"];
+			console.log("update");
 			setActivities(newActivities);
 		}
 	}
@@ -62,14 +74,22 @@ function App() {
 		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
 			let new_activities = [...activities];
 			let new_id = Activity.getUniqieID(activities);
-			new_activities.push(new Activity({
-				id: new_id, name: "New activity", events: ["stove"], constraints: []
-			}));
+			new_activities.push(
+				new Activity({
+					id: new_id,
+					name: "New activity",
+					events: [],
+					constraints: [],
+				})
+			);
 			setActivities(new_activities);
+			setCurrentActivityIdx(new_activities.length - 1);
 			// TODO: update server
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let new_activities = [...activities];
-			new_activities = new_activities.filter((activity) => { return activity.getID() !== activityID });
+			new_activities = new_activities.filter((activity) => {
+				return activity.getID() !== activityID;
+			});
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
 			// TODO: update server
@@ -91,9 +111,69 @@ function App() {
 		});
 	}, []);
 
+	// test activity instance
+	const event1 = new ActivityInstanceEvent({
+		name: "stove",
+		start_time: 1,
+		end_time: 5,
+	});
+	const event2 = new ActivityInstanceEvent({
+		name: "mug",
+		start_time: 7,
+		end_time: 8,
+	});
+	const event3 = new ActivityInstanceEvent({
+		name: "pitcher",
+		start_time: 8.05,
+		end_time: 8.15,
+	});
+	const event4 = new ActivityInstanceEvent({
+		name: "water_bottle",
+		start_time: 10,
+		end_time: 10.15,
+	});
+	const event5 = new ActivityInstanceEvent({
+		name: "stove_lighter",
+		start_time: 10.15,
+		end_time: 10.3,
+	});
+	const event6 = new ActivityInstanceEvent({
+		name: "stove",
+		start_time: 15.15,
+		end_time: 15.9,
+	});
+	const event7 = new ActivityInstanceEvent({
+		name: "tooth_brush",
+		start_time: 19.15,
+		end_time: 22.9,
+	});
+	const event8 = new ActivityInstanceEvent({
+		name: "stovetop",
+		start_time: 27.15,
+		end_time: 28.9,
+	});
+	const activityInstance = new ActivityInstance({
+		name: "making-coffee",
+		events: [event1, event2, event3, event4, event5, event6, event7, event8],
+	});
+
+	const config = {
+		ic_w: 25,
+		ic_h: 25,
+		rc_h: 5,
+		scale: 80,
+		r: 1,
+		win_w: 600,
+		win_h: 100,
+	};
+
 	return (
 		<div className="App">
-			<ActivityPane
+			<ActivityInstanceVis
+				config={config}
+				activity={activityInstance}
+			></ActivityInstanceVis>
+			{/* <ActivityPane
 				activities={activities}
 				onActivitiyListChange={handleActivityListChange}
 			></ActivityPane>
@@ -103,7 +183,7 @@ function App() {
 					activity={currentActivity}
 					sendMessage={handleAxiomPaneMessages}
 				></ActivityAxiomPane>
-			)}
+			)} */}
 		</div>
 	);
 }
