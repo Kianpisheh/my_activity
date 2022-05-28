@@ -1,0 +1,6 @@
+.time-axis-constainer {
+    display: flex;
+    flex-direction: column-reverse;
+    float: left;
+    justify-items: flex-end;
+}

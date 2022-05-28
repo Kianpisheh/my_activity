@@ -1,0 +1,6 @@
+.scaling-tab-container {
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+}

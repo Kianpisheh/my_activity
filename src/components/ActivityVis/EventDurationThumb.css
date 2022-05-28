@@ -1,0 +1,6 @@
+.event-duration-thumb-conatiner {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+}

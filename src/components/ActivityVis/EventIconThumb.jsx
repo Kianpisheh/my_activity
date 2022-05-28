@@ -2,15 +2,13 @@ import "./EventIconThumb.css"
 
 import { hexToCSSFilter } from 'hex-to-css-filter';
 
-import EventIcons from "../Utils/EventIcons";
+import EventIcons from "../../Utils/EventIcons";
 
 function EventIconThumb(props) {
     const { config, objects, events, times } = props;
     const { ic_w, ic_h, scale } = config;
     const svgWidth = Math.ceil(scale * props.tmax);
     const vb = "0 0 " + svgWidth + " " + ic_h;
-
-    const t = objects[events[0]];
 
     return (
         <div className="event-icon-thumb-conatiner" style={{ width: "100%" }}>
@@ -23,7 +21,7 @@ function EventIconThumb(props) {
             >
                 {times.map((time, idx) => {
                     return (
-                        <image
+                        (props.filters.includes(events[idx]) || props.filters === "") && < image
                             key={idx}
                             href={objects[events[idx]]}
                             width={ic_w}
@@ -33,7 +31,7 @@ function EventIconThumb(props) {
                     );
                 })}
             </svg>
-        </div>
+        </div >
     );
 }
 

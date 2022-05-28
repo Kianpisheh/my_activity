@@ -11,11 +11,12 @@ import ActivityInstance from "./model/ActivityInstance";
 
 import ActivityAxiomPane from "./components/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane";
-import ActivityInstanceVis from "./components/ActivityInstanceVis";
+import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 
 function App() {
 	const [activities, setActivities] = useState([]);
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
+	const [scale, setScale] = useState(25);
 
 	function handleAxiomPaneMessages(message, values) {
 		if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
@@ -96,6 +97,17 @@ function App() {
 		}
 	}
 
+	function handleScaleChange(action) {
+		console.log("first")
+		if (action === "zoom_out") {
+			if (scale > 7) {
+				setScale(scale - 5);
+			}
+		} else if (action === "zoom_in") {
+			setScale(scale + 5);
+		}
+	}
+
 	// load activities
 	useEffect(() => {
 		let activitiesPromise = retrieveActivities(
@@ -114,8 +126,8 @@ function App() {
 	// test activity instance
 	const event1 = new ActivityInstanceEvent({
 		name: "stove",
-		start_time: 1,
-		end_time: 5,
+		start_time: 0.2,
+		end_time: 2,
 	});
 	const event2 = new ActivityInstanceEvent({
 		name: "mug",
@@ -158,13 +170,19 @@ function App() {
 	});
 
 	const config = {
-		ic_w: 25,
-		ic_h: 25,
+		ic_w: 30,
+		ic_h: 30,
 		rc_h: 5,
-		scale: 80,
+		ax_h: 20,
+		scale: scale,
 		r: 1,
 		win_w: 600,
 		win_h: 100,
+		major_tick: 2,
+		minor_tick: 1,
+		major_tick_h: 4,
+		minor_tick_h: 2.5,
+
 	};
 
 	return (
@@ -172,6 +190,7 @@ function App() {
 			<ActivityInstanceVis
 				config={config}
 				activity={activityInstance}
+				onScaleChange={handleScaleChange}
 			></ActivityInstanceVis>
 			{/* <ActivityPane
 				activities={activities}
