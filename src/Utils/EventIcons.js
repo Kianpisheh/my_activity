@@ -59,7 +59,11 @@ class EventIcons {
     }
 
     static getColor(key) {
-        return this.colors[this.getKey(key)];
+        if (this.colors[this.getKey(key)]) {
+            return this.colors[this.getKey(key)];
+        } else {
+            return "#a55221";
+        }
     }
 
     static getKey(key) {

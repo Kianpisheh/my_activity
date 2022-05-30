@@ -29,9 +29,10 @@ function TimeAxis(props) {
                     strokeWidth={2}
                 ></line>
                 <g id="axes-ticks">
-                    {majorTicks.map((x) => {
+                    {majorTicks.map((x, idx) => {
                         return (
                             <line
+                                key={idx}
                                 x1={x}
                                 x2={x}
                                 y1={Math.floor(ax_h / 2)}
@@ -44,9 +45,10 @@ function TimeAxis(props) {
                     })}
                 </g>
                 <g id="axes-minor-ticks">
-                    {minorTicks.map((x) => {
+                    {minorTicks.map((x, idx) => {
                         return (
                             <line
+                                key={idx}
                                 x1={x}
                                 x2={x}
                                 y1={Math.floor(ax_h / 2)}
@@ -62,6 +64,7 @@ function TimeAxis(props) {
                     {majorTicks.map((x, idx) => {
                         return (
                             <text
+                                key={idx}
                                 x={x}
                                 y={Math.floor(ax_h / 2) + 8}
                                 fontSize={8}

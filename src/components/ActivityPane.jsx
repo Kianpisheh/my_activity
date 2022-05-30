@@ -7,7 +7,7 @@ function ActivityPane(props) {
     return (
         <div className="activity-pane-container">
             <span id="title" style={{ fontSize: 12 }}>
-                Activities
+                Registered activities
             </span>
             <div className="activities-container">
                 <ul>

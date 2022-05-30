@@ -2,16 +2,23 @@ class ActivityInstanceEvent {
 
     constructor(eventObject) {
         this.name = eventObject["name"];
-        this.startTime = eventObject["start_time"];
-        this.endTime = eventObject["end_time"];
+        this.type = eventObject["type"];
+        this.startTime = eventObject["startTime"];
+        if (eventObject["startTime"] <= 0) { //TODO:
+            this.startTime = 10;
+        }
+        this.endTime = eventObject["endTime"];
+        if (eventObject["endTime"] <= 0) {
+            this.endTime = 15;
+        }
     }
 
     getTime() {
-        return { t1: this.startTime, t2: this.endTime }
+        return { "startTime": this.startTime, "endTime": this.endTime }
     }
 
     getName() {
-        return this.name;
+        return this.type;
     }
 
 }

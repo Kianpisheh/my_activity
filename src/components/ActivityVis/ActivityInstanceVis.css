@@ -1,16 +1,51 @@
-.act-instance-vis {
+.activity-vis-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 280px;
+    background-color: #f0ede4;
+    margin-top: 30px;
+    justify-content: center;
+    justify-items: center;
+}
+
+#title {
+    display: flex;
+    width: 90%;
+    text-align: left;
+    justify-self: center;
+}
+
+.graph-container {
     display: flex;
     flex-direction: column;
     overflow: scroll;
     overflow-y: hidden;
-    height: fit-content;
+    height: 80%;
+    width: 90%;
+    background-color: #f9f7f1;
+    justify-items: center;
+    justify-content: center;
 }
 
 .tools-div {
-    height: 35px;
+    height: 30%;
     display: flex;
     flex-direction: row;
     column-gap: 15px;
+    padding-left: 20px;
+    align-items: center;
+}
+
+.graph {
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-y: hidden;
+    flex-grow: 1;
+    justify-content: flex-end;
+    padding-bottom: 15px;
 }
 
 .zoom-btn {

@@ -1,7 +1,13 @@
+import ActivityInstanceEvent from "./ActivityInstanceEvent";
+
 class ActivityInstance {
     constructor(instanceObj) {
         this.name = instanceObj["name"];
-        this.events = instanceObj["events"];
+        this.events = []
+        console.log(instanceObj)
+        instanceObj["events"].forEach(ev => {
+            this.events.push(new ActivityInstanceEvent(ev));
+        });
     }
 
     getTimes() {
@@ -20,14 +26,17 @@ class ActivityInstance {
     }
 
     getMaxTime() {
-        if (this.events) {
-            let lastEvent = this.events[this.events.length - 1];
-            if (lastEvent) {
-                return lastEvent.getTime()["t2"];
+        let maxTime = this.events[0]["endTime"];
+        this.events.forEach(ev => {
+            if (ev["endTime"] > maxTime) {
+                maxTime = ev["endTime"];
             }
-        }
+        });
+        return maxTime
+    }
 
-        return 0;
+    getName() {
+        return this.name;
     }
 }
 

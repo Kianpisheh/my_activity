@@ -1,0 +1,54 @@
+.act-instance-pane-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    width: 220px;
+    height: 300px;
+    background-color: #f0ede4;
+    max-height: 300px;
+    justify-content: center;
+    align-items: center;
+  }
+
+#title {
+    align-self: flex-start;
+    margin-left: 15px;
+}
+
+.activity-instances {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f7f1;
+    width: 100%;
+    height: 70%;
+    justify-content: center;
+    align-items: center;
+  }
+
+ul {
+    display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  height: 90%;
+  overflow: auto;
+  align-self: center;
+  justify-self: center;
+  padding-left: 0;
+  width: 100%;
+}
+
+ul li {
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  ul li text {
+    font-size: 13px;
+    width: fit-content;
+    padding-left: 10px;
+  }

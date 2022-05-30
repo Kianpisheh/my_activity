@@ -7,6 +7,9 @@ function EventDurationThumb(props) {
     const svgWidth = Math.ceil(scale * props.tmax);
     const vb = "0 0 " + svgWidth + " " + rc_h;
 
+    console.log("times: ", props.times);
+    console.log("events: ", props.events);
+
     return (
         <div
             className="event-duration-thumb-conatiner"
@@ -24,9 +27,9 @@ function EventDurationThumb(props) {
                     return (
                         (props.filters.includes(props.events[idx]) || props.filters === "") && <rect
                             key={idx}
-                            x={scale * time.t1}
+                            x={scale * time.startTime}
                             y={0}
-                            width={scale * (time.t2 - time.t1)}
+                            width={scale * (time.endTime - time.startTime)}
                             height={rc_h}
                             rx={r}
                             fill={EventIcons.getColor(props.events[idx])}

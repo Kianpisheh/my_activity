@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { retrieveActivities } from "./APICalls/activityAPICalls";
+import { explain, retrieveActivities, retrieveInstances } from "./APICalls/activityAPICalls";
 
 import "./App.css";
 
@@ -12,10 +12,13 @@ import ActivityInstance from "./model/ActivityInstance";
 import ActivityAxiomPane from "./components/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
+import ActivityInstancePane from "./components/ActivityInstancePane";
 
 function App() {
 	const [activities, setActivities] = useState([]);
+	const [activityInstances, setActivityInstances] = useState([]);
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
+	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
 	const [scale, setScale] = useState(25);
 
 	function handleAxiomPaneMessages(message, values) {
@@ -59,7 +62,6 @@ function App() {
 		} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
 			let newActivities = [...activities];
 			newActivities[currentActivtyIdx]["name"] = values["title"];
-			console.log("update");
 			setActivities(newActivities);
 		}
 	}
@@ -97,8 +99,15 @@ function App() {
 		}
 	}
 
+	function handleActInstanceChange(id, instance) {
+		let promise = explain("http://localhost:8082/explainer/explain", instance, "BrushingTeeth", "why_not");
+		promise.then((data) => {
+			console.log("explanations: ", data.data)
+		})
+		setCurrentActInstanceIdx(id);
+	}
+
 	function handleScaleChange(action) {
-		console.log("first")
 		if (action === "zoom_out") {
 			if (scale > 7) {
 				setScale(scale - 5);
@@ -120,6 +129,20 @@ function App() {
 				activityItems.push(new Activity(activity));
 			});
 			setActivities(activityItems);
+		});
+	}, []);
+
+	useEffect(() => {
+		let instancesPromise = retrieveInstances(
+			"http://localhost:8082/instance"
+		);
+		instancesPromise.then((data) => {
+			let instances = data.data;
+			let instanceItems = [];
+			instances.forEach((instance) => {
+				instanceItems.push(new ActivityInstance(instance));
+			});
+			setActivityInstances(instanceItems);
 		});
 	}, []);
 
@@ -164,10 +187,17 @@ function App() {
 		start_time: 27.15,
 		end_time: 28.9,
 	});
-	const activityInstance = new ActivityInstance({
-		name: "making-coffee",
+	const activityInstance1 = new ActivityInstance({
+		name: "activity1",
 		events: [event1, event2, event3, event4, event5, event6, event7, event8],
 	});
+
+	const activityInstance2 = new ActivityInstance({
+		name: "activity1",
+		events: [event1, event2, event6, event7, event8],
+	});
+
+	//let activityInstances = [activityInstance1, activityInstance2];
 
 	const config = {
 		ic_w: 30,
@@ -182,27 +212,38 @@ function App() {
 		minor_tick: 1,
 		major_tick_h: 4,
 		minor_tick_h: 2.5,
-
 	};
+
+	console.log(activityInstances);
 
 	return (
 		<div className="App">
-			<ActivityInstanceVis
-				config={config}
-				activity={activityInstance}
-				onScaleChange={handleScaleChange}
-			></ActivityInstanceVis>
-			{/* <ActivityPane
-				activities={activities}
-				onActivitiyListChange={handleActivityListChange}
-			></ActivityPane>
-			{currentActivity && (
-				<ActivityAxiomPane
-					width="400px"
-					activity={currentActivity}
-					sendMessage={handleAxiomPaneMessages}
-				></ActivityAxiomPane>
-			)} */}
+			<div className="left-pane-container">
+				<ActivityInstancePane
+					activtiyInstances={activityInstances}
+					onSelectedItemChange={handleActInstanceChange}
+					currentActivityId={currentActInstanceIdx}
+				></ActivityInstancePane>
+				<ActivityPane
+					activities={activities}
+					onActivitiyListChange={handleActivityListChange}
+				></ActivityPane>
+
+			</div>
+			< div className="tools-container">
+				<ActivityInstanceVis
+					config={config}
+					activity={activityInstances[currentActInstanceIdx]}
+					onScaleChange={handleScaleChange}
+				></ActivityInstanceVis>
+				{currentActivity && (
+					<ActivityAxiomPane
+						width="400px"
+						activity={currentActivity}
+						sendMessage={handleAxiomPaneMessages}
+					></ActivityAxiomPane>
+				)}
+			</div>
 		</div>
 	);
 }
