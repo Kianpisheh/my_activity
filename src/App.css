@@ -28,3 +28,10 @@ html, body, #app, #app>div, #root {
   overflow: hidden;
   flex-grow: 1;
 }
+
+.axiom-pane-container {
+  display: flex;
+  width: 80%;
+  align-items: flex-start;
+  margin-top: 60px;
+}

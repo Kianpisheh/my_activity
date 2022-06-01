@@ -104,7 +104,20 @@ function App() {
 		);
 
 		prom.then((data) => {
-			let explanations = ExplanationManager.getExplanations(data.data);
+			let explanation = ExplanationManager.getExplanations(data.data);
+
+			let i = 0;
+			let ids = [];
+			currentActivity.getAxioms().forEach(axiom => {
+				if (explanation.contains(axiom)) {
+					ids.push(i);
+				}
+				i += 1;
+			})
+
+			console.log(explanation);
+			console.log(currentActivity.getAxioms());
+			console.log(ids);
 
 		});
 	}

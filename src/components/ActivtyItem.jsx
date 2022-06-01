@@ -21,6 +21,10 @@ function ActivtiyItem(props) {
                         props.activity.getID()
                     )
                 }
+                onContextMenu={(event) => {
+                    event.preventDefault();
+                    props.onAction(props.activity.getID(), event.pageX, event.pageY);
+                }}
             >
                 <text>{props.activity.name}</text>
                 {hovered && (

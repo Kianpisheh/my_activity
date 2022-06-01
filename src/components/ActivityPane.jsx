@@ -17,6 +17,7 @@ function ActivityPane(props) {
                                 idx={idx}
                                 onActivitiyListChange={props.onActivitiyListChange}
                                 activity={activity}
+                                onAction={props.onAction}
                             ></ActivtiyItem>
                         );
                     })}

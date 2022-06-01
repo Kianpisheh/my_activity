@@ -1,8 +1,22 @@
 import AxiomData from "./AxiomData";
 import AxiomTypes from "./AxiomTypes";
+import Constraint from "./Constraint";
+
+interface IActivityObj {
+	name: string;
+	events: string[];
+	constraints: Constraint[];
+	id: number;
+}
 
 class Activity {
-	constructor(activityObj) {
+
+	name: string;
+	events: string[];
+	constraints: Constraint[];
+	id: number;
+
+	constructor(activityObj: IActivityObj) {
 		this.name = activityObj["name"];
 		this.events = activityObj["events"];
 		this.constraints = activityObj["constraints"];
@@ -25,15 +39,15 @@ class Activity {
 		return this.constraints;
 	}
 
-	getAxioms() {
-		let axioms = [];
+	getAxioms(): AxiomData[] {
+		let axioms: AxiomData[] = [];
 
 		// the interaction axioms
 		axioms.push(
 			new AxiomData({
 				events: this.events,
 				type: AxiomTypes.TYPE_INTERACTION,
-			})
+			th1: -1, th2: -1})
 		);
 
 		// temporal axioms
@@ -58,34 +72,32 @@ class Activity {
 		return axioms;
 	}
 
-	updateAxioms(new_axioms) {
-		let new_events = [];
-		let new_constraints = [];
+	updateAxioms(new_axioms: AxiomData[]) {
+		let newEvents: string[] = [];
+		let newConstraints: Constraint[] = [];
 
 		new_axioms.forEach(axiom => {
 			let events = axiom["events"];
-			new_events = new_events.concat(events);
+			newEvents = newEvents.concat(events);
 			if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
 				let constraint = { type: axiom["type"], th1: axiom["th1"], th2: axiom["th2"], events: axiom["events"] }
-				new_constraints.push(constraint)
+				newConstraints.push(constraint)
 			}
 		})
-		new_events = new Set(new_events);
-		this.events = Array.from(new_events);
-		this.constraints = [...new_constraints];
+		let newEventsSet = new Set(newEvents);
+		this.events = Array.from(newEventsSet);
+		this.constraints = [...newConstraints];
 	}
 
-
-	static getUniqieID(activities) {
-		let idsList = []
+	static getUniqieID(activities: Activity[]) {
+		let idsList: number[] = []
 		activities.forEach(activtiy => {
 			idsList.push(activtiy["id"]);
 		})
 		let ids = new Int32Array(idsList);
 		ids = ids.sort();
-		return ids[ids.length - 1] + 1; // new_id = id_max + 1
+		return ids[ids.length - 1] + 1; 
 	}
-
 }
 
 export default Activity;

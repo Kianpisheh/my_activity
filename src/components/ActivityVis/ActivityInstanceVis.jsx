@@ -22,10 +22,6 @@ function ActivityInstanceVis(props) {
         setFilters(f);
     }
 
-    console.log("objects: ", EventIcons.getIcons());
-    console.log("events: ", activity.getEventList());
-    console.log("tmax: ", activity.getMaxTime());
-
     return (
         <div className="activity-vis-container">
             <div id="title" style={{ fontSize: 12 }}>
@@ -41,7 +37,7 @@ function ActivityInstanceVis(props) {
                         config={config}
                         filters={filters}
                         events={activity.getEventList()}
-                        objects={EventIcons.getIcons()}
+                        objects={EventIcons}
                         times={timestamps}
                         tmax={activity.getMaxTime()}
                     ></EventIconThumb>
