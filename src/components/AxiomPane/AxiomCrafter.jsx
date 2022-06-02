@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AxiomTypes from "../model/AxiomTypes";
+import AxiomTypes from "../../model/AxiomTypes";
 import "./AxiomCrafter.css";
-import EventIcons from "../Utils/EventIcons";
+import EventIcons from "../../Utils/EventIcons";
 
 function AxiomCrafter(props) {
     const [selectedItems, setSelectedItems] = useState([]);

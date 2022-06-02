@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
-import AxiomManager from "../model/AxiomManager";
+import AxiomManager from "../../model/AxiomManager";
 import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
 import AxiomCrafter from "./AxiomCrafter";
-import EventIcons from "../Utils/EventIcons";
-import AxiomTypes from "../model/AxiomTypes";
+import EventIcons from "../../Utils/EventIcons";
+import AxiomTypes from "../../model/AxiomTypes";
 
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";

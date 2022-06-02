@@ -12,12 +12,13 @@ import Activity from "./model/Activity";
 import ActivityInstance from "./model/ActivityInstance";
 import ExplanationManager from "./model/ExplanationManager";
 
-import ActivityAxiomPane from "./components/ActivityAxiomPane";
+import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
 import ActionMenu from "./components/ActionMenu";
 import { handleAxiomPaneMessages } from "./Handlers";
+import { WhyAxiomIdsProvider } from "./WhyAxiomIdsContext";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -30,6 +31,8 @@ function App() {
 		x: 0,
 		y: 0,
 	});
+	const [whyAxiomIds, setWhyAxiomIds] = useState([]);
+	const [explanations, setExplanations] = useState(null);
 
 	function onAxiomPaneMessage(message, values) {
 		let newActivities = handleAxiomPaneMessages(
@@ -105,20 +108,12 @@ function App() {
 
 		prom.then((data) => {
 			let explanation = ExplanationManager.getExplanations(data.data);
-
-			let i = 0;
-			let ids = [];
-			currentActivity.getAxioms().forEach(axiom => {
-				if (explanation.contains(axiom)) {
-					ids.push(i);
-				}
-				i += 1;
-			})
-
+			let ids = ExplanationManager.getSatisfiedAxiomIds(currentActivity.getAxioms(), explanation);
+			setWhyAxiomIds(ids);
+			setExplanations(explanation);
 			console.log(explanation);
 			console.log(currentActivity.getAxioms());
 			console.log(ids);
-
 		});
 	}
 
@@ -179,7 +174,12 @@ function App() {
 				)}
 			</div>
 
-			<div className="left-pane-container" onClick={() => setAction({ required: false, x: 0, y: 0 })}>
+			<div className="left-pane-container" onClick={() => {
+				setAction({ required: false, x: 0, y: 0 });
+				setWhyAxiomIds([])
+			}
+
+			}>
 				<ActivityInstancePane
 					activtiyInstances={activityInstances}
 					onSelectedItemChange={handleActInstanceChange}
@@ -192,7 +192,10 @@ function App() {
 				></ActivityPane>
 			</div>
 
-			<div className="tools-container" onClick={() => setAction({ required: false, x: 0, y: 0 })}>
+			<div className="tools-container" onClick={() => {
+				setAction({ required: false, x: 0, y: 0 });
+				setWhyAxiomIds([])
+			}}>
 				<ActivityInstanceVis
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
@@ -200,11 +203,14 @@ function App() {
 				></ActivityInstanceVis>
 				<div className="axiom-pane-container">
 					{currentActivity && (
-						<ActivityAxiomPane
-							width="400px"
-							activity={currentActivity}
-							sendMessage={onAxiomPaneMessage}
-						></ActivityAxiomPane>
+						<WhyAxiomIdsProvider value={whyAxiomIds}>
+							<ActivityAxiomPane
+								width="400px"
+								activity={currentActivity}
+								sendMessage={onAxiomPaneMessage}
+								highlighted={whyAxiomIds}
+							></ActivityAxiomPane>
+						</WhyAxiomIdsProvider>
 					)}
 				</div>
 			</div>

@@ -1,17 +1,26 @@
-import ActivityInstanceEvent from "./ActivityInstanceEvent";
+import ActivityInstanceEvent, { IEvent } from "./ActivityInstanceEvent"
+
+
+interface IActivityInstance {
+    name: string;
+    events: IEvent[];
+}
 
 class ActivityInstance {
-    constructor(instanceObj) {
+
+    name: string;
+    events: ActivityInstanceEvent[];
+
+    constructor(instanceObj: IActivityInstance) {
         this.name = instanceObj["name"];
         this.events = []
-        console.log(instanceObj)
         instanceObj["events"].forEach(ev => {
             this.events.push(new ActivityInstanceEvent(ev));
         });
     }
 
     getTimes() {
-        let timestamps = []
+        let timestamps: object[] = []
         this.events.map(ev => {
             return timestamps.push(ev.getTime());
         });
@@ -19,13 +28,13 @@ class ActivityInstance {
         return timestamps;
     }
 
-    getEventList() {
+    getEventList(): string[] {
         return this.events.map(ev => {
             return ev.getName();
         })
     }
 
-    getMaxTime() {
+    getMaxTime(): number {
         let maxTime = this.events[0]["endTime"];
         this.events.forEach(ev => {
             if (ev["endTime"] > maxTime) {
@@ -35,7 +44,7 @@ class ActivityInstance {
         return maxTime
     }
 
-    getName() {
+    getName(): string {
         return this.name;
     }
 }

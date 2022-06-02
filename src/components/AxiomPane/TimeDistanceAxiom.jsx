@@ -1,15 +1,21 @@
-import EventIcons from "../Utils/EventIcons";
+import EventIcons from "../../Utils/EventIcons";
 import "./TimeDistanceAxiom.css";
 
 import AdjustableTime from "./AdjustableTime";
+import { useContext } from "react";
+import WhyAxiomIdsContext from "../../WhyAxiomIdsContext";
 
 function TimeDistanceInteraction(props) {
     let events = [];
+    const whyIds = useContext(WhyAxiomIdsContext);
+
+
     if (props.data != null) {
         events = props.data.getEvents();
     } else {
         return;
     }
+
 
     let axiomText = "";
     if (props.data.getTh1() !== null) {
@@ -20,9 +26,14 @@ function TimeDistanceInteraction(props) {
         axiomText += " < " + props.data.getTh2();
     }
 
+    let divStyle = {}
+    if (whyIds.includes(props.id)) {
+        divStyle = { borderColor: "#ADCEE8", border: "1px", borderStyle: "solid", boxShadow: "0px 0px 4px 4px #2C87DB", opacity: 0.7 }
+    }
+
 
     return (
-        <div className="time-distance-axiom">
+        <div className="time-distance-axiom" style={divStyle}>
             <AdjustableTime
                 key={"more than"}
                 id={props.id}

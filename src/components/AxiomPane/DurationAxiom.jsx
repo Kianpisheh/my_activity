@@ -1,11 +1,17 @@
+import { useContext } from "react";
+
 import "./DurationAxiom.css"
 
-import EventIcons from "../Utils/EventIcons";
+import EventIcons from "../../Utils/EventIcons";
 import AdjustableTime from "./AdjustableTime";
+import WhyAxiomIdsContext from "../../WhyAxiomIdsContext";
 
 function DurationAxiom(props) {
 
     let events = [];
+    const whyIds = useContext(WhyAxiomIdsContext);
+
+
     if (props.data != null) {
         events = props.data.getEvents();
     } else {
@@ -21,7 +27,12 @@ function DurationAxiom(props) {
         axiomText += " < " + props.data.getTh2();
     }
 
-    return <div className="duration-axiom">
+    let divStyle = {}
+    if (whyIds.includes(props.id)) {
+        divStyle = { borderColor: "#ADCEE8", border: "1px", borderStyle: "solid", boxShadow: "0px 0px 4px 4px #2C87DB", opacity: 0.7 }
+    }
+
+    return <div className="duration-axiom" style={divStyle}>
         <AdjustableTime
             id={props.id}
             key="more than"

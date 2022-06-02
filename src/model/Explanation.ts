@@ -12,10 +12,12 @@ interface IConstraint {
 class Explanation {
     events: string[];
     constraints: Constraint[];
+    individuals: string[];
 
-    constructor(events_: string[], constraints_: IConstraint[]) {
+    constructor(events_: string[], constraints_: IConstraint[], individuals_: string[]) {
         this.events = events_;
-
+        this.individuals = individuals_;
+        
         this.constraints = [];
         for (let i = 0; i < constraints_.length; i++) {
             this.constraints.push(

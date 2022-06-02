@@ -1,24 +1,29 @@
+
+export interface IEvent {
+    name: string;
+    type: string;
+    startTime: number;
+    endTime: number;
+}
 class ActivityInstanceEvent {
 
-    constructor(eventObject) {
+    name: string;
+    type: string;
+    startTime: number;
+    endTime: number;
+    
+    constructor(eventObject: IEvent) {
         this.name = eventObject["name"];
         this.type = eventObject["type"];
         this.startTime = eventObject["startTime"];
         this.endTime = eventObject["endTime"];
-        // if (eventObject["startTime"] <= 0) { //TODO:
-        //     this.startTime = 10;
-        // }
-        // this.endTime = eventObject["endTime"];
-        // if (eventObject["endTime"] <= 0) {
-        //     this.endTime = 15;
-        // }
     }
 
     getTime() {
         return { "startTime": this.startTime, "endTime": this.endTime }
     }
 
-    getName() {
+    getName(): string {
         return this.type;
     }
 

@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import "./AdjustableTime.css";
 
-import EventIcons from "../Utils/EventIcons";
-import AxiomTypes from "../model/AxiomTypes";
+import EventIcons from "../../Utils/EventIcons";
+import AxiomTypes from "../../model/AxiomTypes";
 
 function AdjustableTime(props) {
     let th = props.data.getTh2();
