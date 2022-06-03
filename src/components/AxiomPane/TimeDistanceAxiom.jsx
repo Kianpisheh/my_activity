@@ -1,14 +1,17 @@
+import React, { useState, useContext } from "react";
+
 import EventIcons from "../../Utils/EventIcons";
 import "./TimeDistanceAxiom.css";
 
 import AdjustableTime from "./AdjustableTime";
-import { useContext } from "react";
-import WhyAxiomIdsContext from "../../WhyAxiomIdsContext";
+import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 
 function TimeDistanceInteraction(props) {
-    let events = [];
+
+    const [hovered, setHovered] = useState(false);
     const whyIds = useContext(WhyAxiomIdsContext);
 
+    let events = [];
 
     if (props.data != null) {
         events = props.data.getEvents();
@@ -33,40 +36,45 @@ function TimeDistanceInteraction(props) {
 
 
     return (
-        <div className="time-distance-axiom" style={divStyle}>
-            <AdjustableTime
-                key={"more than"}
-                id={props.id}
-                data={props.data}
-                title="more than"
-                messageCallback={props.messageCallback}
-            ></AdjustableTime>
-            <div className="mid-section">
-                <div className="time-distance-icons">
-                    <img
-                        width={30}
-                        height={30}
-                        src={EventIcons.get(events[0])}
-                        alt="XX"
-                    ></img>
-                    <img width={60} src={EventIcons.get("time_distance")} alt="XX"></img>
-                    <img
-                        width={30}
-                        height={30}
-                        src={EventIcons.get(events[1])}
-                        alt="XX"
-                    ></img>
+        <React.Fragment>
+            <div className="time-distance-axiom" style={divStyle} onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)} >
+                <AdjustableTime
+                    key={"more than"}
+                    id={props.id}
+                    data={props.data}
+                    title="more than"
+                    messageCallback={props.messageCallback}
+                ></AdjustableTime>
+                <div className="mid-section">
+                    <div className="time-distance-icons">
+                        <img
+                            width={30}
+                            height={30}
+                            src={EventIcons.get(events[0])}
+                            alt="XX"
+                        ></img>
+                        <img width={60} src={EventIcons.get("time_distance")} alt="XX"></img>
+                        <img
+                            width={30}
+                            height={30}
+                            src={EventIcons.get(events[1])}
+                            alt="XX"
+                        ></img>
+                    </div>
+                    <span style={{ fontSize: 12 }}>{axiomText}</span>
                 </div>
-                <span style={{ fontSize: 12 }}>{axiomText}</span>
+                <AdjustableTime
+                    key={"less than"}
+                    id={props.id}
+                    data={props.data}
+                    title="less than"
+                    messageCallback={props.messageCallback}
+                ></AdjustableTime>
             </div>
-            <AdjustableTime
-                key={"less than"}
-                id={props.id}
-                data={props.data}
-                title="less than"
-                messageCallback={props.messageCallback}
-            ></AdjustableTime>
-        </div>
+            <div onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn">X</button>)}</div>
+        </React.Fragment>
     );
 }
 

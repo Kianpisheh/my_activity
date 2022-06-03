@@ -1,12 +1,14 @@
-import { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import "./InteractionAxiom.css"
 
 import EventIcons from "../../Utils/EventIcons";
-import WhyAxiomIdsContext from "../../WhyAxiomIdsContext";
+import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 
 
 function InteractionAxiom(props) {
+    const [hovered, setHovered] = useState(false);
+
     let events = [];
     const whyIds = useContext(WhyAxiomIdsContext);
 
@@ -15,7 +17,6 @@ function InteractionAxiom(props) {
     } else {
         return;
     }
-
 
 
     let interactionIcons = [];
@@ -30,7 +31,9 @@ function InteractionAxiom(props) {
         divStyle = { borderColor: "#ADCEE8", border: "1px", borderStyle: "solid", boxShadow: "0px 0px 4px 4px #2C87DB", opacity: 0.7 }
     }
 
-    return <div className="interaction-axiom" style={divStyle}>{[...interactionIcons]}</div>;
+    return <React.Fragment><div onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)} className="interaction-axiom" style={divStyle}>{[...interactionIcons]}</div><div onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn">X</button>)}</div></React.Fragment>;
 }
 
 export default InteractionAxiom;

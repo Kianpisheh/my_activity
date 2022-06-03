@@ -23,8 +23,12 @@ class ActivityInstanceEvent {
         return { "startTime": this.startTime, "endTime": this.endTime }
     }
 
-    getName(): string {
+    getType(): string {
         return this.type;
+    }
+
+    getName(): string {
+        return this.name;
     }
 
 }

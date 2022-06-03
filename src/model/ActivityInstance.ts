@@ -1,7 +1,6 @@
 import ActivityInstanceEvent, { IEvent } from "./ActivityInstanceEvent"
 
-
-interface IActivityInstance {
+export interface IActivityInstance {
     name: string;
     events: IEvent[];
 }
@@ -29,6 +28,12 @@ class ActivityInstance {
     }
 
     getEventList(): string[] {
+        return this.events.map(ev => {
+            return ev.getType();
+        })
+    }
+
+    getEventIndividuals(): string[] {
         return this.events.map(ev => {
             return ev.getName();
         })

@@ -17,7 +17,8 @@ import zoom_out from '../images/zoom_out.svg'
 
 
 class EventIcons {
-    static icons = {
+    
+    static icons: {[name: string]: object }= {
         Mug: mug,
         Pitcher: pitcher,
         Stove: stove,
@@ -36,7 +37,7 @@ class EventIcons {
         zoom_out: zoom_out
     };
 
-    static colors = {
+    static colors: {[name: string]: string } = {
         Mug: "#003f5c",
         Pitcher: "#2f4b7c",
         Stove: "#f95d6a",
@@ -51,30 +52,19 @@ class EventIcons {
         return this.icons;
     }
 
-    static get(key) {
-        // convert into lower case with underscore if it is not
-        // let key2 = key.replace('_', '');
-        // let new_key = key;
-        // let keyUpperCase = key2.toUpperCase();
-        // for (let i = 1; i < key2.length; i++) {
-        //     if (key2[i] === keyUpperCase[i]) {
-        //         new_key = (key2.slice(0, i)).toLowerCase() + "_" + (key2.slice(i, key2.length)).toLowerCase();
-        //         return this.icons[new_key];
-        //     }
-        // }
+    static get(key: string) {
         return this.icons[key];
     }
 
-    static getColor(key) {
+    static getColor(key: string) {
         if (this.colors[key]) {
-            console.log("key: ", this.colors[key])
             return this.colors[key];
         } else {
             return "#a55221";
         }
     }
 
-    static getKey(key) {
+    static getKey(key: string) {
         let key2 = key.replace('_', '');
         let new_key = key;
         let keyUpperCase = key2.toUpperCase();

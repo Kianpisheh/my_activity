@@ -1,5 +1,4 @@
 import axios from "axios";
-import ActivityInstance from "../model/ActivityInstance";
 
 export async function retrieveActivities(url) {
   return axios.get(url, {
@@ -21,4 +20,9 @@ export async function retrieveInstances(url) {
 
 export async function explain(url, activityInstance, targetActivity, queryType) {
   return axios.post(url, { "instance": activityInstance, "activity": targetActivity, "type": queryType })
+}
+
+export async function updateDatabase(activity, task) {
+  const url = "http://localhost:8082/activity/" + task
+  return axios.post(url, activity)
 }

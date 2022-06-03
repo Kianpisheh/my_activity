@@ -11,7 +11,7 @@ import ScalingTab from './ScalingTab'
 import TimeAxis from './TimeAxis'
 
 function ActivityInstanceVis(props) {
-    const { activity, config } = props;
+    const { activity, config, highlighted } = props;
     const [filters, setFilters] = useState("");
     if (!activity) {
         return null;
@@ -36,7 +36,9 @@ function ActivityInstanceVis(props) {
                     <EventIconThumb
                         config={config}
                         filters={filters}
+                        eventIndividuals={activity.getEventIndividuals()}
                         events={activity.getEventList()}
+                        explanationEvents={highlighted}
                         objects={EventIcons}
                         times={timestamps}
                         tmax={activity.getMaxTime()}

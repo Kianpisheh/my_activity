@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import "./ActivityItem.css";
 
-import AxiomTypes from "../model/AxiomTypes";
+import AxiomTypes from "../../model/AxiomTypes";
 
 function ActivtiyItem(props) {
     const [hovered, setHovered] = useState(false);

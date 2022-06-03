@@ -7,7 +7,7 @@
   column-gap: 20px;
   height: 85px;
   justify-content: center;
-  width: 100%;
+  width: 86%;
 }
 
 .time-distance-adjust {
@@ -43,4 +43,25 @@
   border-left-style: none;
   border-right-style: none;
   border-radius: 5px;
+}
+
+.rem-btn {
+  width: 7%;
+  height: 100%;
+}
+
+.remove-axiom-btn {
+  width: 18px;
+  height: 18px;
+  text-align: justify;
+  border-radius: 100%;
+  border: none;
+  outline: none;
+  background-color: #b33d2d;
+  color: #f9f7f1;
+  font-size: 9px;
+  cursor: pointer;
+  display: block;
+  margin-left: -10px;
+  margin-top: -6px;
 }

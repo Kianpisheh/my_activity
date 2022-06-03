@@ -47,7 +47,8 @@ class Activity {
 			new AxiomData({
 				events: this.events,
 				type: AxiomTypes.TYPE_INTERACTION,
-			th1: -1, th2: -1})
+				th1: -1, th2: -1
+			})
 		);
 
 		// temporal axioms
@@ -89,15 +90,40 @@ class Activity {
 		this.constraints = [...newConstraints];
 	}
 
-	static getUniqieID(activities: Activity[]) {
+	static getUniqueID(activities: Activity[]) {
 		let idsList: number[] = []
 		activities.forEach(activtiy => {
 			idsList.push(activtiy["id"]);
 		})
 		let ids = new Int32Array(idsList);
 		ids = ids.sort();
-		return ids[ids.length - 1] + 1; 
+		return ids[ids.length - 1] + 1;
+	}
+
+	static getUniqueName(activities: Activity[], candidateName: string): string {
+		let newName: string = candidateName;
+		let maxIdx: number = 0;
+		let duplicate: boolean = false;
+		activities.forEach(activity => {
+			let activityName: string = activity.getName();
+			if (candidateName === activityName || candidateName === activityName.substring(0, activityName.length - 3)) {
+				duplicate = true;
+				let nameIdx = parseInt(activityName.charAt(activityName.length - 1))
+				if (!isNaN(nameIdx)) {
+					if (nameIdx > maxIdx) {
+						maxIdx = nameIdx;
+					}
+				}
+			}
+		});
+
+		if (duplicate) {
+			newName = candidateName.substring(0, candidateName.length) + "_0" + (maxIdx + 1);
+		}
+		return newName;
 	}
 }
+
+
 
 export default Activity;

@@ -3,6 +3,7 @@ import {
 	explain,
 	retrieveActivities,
 	retrieveInstances,
+	updateDatabase,
 } from "./APICalls/activityAPICalls";
 
 import "./App.css";
@@ -13,12 +14,12 @@ import ActivityInstance from "./model/ActivityInstance";
 import ExplanationManager from "./model/ExplanationManager";
 
 import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
-import ActivityPane from "./components/ActivityPane";
+import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
 import ActionMenu from "./components/ActionMenu";
 import { handleAxiomPaneMessages } from "./Handlers";
-import { WhyAxiomIdsProvider } from "./WhyAxiomIdsContext";
+import { WhyAxiomIdsProvider } from "./contexts/WhyAxiomIdsContext";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -32,7 +33,8 @@ function App() {
 		y: 0,
 	});
 	const [whyAxiomIds, setWhyAxiomIds] = useState([]);
-	const [explanations, setExplanations] = useState(null);
+	const [explanation, setExplanations] = useState(null);
+	const [databaseChange, setDatabaseChange] = useState({ update: false, idx: -1 });
 
 	function onAxiomPaneMessage(message, values) {
 		let newActivities = handleAxiomPaneMessages(
@@ -43,6 +45,7 @@ function App() {
 			currentActivity
 		);
 		setActivities(newActivities);
+		setDatabaseChange(true);
 	}
 
 	let currentActivity = null;
@@ -53,19 +56,26 @@ function App() {
 	function handleActivityListChange(message, activityID) {
 		if (message === AxiomTypes.MSG_CHANGE_CURRENT_ACTIVITY) {
 			setCurrentActivityIdx(activityID);
+			if (databaseChange.update) {
+				//updateDatabase()
+			}
 		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
 			let new_activities = [...activities];
-			let new_id = Activity.getUniqieID(activities);
+			let newID = Activity.getUniqueID(activities);
+			let newActivityName = Activity.getUniqueName(activities, "New activity");
 			new_activities.push(
 				new Activity({
-					id: new_id,
-					name: "New activity",
+					id: newID,
+					name: newActivityName,
 					events: [],
 					constraints: [],
 				})
 			);
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
+			updateDatabase(new_activities[new_activities.length - 1], "add").then(() =>
+				console.log("database update request sent")
+			)
 			// TODO: update server
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let new_activities = [...activities];
@@ -159,6 +169,13 @@ function App() {
 		minor_tick_h: 2.5,
 	};
 
+	let individuals = null;
+	if (explanation) {
+		individuals = explanation.getIndividuals();
+	}
+
+	console.log("instance", activityInstances[currentActInstanceIdx]);
+
 	return (
 		<div className="App">
 			<div
@@ -199,6 +216,7 @@ function App() {
 				<ActivityInstanceVis
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
+					highlighted={individuals}
 					onScaleChange={handleScaleChange}
 				></ActivityInstanceVis>
 				<div className="axiom-pane-container">

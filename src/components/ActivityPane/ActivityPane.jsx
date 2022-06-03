@@ -1,6 +1,6 @@
 import "./ActivityPane.css";
 
-import AxiomTypes from "../model/AxiomTypes";
+import AxiomTypes from "../../model/AxiomTypes";
 import ActivtiyItem from "./ActivtyItem";
 
 function ActivityPane(props) {
