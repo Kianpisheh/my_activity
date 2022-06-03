@@ -1,7 +1,9 @@
 import AxiomTypes from "./model/AxiomTypes";
 import AxiomManager from "./model/AxiomManager";
+import Activity from "./model/Activity";
+import AxiomData from "./model/AxiomData";
 
-function handleAxiomPaneMessages(message, values, activities, currentActivtyIdx, currentActivity) {
+function handleAxiomPaneMessages(message: string, values: { [key: string]: any }, activities: Activity[], currentActivtyIdx: number, currentActivity: Activity) {
     let newActivities = [...activities];
 
     if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
@@ -30,12 +32,13 @@ function handleAxiomPaneMessages(message, values, activities, currentActivtyIdx,
             currentActivity.getAxioms(),
             values.active,
             values.type,
-            values.time
         );
         let newActivities = [...activities];
         newActivities[currentActivtyIdx].updateAxioms(new_axioms);
     } else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
         newActivities[currentActivtyIdx]["name"] = values["title"];
+    } else if (message === AxiomTypes.MSG_REMOVE_AXIOM) {
+        let axioms: AxiomData[] = newActivities[currentActivtyIdx].getAxioms()
     }
 
     return newActivities;

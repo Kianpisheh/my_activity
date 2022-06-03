@@ -4,6 +4,7 @@ import "./InteractionAxiom.css"
 
 import EventIcons from "../../Utils/EventIcons";
 import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
+import AxiomTypes from "../../model/AxiomTypes";
 
 
 function InteractionAxiom(props) {
@@ -33,7 +34,7 @@ function InteractionAxiom(props) {
 
     return <React.Fragment><div onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)} className="interaction-axiom" style={divStyle}>{[...interactionIcons]}</div><div onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn">X</button>)}</div></React.Fragment>;
+            onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn" onClick={props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, props.id)}>X</button>)}</div></React.Fragment>;
 }
 
 export default InteractionAxiom;

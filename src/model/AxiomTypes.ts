@@ -10,6 +10,7 @@ export default {
   MSG_REMOVE_ACTIVITY: "remove_activity",
   MSG_CHANGE_CURRENT_ACTIVITY: "change_current_activity",
   MSG_ACTIVITY_TITLE_UPDATED: "activtity_title_updated",
+  MSG_REMOVE_AXIOM: "remove_axiom",
   VALUE_DEFAULT_TH1: 10,
   VALUE_DEFAULT_TH2: 20,
 };
