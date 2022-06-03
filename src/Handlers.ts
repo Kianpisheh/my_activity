@@ -38,7 +38,9 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
     } else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
         newActivities[currentActivtyIdx]["name"] = values["title"];
     } else if (message === AxiomTypes.MSG_REMOVE_AXIOM) {
-        let axioms: AxiomData[] = newActivities[currentActivtyIdx].getAxioms()
+        let axioms: AxiomData[] = newActivities[currentActivtyIdx].getAxioms();
+        axioms.splice(values.idx, 1);
+        newActivities[currentActivtyIdx].updateAxioms(axioms);
     }
 
     return newActivities;

@@ -28,13 +28,13 @@ function InteractionAxiom(props) {
     }
 
     let divStyle = {}
-    if (whyIds.includes(props.id)) {
+    if (whyIds.includes(props.idx)) {
         divStyle = { borderColor: "#ADCEE8", border: "1px", borderStyle: "solid", boxShadow: "0px 0px 4px 4px #2C87DB", opacity: 0.7 }
     }
 
     return <React.Fragment><div onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)} className="interaction-axiom" style={divStyle}>{[...interactionIcons]}</div><div onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn" onClick={props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, props.id)}>X</button>)}</div></React.Fragment>;
+            onMouseLeave={() => setHovered(false)} className="rem-btn">{hovered && (<button className="remove-axiom-btn" onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}>X</button>)}</div></React.Fragment>;
 }
 
 export default InteractionAxiom;

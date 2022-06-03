@@ -61,7 +61,7 @@ function ActivityAxiomPane(props) {
                     ></EditText>
                     {axioms.map((axiom, idx) => (
                         <Axiom
-                            id={idx}
+                            idx={idx}
                             key={idx}
                             data={axiom}
                             messageCallback={props.sendMessage}

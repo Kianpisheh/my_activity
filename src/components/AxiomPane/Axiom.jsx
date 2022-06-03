@@ -9,11 +9,11 @@ function Axiom(props) {
     let axiomComponent = null;
     let axiomType = props.data.type;
     if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-        axiomComponent = <InteractionAxiom data={props.data} id={props.id} messageCallback={props.messageCallback}></InteractionAxiom>;
+        axiomComponent = <InteractionAxiom data={props.data} idx={props.idx} messageCallback={props.messageCallback}></InteractionAxiom>;
     } else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
         axiomComponent = (
             <TimeDistanceInteraction
-                id={props.id}
+                idx={props.idx}
                 data={props.data}
                 messageCallback={props.messageCallback}
             ></TimeDistanceInteraction>
@@ -21,7 +21,7 @@ function Axiom(props) {
     } else if (axiomType === AxiomTypes.TYPE_DURATION) {
         axiomComponent = (
             <DurationAxiom
-                id={props.id}
+                idx={props.idx}
                 data={props.data}
                 messageCallback={props.messageCallback}
             ></DurationAxiom>
