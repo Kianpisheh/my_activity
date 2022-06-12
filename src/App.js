@@ -168,25 +168,13 @@ function App() {
 		});
 	}, []);
 
-	// useEffect(() => {
-	// 	let instancesPromise = retrieveInstances();
-	// 	instancesPromise.then((data) => {
-	// 		let instances = data.data;
-	// 		let instanceItems = [];
-	// 		instances.forEach((instance) => {
-	// 			instanceItems.push(new ActivityInstance(instance));
-	// 		});
-	// 		setActivityInstances(instanceItems);
-	// 	});
-	// }, []);
-
 	const config = {
-		ic_w: 30,
-		ic_h: 30,
-		rc_h: 5,
+		ic_w: 27,
+		ic_h: 27,
+		rc_h: 7,
 		ax_h: 20,
 		scale: scale,
-		r: 1,
+		r: 3,
 		win_w: 600,
 		win_h: 100,
 		major_tick: 2,
