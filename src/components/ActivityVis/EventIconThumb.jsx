@@ -1,34 +1,22 @@
-import { mergeConsecEvents, scaleTimes, mergeCloseEvents, getEventIconPlacement, pascalCase } from "../../Utils/utils";
+
 import "./EventIconThumb.css";
 import EventIcons from "../../Utils/EventIcons";
 import Icons from "../../icons/Icons";
 
+import { pascalCase } from "../../Utils/utils";
+
 function EventIconThumb(props) {
-    const {
-        config,
-        objects,
-        explanationEvents,
-        eventIndividuals,
-    } = props;
-    const { ic_w, ic_h, scale, merge_th, nonlScale, r, rc_h } = config;
+    const { config, explanationEvents, eventIndividuals } = props;
+    const { ic_w, ic_h, scale, r, rc_h } = config;
     const svgWidth = Math.ceil(scale * props.tmax);
     const vb = "0 0 " + svgWidth + " " + ic_h;
 
-    let { times, events } = mergeConsecEvents(props.times, props.events, merge_th);
-    times = nonlScale ? scaleTimes(times) : times;
-    let merged = mergeCloseEvents(times, events, 2);
-    const times2 = merged["times"];
-    const events2 = merged["events"];
-
     let filteredNum = 0;
-    for (let i = 0; i < events.length; i++) {
-        if (props.filters.includes(events[i])) {
+    for (let i = 0; i < props.iconEvents.length; i++) {
+        if (props.filters.includes(props.iconEvents[i])) {
             filteredNum += 1;
         }
     }
-
-    const Y = getEventIconPlacement(times2, scale, ic_w);
-
 
     return (
         <div className="event-icon-thumb-conatiner">
@@ -39,26 +27,30 @@ function EventIconThumb(props) {
                 height="100%"
                 style={{ float: "left" }}
             >
-                {times.map((time, idx) => {
+                {props.thumbX.map((X, idx) => {
+                    console.log(X.x1);
+                    console.log(X.x2);
                     return (
-                        (props.filters.includes(events[idx]) ||
+                        (props.filters.includes(props.thumbEvents[idx]) ||
                             filteredNum === 0) && (
                             <g key={idx}>
                                 <rect
                                     key={idx}
-                                    x={scale * time.startTime}
+                                    x={X.x1}
                                     y={18}
-                                    width={scale * (time.endTime - time.startTime)}
+                                    width={
+                                        (X.x2 - X.x1)
+                                    }
                                     height={2 * rc_h}
                                     rx={r}
-                                    fill={EventIcons.getColor(events[idx])}
+                                    fill={EventIcons.getColor(props.thumbEvents[idx])}
                                 // onMouseEnter={() => { setShowPositionTip(true) }}
                                 ></rect>
                             </g>
                         )
                     );
                 })}
-                {times2.map((time, idx) => {
+                {props.iconX.map((x, idx) => {
                     let iconStyle = {};
                     if (explanationEvents) {
                         if (explanationEvents.includes(eventIndividuals[idx])) {
@@ -66,25 +58,23 @@ function EventIconThumb(props) {
                                 fill: "none",
                                 stroke: "#2C87DB",
                                 strokeWidth: 2,
-                                opacity: 0.6
-                            }
+                                opacity: 0.6,
+                            };
                         }
                     }
-                    const Icon = Icons.getIcon(pascalCase(events2[idx]));
+                    const Icon = Icons.getIcon(pascalCase(props.iconEvents[idx]));
                     return (
-                        (props.filters.includes(events2[idx]) ||
+                        (props.filters.includes(props.iconEvents[idx]) ||
                             filteredNum === 0) && (
                             <g key={idx}>
-                                <Icon opacity={1} fill={Icons.getColor(pascalCase(events2[idx]))} x={scale * time.startTime - (svgWidth / 2) + ic_w / 2} y={Y[idx]}></Icon>
-                                {/* <image
-                                    className="svg-img"
-                                    y={Y[idx]}
-                                    key={idx}
-                                    href={objects.get(events2[idx])}
-                                    width={ic_w}
-                                    height={ic_h}
-                                    x={scale * time.startTime}
-                                ></image> */}
+                                <Icon
+                                    opacity={1}
+                                    fill={Icons.getColor(
+                                        pascalCase(props.iconEvents[idx])
+                                    )}
+                                    x={props.iconX[idx].x1 - svgWidth / 2 + ic_w / 2}
+                                    y={props.iconY[idx]}
+                                ></Icon>
                             </g>
                         )
                     );

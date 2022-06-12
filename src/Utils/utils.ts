@@ -4,6 +4,11 @@ interface ITime {
     endTime: number
 }
 
+interface IInterval {
+    x1: number,
+    x2: number
+}
+
 export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh: number) {
 
     let newTimestamps: ITime[] = [];
@@ -93,32 +98,27 @@ function nonlinearScale(n: number) {
     return 2 * Math.log10(n / 6 + 1)
 }
 
-export function getEventIconPlacement(times: ITime[], scale: number, ic_w: number) {
+export function getEventIconPlacement(X: IInterval[], ic_w: number): number[] {
     const offset = 30;
     const overlapTh = 2;
     let optionsY = new Set([-offset + 5, offset + 5, -2 * offset - 5 + 5, 2 * offset + 5 + 5]);
-    let X: number[] = [];
     let Y: number[] = [];
 
     Y.push(offset);
     Y.push(2 * offset);
     Y.push(-offset);
-    X.push(scale * times[0].startTime);
-    X.push(scale * times[1].startTime);
-    X.push(scale * times[2].startTime);
-    for (let i = 3; i < times.length; i++) {
-        let x = scale * times[i].startTime;
+    for (let i = 3; i < X.length; i++) {
+        let x = X[i].x1;
         // find the overlapped neighbors
         let overlappedY = new Set();
         for (let j = i - 1; j > i - 4; j--) {
-            if (x - X[j] - overlapTh < ic_w) {
+            if (x - X[j].x1 - overlapTh < ic_w) {
                 overlappedY.add(Y[j]);
             }
         }
         // find the first empty position
         let diffY = [...optionsY].filter(y => !overlappedY.has(y));
         Y.push(diffY[0]);
-        X.push(x);
     }
     return Y;
 };
@@ -133,4 +133,26 @@ export function pascalCase(key: string): string {
         newKey = newKey.charAt(0).toUpperCase() + newKey.slice(1)
     }
     return newKey;
+}
+
+export function getEnclosedEvents(x1: number, x2: number, X: number[], events: string[]) {
+    let enEvents: string[] = []
+    let limitsIdx: number[] = [];
+    for (let i = 0; i < X.length; i++) {
+        if (X[i] > x1 && X[i] < x2) {
+            limitsIdx.push(i);
+            enEvents.push(events[i])
+        }
+    }
+    return { "events": enEvents, "X": X };
+}
+
+export function time2Pixel(times: ITime[], scale: number): IInterval[] {
+    let X: IInterval[] = [];
+
+    times.forEach(time => {
+        X.push({ x1: scale * time.startTime, x2: scale * time.endTime })
+    })
+
+    return X;
 }

@@ -171,7 +171,7 @@ function App() {
 	const config = {
 		ic_w: 27,
 		ic_h: 27,
-		rc_h: 7,
+		rc_h: 6,
 		ax_h: 20,
 		scale: scale,
 		r: 3,
