@@ -1,7 +1,7 @@
-import { mergeConsecEvents, scaleTimes, mergeCloseEvents, getEventIconPlacement } from "../../Utils/utils";
+import { mergeConsecEvents, scaleTimes, mergeCloseEvents, getEventIconPlacement, pascalCase } from "../../Utils/utils";
 import "./EventIconThumb.css";
 import EventIcons from "../../Utils/EventIcons";
-import { ReactComponent as YourSvg } from '../../images/action_events/mug.svg';
+import Icons from "../../icons/Icons";
 
 function EventIconThumb(props) {
     const {
@@ -43,16 +43,18 @@ function EventIconThumb(props) {
                     return (
                         (props.filters.includes(events[idx]) ||
                             filteredNum === 0) && (
-                            <rect
-                                key={idx}
-                                x={scale * time.startTime}
-                                y={18}
-                                width={scale * (time.endTime - time.startTime)}
-                                height={2 * rc_h}
-                                rx={r}
-                                fill={EventIcons.getColor(events[idx])}
-                            // onMouseEnter={() => { setShowPositionTip(true) }}
-                            ></rect>
+                            <g key={idx}>
+                                <rect
+                                    key={idx}
+                                    x={scale * time.startTime}
+                                    y={18}
+                                    width={scale * (time.endTime - time.startTime)}
+                                    height={2 * rc_h}
+                                    rx={r}
+                                    fill={EventIcons.getColor(events[idx])}
+                                // onMouseEnter={() => { setShowPositionTip(true) }}
+                                ></rect>
+                            </g>
                         )
                     );
                 })}
@@ -68,11 +70,13 @@ function EventIconThumb(props) {
                             }
                         }
                     }
+                    const Icon = Icons.getIcon(pascalCase(events2[idx]));
                     return (
                         (props.filters.includes(events2[idx]) ||
                             filteredNum === 0) && (
                             <g key={idx}>
-                                <image
+                                <Icon opacity={1} fill={Icons.getColor(pascalCase(events2[idx]))} x={scale * time.startTime - (svgWidth / 2) + ic_w / 2} y={Y[idx]}></Icon>
+                                {/* <image
                                     className="svg-img"
                                     y={Y[idx]}
                                     key={idx}
@@ -80,7 +84,7 @@ function EventIconThumb(props) {
                                     width={ic_w}
                                     height={ic_h}
                                     x={scale * time.startTime}
-                                ></image>
+                                ></image> */}
                             </g>
                         )
                     );

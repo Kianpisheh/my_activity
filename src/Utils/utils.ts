@@ -62,22 +62,6 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
     }
 
     return { "times": newTimestamps, "events": newEvents };
-
-    // while (times.length) {
-    //     for (let i = 1; i < times.length; i++) {
-    //         let d: number = (times[i]?.startTime ?? 0) - (times[i - 1]?.endTime ?? 0);
-    //         if (d < mergeTh || !lastCluster.length) {
-    //             lastCluster.push(i);
-    //             allClusters.push(i);
-    //         } else if (lastCluster[0] && lastCluster[lastCluster.length - 1]) {
-    //             let t1: number = times[lastCluster[0]]?.startTime ?? 0;
-    //             let idx: number = lastCluster.length - 1;
-    //             let t2: number = times[idx]?.endTime ?? 0;
-    //             newTimestamps.push({ startTime: t1, endTime: t2 } as ITime)
-    //             lastCluster = [];
-    //         }
-    //     }
-    // }
 }
 
 export function scaleTimes(timestamps: ITime[]): ITime[] | null {
@@ -136,51 +120,17 @@ export function getEventIconPlacement(times: ITime[], scale: number, ic_w: numbe
         Y.push(diffY[0]);
         X.push(x);
     }
-
-    // const offset = 28;
-    // let y0 = offset;
-    // for (let i = 0; i < times.length; i++) {
-    //     let y = offset;
-    //     let x = scale * times[i].startTime;
-    //     if (i > 2) {
-    //         let x0 = scale * times[i - 2].startTime;
-    //         if ((x - x0 < ic_w) && (y === y0)) {
-    //             if (y0 === offset) {
-    //                 y = -offset;
-    //             } else if (y0 === -offset) {
-    //                 y = offset
-    //             }
-    //         }
-    //     }
-    //     X.push(x);
-    //     Y.push(y);
-    //     y0 = y;
-    // }
-
     return Y;
 };
 
 
-
-    // let X = [];
-    // let Y = [];
-    // const offset = 28;
-    // let y0 = offset;
-    // for (let i = 0; i < times.length; i++) {
-    //     let y = offset;
-    //     let x = scale * times[i].startTime;
-    //     if (i > 2) {
-    //         let x0 = scale * times[i - 2].startTime;
-    //         let x1 = scale * times[i - 1].startTime;
-    //         if ((x - x0 < ic_w) && (y === y0)) {
-    //             if (y0 === offset) {
-    //                 y = -offset;
-    //             } else if (y0 === -offset) {
-    //                 y = offset
-    //             }
-    //         }
-    //     }
-    //     X.push(x);
-    //     Y.push(y);
-    //     y0 = y1;
-    //     y1 = y;
+export function pascalCase(key: string): string {
+    let newKey: string = key;
+    if (key.includes("_")) {
+        let keyParts: string[] = key.split("_");
+        newKey = (keyParts?.[0]?.charAt(0)?.toUpperCase() ?? "") + keyParts?.[0]?.slice(1) + keyParts?.[1]?.charAt(0).toUpperCase() + keyParts?.[1]?.slice(1);
+    } else {
+        newKey = newKey.charAt(0).toUpperCase() + newKey.slice(1)
+    }
+    return newKey;
+}

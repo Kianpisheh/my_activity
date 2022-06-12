@@ -137,7 +137,7 @@ class EventIcons {
         if (this.colors[this.getKey(key)]) {
             return this.colors[this.getKey(key)];
         } else {
-            return "#a55221";
+            return "#BAB8BD";
         }
     }
 

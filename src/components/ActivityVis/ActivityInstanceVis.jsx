@@ -5,17 +5,16 @@ import "./ActivityInstanceVis.css";
 import EventIcons from "../../Utils/EventIcons";
 
 import EventFilter from "./EventFilter";
-import EventDurationThumb from "./EventDurationThumb";
 import EventIconThumb from "./EventIconThumb";
 import ScalingTab from "./ScalingTab";
-import TimeAxis from "./TimeAxis";
+import RegionSelect from "react-region-select";
 
 function ActivityInstanceVis(props) {
-
     const [count, setCount] = useState(0);
-
     const { activity, config, highlighted } = props;
     const [filters, setFilters] = useState("");
+    const [regions, setRegions] = useState([]);
+
     if (!activity) {
         return null;
     }
@@ -35,7 +34,10 @@ function ActivityInstanceVis(props) {
             <div id="title" style={{ fontSize: 12 }}>
                 Activity events
             </div>
-            <div className="graph-container" onMouseUp={() => setCount(count + 1)}>
+            <div
+                className="graph-container"
+                onMouseUp={() => setCount(count + 1)}
+            >
                 <div className="tools-div">
                     <EventFilter
                         onNewFilter={handleNewFilter}
@@ -45,28 +47,42 @@ function ActivityInstanceVis(props) {
                         onScaleChange={props.onScaleChange}
                     ></ScalingTab>
                 </div>
-                <div className="graph">
-                    <EventIconThumb
-                        config={config}
-                        filters={filters}
-                        eventIndividuals={activity.getEventIndividuals()}
-                        events={activity.getEventList()}
-                        explanationEvents={highlighted}
-                        objects={EventIcons}
-                        times={timestamps}
-                        tmax={activity.getMaxTime()}
-                    ></EventIconThumb>
-                    {/* <EventDurationThumb
+                <div
+                    className="graph"
+                    style={{
+                        width: Math.ceil(config.scale * activity.getMaxTime()),
+                    }}
+                    onMouseUp={() => handleRegionSelection(regions, Math.ceil(config.scale * activity.getMaxTime()))}
+                >
+                    <RegionSelect
+                        maxRegions={1}
+                        regions={regions}
+                        constraint
+                        onChange={(regions) => setRegions(regions)}
+                        style={{ height: "100%" }}
+                    >
+                        <EventIconThumb
+                            config={config}
+                            filters={filters}
+                            eventIndividuals={activity.getEventIndividuals()}
+                            events={activity.getEventList()}
+                            explanationEvents={highlighted}
+                            objects={EventIcons}
+                            times={timestamps}
+                            tmax={activity.getMaxTime()}
+                        ></EventIconThumb>
+                        {/* <EventDurationThumb
                         config={config}
                         filters={filters}
                         events={activity.getEventList()}
                         times={timestamps}
                         tmax={activity.getMaxTime()}
                     ></EventDurationThumb> */}
-                    {/* <TimeAxis
+                        {/* <TimeAxis
                         config={config}
                         tmax={activity.getMaxTime()}
                     ></TimeAxis> */}
+                    </RegionSelect>
                 </div>
             </div>
             <div
@@ -82,6 +98,11 @@ function ActivityInstanceVis(props) {
             </div>
         </div>
     );
+
+    function handleRegionSelection(regions, svgWidth) {
+        console.log("x1:", regions[0].x * 100);
+        console.log("x2:", (regions[0].x + regions[0].width) * 100);
+    }
 }
 
 export default ActivityInstanceVis;
