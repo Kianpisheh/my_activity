@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     width: 80%;
-    height: 280px;
+    height: 400px;
     background-color: #f0ede4;
     margin-top: 30px;
     justify-content: center;
@@ -46,6 +46,7 @@
     flex-grow: 1;
     justify-content: flex-end;
     padding-bottom: 15px;
+    height: 100%;
 }
 
 .zoom-btn {

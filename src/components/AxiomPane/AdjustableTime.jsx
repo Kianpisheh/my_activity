@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import "./AdjustableTime.css";
 
-import EventIcons from "../../Utils/EventIcons";
 import AxiomTypes from "../../model/AxiomTypes";
 
 function AdjustableTime(props) {
@@ -13,10 +12,9 @@ function AdjustableTime(props) {
         th = props.data.getTh2();
     }
     let active0 = true;
-    if (th === null) {
+    if (th === -1) {
         active0 = false;
     }
-
 
     if (!active0) {
         th =
@@ -43,48 +41,35 @@ function AdjustableTime(props) {
             <span style={{ fontSize: 12 }}>{props.title}</span>
             <div className="time-distance-adjust">
                 <input
-                    type="image"
-                    src={EventIcons.get("decrease_sec")}
-                    className="sec-btn"
-                    alt="sec-btn"
-                    style={{ width: 18, height: 18 }}
-                    onMouseDown={() => {
-                        if (active) {
-                            props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
-                                id: props.id,
-                                time: time - 1,
+                    id="sec"
+                    type="number"
+                    value={time === null ? "-----" : time + ""}
+                    onChange={(event) =>
+                        props.messageCallback(
+                            AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED,
+                            {
+                                id: props.idx,
+                                time: parseInt(event.target.value),
                                 type: props.title,
-                            });
-                        }
+                            }
+                        )
+                    }
+                    onMouseUp={(ev) => {
+                        props.messageCallback(AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE, {})
                     }}
-                />
-                <input id="sec" value={(time === null) ? "-------" : time + "  sec"} style={{ width: 45 }} />
-                <input
-                    type="image"
-                    src={EventIcons.get("increase_sec")}
-                    className="sec-btn"
-                    alt="sec-btn"
-                    style={{ width: 18, height: 18 }}
-                    onMouseDown={() => {
-                        if (active) {
-                            props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
-                                id: props.id,
-                                time: time + 1,
-                                type: props.title,
-                            });
-                        }
-                    }}
+                    style={{ width: 45, textAlign: "center", cursor: "default" }}
                 />
             </div>
             <input
                 className="time-adjust-checkbox"
                 type="checkbox"
                 onChange={() =>
-                    setActive(!active,
+                    setActive(
+                        !active,
                         props.messageCallback(
                             AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED,
                             {
-                                id: props.data.getID(),
+                                id: props.idx,
                                 active: !active,
                                 time: time,
                                 type: props.title,
@@ -92,10 +77,9 @@ function AdjustableTime(props) {
                         )
                     )
                 }
-
                 checked={active}
             ></input>
-        </div >
+        </div>
     );
 }
 

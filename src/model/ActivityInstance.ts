@@ -40,13 +40,13 @@ class ActivityInstance {
     }
 
     getMaxTime(): number {
-        let maxTime = this.events[0]["endTime"];
+        let maxTime = this.events?.[0]?.["endTime"] ?? 0;
         this.events.forEach(ev => {
             if (ev["endTime"] > maxTime) {
                 maxTime = ev["endTime"];
             }
         });
-        return maxTime
+        return maxTime ??= 0
     }
 
     getName(): string {

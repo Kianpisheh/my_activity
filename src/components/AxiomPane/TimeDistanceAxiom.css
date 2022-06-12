@@ -25,6 +25,7 @@
   justify-content: center;
   align-items: center;
   row-gap: 7px;
+  width: 150px;
 }
 
 .time-distance-icons {

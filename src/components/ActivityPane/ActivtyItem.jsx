@@ -9,7 +9,7 @@ function ActivtiyItem(props) {
 
     return (
         <div
-            activity-item-container
+            className="activity-item-container"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >

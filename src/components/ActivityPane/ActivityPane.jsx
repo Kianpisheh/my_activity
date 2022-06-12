@@ -14,6 +14,7 @@ function ActivityPane(props) {
                     {props.activities.map((activity, idx) => {
                         return (
                             <ActivtiyItem
+                                key={idx}
                                 idx={idx}
                                 onActivitiyListChange={props.onActivitiyListChange}
                                 activity={activity}

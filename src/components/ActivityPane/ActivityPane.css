@@ -62,6 +62,7 @@
 
 .activities-container ul li text {
   font-size: 13px;
+  width: -moz-fit-content;
   width: fit-content;
   padding-left: 10px;
 }

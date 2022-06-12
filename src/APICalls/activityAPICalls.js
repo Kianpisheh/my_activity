@@ -9,7 +9,8 @@ export async function retrieveActivities(url) {
   });
 }
 
-export async function retrieveInstances(url) {
+export async function retrieveInstances() {
+  const url = "http://localhost:8082/instance/instances";
   return axios.get(url, {
     headers: {
       Accept: "application/json",
@@ -23,6 +24,11 @@ export async function explain(url, activityInstance, targetActivity, queryType) 
 }
 
 export async function updateDatabase(activity, task) {
-  const url = "http://localhost:8082/activity/" + task
-  return axios.post(url, activity)
+  const url = "http://localhost:8082/activity/" + task;
+  return axios.post(url, activity);
+}
+
+export async function classifyInstance(activityInstance) {
+  const url = "http://localhost:8082/instance/classify";
+  return axios.post(url, activityInstance);
 }

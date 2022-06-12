@@ -42,7 +42,7 @@ function TimeDistanceInteraction(props) {
                 onMouseLeave={() => setHovered(false)} >
                 <AdjustableTime
                     key={"more than"}
-                    id={props.idx}
+                    idx={props.idx}
                     data={props.data}
                     title="more than"
                     messageCallback={props.messageCallback}
@@ -67,7 +67,7 @@ function TimeDistanceInteraction(props) {
                 </div>
                 <AdjustableTime
                     key={"less than"}
-                    id={props.idx}
+                    idx={props.idx}
                     data={props.data}
                     title="less than"
                     messageCallback={props.messageCallback}

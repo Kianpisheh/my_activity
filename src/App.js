@@ -4,6 +4,7 @@ import {
 	retrieveActivities,
 	retrieveInstances,
 	updateDatabase,
+	classifyInstance,
 } from "./APICalls/activityAPICalls";
 
 import "./App.css";
@@ -24,6 +25,7 @@ import { WhyAxiomIdsProvider } from "./contexts/WhyAxiomIdsContext";
 function App() {
 	const [activities, setActivities] = useState([]);
 	const [activityInstances, setActivityInstances] = useState([]);
+	const [predictedActivity, setPredictedActivity] = useState("");
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
 	const [scale, setScale] = useState(25);
@@ -34,18 +36,31 @@ function App() {
 	});
 	const [whyAxiomIds, setWhyAxiomIds] = useState([]);
 	const [explanation, setExplanations] = useState(null);
-	const [databaseChange, setDatabaseChange] = useState({ update: false, idx: -1 });
 
 	function onAxiomPaneMessage(message, values) {
-		let newActivities = handleAxiomPaneMessages(
-			message,
-			values,
-			activities,
-			currentActivtyIdx,
-			currentActivity
-		);
-		setActivities(newActivities);
-		setDatabaseChange(true);
+		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
+			handleActInstanceChange(
+				currentActInstanceIdx,
+				activityInstances[currentActInstanceIdx].getName()
+			);
+		} else {
+			let newActivities = handleAxiomPaneMessages(
+				message,
+				values,
+				activities,
+				currentActivtyIdx,
+				currentActivity
+			);
+			setActivities(
+				newActivities,
+				updateDatabase(currentActivity, "update").then(() => {
+					handleActInstanceChange(
+						currentActInstanceIdx,
+						activityInstances[currentActInstanceIdx].getName()
+					)
+				})
+			);
+		}
 	}
 
 	let currentActivity = null;
@@ -56,13 +71,13 @@ function App() {
 	function handleActivityListChange(message, activityID) {
 		if (message === AxiomTypes.MSG_CHANGE_CURRENT_ACTIVITY) {
 			setCurrentActivityIdx(activityID);
-			if (databaseChange.update) {
-				//updateDatabase()
-			}
 		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
 			let new_activities = [...activities];
 			let newID = Activity.getUniqueID(activities);
-			let newActivityName = Activity.getUniqueName(activities, "New activity");
+			let newActivityName = Activity.getUniqueName(
+				activities,
+				"New_activity"
+			);
 			new_activities.push(
 				new Activity({
 					id: newID,
@@ -73,28 +88,30 @@ function App() {
 			);
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
-			updateDatabase(new_activities[new_activities.length - 1], "add").then(() =>
-				console.log("database update request sent")
-			)
-			// TODO: update server
+			updateDatabase(new_activities[new_activities.length - 1], "update");
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let new_activities = [...activities];
+			const activityName = activities[activityID].getName();
 			new_activities = new_activities.filter((activity) => {
 				return activity.getID() !== activityID;
 			});
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
-			// TODO: update server
+			updateDatabase(activityName, "remove");
 		}
 	}
 
 	function handleActInstanceChange(id, instance) {
-		setCurrentActInstanceIdx(id);
+		//classify the selected activity instance
+		classifyInstance([instance]).then((data) => {
+			setPredictedActivity(data.data[0][0]);
+			setCurrentActInstanceIdx(id);
+		});
 	}
 
 	function handleScaleChange(action) {
 		if (action === "zoom_out") {
-			if (scale > 7) {
+			if (scale > 5) {
 				setScale(scale - 5);
 			}
 		} else if (action === "zoom_in") {
@@ -118,12 +135,12 @@ function App() {
 
 		prom.then((data) => {
 			let explanation = ExplanationManager.getExplanations(data.data);
-			let ids = ExplanationManager.getSatisfiedAxiomIds(currentActivity.getAxioms(), explanation);
+			let ids = ExplanationManager.getSatisfiedAxiomIds(
+				currentActivity.getAxioms(),
+				explanation
+			);
 			setWhyAxiomIds(ids);
 			setExplanations(explanation);
-			console.log(explanation);
-			console.log(currentActivity.getAxioms());
-			console.log(ids);
 		});
 	}
 
@@ -139,20 +156,29 @@ function App() {
 				activityItems.push(new Activity(activity));
 			});
 			setActivities(activityItems);
+			let instancesPromise = retrieveInstances();
+			instancesPromise.then((data) => {
+				let instances = data.data;
+				let instanceItems = [];
+				instances.forEach((instance) => {
+					instanceItems.push(new ActivityInstance(instance));
+				});
+				setActivityInstances(instanceItems);
+			});
 		});
 	}, []);
 
-	useEffect(() => {
-		let instancesPromise = retrieveInstances("http://localhost:8082/instance");
-		instancesPromise.then((data) => {
-			let instances = data.data;
-			let instanceItems = [];
-			instances.forEach((instance) => {
-				instanceItems.push(new ActivityInstance(instance));
-			});
-			setActivityInstances(instanceItems);
-		});
-	}, []);
+	// useEffect(() => {
+	// 	let instancesPromise = retrieveInstances();
+	// 	instancesPromise.then((data) => {
+	// 		let instances = data.data;
+	// 		let instanceItems = [];
+	// 		instances.forEach((instance) => {
+	// 			instanceItems.push(new ActivityInstance(instance));
+	// 		});
+	// 		setActivityInstances(instanceItems);
+	// 	});
+	// }, []);
 
 	const config = {
 		ic_w: 30,
@@ -167,14 +193,15 @@ function App() {
 		minor_tick: 1,
 		major_tick_h: 4,
 		minor_tick_h: 2.5,
+		merge_close: true,
+		merge_th: 2,
+		nonlScale: true,
 	};
 
 	let individuals = null;
 	if (explanation) {
 		individuals = explanation.getIndividuals();
 	}
-
-	console.log("instance", activityInstances[currentActInstanceIdx]);
 
 	return (
 		<div className="App">
@@ -191,12 +218,13 @@ function App() {
 				)}
 			</div>
 
-			<div className="left-pane-container" onClick={() => {
-				setAction({ required: false, x: 0, y: 0 });
-				setWhyAxiomIds([])
-			}
-
-			}>
+			<div
+				className="left-pane-container"
+				onClick={() => {
+					setAction({ required: false, x: 0, y: 0 });
+					setWhyAxiomIds([]);
+				}}
+			>
 				<ActivityInstancePane
 					activtiyInstances={activityInstances}
 					onSelectedItemChange={handleActInstanceChange}
@@ -209,13 +237,17 @@ function App() {
 				></ActivityPane>
 			</div>
 
-			<div className="tools-container" onClick={() => {
-				setAction({ required: false, x: 0, y: 0 });
-				setWhyAxiomIds([])
-			}}>
+			<div
+				className="tools-container"
+				onClick={() => {
+					setAction({ required: false, x: 0, y: 0 });
+					setWhyAxiomIds([]);
+				}}
+			>
 				<ActivityInstanceVis
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
+					predictedActivity={predictedActivity}
 					highlighted={individuals}
 					onScaleChange={handleScaleChange}
 				></ActivityInstanceVis>

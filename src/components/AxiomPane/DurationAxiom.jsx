@@ -20,11 +20,11 @@ function DurationAxiom(props) {
     }
 
     let axiomText = "";
-    if (props.data.getTh1() !== null) {
+    if (props.data.getTh1() !== -1) {
         axiomText += props.data.getTh1() + " <";
     }
     axiomText += " duration";
-    if (props.data.getTh2() !== null) {
+    if (props.data.getTh2() !== -1) {
         axiomText += " < " + props.data.getTh2();
     }
 
@@ -48,7 +48,7 @@ function DurationAxiom(props) {
                 onMouseLeave={() => setHovered(false)}
             >
                 <AdjustableTime
-                    id={props.idx}
+                    idx={props.idx}
                     key="more than"
                     data={props.data}
                     title="more than"
@@ -69,7 +69,7 @@ function DurationAxiom(props) {
                     <span style={{ fontSize: 12 }}>{axiomText}</span>
                 </div>
                 <AdjustableTime
-                    id={props.idx}
+                    idx={props.idx}
                     key="less than"
                     data={props.data}
                     title="less than"

@@ -1,15 +1,20 @@
+
 import "./TimeAxis.css";
 
 function TimeAxis(props) {
+
+
     const { scale, ax_h, major_tick, major_tick_h, minor_tick_h, minor_tick } = props.config;
     const svgWidth = Math.ceil(scale * props.tmax);
 
     const vb = "0 0 " + svgWidth + " " + ax_h;
 
-    const majorTicks = getTicks(props.tmax, scale, major_tick);
-    const minorTicks = getTicks(props.tmax, scale, minor_tick);
-    const times = getTimes(major_tick, props.tmax);
-    const formattedTimes = getFormattedTime(times);
+    const sk = getSkipRate(scale)
+    const majorTicks = getTicks(props.tmax, scale, major_tick).filter((value, idx) => { return idx % sk === 0 });
+    const minorTicks = getTicks(props.tmax, scale, minor_tick)
+    const times = getTimes(major_tick, props.tmax).filter((value, idx) => { return idx % sk === 0 });;
+    let formattedTimes = getFormattedTime(times);
+
 
     return (
         <div className="time-axis-constainer">
@@ -65,7 +70,7 @@ function TimeAxis(props) {
                         return (
                             <text
                                 key={idx}
-                                x={x}
+                                x={x - 8}
                                 y={Math.floor(ax_h / 2) + 8}
                                 fontSize={8}
                                 style={{ fill: "black" }}
@@ -112,6 +117,19 @@ function getFormattedTime(secs) {
     }
 
     return formattedTime;
+}
+
+function getSkipRate(scale) {
+    if (scale < 10) {
+        return 4;
+    } else if (scale < 15) {
+        return 3;
+    } else if (scale < 20) {
+        return 2;
+    } else if (scale < 30) {
+        return 1;
+    }
+    return 1;
 }
 
 export default TimeAxis;

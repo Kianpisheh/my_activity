@@ -6,7 +6,6 @@ interface IAxiom {
 }
 
 class AxiomData {
-
   events: string[];
   type: string;
   th1: number;
@@ -19,14 +18,16 @@ class AxiomData {
     this.th2 = axiom["th2"];
   }
 
-  
-
   getType() {
     return this.type;
   }
 
   getEvents() {
     return this.events;
+  }
+
+  removeEvent(eventType: string) {
+    this.events = this.events.filter(ev => ev !== eventType)
   }
 
   getTh1() {

@@ -31,6 +31,10 @@ class Activity {
 		return this.name;
 	}
 
+	setName(name: string) {
+		this.name = name;
+	}
+
 	getEvents() {
 		return this.events;
 	}
@@ -97,7 +101,7 @@ class Activity {
 		})
 		let ids = new Int32Array(idsList);
 		ids = ids.sort();
-		return ids[ids.length - 1] + 1;
+		return ids?.[ids.length - 1] ?? 100 + 1;
 	}
 
 	static getUniqueName(activities: Activity[], candidateName: string): string {
