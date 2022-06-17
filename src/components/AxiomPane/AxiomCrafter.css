@@ -8,7 +8,7 @@
   justify-items: center;
   align-items: center;
   width: 170px;
-  row-gap: 15px;
+  row-gap: 10px;
 }
 
 .axiom-crafter-container ul {
@@ -57,4 +57,17 @@
   cursor: pointer;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+div::-webkit-scrollbar {
+  height: 8px;         
+}
+
+div::-webkit-scrollbar-track {
+background: rgba(238, 235, 232, 0.976);        /* color of the tracking area */
+}
+
+div::-webkit-scrollbar-thumb {
+background-color: rgb(203, 203, 221);    /* color of the scroll thumb */
+border-radius: 10px;       /* roundness of the scroll thumb */
 }

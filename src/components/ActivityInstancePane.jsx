@@ -10,7 +10,8 @@ function ActivtityInstancePane(props) {
         <div className="activity-instances">
             <ul>
                 {props.activtiyInstances.map((activity, idx) => {
-                    return <li key={idx} onClick={() => { props.onSelectedItemChange(idx, activity.getName()) }}><text>{activity.getName()}</text></li>
+                    let style = props.currentActivityId === idx ? { background: "#E3DDCA" } : {}
+                    return <li key={idx} style={style} onClick={() => { props.onSelectedItemChange(idx, activity.getName()) }}><text>{activity.getName()}</text></li>
                 })}
             </ul>
         </div>

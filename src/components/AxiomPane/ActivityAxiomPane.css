@@ -1,6 +1,8 @@
 .main-container {
   display: flex;
-  column-gap: 20px;
+  column-gap: 10px;
+  width: 60%;
+  height: 100%;
 }
 
 .Axiom-pane {
@@ -9,9 +11,11 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  row-gap: 10px;
   justify-content: flex-start;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
+  width: 60%;
+  height: 100%;
 }
 
 .Axioms-container {
@@ -19,8 +23,10 @@
   justify-content: flex-start;
   display: flex;
   flex-direction: column;
-  row-gap: 15px;
+  row-gap: 10px;
   width: 100%;
+  overflow: scroll;
+
 }
 
 .add-ui {
@@ -67,5 +73,19 @@
   padding-left: 15px;
   padding-right: 15px;
   align-self: center;
+  justify-self: center;
   cursor: pointer;
+}
+
+div::-webkit-scrollbar {
+  width: 8px;         
+}
+
+div::-webkit-scrollbar-track {
+background: #E3DDCA;        /* color of the tracking area */
+}
+
+div::-webkit-scrollbar-thumb {
+background-color: #E3DDCA;    /* color of the scroll thumb */
+border-radius: 10px;       /* roundness of the scroll thumb */
 }

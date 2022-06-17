@@ -2,13 +2,15 @@ import React, { useContext, useState } from "react";
 
 import "./InteractionAxiom.css";
 
-import EventIcons from "../../Utils/EventIcons";
 import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
+import { pascalCase } from "../../Utils/utils";
+import Icons from "../../icons/Icons";
 
 function InteractionAxiom(props) {
     const [hovered, setHovered] = useState(false);
     const [objectHovered, setObjectedHovered] = useState(-1);
+    const [selected, setSelected] = useState(new Set());
 
     let events = [];
     const whyIds = useContext(WhyAxiomIdsContext);
@@ -19,30 +21,42 @@ function InteractionAxiom(props) {
         return;
     }
 
+    console.log(selected);
+
     let interactionIcons = [];
     for (let i = 0; i < events.length; i++) {
+        const Icon = Icons.getIcon(pascalCase(events[i]), true);
         interactionIcons.push(
             <div
                 className="rem-object-btn-div"
                 onMouseEnter={() => setObjectedHovered(i)}
                 onMouseLeave={() => setObjectedHovered(-1)}
             >
-                <img
-                    key={i}
-                    width={30}
-                    height={30}
-                    src={EventIcons.get(events[i])}
-                    alt="XX"
-                ></img>
+                <Icon
+                    style={{
+                        width: props.config.ic_w,
+                        height: props.config.ic_h,
+                        fill: "#3A2A0D",
+                        padding: 2,
+                        border: selected.has(events[i]) && "2px solid #4DB49C",
+                    }}
+                    onClick={(clickEvent) =>
+                        setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
+                    }
+                ></Icon>
                 {objectHovered === i && (
                     <button
                         className="remove-object-btn"
-                        onClick={() =>
-                            props.messageCallback(AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION, {
-                                axiomIdx: props.idx,
-                                eventType: events[i]
-                            })
-                        }
+                        onClick={() => {
+                            props.messageCallback(
+                                AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION,
+                                {
+                                    axiomIdx: props.idx,
+                                    eventType: events[i],
+                                }
+                            );
+                            setSelected(new Set());
+                        }}
                     >
                         X
                     </button>
@@ -80,11 +94,12 @@ function InteractionAxiom(props) {
                 {hovered && (
                     <button
                         className="remove-axiom-btn"
-                        onClick={() =>
+                        onClick={() => {
                             props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
                                 idx: props.idx,
-                            })
-                        }
+                            });
+                            setSelected(new Set());
+                        }}
                     >
                         X
                     </button>
@@ -92,6 +107,24 @@ function InteractionAxiom(props) {
             </div>
         </React.Fragment>
     );
+}
+
+function handleIconSelection(selectedSet, event, clickEvent, messageCallback) {
+    let newSelectedSet = new Set(selectedSet);
+    if (!clickEvent.shiftKey) {
+        if (newSelectedSet.has(event)) {
+            newSelectedSet.delete(event);
+        } else {
+            newSelectedSet.add(event);
+        }
+    } else {
+        if (newSelectedSet.size === 2) {
+            messageCallback(AxiomTypes.MSG_INTERACTION_OR_AXIOM_CREATION, { selectedEvents: newSelectedSet });
+            console.log("message sent");
+        }
+    }
+
+    return newSelectedSet;
 }
 
 export default InteractionAxiom;

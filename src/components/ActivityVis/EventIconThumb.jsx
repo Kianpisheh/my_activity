@@ -1,14 +1,33 @@
+import React from 'react';
+
+import ReactTooltip from 'react-tooltip';
 
 import "./EventIconThumb.css";
-import EventIcons from "../../Utils/EventIcons";
 import Icons from "../../icons/Icons";
 
+
 import { pascalCase } from "../../Utils/utils";
+import { useEffect } from 'react';
 
 function EventIconThumb(props) {
     const { config, explanationEvents, eventIndividuals } = props;
     const { ic_w, ic_h, scale, r, rc_h } = config;
-    const svgWidth = Math.ceil(scale * props.tmax);
+
+    useEffect(() => {
+        ReactTooltip.rebuild();
+    });
+
+    if (
+        !props.thumbEvents ||
+        !props.thumbX ||
+        !props.iconX ||
+        !props.iconEvents ||
+        !props.iconY
+    ) {
+        return;
+    }
+    const xMax = props.thumbX[props.thumbX.length - 1].x2;
+    const svgWidth = Math.ceil(scale[props.idx] * xMax);
     const vb = "0 0 " + svgWidth + " " + ic_h;
 
     let filteredNum = 0;
@@ -18,8 +37,9 @@ function EventIconThumb(props) {
         }
     }
 
+
     return (
-        <div className="event-icon-thumb-conatiner">
+        <div className="event-icon-thumb-conatiner" >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={vb}
@@ -28,8 +48,6 @@ function EventIconThumb(props) {
                 style={{ float: "left" }}
             >
                 {props.thumbX.map((X, idx) => {
-                    console.log(X.x1);
-                    console.log(X.x2);
                     return (
                         (props.filters.includes(props.thumbEvents[idx]) ||
                             filteredNum === 0) && (
@@ -38,12 +56,12 @@ function EventIconThumb(props) {
                                     key={idx}
                                     x={X.x1}
                                     y={18}
-                                    width={
-                                        (X.x2 - X.x1)
-                                    }
+                                    width={X.x2 - X.x1}
                                     height={2 * rc_h}
                                     rx={r}
-                                    fill={EventIcons.getColor(props.thumbEvents[idx])}
+                                    fill={Icons.getColor(
+                                        pascalCase(props.thumbEvents[idx])
+                                    )}
                                 // onMouseEnter={() => { setShowPositionTip(true) }}
                                 ></rect>
                             </g>
@@ -62,25 +80,48 @@ function EventIconThumb(props) {
                             };
                         }
                     }
-                    const Icon = Icons.getIcon(pascalCase(props.iconEvents[idx]));
+                    const Icon = Icons.getIcon(
+                        pascalCase(props.iconEvents[idx])
+                    );
+                    let IconComponent = null;
+                    if (Icon) {
+                        IconComponent = (
+                            <Icon
+                                opacity={1}
+                                fill={Icons.getColor(
+                                    pascalCase(props.iconEvents[idx])
+                                )}
+                                style={{ width: ic_w, height: ic_h }}
+                                x={
+                                    props.iconX[idx].x1 -
+                                    svgWidth / 2 +
+                                    ic_w / 2
+                                }
+                                y={props.iconY[idx]}
+                            ></Icon>
+                        );
+                    } else {
+                        IconComponent = (
+                            <text
+                                x={props.iconX[idx].x1}
+                                y={15}
+                                style={{
+                                    fontSize: 8, transform: "rotate(90)"
+                                }}
+                            >
+                                {props.iconEvents[idx]}
+                            </text>
+                        );
+                    }
                     return (
                         (props.filters.includes(props.iconEvents[idx]) ||
                             filteredNum === 0) && (
-                            <g key={idx}>
-                                <Icon
-                                    opacity={1}
-                                    fill={Icons.getColor(
-                                        pascalCase(props.iconEvents[idx])
-                                    )}
-                                    x={props.iconX[idx].x1 - svgWidth / 2 + ic_w / 2}
-                                    y={props.iconY[idx]}
-                                ></Icon>
-                            </g>
+                            <g key={idx}>{IconComponent}</g>
                         )
                     );
                 })}
             </svg>
-        </div>
+        </div >
     );
 }
 

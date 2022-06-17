@@ -1,16 +1,19 @@
 import { useState } from "react";
 
 import "./ActivityInstanceVis.css";
+import "./TimeAxis.css";
 
-import EventIcons from "../../Utils/EventIcons";
+import TimeAxis from "./TimeAxis";
+
 import {
     mergeConsecEvents,
-    scaleTimes,
+    nonLinearScale,
     mergeCloseEvents,
     getEventIconPlacement,
-    pascalCase,
     getEnclosedEvents,
-    time2Pixel
+    time2Pixel,
+    pixel2Time,
+    inverseNonLienarScale,
 } from "../../Utils/utils";
 
 import EventFilter from "./EventFilter";
@@ -25,8 +28,7 @@ function ActivityInstanceVis(props) {
     const [regions, setRegions] = useState([]);
     const [selected, setSelected] = useState({});
 
-    const { ic_w, ic_h, scale, merge_th, nonlScale, r, rc_h } = config;
-
+    const { ic_w, scale, merge_th, nonlScale } = config;
 
     if (!activity) {
         return null;
@@ -53,27 +55,48 @@ function ActivityInstanceVis(props) {
     const mergedConsecTimes = mergedConsecRes["times"];
 
     // nonliniear scaling
-    const nonlinearScaledTimes = nonlScale ? scaleTimes(mergedConsecTimes) : mergedConsecTimes;
-    const thumbX = time2Pixel(nonlinearScaledTimes, scale);
+    const nonlinearScaledTimes = nonlScale
+        ? nonLinearScale(mergedConsecTimes)
+        : mergedConsecTimes;
+    const thumbX = time2Pixel(nonlinearScaledTimes, scale[0]);
 
     // merge close events
     let merged = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 2);
     const mergedCloseTimes = merged["times"];
     const mergedCloseEvents = merged["events"];
-    const iconX = time2Pixel(mergedCloseTimes, scale);
-
-
+    const iconX = time2Pixel(mergedCloseTimes, scale[0]);
     const iconY = getEventIconPlacement(iconX, ic_w);
 
-    // const { x1, x2 } = props.selected;
-    // if (x1 && x2) {
-    //     const enEventsRes = getEnclosedEvents(x1, x2, iconX, mergedCloseEvents);
-    //     const enEvents = enEventsRes["events"];
-    //     const enX = enEventsRes["X"];
-    // }
+    const { x1, x2 } = selected;
+
+    let enEventsRes = null;
+    let enEvents = null;
+    let enX = null;
+    let nonScaledEnclosedTimes = null;
+    let nonScaledEnclosedThumbX = null;
+    let nonScaledIconY = null;
+    let firstIdxEnEvent = 0;
+    if (selected && x2 - x1 > 0 && Object.keys(selected).length !== 0) {
+        enEventsRes = getEnclosedEvents(x1, x2, thumbX, mergedConsecEvents);
+        enEvents = enEventsRes["events"];
+        enX = enEventsRes["X"];
+        firstIdxEnEvent = enEventsRes["idx"]
+        let enTimes = pixel2Time(enX, scale[1]);
+
+        nonScaledEnclosedTimes = nonlScale
+            ? inverseNonLienarScale(enTimes)
+            : enTimes;
+        nonScaledEnclosedThumbX = time2Pixel(nonScaledEnclosedTimes, scale[1]);
+        nonScaledIconY = getEventIconPlacement(nonScaledEnclosedThumbX, ic_w);
+    }
+
+    const mainDivHeight = Object.keys(selected).length !== 0 ? 500 : 360;
 
     return (
-        <div className="activity-vis-container">
+        <div
+            className="activity-vis-container"
+            style={{ height: mainDivHeight }}
+        >
             <div id="title" style={{ fontSize: 12 }}>
                 Activity events
             </div>
@@ -87,15 +110,22 @@ function ActivityInstanceVis(props) {
                         filters={filters}
                     ></EventFilter>
                     <ScalingTab
+                        key={1}
+                        idx={0}
                         onScaleChange={props.onScaleChange}
                     ></ScalingTab>
                 </div>
                 <div
                     className="graph"
                     style={{
-                        width: Math.ceil(config.scale * activity.getMaxTime()),
+                        width: Math.ceil(thumbX[thumbX.length - 1].x2),
                     }}
-                    onMouseUp={() => handleRegionSelection(regions, Math.ceil(config.scale * activity.getMaxTime()))}
+                    onMouseUp={() =>
+                        handleRegionSelection(
+                            regions,
+                            Math.ceil(thumbX[thumbX.length - 1].x2)
+                        )
+                    }
                 >
                     <RegionSelect
                         maxRegions={1}
@@ -105,12 +135,12 @@ function ActivityInstanceVis(props) {
                         style={{ height: "100%" }}
                     >
                         <EventIconThumb
+                            key={1}
+                            idx={0}
                             config={config}
                             filters={filters}
                             eventIndividuals={activity.getEventIndividuals()}
                             explanationEvents={highlighted}
-                            tmax={activity.getMaxTime()}
-                            selected={selected}
                             thumbEvents={mergedConsecEvents}
                             thumbX={thumbX}
                             iconEvents={mergedCloseEvents}
@@ -119,6 +149,53 @@ function ActivityInstanceVis(props) {
                         ></EventIconThumb>
                     </RegionSelect>
                 </div>
+                {selected.x1 && (
+                    <div
+                        className="graph"
+                        style={{
+                            width: Math.ceil(
+                                nonScaledEnclosedThumbX[
+                                    nonScaledEnclosedThumbX.length - 1
+                                ].x2
+                            ),
+                            height: 300,
+                        }}
+                    >
+                        {/* <div className="tools-div">
+                        <EventFilter
+                            onNewFilter={handleNewFilter}
+                            filters={filters}
+                        ></EventFilter>
+                        <ScalingTab
+                            key={2}
+                            idx={1}
+                            onScaleChange={props.onScaleChange}
+                        ></ScalingTab>
+                    </div> */}
+                        <EventIconThumb
+                            key={2}
+                            idx={1}
+                            config={config}
+                            filters={filters}
+                            eventIndividuals={activity.getEventIndividuals()}
+                            explanationEvents={highlighted}
+                            thumbEvents={enEvents}
+                            thumbX={nonScaledEnclosedThumbX}
+                            iconEvents={enEvents}
+                            iconX={nonScaledEnclosedThumbX}
+                            iconY={nonScaledIconY}
+                        ></EventIconThumb>
+                        <TimeAxis
+                            tmax={
+                                nonScaledEnclosedTimes[
+                                    nonScaledEnclosedTimes.length - 1
+                                ].endTime
+                            }
+                            t0={mergedConsecTimes[firstIdxEnEvent].startTime}
+                            config={config}
+                        ></TimeAxis>
+                    </div>
+                )}
             </div>
             <div
                 style={{
@@ -135,10 +212,14 @@ function ActivityInstanceVis(props) {
     );
 
     function handleRegionSelection(regions, svgWidth) {
-        console.log({ x1: (regions[0].x * svgWidth) / 100, x2: (regions[0].x + regions[0].width) * svgWidth / 100 });
-        setSelected({ x1: (regions[0].x * svgWidth) / 100, x2: (regions[0].x + regions[0].width) * svgWidth / 100 })
+        if (regions[0]) {
+            const x1 = (regions[0].x * svgWidth) / 100;
+            const x2 = ((regions[0].x + regions[0].width) * svgWidth) / 100;
+            if (x2 - x1 > 0) {
+                setSelected({ x1: x1, x2: x2 });
+            }
+        }
     }
 }
 
 export default ActivityInstanceVis;
-

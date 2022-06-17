@@ -7,6 +7,12 @@ import AxiomTypes from "../../model/AxiomTypes";
 function ActivtiyItem(props) {
     const [hovered, setHovered] = useState(false);
 
+
+    let style = {}
+    if (props.idx === props.currentActivityIdx) {
+        style = { background: "#E3DDCA" }
+    }
+
     return (
         <div
             className="activity-item-container"
@@ -21,6 +27,7 @@ function ActivtiyItem(props) {
                         props.activity.getID()
                     )
                 }
+                style={style}
                 onContextMenu={(event) => {
                     event.preventDefault();
                     props.onAction(props.activity.getID(), event.pageX, event.pageY);

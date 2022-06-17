@@ -1,7 +1,8 @@
 import { useState } from "react";
 import AxiomTypes from "../../model/AxiomTypes";
 import "./AxiomCrafter.css";
-import EventIcons from "../../Utils/EventIcons";
+import { pascalCase } from "../../Utils/utils";
+import Icons from "../../icons/Icons";
 
 function AxiomCrafter(props) {
     const [selectedItems, setSelectedItems] = useState([]);
@@ -21,6 +22,7 @@ function AxiomCrafter(props) {
                     if (selectedItems.includes(key)) {
                         itemBorder = "2px solid #4D8E7F";
                     }
+                    const Icon = Icons.getIcon(pascalCase(key));
                     return (
                         <li
                             key={idx}
@@ -34,20 +36,15 @@ function AxiomCrafter(props) {
                                 setSelectedItems(new_items);
                             }}
                         >
-                            <img
-                                src={EventIcons.get(key)}
-                                alt="XX"
-                                width={20}
-                                height={20}
-                            ></img>
-                            <text style={{ fontSize: 12 }}>{key}</text>
+                            {Icon && <Icon style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon>}
+                            <text style={{ fontSize: 9, textAlign: "center", padding: 0 }}>{key}</text>
                         </li>
                     );
                 })}
             </ul>
             <button
                 id="axiom-crafter-done-btn"
-                onClick={() => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 })}
+                onClick={(ev) => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 }, ev)}
             >
                 Done
             </button>

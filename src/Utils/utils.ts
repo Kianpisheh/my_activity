@@ -69,7 +69,7 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
     return { "times": newTimestamps, "events": newEvents };
 }
 
-export function scaleTimes(timestamps: ITime[]): ITime[] | null {
+export function nonLinearScale(timestamps: ITime[]): ITime[] | null {
 
     if (!timestamps) {
         return null;
@@ -79,23 +79,48 @@ export function scaleTimes(timestamps: ITime[]): ITime[] | null {
 
     let duration: number = 0;
     let timeDistance: number = 0;
-    newTimestamps.push({ startTime: timestamps[0]?.startTime, endTime: timestamps[0]?.endTime } as ITime)
+    newTimestamps.push({ startTime: 0, endTime: timestamps[0]?.endTime - timestamps[0]?.startTime } as ITime)
     for (let i = 1; i < timestamps.length; i++) {
         timeDistance = (timestamps[i]?.startTime ?? 0) - (timestamps[i - 1]?.endTime ?? 0); // old time distance
         timeDistance = timeDistance > 0 ? timeDistance : 0
-        let newStartTime = (newTimestamps[i - 1]?.endTime ?? 0) + nonlinearScale(timeDistance / 2); // new startTime
+        let newStartTime = (newTimestamps[i - 1]?.endTime ?? 0) + _nonlinearScale(timeDistance); // new startTime
         duration = (timestamps[i]?.endTime ?? 0) - (timestamps[i]?.startTime ?? 0); // old duration
         duration = duration > 0 ? duration : 0
-        newTimestamps.push({ startTime: newStartTime, endTime: newStartTime + nonlinearScale(duration) })
+        newTimestamps.push({ startTime: newStartTime, endTime: newStartTime + _nonlinearScale(duration) })
     }
 
     return newTimestamps;
 
 }
 
-function nonlinearScale(n: number) {
+export function inverseNonLienarScale(scaledTimes: ITime[]): ITime[] {
+    let unScaledTimes: ITime[] = [];
+    unScaledTimes.push({ startTime: 0, endTime: _inverseNonlinearScale(scaledTimes[0].endTime - scaledTimes[0].startTime) } as ITime)
+    for (let i = 1; i < scaledTimes.length; i++) {
+
+        const scaledTimeDistance = (scaledTimes[i]?.startTime ?? 0) - (scaledTimes[i - 1]?.endTime ?? 0);
+        const scaledDuration = (scaledTimes[i]?.endTime ?? 0) - (scaledTimes[i]?.startTime ?? 0);
+
+        const unScaledTimeDistance = _inverseNonlinearScale(scaledTimeDistance)
+        const unScaledDuration = _inverseNonlinearScale(scaledDuration);
+
+        const unScaledStartTime = unScaledTimes[i - 1].endTime + unScaledTimeDistance;
+        const unScaledEndTime = unScaledStartTime + unScaledDuration;
+
+        unScaledTimes.push({ startTime: unScaledStartTime, endTime: unScaledEndTime })
+    }
+
+
+    return unScaledTimes;
+}
+
+function _nonlinearScale(n: number): number {
     //return n;
-    return 2 * Math.log10(n / 6 + 1)
+    return 2 * Math.log10(n / 6 + 1);
+}
+
+function _inverseNonlinearScale(n: number): number {
+    return 6 * (Math.pow(10, n / 2) - 1)
 }
 
 export function getEventIconPlacement(X: IInterval[], ic_w: number): number[] {
@@ -135,16 +160,18 @@ export function pascalCase(key: string): string {
     return newKey;
 }
 
-export function getEnclosedEvents(x1: number, x2: number, X: number[], events: string[]) {
-    let enEvents: string[] = []
-    let limitsIdx: number[] = [];
+export function getEnclosedEvents(x1: number, x2: number, X: IInterval[], events: string[]) {
+    let enEvents: string[] = [];
+    let enX: IInterval[] = []
+    let firstIdx = -1;
     for (let i = 0; i < X.length; i++) {
-        if (X[i] > x1 && X[i] < x2) {
-            limitsIdx.push(i);
-            enEvents.push(events[i])
+        if (X[i].x1 > x1 && X[i].x1 < x2) {
+            firstIdx = (firstIdx >= 0) ? firstIdx : i;
+            enEvents.push(events[i]);
+            enX.push(X[i]);
         }
     }
-    return { "events": enEvents, "X": X };
+    return { "events": enEvents, "X": enX, "idx": firstIdx };
 }
 
 export function time2Pixel(times: ITime[], scale: number): IInterval[] {
@@ -155,4 +182,14 @@ export function time2Pixel(times: ITime[], scale: number): IInterval[] {
     })
 
     return X;
+}
+
+export function pixel2Time(X: IInterval[], scale: number): ITime[] {
+    let times: ITime[] = [];
+
+    X.forEach(x => {
+        times.push({ startTime: x.x1 / scale, endTime: x.x2 / scale })
+    });
+
+    return times;
 }

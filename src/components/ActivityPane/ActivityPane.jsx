@@ -4,6 +4,7 @@ import AxiomTypes from "../../model/AxiomTypes";
 import ActivtiyItem from "./ActivtyItem";
 
 function ActivityPane(props) {
+
     return (
         <div className="activity-pane-container">
             <span id="title" style={{ fontSize: 12 }}>
@@ -16,6 +17,7 @@ function ActivityPane(props) {
                             <ActivtiyItem
                                 key={idx}
                                 idx={idx}
+                                currentActivityIdx={props.currentActivityIdx}
                                 onActivitiyListChange={props.onActivitiyListChange}
                                 activity={activity}
                                 onAction={props.onAction}

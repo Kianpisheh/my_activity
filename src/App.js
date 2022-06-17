@@ -28,7 +28,7 @@ function App() {
 	const [predictedActivity, setPredictedActivity] = useState("");
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
-	const [scale, setScale] = useState(25);
+	const [scale, setScale] = useState([25, 25]);
 	const [action, setAction] = useState({
 		required: false,
 		x: 0,
@@ -51,14 +51,10 @@ function App() {
 				currentActivtyIdx,
 				currentActivity
 			);
+
+
 			setActivities(
-				newActivities,
-				updateDatabase(currentActivity, "update").then(() => {
-					handleActInstanceChange(
-						currentActInstanceIdx,
-						activityInstances[currentActInstanceIdx].getName()
-					)
-				})
+				newActivities, updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx)
 			);
 		}
 	}
@@ -66,6 +62,19 @@ function App() {
 	let currentActivity = null;
 	if (currentActivtyIdx >= 0) {
 		currentActivity = activities[currentActivtyIdx];
+	}
+
+	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
+
+		if (message !== AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
+			updateDatabase(currentActivity, "update").then(() => {
+				handleActInstanceChange(
+					currentActInstanceIdx,
+					activityInstances[currentActInstanceIdx].getName()
+				)
+			})
+		}
+
 	}
 
 	function handleActivityListChange(message, activityID) {
@@ -104,19 +113,23 @@ function App() {
 	function handleActInstanceChange(id, instance) {
 		//classify the selected activity instance
 		classifyInstance([instance]).then((data) => {
+			console.log(instance)
 			setPredictedActivity(data.data[0][0]);
 			setCurrentActInstanceIdx(id);
 		});
 	}
 
-	function handleScaleChange(action) {
+	function handleScaleChange(action, graphIdx) {
+		let newScale = [...scale];
 		if (action === "zoom_out") {
-			if (scale > 5) {
-				setScale(scale - 5);
+			if (scale[graphIdx] > 5) {
+				newScale[graphIdx] = newScale[graphIdx] - 5;
 			}
 		} else if (action === "zoom_in") {
-			setScale(scale + 5);
+			newScale[graphIdx] = newScale[graphIdx] + 5;
 		}
+
+		setScale(newScale);
 	}
 
 	function handleActionRequest(itemID, x, y) {
@@ -222,6 +235,7 @@ function App() {
 					activities={activities}
 					onActivitiyListChange={handleActivityListChange}
 					onAction={handleActionRequest}
+					currentActivityIdx={currentActivtyIdx}
 				></ActivityPane>
 			</div>
 
@@ -243,10 +257,10 @@ function App() {
 					{currentActivity && (
 						<WhyAxiomIdsProvider value={whyAxiomIds}>
 							<ActivityAxiomPane
-								width="400px"
 								activity={currentActivity}
 								sendMessage={onAxiomPaneMessage}
 								highlighted={whyAxiomIds}
+								config={config}
 							></ActivityAxiomPane>
 						</WhyAxiomIdsProvider>
 					)}

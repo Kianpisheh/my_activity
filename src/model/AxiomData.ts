@@ -22,6 +22,17 @@ class AxiomData {
     return this.type;
   }
 
+  flipEvents() {
+    if (this.events.length !== 2) {
+      return
+    }
+
+    const e2 = this.events[1];
+    this.events[1] = this.events[0];
+    this.events[0] = e2;
+
+  }
+
   getEvents() {
     return this.events;
   }

@@ -12,12 +12,14 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
             values
         );
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+
     } else if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
         let newAxioms = AxiomManager.createAxiom(
             currentActivity.getAxioms(),
             values
         );
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+
     } else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
         let newAxioms = AxiomManager.updateTimeConstraint(
             values["id"],
@@ -26,6 +28,7 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
             values["type"]
         );
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+
     } else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED) {
         let newAxioms = AxiomManager.updateTimeConstraintStatus(
             values["id"],
@@ -35,11 +38,13 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
         );
         let newActivities = [...activities];
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+
     } else if (message === AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION) {
         let newAxioms = AxiomManager.removeObjectInteraction(values["axiomIdx"], values["eventType"], currentActivity.getAxioms());
         let newActivities = [...activities];
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
-    } else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
+
+    } else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
         newActivities[currentActivtyIdx]?.setName(values["title"]);
     } else if (message === AxiomTypes.MSG_REMOVE_AXIOM) {
         let axioms: AxiomData[] | undefined = newActivities?.[currentActivtyIdx]?.getAxioms();
@@ -49,6 +54,17 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
         } else {
             return null;
         }
+
+    } else if (message === AxiomTypes.MSG_INTERACTION_OR_AXIOM_CREATION) {
+        let currActivity = currentActivity;
+        currActivity.addEventOR(Array.from(values.selectedEvents));
+        newActivities[currentActivtyIdx] = currActivity;
+        console.log(currActivity.getEventORList());
+
+    } else if (message === AxiomTypes.MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS) {
+        let axioms = currentActivity.getAxioms();
+        axioms[values["idx"]].flipEvents();
+        newActivities?.[currentActivtyIdx]?.updateAxioms(axioms);
     }
 
     return newActivities;

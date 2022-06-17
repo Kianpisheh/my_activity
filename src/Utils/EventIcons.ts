@@ -80,7 +80,7 @@ class EventIcons {
         DecreaseSec: decrease_sec,
         AddActivitybtn: add_activity_btn,
         ZoomIn: zoom_in,
-        ZoomOut: zoom_out
+        ZoomOut: zoom_out,
     };
 
     static colors: { [name: string]: string } = {

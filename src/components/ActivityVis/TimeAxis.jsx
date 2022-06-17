@@ -5,14 +5,16 @@ function TimeAxis(props) {
 
 
     const { scale, ax_h, major_tick, major_tick_h, minor_tick_h, minor_tick } = props.config;
-    const svgWidth = Math.ceil(scale * props.tmax);
+    const svgWidth = Math.ceil(scale[1] * props.tmax);
 
     const vb = "0 0 " + svgWidth + " " + ax_h;
+    const t0 = (props.t0 && props.t0 > 0) ? props.t0 : 0;
 
-    const sk = getSkipRate(scale)
-    const majorTicks = getTicks(props.tmax, scale, major_tick).filter((value, idx) => { return idx % sk === 0 });
-    const minorTicks = getTicks(props.tmax, scale, minor_tick)
-    const times = getTimes(major_tick, props.tmax).filter((value, idx) => { return idx % sk === 0 });;
+    const sk = getSkipRate(scale[1])
+    const majorTicks = getTicks(props.tmax, scale[1], major_tick).filter((value, idx) => { return idx % sk === 0 });
+    const minorTicks = getTicks(props.tmax, scale[1], minor_tick)
+    let times = getTimes(major_tick, props.tmax, t0).filter((value, idx) => { return idx % sk === 0 });
+
     let formattedTimes = getFormattedTime(times);
 
 
@@ -22,7 +24,7 @@ function TimeAxis(props) {
                 className="axis-svg"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={vb}
-                width={scale * props.tmax}
+                width={scale[1] * props.tmax}
                 height={ax_h}
             >
                 <line
@@ -89,17 +91,17 @@ function getTicks(tmax, scale, major_tick) {
     const tickNum = Math.floor(tmax / major_tick);
     let positions = [];
     for (let i = 0; i < tickNum - 1; i++) {
-        positions.push(major_tick * scale * (i + 1));
+        positions.push((major_tick * scale * (i + 1)));
     }
 
     return positions;
 }
 
-function getTimes(major_tick, tmax) {
+function getTimes(major_tick, tmax, t0) {
     const tickNum = Math.floor(tmax / major_tick);
     let times = [];
     for (let i = 0; i < tickNum - 1; i++) {
-        times.push(major_tick * (i + 1));
+        times.push((major_tick * (i + 1)) + t0);
     }
 
     return times;
@@ -110,7 +112,7 @@ function getFormattedTime(secs) {
 
     for (let i = 0; i < secs.length; i++) {
         const m = Math.floor(secs[i] / 60); // minutes
-        const s = secs[i] - m * 60;
+        const s = Math.round(secs[i]) - m * 60;
         formattedTime.push(
             m.toString().padStart(2, "0") + ":" + s.toString().padStart(2, "0")
         );

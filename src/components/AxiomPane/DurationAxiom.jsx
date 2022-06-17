@@ -6,6 +6,8 @@ import EventIcons from "../../Utils/EventIcons";
 import AdjustableTime from "./AdjustableTime";
 import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
+import Icons from "../../icons/Icons";
+import { pascalCase } from "../../Utils/utils";
 
 function DurationAxiom(props) {
     const [hovered, setHovered] = useState(false);
@@ -38,7 +40,8 @@ function DurationAxiom(props) {
             opacity: 0.7,
         };
     }
-
+    const Icon = Icons.getIcon(pascalCase(events[0]), true);
+    const TimeDistIcon = Icons.getIcon("TimeDistance");
     return (
         <React.Fragment>
             <div
@@ -55,17 +58,8 @@ function DurationAxiom(props) {
                     messageCallback={props.messageCallback}
                 ></AdjustableTime>
                 <div className="mid-section">
-                    <img
-                        width={30}
-                        height={30}
-                        src={EventIcons.get(events[0])}
-                        alt="XX"
-                    ></img>
-                    <img
-                        width={60}
-                        src={EventIcons.get("time_distance")}
-                        alt="XX"
-                    ></img>
+                    <Icon style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon>
+                    <TimeDistIcon style={{ "width": 60, "height": 10, fill: "#3A2A0D", float: "left" }}></TimeDistIcon>
                     <span style={{ fontSize: 12 }}>{axiomText}</span>
                 </div>
                 <AdjustableTime

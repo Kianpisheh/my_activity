@@ -3,11 +3,11 @@ import AxiomManager from "../../model/AxiomManager";
 import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
 import AxiomCrafter from "./AxiomCrafter";
-import EventIcons from "../../Utils/EventIcons";
 import AxiomTypes from "../../model/AxiomTypes";
 
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
+import Icons from "../../icons/Icons";
 
 function ActivityAxiomPane(props) {
     const [addMenuVisibility, setAddMenuVisibility] = useState("hidden");
@@ -25,19 +25,20 @@ function ActivityAxiomPane(props) {
         setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
     }, []);
 
-    function handleAxiomCreation(data) {
-        setDefiningRule(false);
-        props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
-    }
 
     let axioms = [];
     if (props.activity != null) {
         axioms = props.activity.getAxioms();
     }
 
+    function handleAxiomCreation(data, ev) {
+        setDefiningRule(false);
+        props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+    }
+
     var objectList = [];
     if (ruleType === AxiomTypes.TYPE_INTERACTION) {
-        objectList = [...Object.keys(EventIcons.getIcons())];
+        objectList = [...Icons.getEventList()];
     } else if (
         ruleType === AxiomTypes.TYPE_TIME_DISTANCE ||
         ruleType === AxiomTypes.TYPE_DURATION
@@ -49,21 +50,27 @@ function ActivityAxiomPane(props) {
         <div className="main-container">
             <div className="Axiom-pane" style={{ width: props.width }}>
                 <div className="Axioms-container">
-                    <EditText
-                        className="activtiy-title"
-                        value={props.activity.name}
-                        onChange={(value) =>
-                            props.sendMessage(AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED, {
-                                id: props.activity["id"],
-                                title: value,
-                            })
-                        }
-                    ></EditText>
+                    <div id="title-div" onBlur={() => props.sendMessage(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
+                        id: props.activity["id"],
+                        title: "value",
+                    })}>
+                        <EditText
+                            className="activtiy-title"
+                            value={props.activity.name}
+                            onChange={(value) =>
+                                props.sendMessage(AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING, {
+                                    id: props.activity["id"],
+                                    title: value,
+                                })
+                            }
+                        ></EditText>
+                    </div>
                     {axioms.map((axiom, idx) => (
                         <Axiom
                             idx={idx}
                             key={idx}
                             data={axiom}
+                            config={props.config}
                             messageCallback={props.sendMessage}
                         ></Axiom>
                     ))}
@@ -101,14 +108,17 @@ function ActivityAxiomPane(props) {
                     </div>
                 </div>
             </div>
-            {definingRule && (
-                <AxiomCrafter
-                    axiomType={ruleType}
-                    objects={objectList}
-                    handleAxiomCreation={handleAxiomCreation}
-                ></AxiomCrafter>
-            )}
-        </div>
+            {
+                definingRule && (
+                    <AxiomCrafter
+                        config={props.config}
+                        axiomType={ruleType}
+                        objects={objectList}
+                        handleAxiomCreation={handleAxiomCreation}
+                    ></AxiomCrafter>
+                )
+            }
+        </div >
     );
 }
 
