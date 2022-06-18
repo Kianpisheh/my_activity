@@ -27,11 +27,12 @@ function AxiomCrafter(props) {
                         <li
                             key={idx}
                             style={{ border: itemBorder }}
-                            onClick={() => {
+                            onClick={(ev) => {
                                 let new_items = addToSelected(
                                     key,
                                     selectedItems,
-                                    props.axiomType
+                                    props.axiomType,
+                                    ev.shiftKey
                                 );
                                 setSelectedItems(new_items);
                             }}
@@ -52,8 +53,8 @@ function AxiomCrafter(props) {
     );
 }
 
-function addToSelected(key, items, axiomType) {
-    if (!items.includes(key)) {
+function addToSelected(key, items, axiomType, shiftKey) {
+    if (!items.includes(key) || shiftKey) {
         if ((axiomType === AxiomTypes.TYPE_TIME_DISTANCE) && (items.length > 1)) {
             // remove the oldest
             items = items.filter((item) => item !== items[0]);
