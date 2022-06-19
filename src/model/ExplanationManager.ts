@@ -6,6 +6,9 @@ interface IExplanations {
   events: string[];
   individuals: string[];
   constraints: Constraint[];
+  startTimes: number[];
+  endTimes: number[];
+  type: string;
 }
 
 class ExplanationManager {
@@ -13,7 +16,10 @@ class ExplanationManager {
     let exp: Explanation = new Explanation(
       explanations["events"],
       explanations["constraints"],
-      explanations["individuals"]
+      explanations["individuals"],
+      explanations["startTimes"],
+      explanations["endTimes"],
+      explanations["type"]
     );
     return exp;
   }

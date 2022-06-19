@@ -52,7 +52,6 @@ function App() {
 				currentActivity
 			);
 
-
 			setActivities(
 				newActivities, updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx)
 			);
@@ -108,12 +107,13 @@ function App() {
 			setCurrentActivityIdx(new_activities.length - 1);
 			updateDatabase(activityName, "remove");
 		}
+		setExplanations(null);
 	}
 
 	function handleActInstanceChange(id, instance) {
+		setExplanations(null);
 		//classify the selected activity instance
 		classifyInstance([instance]).then((data) => {
-			console.log(instance)
 			setPredictedActivity(data.data[0][0]);
 			setCurrentActInstanceIdx(id);
 		});
@@ -137,10 +137,9 @@ function App() {
 		setCurrentActivityIdx(itemID);
 	}
 
+	//-----------------Explanations----------------------//
 	function handleExplanationRequest(req) {
-		const url = "http://localhost:8082/explainer/explain";
 		let prom = explain(
-			url,
 			activityInstances[currentActInstanceIdx]["name"],
 			activities[currentActivtyIdx]["name"],
 			req.toLowerCase()
@@ -156,6 +155,7 @@ function App() {
 			setExplanations(explanation);
 		});
 	}
+	//---------------------------------------------------//
 
 	// load activities
 	useEffect(() => {
@@ -195,14 +195,9 @@ function App() {
 		major_tick_h: 4,
 		minor_tick_h: 2.5,
 		merge_close: true,
-		merge_th: 2,
+		merge_th: 1.5,
 		nonlScale: true,
 	};
-
-	let individuals = null;
-	if (explanation) {
-		individuals = explanation.getIndividuals();
-	}
 
 	return (
 		<div className="App">
@@ -250,7 +245,7 @@ function App() {
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
 					predictedActivity={predictedActivity}
-					highlighted={individuals}
+					explanation={explanation}
 					onScaleChange={handleScaleChange}
 				></ActivityInstanceVis>
 				<div className="axiom-pane-container">
@@ -261,6 +256,7 @@ function App() {
 								sendMessage={onAxiomPaneMessage}
 								highlighted={whyAxiomIds}
 								config={config}
+								explanation={explanation}
 							></ActivityAxiomPane>
 						</WhyAxiomIdsProvider>
 					)}

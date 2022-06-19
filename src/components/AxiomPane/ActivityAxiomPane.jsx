@@ -72,6 +72,7 @@ function ActivityAxiomPane(props) {
                             data={axiom}
                             config={props.config}
                             messageCallback={props.sendMessage}
+                            explanation={props.explanation}
                         ></Axiom>
                     ))}
                 </div>{" "}

@@ -22,9 +22,18 @@ export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh
     for (let i = 1; i < timestamps.length; i++) {
         let currentTime: number = timestamps[i]?.startTime ?? -1;
         let prevTime: number = timestamps[i - 1]?.endTime ?? -1;
+
         if ((currentTime - prevTime > mergeTh) || (events[i] !== events[i - 1])) {
             newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i - 1]?.endTime ?? 0 });
             newStartTime = timestamps[i]?.startTime ?? 0;
+            newEvents.push(events[i] ?? "");
+
+            if (i === (timestamps.length - 1)) {
+                newTimestamps.push({ startTime: timestamps[i]?.startTime ?? 0, endTime: timestamps[i]?.endTime ?? 0 });
+                newEvents.push(events[i] ?? "");
+            }
+        } else if (i === (timestamps.length - 1)) {
+            newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i]?.endTime ?? 0 });
             newEvents.push(events[i] ?? "");
         }
     }
@@ -40,7 +49,7 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
     let lastCluster: number[] = [];
     let allClusters: number[] = [];
 
-    for (let i = 0; i < times.length - 1; i++) {
+    for (let i = 0; i < times.length; i++) {
         if (allClusters.includes(i)) {
             continue; // skip ones that are examined already
         }
@@ -56,11 +65,19 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
                 let t2: number = times[lastCluster[lastCluster.length - 1] ?? 0]?.endTime ?? 0;
                 newTimestamps.push({ startTime: t1, endTime: t2 });
                 newEvents.push(events[lastIdx] ?? "")
+                if (j === (times.length - 2)) {
+                    newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
+                    newEvents.push(events[j + 1] ?? "")
+                }
                 break;
             } else { // next event is close enough
                 if (events[j + 1] === events[lastIdx]) { // same event
                     lastCluster.push(j + 1);
                     allClusters.push(j + 1);
+                    if (j === (times.length - 2)) {
+                        newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
+                        newEvents.push(events[j + 1] ?? "")
+                    }
                 }
             }
         }
@@ -192,4 +209,18 @@ export function pixel2Time(X: IInterval[], scale: number): ITime[] {
     });
 
     return times;
+}
+
+export function findTimeOverlap(startTimes: number[], endTimes: number[], timestamps: ITime[]): number[] {
+    let idxList: number[] = [];
+
+    for (let i = 0; i < startTimes.length; i++) {
+        for (let j = 0; j < timestamps.length; j++) {
+            if (startTimes[i] >= timestamps[j].startTime && endTimes[i] <= timestamps[j].endTime) {
+                idxList.push(j);
+            }
+        }
+    }
+
+    return idxList;
 }

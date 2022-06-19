@@ -19,7 +19,8 @@ export async function retrieveInstances() {
   });
 }
 
-export async function explain(url, activityInstance, targetActivity, queryType) {
+export async function explain(activityInstance, targetActivity, queryType) {
+  const url = "http://localhost:8082/explainer/explain";
   return axios.post(url, { "instance": activityInstance, "activity": targetActivity, "type": queryType })
 }
 

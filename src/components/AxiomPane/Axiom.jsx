@@ -16,6 +16,7 @@ function Axiom(props) {
                 idx={props.idx}
                 config={props.config}
                 messageCallback={props.messageCallback}
+                explanation={props.explanation}
             ></InteractionAxiom>
         );
 
@@ -25,8 +26,9 @@ function Axiom(props) {
                 data={props.data}
                 idx={props.idx}
                 config={props.config}
-                messageCallback={props.messageCallback}>
-            </InteractionORAxiom>
+                messageCallback={props.messageCallback}
+                explanation={props.explanation}
+            ></InteractionORAxiom>
         );
 
     } else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -36,6 +38,7 @@ function Axiom(props) {
                 data={props.data}
                 config={props.config}
                 messageCallback={props.messageCallback}
+                explanation={props.explanation}
             ></TimeDistanceInteraction>
         );
     } else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -45,6 +48,7 @@ function Axiom(props) {
                 data={props.data}
                 config={props.config}
                 messageCallback={props.messageCallback}
+                explanation={props.explanation}
             ></DurationAxiom>
         );
     }

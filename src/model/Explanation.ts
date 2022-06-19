@@ -13,10 +13,23 @@ class Explanation {
     events: string[];
     constraints: Constraint[];
     individuals: string[];
+    startTimes: number[];
+    endTimes: number[];
+    type: string;
 
-    constructor(events_: string[], constraints_: IConstraint[], individuals_: string[]) {
+    constructor(
+        events_: string[],
+        constraints_: IConstraint[],
+        individuals_: string[],
+        startTimes_: number[],
+        endTimes_: number[],
+        type_: string
+    ) {
         this.events = events_;
         this.individuals = individuals_;
+        this.startTimes = startTimes_;
+        this.endTimes = endTimes_;
+        this.type = type_;
 
         this.constraints = [];
         for (let i = 0; i < constraints_.length; i++) {
@@ -31,29 +44,50 @@ class Explanation {
         }
     }
 
+    getType(): string {
+        return this.type;
+    }
+
+    getEvents(): string[] {
+        return this.events;
+    }
+
     getIndividuals(): string[] {
         return this.individuals;
+    }
+
+    getStartTimes(): number[] {
+        return this.startTimes;
+    }
+
+    getEndTimes(): number[] {
+        return this.endTimes;
     }
 
     contains(axiom: AxiomData): boolean {
         if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
             return (
-                axiom.getEvents().sort().join(",") === this.events.sort().join(",")
+                axiom.getEvents().sort().join(",") ===
+                this.events.sort().join(",")
             );
         } else if (
-            axiom.getType() ===
-            AxiomTypes.TYPE_TIME_DISTANCE || axiom.getType() === AxiomTypes.TYPE_DURATION
+            axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE ||
+            axiom.getType() === AxiomTypes.TYPE_DURATION
         ) {
-        
             for (let i = 0; i < this.constraints.length; i++) {
-                if (this.constraints[i]["th1"] === axiom["th1"] && this.constraints[i]["th2"] === axiom["th2"]) {
-                    if (this.constraints[i]["events"].sort().join(",") === axiom.getEvents().sort().join(",")) {
+                if (
+                    this.constraints[i]["th1"] === axiom["th1"] &&
+                    this.constraints[i]["th2"] === axiom["th2"]
+                ) {
+                    if (
+                        this.constraints[i]["events"].sort().join(",") ===
+                        axiom.getEvents().sort().join(",")
+                    ) {
                         return true;
                     }
                 }
             }
             return false;
-
         }
 
         return false;

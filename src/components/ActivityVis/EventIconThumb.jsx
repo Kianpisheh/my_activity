@@ -10,7 +10,7 @@ import { pascalCase } from "../../Utils/utils";
 import { useEffect } from 'react';
 
 function EventIconThumb(props) {
-    const { config, explanationEvents, eventIndividuals } = props;
+    const { config } = props;
     const { ic_w, ic_h, scale, r, rc_h } = config;
 
     useEffect(() => {
@@ -69,29 +69,24 @@ function EventIconThumb(props) {
                     );
                 })}
                 {props.iconX.map((x, idx) => {
-                    let iconStyle = {};
-                    if (explanationEvents) {
-                        if (explanationEvents.includes(eventIndividuals[idx])) {
-                            iconStyle = {
-                                fill: "none",
-                                stroke: "#2C87DB",
-                                strokeWidth: 2,
-                                opacity: 0.6,
-                            };
-                        }
-                    }
                     const Icon = Icons.getIcon(
                         pascalCase(props.iconEvents[idx])
                     );
+
+                    // icon opacity
+                    let opacity = 1;
+                    if (props.explanationIndividuals && props.explanationIndividuals.length && !props.explanationIndividuals.includes(idx)) {
+                        opacity = 0.3;
+                    }
+
                     let IconComponent = null;
                     if (Icon) {
                         IconComponent = (
                             <Icon
-                                opacity={1}
+                                opacity={opacity}
                                 fill={Icons.getColor(
                                     pascalCase(props.iconEvents[idx])
                                 )}
-                                style={{ width: ic_w, height: ic_h }}
                                 x={
                                     props.iconX[idx].x1 -
                                     svgWidth / 2 +

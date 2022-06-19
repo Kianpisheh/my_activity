@@ -21,11 +21,14 @@ function InteractionAxiom(props) {
         return;
     }
 
-    console.log(selected);
-
     let interactionIcons = [];
     for (let i = 0; i < events.length; i++) {
         const Icon = Icons.getIcon(pascalCase(events[i]), true);
+        // icon opacity
+        let opacity = 1;
+        if (props.explanation && props.explanation.getType() === "why_not") {
+            opacity = props.explanation.getEvents().includes(events[i]) ? 1 : 0.3;
+        }
         interactionIcons.push(
             <div
                 className="rem-object-btn-div"
@@ -40,6 +43,7 @@ function InteractionAxiom(props) {
                         padding: 2,
                         border: selected.has(events[i]) && "2px solid #4DB49C",
                     }}
+                    opacity={opacity}
                     onClick={(clickEvent) =>
                         setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
                     }

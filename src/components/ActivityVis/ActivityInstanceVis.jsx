@@ -14,6 +14,7 @@ import {
     time2Pixel,
     pixel2Time,
     inverseNonLienarScale,
+    findTimeOverlap
 } from "../../Utils/utils";
 
 import EventFilter from "./EventFilter";
@@ -23,10 +24,12 @@ import RegionSelect from "react-region-select";
 
 function ActivityInstanceVis(props) {
     const [count, setCount] = useState(0);
-    const { activity, config, highlighted } = props;
+    const { activity, config, explanation } = props;
     const [filters, setFilters] = useState("");
     const [regions, setRegions] = useState([]);
     const [selected, setSelected] = useState({});
+
+    console.log("explanation", explanation);
 
     const { ic_w, scale, merge_th, nonlScale } = config;
 
@@ -54,17 +57,29 @@ function ActivityInstanceVis(props) {
     const mergedConsecEvents = mergedConsecRes["events"];
     const mergedConsecTimes = mergedConsecRes["times"];
 
-    // nonliniear scaling
-    const nonlinearScaledTimes = nonlScale
-        ? nonLinearScale(mergedConsecTimes)
-        : mergedConsecTimes;
-    const thumbX = time2Pixel(nonlinearScaledTimes, scale[0]);
 
     // merge close events
-    let merged = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 2);
+    let merged = mergeCloseEvents(mergedConsecTimes, mergedConsecEvents, 5);
     const mergedCloseTimes = merged["times"];
     const mergedCloseEvents = merged["events"];
-    const iconX = time2Pixel(mergedCloseTimes, scale[0]);
+
+    // find explanation corresponding event instances
+    let overlapIdx = [];
+    if (explanation && explanation.getType() === "why") {
+        overlapIdx = findTimeOverlap(explanation.getStartTimes(), explanation.getEndTimes(), mergedCloseTimes);
+        for (let j = 0; j < overlapIdx.length; j++) {
+            overlapIdx[j] -= 1;
+        }
+        // TODO: the index is off by one.
+    }
+
+    // nonliniear scaling
+    const nonlinearScaledTimes = nonlScale
+        ? nonLinearScale(mergedCloseTimes)
+        : mergedCloseTimes;
+
+    const thumbX = time2Pixel(nonlScale ? nonLinearScale(mergedConsecTimes) : mergedConsecTimes, scale[0]);
+    const iconX = time2Pixel(nonlinearScaledTimes, scale[0]);
     const iconY = getEventIconPlacement(iconX, ic_w);
 
     const { x1, x2 } = selected;
@@ -76,11 +91,11 @@ function ActivityInstanceVis(props) {
     let nonScaledEnclosedThumbX = null;
     let nonScaledIconY = null;
     let firstIdxEnEvent = 0;
+    let overlapIdx2 = [];
     if (selected && x2 - x1 > 0 && Object.keys(selected).length !== 0) {
         enEventsRes = getEnclosedEvents(x1, x2, thumbX, mergedConsecEvents);
         enEvents = enEventsRes["events"];
         enX = enEventsRes["X"];
-        firstIdxEnEvent = enEventsRes["idx"]
         let enTimes = pixel2Time(enX, scale[1]);
 
         nonScaledEnclosedTimes = nonlScale
@@ -139,11 +154,12 @@ function ActivityInstanceVis(props) {
                             idx={0}
                             config={config}
                             filters={filters}
-                            eventIndividuals={activity.getEventIndividuals()}
-                            explanationEvents={highlighted}
+                            instanceIndEvents={activity.getEventIndividuals()}
+                            entailedIndEvents={explanation?.getIndividuals() ?? null}
                             thumbEvents={mergedConsecEvents}
                             thumbX={thumbX}
                             iconEvents={mergedCloseEvents}
+                            explanationIndividuals={overlapIdx}
                             iconX={iconX}
                             iconY={iconY}
                         ></EventIconThumb>
@@ -161,25 +177,15 @@ function ActivityInstanceVis(props) {
                             height: 300,
                         }}
                     >
-                        {/* <div className="tools-div">
-                        <EventFilter
-                            onNewFilter={handleNewFilter}
-                            filters={filters}
-                        ></EventFilter>
-                        <ScalingTab
-                            key={2}
-                            idx={1}
-                            onScaleChange={props.onScaleChange}
-                        ></ScalingTab>
-                    </div> */}
                         <EventIconThumb
                             key={2}
                             idx={1}
                             config={config}
                             filters={filters}
                             eventIndividuals={activity.getEventIndividuals()}
-                            explanationEvents={highlighted}
+                            entailedIndEvents={explanation?.getIndividuals() ?? null}
                             thumbEvents={enEvents}
+                            explanationIndividuals={[]}
                             thumbX={nonScaledEnclosedThumbX}
                             iconEvents={enEvents}
                             iconX={nonScaledEnclosedThumbX}
