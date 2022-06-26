@@ -8,7 +8,7 @@ function ActionMenu(props) {
             <ul>
                 {actions.map((action) => {
                     return (
-                        <li onClick={() => props.onExplanationRequest(action)}>
+                        <li key={action} onClick={() => props.onExplanationRequest(action)}>
                             {action}
                         </li>
                     );

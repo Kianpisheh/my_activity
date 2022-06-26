@@ -20,7 +20,6 @@ import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
 import ActionMenu from "./components/ActionMenu";
 import { handleAxiomPaneMessages } from "./Handlers";
-import { WhyAxiomIdsProvider } from "./contexts/WhyAxiomIdsContext";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -34,7 +33,6 @@ function App() {
 		x: 0,
 		y: 0,
 	});
-	const [whyAxiomIds, setWhyAxiomIds] = useState([]);
 	const [explanation, setExplanations] = useState(null);
 
 	function onAxiomPaneMessage(message, values) {
@@ -151,7 +149,6 @@ function App() {
 				currentActivity.getAxioms(),
 				explanation
 			);
-			setWhyAxiomIds(ids);
 			setExplanations(explanation);
 		});
 	}
@@ -218,7 +215,6 @@ function App() {
 				className="left-pane-container"
 				onClick={() => {
 					setAction({ required: false, x: 0, y: 0 });
-					setWhyAxiomIds([]);
 				}}
 			>
 				<ActivityInstancePane
@@ -238,7 +234,6 @@ function App() {
 				className="tools-container"
 				onClick={() => {
 					setAction({ required: false, x: 0, y: 0 });
-					setWhyAxiomIds([]);
 				}}
 			>
 				<ActivityInstanceVis
@@ -250,15 +245,12 @@ function App() {
 				></ActivityInstanceVis>
 				<div className="axiom-pane-container">
 					{currentActivity && (
-						<WhyAxiomIdsProvider value={whyAxiomIds}>
-							<ActivityAxiomPane
-								activity={currentActivity}
-								sendMessage={onAxiomPaneMessage}
-								highlighted={whyAxiomIds}
-								config={config}
-								explanation={explanation}
-							></ActivityAxiomPane>
-						</WhyAxiomIdsProvider>
+						<ActivityAxiomPane
+							activity={currentActivity}
+							sendMessage={onAxiomPaneMessage}
+							config={config}
+							explanation={explanation}
+						></ActivityAxiomPane>
 					)}
 				</div>
 			</div>

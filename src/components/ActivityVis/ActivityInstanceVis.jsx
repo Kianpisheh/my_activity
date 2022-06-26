@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./ActivityInstanceVis.css";
 import "./TimeAxis.css";
@@ -29,9 +29,19 @@ function ActivityInstanceVis(props) {
     const [regions, setRegions] = useState([]);
     const [selected, setSelected] = useState({});
 
-    console.log("explanation", explanation);
-
     const { ic_w, scale, merge_th, nonlScale } = config;
+
+    useEffect(() => {
+        setRegions([]);
+        setSelected({});
+    }, [props.activity]);
+
+    useEffect(() => {
+        if (regions[0] && regions[0].width < 0.001) {
+            setRegions([]);
+            setSelected({});
+        }
+    }, [selected])
 
     if (!activity) {
         return null;
@@ -57,9 +67,13 @@ function ActivityInstanceVis(props) {
     const mergedConsecEvents = mergedConsecRes["events"];
     const mergedConsecTimes = mergedConsecRes["times"];
 
+    // nonliniear scaling
+    const nonlinearScaledTimes = nonlScale
+        ? nonLinearScale(mergedConsecTimes)
+        : mergedConsecTimes;
 
     // merge close events
-    let merged = mergeCloseEvents(mergedConsecTimes, mergedConsecEvents, 5);
+    let merged = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 1);
     const mergedCloseTimes = merged["times"];
     const mergedCloseEvents = merged["events"];
 
@@ -73,13 +87,10 @@ function ActivityInstanceVis(props) {
         // TODO: the index is off by one.
     }
 
-    // nonliniear scaling
-    const nonlinearScaledTimes = nonlScale
-        ? nonLinearScale(mergedCloseTimes)
-        : mergedCloseTimes;
 
-    const thumbX = time2Pixel(nonlScale ? nonLinearScale(mergedConsecTimes) : mergedConsecTimes, scale[0]);
-    const iconX = time2Pixel(nonlinearScaledTimes, scale[0]);
+
+    const thumbX = time2Pixel(nonlScale ? nonlinearScaledTimes : mergedConsecTimes, scale[0]);
+    const iconX = time2Pixel(mergedCloseTimes, scale[0]);
     const iconY = getEventIconPlacement(iconX, ic_w);
 
     const { x1, x2 } = selected;
@@ -91,7 +102,6 @@ function ActivityInstanceVis(props) {
     let nonScaledEnclosedThumbX = null;
     let nonScaledIconY = null;
     let firstIdxEnEvent = 0;
-    let overlapIdx2 = [];
     if (selected && x2 - x1 > 0 && Object.keys(selected).length !== 0) {
         enEventsRes = getEnclosedEvents(x1, x2, thumbX, mergedConsecEvents);
         enEvents = enEventsRes["events"];
@@ -101,11 +111,18 @@ function ActivityInstanceVis(props) {
         nonScaledEnclosedTimes = nonlScale
             ? inverseNonLienarScale(enTimes)
             : enTimes;
+
         nonScaledEnclosedThumbX = time2Pixel(nonScaledEnclosedTimes, scale[1]);
-        nonScaledIconY = getEventIconPlacement(nonScaledEnclosedThumbX, ic_w);
+        nonScaledIconY = nonScaledEnclosedThumbX.map(() => { return -20 })
+        getEventIconPlacement(nonScaledEnclosedThumbX, ic_w);
     }
 
     const mainDivHeight = Object.keys(selected).length !== 0 ? 500 : 360;
+
+    let selectionBox = false;
+    if (selected && Object.keys(selected).length !== 0 && selected.x1 && selected.x2) {
+        selectionBox = true;
+    }
 
     return (
         <div
@@ -135,11 +152,16 @@ function ActivityInstanceVis(props) {
                     style={{
                         width: Math.ceil(thumbX[thumbX.length - 1].x2),
                     }}
-                    onMouseUp={() =>
-                        handleRegionSelection(
-                            regions,
-                            Math.ceil(thumbX[thumbX.length - 1].x2)
-                        )
+                    onMouseUp={() => {
+                        if (regions[0].width > 0.002) {
+                            handleRegionSelection(
+                                regions,
+                                Math.ceil(thumbX[thumbX.length - 1].x2)
+                            );
+                        } else {
+                            setSelected({})
+                        }
+                    }
                     }
                 >
                     <RegionSelect
@@ -165,7 +187,7 @@ function ActivityInstanceVis(props) {
                         ></EventIconThumb>
                     </RegionSelect>
                 </div>
-                {selected.x1 && (
+                {selectionBox && nonScaledEnclosedThumbX.length && (
                     <div
                         className="graph"
                         style={{

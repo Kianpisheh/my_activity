@@ -1,17 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
 import "./TimeDistanceAxiom.css";
 
 import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
-import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 
 function TimeDistanceInteraction(props) {
 
     const [hovered, setHovered] = useState(false);
-    const whyIds = useContext(WhyAxiomIdsContext);
 
     let events = [];
 
@@ -31,18 +29,24 @@ function TimeDistanceInteraction(props) {
         axiomText += " < " + props.data.getTh2();
     }
 
-    let divStyle = {}
-    if (whyIds.includes(props.idx)) {
-        divStyle = { borderColor: "#ADCEE8", border: "1px", borderStyle: "solid", boxShadow: "0px 0px 4px 4px #2C87DB", opacity: 0.7 }
-    }
-
     const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
     const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
     const TimeDistIcon = Icons.getIcon("TimeDistance");
 
+    // check if this axiom is satisfied
+    let opacity = 1;
+    if (props.explanation && props.explanation.getType() === "why_not") {
+        opacity = props.explanation.contains(props.data) ? 1 : 0.3;
+        if (props.explanation.contains(props.data)) {
+            let x = 1;
+        }
+    }
+
+
+
     return (
         <React.Fragment>
-            <div className="time-distance-axiom" style={divStyle} onMouseEnter={() => setHovered(true)}
+            <div className="time-distance-axiom" onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)} >
                 <AdjustableTime
                     key={"more than"}
@@ -53,9 +57,9 @@ function TimeDistanceInteraction(props) {
                 ></AdjustableTime>
                 <div className="mid-section">
                     <div className="time-distance-icons" onClick={() => props.messageCallback(AxiomTypes.MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS, { idx: props.idx })}>
-                        <Icon1 style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon1>
-                        <TimeDistIcon style={{ "width": 50, "height": 30, fill: "#3A2A0D", float: "left", padding: 10 }}></TimeDistIcon>
-                        <Icon2 style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon2>
+                        <Icon1 style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }} opacity={opacity}></Icon1>
+                        <TimeDistIcon style={{ "width": 50, "height": 30, fill: "#3A2A0D", float: "left", padding: 10 }} opacity={opacity}></TimeDistIcon>
+                        <Icon2 style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }} opacity={opacity}></Icon2>
                     </div>
                     <span style={{ fontSize: 12 }}>{axiomText}</span>
                 </div>

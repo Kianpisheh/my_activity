@@ -36,6 +36,9 @@ import SvgCloth from "./Cloth";
 import SvgCabinet from "./Cabinet";
 import SvgSpoon from "./Spoon";
 import SvgCupboard from "./Cupboard";
+import SvgCoffee from "./Coffee";
+import SvgDetergent from "./Detergent";
+import SvgColander from "./Colander";
 
 import SvgStraw from "./Straw";
 import SvgTap from "./Tap";
@@ -67,6 +70,7 @@ class Icons {
         Fridge: SvgFridge,
         Spoon: SvgSpoon,
         Cutlery: SvgCutlery,
+        Silverware: SvgCutlery,
         Knife: SvgKnife,
         Soap: SvgSoap,
         SoapContainer: SvgSoap,
@@ -107,7 +111,11 @@ class Icons {
         Spatula: SvgSpatula,
         Teaspoon: SvgTeaspoon,
         Utensils: SvgUtensils,
-        Cupboard: SvgCupboard
+        Cupboard: SvgCupboard,
+        Coffee: SvgCoffee,
+        Detergent: SvgDetergent,
+        Degreaser: SvgDetergent,
+        Colander: SvgColander
 
     }
 
@@ -118,7 +126,7 @@ class Icons {
         Pitcher: "#2f4b7c",
         Stove: "#f95d6a",
         WaterBottle: "#3ca9ae",
-        StoveTop: "#a55221",
+        StoveTop: "#7C4513",
         StoveLighter: "#f95d6a",
         Toothbrush: "#d45087",
         ToothBrush: "#d45087",
@@ -127,6 +135,7 @@ class Icons {
         Tap: "#483D8B",
         Scissors: "#FF4500",
         Cutlery: "#DC143C",
+        Silverware: "#DC143C",
         Knife: "#4B0082",
         Soap: "#8B4513",
         Straw: "#2F4F4F",
@@ -160,10 +169,14 @@ class Icons {
         Cabinet: "#226588",
         Cloth: "#8AAB33",
         Spatula: "#114CC3",
-        Teaspoon: "#ABABB3",
+        Teaspoon: "#ABAB10",
         Utensils: "#CB451F",
         Spoon: "#CCC51F",
         Cupboard: "#C2251F",
+        Coffee: "#815A0D",
+        Detergent: "#970B46",
+        Degreaser: "#970B46",
+        Colander: "#0C9BAF"
     }
 
     static getIcons() {

@@ -7,9 +7,11 @@ import Icons from "../../icons/Icons";
 
 
 import { pascalCase } from "../../Utils/utils";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 function EventIconThumb(props) {
+    const [hovered, setHovered] = useState(-1);
+
     const { config } = props;
     const { ic_w, ic_h, scale, r, rc_h } = config;
 
@@ -83,10 +85,14 @@ function EventIconThumb(props) {
                     if (Icon) {
                         IconComponent = (
                             <Icon
+                                key={idx}
+                                onMouseEnter={() => { if (hovered === -1) { setHovered(idx); } }}
+                                onMouseLeave={() => setHovered(-1)}
                                 opacity={opacity}
                                 fill={Icons.getColor(
                                     pascalCase(props.iconEvents[idx])
                                 )}
+                                pointerEvents={"bounding-box"}
                                 x={
                                     props.iconX[idx].x1 -
                                     svgWidth / 2 +
@@ -98,6 +104,7 @@ function EventIconThumb(props) {
                     } else {
                         IconComponent = (
                             <text
+                                key={idx}
                                 x={props.iconX[idx].x1}
                                 y={15}
                                 style={{
@@ -108,11 +115,16 @@ function EventIconThumb(props) {
                             </text>
                         );
                     }
+                    const toolTip = <text style={{ fontSize: 11, fill: "#FFFFFF" }} x={props.iconX[idx].x1 + ic_w / 2}
+                        y={props.iconY[idx] - 5}>{props.iconEvents[idx]}</text>
+                    // const bbox = toolTip.getBBox();
+                    const toolTipRect = <rect rx={3} x={props.iconX[idx].x1 + (ic_w / 2) - 4}
+                        y={props.iconY[idx] - 17} width={props.iconEvents[idx].length * 7 + 3} height={17} fill="#796f52" ></rect>
                     return (
                         (props.filters.includes(props.iconEvents[idx]) ||
-                            filteredNum === 0) && (
-                            <g key={idx}>{IconComponent}</g>
-                        )
+                            filteredNum === 0) &&
+                        <g key={idx}>{(hovered === idx) && [toolTipRect, toolTip]}{IconComponent}</g>
+
                     );
                 })}
             </svg>
