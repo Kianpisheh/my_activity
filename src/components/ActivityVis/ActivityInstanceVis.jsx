@@ -46,16 +46,30 @@ function ActivityInstanceVis(props) {
     if (!activity) {
         return null;
     }
+
     const timestamps = activity.getTimes();
 
     function handleNewFilter(f) {
         setFilters(f);
     }
 
-    let predActivity = props.predictedActivity;
-    if (!predActivity) {
-        predActivity = "Unknown";
+    let predActivity = "Unknown";
+    if (props.currentActInstanceIdx >= 0 && props.predictedActivities.length) {
+        predActivity = props.predictedActivities[props.currentActInstanceIdx];
+        if (!predActivity) {
+            predActivity = "Unknown";
+        }
     }
+
+    // create an example for event-locations
+    let events = activity.getEvents();
+    events.forEach(ev => {
+        if (ev.startTime < 180) {
+            ev.location = "kitchen";
+        } else {
+            ev.location = "living_room";
+        }
+    })
 
     let mergedConsecRes = mergeConsecEvents(
         timestamps,
@@ -73,21 +87,20 @@ function ActivityInstanceVis(props) {
         : mergedConsecTimes;
 
     // merge close events
-    let merged = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 1);
-    const mergedCloseTimes = merged["times"];
-    const mergedCloseEvents = merged["events"];
+    let mergedCloseRes = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 1);
+    const mergedCloseTimes = mergedCloseRes["times"];
+    const mergedCloseEvents = mergedCloseRes["events"];
 
     // find explanation corresponding event instances
     let overlapIdx = [];
     if (explanation && explanation.getType() === "why") {
-        overlapIdx = findTimeOverlap(explanation.getStartTimes(), explanation.getEndTimes(), mergedCloseTimes);
-        for (let j = 0; j < overlapIdx.length; j++) {
-            overlapIdx[j] -= 1;
-        }
+        overlapIdx = findTimeOverlap(explanation.getStartTimes(), explanation.getEndTimes(), timestamps);
         // TODO: the index is off by one.
     }
 
-
+    for (let i = 0; i < overlapIdx.length; i++) {
+        overlapIdx[i] = mergedCloseRes.idxMap[mergedConsecRes.idxMap[overlapIdx[i]]]
+    }
 
     const thumbX = time2Pixel(nonlScale ? nonlinearScaledTimes : mergedConsecTimes, scale[0]);
     const iconX = time2Pixel(mergedCloseTimes, scale[0]);
@@ -123,6 +136,7 @@ function ActivityInstanceVis(props) {
     if (selected && Object.keys(selected).length !== 0 && selected.x1 && selected.x2) {
         selectionBox = true;
     }
+
 
     return (
         <div

@@ -1,13 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import ReactTooltip from 'react-tooltip';
+import ReactTooltip from "react-tooltip";
 
 import "./EventIconThumb.css";
+import Shadow from "./Shadow";
+import Tooltip from "./Tooltip";
+import LocationOverlay from "./LocationOverlay";
 import Icons from "../../icons/Icons";
 
-
 import { pascalCase } from "../../Utils/utils";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 function EventIconThumb(props) {
     const [hovered, setHovered] = useState(-1);
@@ -39,9 +41,8 @@ function EventIconThumb(props) {
         }
     }
 
-
     return (
-        <div className="event-icon-thumb-conatiner" >
+        <div className="event-icon-thumb-conatiner">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox={vb}
@@ -50,10 +51,21 @@ function EventIconThumb(props) {
                 style={{ float: "left" }}
             >
                 {props.thumbX.map((X, idx) => {
+                    // timeline opacity
+                    //TODO: timeline inds are diff from icon inds numb
+                    let timelineOpacity = 1;
+                    if (
+                        props.explanationIndividuals &&
+                        props.explanationIndividuals.length &&
+                        !props.explanationIndividuals.includes(idx)
+                    ) {
+                        timelineOpacity = 0.1;
+                    }
+
                     return (
                         (props.filters.includes(props.thumbEvents[idx]) ||
                             filteredNum === 0) && (
-                            <g key={idx}>
+                            <g key={idx + "_gg"}>
                                 <rect
                                     key={idx}
                                     x={X.x1}
@@ -70,6 +82,7 @@ function EventIconThumb(props) {
                         )
                     );
                 })}
+
                 {props.iconX.map((x, idx) => {
                     const Icon = Icons.getIcon(
                         pascalCase(props.iconEvents[idx])
@@ -77,8 +90,12 @@ function EventIconThumb(props) {
 
                     // icon opacity
                     let opacity = 1;
-                    if (props.explanationIndividuals && props.explanationIndividuals.length && !props.explanationIndividuals.includes(idx)) {
-                        opacity = 0.3;
+                    if (
+                        props.explanationIndividuals &&
+                        props.explanationIndividuals.length &&
+                        !props.explanationIndividuals.includes(idx)
+                    ) {
+                        opacity = 0.1;
                     }
 
                     let IconComponent = null;
@@ -86,7 +103,11 @@ function EventIconThumb(props) {
                         IconComponent = (
                             <Icon
                                 key={idx}
-                                onMouseEnter={() => { if (hovered === -1) { setHovered(idx); } }}
+                                onMouseEnter={() => {
+                                    if (hovered === -1) {
+                                        setHovered(idx);
+                                    }
+                                }}
                                 onMouseLeave={() => setHovered(-1)}
                                 opacity={opacity}
                                 fill={Icons.getColor(
@@ -108,27 +129,33 @@ function EventIconThumb(props) {
                                 x={props.iconX[idx].x1}
                                 y={15}
                                 style={{
-                                    fontSize: 8, transform: "rotate(90)"
+                                    fontSize: 8,
+                                    transform: "rotate(90)",
                                 }}
                             >
                                 {props.iconEvents[idx]}
                             </text>
                         );
                     }
-                    const toolTip = <text style={{ fontSize: 11, fill: "#FFFFFF" }} x={props.iconX[idx].x1 + ic_w / 2}
-                        y={props.iconY[idx] - 5}>{props.iconEvents[idx]}</text>
-                    // const bbox = toolTip.getBBox();
-                    const toolTipRect = <rect rx={3} x={props.iconX[idx].x1 + (ic_w / 2) - 4}
-                        y={props.iconY[idx] - 17} width={props.iconEvents[idx].length * 7 + 3} height={17} fill="#796f52" ></rect>
-                    return (
-                        (props.filters.includes(props.iconEvents[idx]) ||
-                            filteredNum === 0) &&
-                        <g key={idx}>{(hovered === idx) && [toolTipRect, toolTip]}{IconComponent}</g>
 
+                    const tooltip = <Tooltip key={idx + "_tt"} x={props.iconX[idx].x1 + ic_w / 2} y={props.iconY[idx] - 5} text={props.iconEvents[idx]}></Tooltip>
+                    const shadow = <Shadow key={idx} id={idx} x={props.iconX[idx].x1} y={props.iconY[idx]} width={ic_w} height={ic_h}></Shadow>
+                    const locationOverlay = <LocationOverlay location={props.location}></LocationOverlay>
+
+                    return (
+                        <g key={idx + "_g2"}>
+                            [{props.explanationIndividuals.length && props.explanationIndividuals.includes(idx) && shadow},
+                            {(props.filters.includes(props.iconEvents[idx]) ||
+                                filteredNum === 0) &&
+                                <g key={idx + "_g"}>
+                                    {hovered === idx && tooltip}
+                                    {IconComponent}
+                                </g>}]
+                        </g>
                     );
                 })}
             </svg>
-        </div >
+        </div>
     );
 }
 

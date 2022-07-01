@@ -13,12 +13,14 @@ export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh
 
     let newTimestamps: ITime[] = [];
     let newEvents: string[] = [];
+    let idxMap: { [key: number]: number; } = {};
 
     if (!timestamps || !events || timestamps.length === 0) {
         return null;
     }
 
     let newStartTime: number = timestamps?.[0]?.startTime ?? 0;
+    let lastIdx = 0;
     for (let i = 1; i < timestamps.length; i++) {
         let currentTime: number = timestamps[i]?.startTime ?? -1;
         let prevTime: number = timestamps[i - 1]?.endTime ?? -1;
@@ -27,18 +29,33 @@ export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh
             newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i - 1]?.endTime ?? 0 });
             newStartTime = timestamps[i]?.startTime ?? 0;
             newEvents.push(events[i] ?? "");
+            idxMap[i] = newEvents.length - 1;
+            for (let k = lastIdx + 1; k < i; k++) {
+                idxMap[k] = newEvents.length - 2;
+            }
+            lastIdx = i;
 
             if (i === (timestamps.length - 1)) {
                 newTimestamps.push({ startTime: timestamps[i]?.startTime ?? 0, endTime: timestamps[i]?.endTime ?? 0 });
                 newEvents.push(events[i] ?? "");
+                idxMap[i] = newEvents.length - 1;
+                for (let k = lastIdx + 1; k < i; k++) {
+                    idxMap[k] = newEvents.length - 2;
+                }
+                lastIdx = i;
             }
         } else if (i === (timestamps.length - 1)) {
             newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i]?.endTime ?? 0 });
             newEvents.push(events[i] ?? "");
+            idxMap[i] = newEvents.length - 1;
+            for (let k = lastIdx + 1; k < i; k++) {
+                idxMap[k] = newEvents.length - 2;
+            }
+            lastIdx = i;
         }
     }
 
-    return { times: newTimestamps, events: newEvents };
+    return { times: newTimestamps, events: newEvents, idxMap: idxMap };
 }
 
 export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh: number) {
@@ -48,6 +65,7 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
 
     let lastCluster: number[] = [];
     let allClusters: number[] = [];
+    let idxMap: { [key: number]: number; } = {};
 
     for (let i = 0; i < times.length; i++) {
         if (allClusters.includes(i)) {
@@ -64,10 +82,17 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
                 let t1: number = times[lastCluster[0] ?? 0]?.startTime ?? 0;
                 let t2: number = times[lastCluster[lastCluster.length - 1] ?? 0]?.endTime ?? 0;
                 newTimestamps.push({ startTime: t1, endTime: t2 });
-                newEvents.push(events[lastIdx] ?? "")
+                newEvents.push(events[lastIdx] ?? "");
+                for (let k = 0; k < lastCluster.length; k++) {
+                    idxMap[lastCluster[k]] = newEvents.length - 1;
+                }
                 if (j === (times.length - 2)) {
                     newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
-                    newEvents.push(events[j + 1] ?? "")
+                    newEvents.push(events[j + 1] ?? "");
+                    idxMap[j + 1] = newEvents.length - 1;
+                    for (let k = 0; k < lastCluster.length; k++) {
+                        idxMap[lastCluster[k]] = newEvents.length - 1;
+                    }
                 }
                 break;
             } else { // next event is close enough
@@ -76,14 +101,17 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
                     allClusters.push(j + 1);
                     if (j === (times.length - 2)) {
                         newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
-                        newEvents.push(events[j + 1] ?? "")
+                        newEvents.push(events[j + 1] ?? "");
+                        for (let k = 0; k < lastCluster.length; k++) {
+                            idxMap[lastCluster[k]] = newEvents.length - 1;
+                        }
                     }
                 }
             }
         }
     }
 
-    return { "times": newTimestamps, "events": newEvents };
+    return { "times": newTimestamps, "events": newEvents, "idxMap": idxMap };
 }
 
 export function nonLinearScale(timestamps: ITime[]): ITime[] | null {

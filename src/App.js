@@ -24,7 +24,7 @@ import { handleAxiomPaneMessages } from "./Handlers";
 function App() {
 	const [activities, setActivities] = useState([]);
 	const [activityInstances, setActivityInstances] = useState([]);
-	const [predictedActivity, setPredictedActivity] = useState("");
+	const [predictedActivities, setPredictedActivities] = useState([]);
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
 	const [scale, setScale] = useState([25, 25]);
@@ -37,9 +37,14 @@ function App() {
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
+			let instances = [];
+			console.log(activityInstances);
+			for (let i = 0; i < activityInstances.length; i++) {
+				instances.push(activityInstances[i].getName());
+			}
 			handleActInstanceChange(
 				currentActInstanceIdx,
-				activityInstances[currentActInstanceIdx].getName()
+				instances
 			);
 		} else {
 			let newActivities = handleAxiomPaneMessages(
@@ -65,9 +70,14 @@ function App() {
 
 		if (message !== AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
 			updateDatabase(currentActivity, "update").then(() => {
+				let instances = [];
+				console.log(activityInstances)
+				for (let i = 0; i < activityInstances.length; i++) {
+					instances.push(activityInstances[i].getName());
+				}
 				handleActInstanceChange(
 					currentActInstanceIdx,
-					activityInstances[currentActInstanceIdx].getName()
+					instances
 				)
 			})
 		}
@@ -108,11 +118,15 @@ function App() {
 		setExplanations(null);
 	}
 
-	function handleActInstanceChange(id, instance) {
+	function handleActInstanceChange(id, instancess) {
 		setExplanations(null);
 		//classify the selected activity instance
-		classifyInstance([instance]).then((data) => {
-			setPredictedActivity(data.data[0][0]);
+		let instances = [];
+		for (let i = 0; i < activityInstances.length; i++) {
+			instances.push(activityInstances[i].getName())
+		}
+		classifyInstance(instances).then((data) => {
+			setPredictedActivities(data.data);
 			setCurrentActInstanceIdx(id);
 		});
 	}
@@ -220,7 +234,9 @@ function App() {
 				<ActivityInstancePane
 					activtiyInstances={activityInstances}
 					onSelectedItemChange={handleActInstanceChange}
-					currentActivityId={currentActInstanceIdx}
+					currentActInstanceIdx={currentActInstanceIdx}
+					activities={activities}
+					predictedActivities={predictedActivities}
 				></ActivityInstancePane>
 				<ActivityPane
 					activities={activities}
@@ -239,9 +255,11 @@ function App() {
 				<ActivityInstanceVis
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
-					predictedActivity={predictedActivity}
+					predictedActivities={predictedActivities}
 					explanation={explanation}
 					onScaleChange={handleScaleChange}
+					currentActivityIdx={currentActivtyIdx}
+					currentActInstanceIdx={currentActInstanceIdx}
 				></ActivityInstanceVis>
 				<div className="axiom-pane-container">
 					{currentActivity && (

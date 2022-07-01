@@ -29,61 +29,13 @@
 .activities-container ul {
   display: flex;
   flex-direction: column;
-  row-gap: 5px;
+  row-gap: 10px;
   height: 90%;
   overflow: auto;
   align-self: center;
   justify-self: center;
   padding-left: 0;
   width: 100%;
-}
-
-.activity-item-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-
-.remove-activity-btn {
-  display: flex;
-  justify-self: flex-end;
-  align-self: flex-start;
-}
-
-.activities-container ul li {
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  width: 100%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  cursor: pointer;
-}
-
-.activities-container ul li text {
-  font-size: 13px;
-  width: -moz-fit-content;
-  width: fit-content;
-  padding-left: 10px;
-}
-
-.remove-activity-btn {
-  align-self: flex-end;
-  margin-top: -15px;
-  margin-left: -10px;
-  width: 18px;
-  height: 18px;
-  text-align: center;
-  border-radius: 100%;
-  border: none;
-  outline: none;
-  background-color: #c6877f;
-  color: #f9f7f1;
-  font-size: 11px;
-  justify-content: center;
-  align-content: center;
-  cursor: pointer;
-  margin-right: 7px;
 }
 
 .add-btn {

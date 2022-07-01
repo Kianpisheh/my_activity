@@ -18,6 +18,14 @@ class ActivityInstance {
         });
     }
 
+    getEvents() {
+        return this.events;
+    }
+
+    setEvents(events: ActivityInstanceEvent[]) {
+        this.events = events;
+    }
+
     getTimes() {
         let timestamps: object[] = []
         this.events.map(ev => {

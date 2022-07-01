@@ -2,6 +2,7 @@ import "./ActivityPane.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
 import ActivtiyItem from "./ActivtyItem";
+import ActivityListColors from "./ActivityListColors"
 
 function ActivityPane(props) {
 
@@ -21,6 +22,7 @@ function ActivityPane(props) {
                                 onActivitiyListChange={props.onActivitiyListChange}
                                 activity={activity}
                                 onAction={props.onAction}
+                                itemColor={ActivityListColors.getColor(idx)}
                             ></ActivtiyItem>
                         );
                     })}
