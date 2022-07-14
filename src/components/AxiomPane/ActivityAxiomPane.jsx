@@ -25,7 +25,6 @@ function ActivityAxiomPane(props) {
         setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
     }, []);
 
-
     let axioms = [];
     if (props.activity != null) {
         axioms = props.activity.getAxioms();
@@ -47,79 +46,123 @@ function ActivityAxiomPane(props) {
     }
 
     return (
-        <div className="main-container">
-            <div className="Axiom-pane" style={{ width: props.width }}>
-                <div className="Axioms-container">
-                    <div id="title-div" onBlur={() => props.sendMessage(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
-                        id: props.activity["id"],
-                        title: "value",
-                    })}>
-                        <EditText
-                            className="activtiy-title"
-                            value={props.activity.name}
-                            onChange={(value) =>
-                                props.sendMessage(AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING, {
+        <div className="ax-container">
+            <div className="main-container">
+                <div
+                    id="title-div"
+                    onBlur={() =>
+                        props.sendMessage(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
+                            id: props.activity["id"],
+                            title: "value",
+                        })
+                    }
+                >
+                    <EditText
+                        className="activtiy-title"
+                        value={props.activity.name}
+                        style={{
+                            fontSize: 13,
+                            fontWeight: "600",
+                            color: "#555555",
+                            backgroundColor: "transparent",
+                            marginLeft: 0,
+                            padding: 0,
+                        }}
+                        onChange={(value) =>
+                            props.sendMessage(
+                                AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING,
+                                {
                                     id: props.activity["id"],
                                     title: value,
-                                })
-                            }
-                        ></EditText>
+                                }
+                            )
+                        }
+                    ></EditText>
+                </div>
+                <div className="Axiom-pane">
+                    <div style={{
+                        display: "flex", width: "100%", alignContent: "center", height: "30px"
+                    }}>
+                        <span
+                            style={{
+                                fontSize: 13,
+                                color: "#555555",
+                                fontWeight: 400,
+                                display: "flex",
+                                marginLeft: "7.5%",
+                                width: "110px",
+                                height: "100%",
+                                marginBottom: "5px"
+                            }}
+                        >
+                            Interaction axioms
+                        </span>
+                        <div style={{ display: "flex", marginLeft: 10 }}>
+                            <button
+                                className="add-int-btn" onClick={() => createInteractionAxiom()}>
+                                +
+                            </button>
+                        </div>
                     </div>
-                    {axioms.map((axiom, idx) => (
+                    <div className="interaction-axioms-container">
                         <Axiom
-                            idx={idx}
-                            key={idx}
-                            data={axiom}
+                            idx={0}
+                            key={0}
+                            data={axioms[0]}
                             config={props.config}
                             messageCallback={props.sendMessage}
                             explanation={props.explanation}
+                            onAddTimeConstraintAxiom={createInteractionAxiom}
                         ></Axiom>
-                    ))}
-                </div>{" "}
-                <div className="add-ui">
-                    <div
-                        id="dummy-div"
-                        className="add-menu"
-                        style={{ visibility: "hidden" }}
-                    >
-                        <text style={{ fontSize: 13 }}>time constraint</text>
-                        <div className="h-line"> </div>
-                        <text style={{ fontSize: 13 }}>object interaction</text>
                     </div>
-                    <button
-                        id="add-axiom-btn"
-                        onClick={() => setAddMenuVisibility("visible")}
-                    >
-                        Add
-                    </button>
-                    <div className="add-menu" style={{ visibility: addMenuVisibility }}>
-                        <text
-                            style={{ fontSize: 13, cursor: "pointer" }}
-                            onClick={() => createTimeConstraintAxiom()}
+                    <hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
+                    <div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
+                        <span
+                            style={{
+                                fontSize: 13,
+                                color: "#555555",
+                                fontWeight: 400,
+                                display: "flex",
+                                marginLeft: "7.5%",
+                                width: "110px",
+                                marginBottom: "5px"
+                            }}
                         >
-                            time constraint
-                        </text>
-                        <div className="h-line"> </div>
-                        <text
-                            style={{ fontSize: 13, cursor: "pointer" }}
-                            onClick={() => createInteractionAxiom()}
-                        >
-                            object interaction
-                        </text>
+                            Temporal axioms
+                        </span>
+                        <div style={{ display: "flex", marginLeft: 10 }}>
+                            <button
+                                className="add-int-btn" onClick={() => createTimeConstraintAxiom()}>
+                                +
+                            </button>
+                        </div>
                     </div>
+                    <div className="temporal-axioms-container">
+                        {axioms.slice(1).map((axiom, idx) => (
+                            <Axiom
+                                idx={idx}
+                                key={idx}
+                                data={axiom}
+                                config={props.config}
+                                messageCallback={props.sendMessage}
+                                explanation={props.explanation}
+                                onAddTimeConstraintAxiom={createTimeConstraintAxiom}
+                            ></Axiom>
+                        ))}
+                    </div>{" "}
                 </div>
             </div>
-            {
-                definingRule && (
+            <div className="axiom-crafter-container">
+                {definingRule && (
                     <AxiomCrafter
                         config={props.config}
                         axiomType={ruleType}
                         objects={objectList}
                         handleAxiomCreation={handleAxiomCreation}
                     ></AxiomCrafter>
-                )
-            }
-        </div >
+                )}
+            </div>
+        </div>
     );
 }
 

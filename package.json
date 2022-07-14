@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "hex-to-css-filter": "^5.4.0",
     "react": "^18.1.0",
+    "react-custom-checkbox": "^2.0.2",
     "react-dom": "^18.1.0",
     "react-edit-text": "^4.4.0",
     "react-region-select": "^2.3.0",

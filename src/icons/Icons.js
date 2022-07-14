@@ -50,6 +50,10 @@ import SvgNotFound from "./NotFound";
 import SvgTimeDistance from "./TimeDistance";
 import SvgZoomIn from "./ZoomIn";
 import SvgZoomOut from "./ZoomOut";
+import SvgMicrowave from "./Microwave";
+import SvgMedicineContainer from "./MedicineContainer"
+import SvgPhoneBook from "./PhoneBook";
+import SvgRaisin from "./Raisin";
 
 class Icons {
 
@@ -115,7 +119,12 @@ class Icons {
         Coffee: SvgCoffee,
         Detergent: SvgDetergent,
         Degreaser: SvgDetergent,
-        Colander: SvgColander
+        Colander: SvgColander,
+        Microwave: SvgMicrowave,
+        MedicineContainer: SvgMedicineContainer,
+        PhoneBook: SvgPhoneBook,
+        Raisins: SvgRaisin,
+        Rasins: SvgRaisin
 
     }
 
@@ -176,7 +185,12 @@ class Icons {
         Coffee: "#815A0D",
         Detergent: "#970B46",
         Degreaser: "#970B46",
-        Colander: "#0C9BAF"
+        Colander: "#0C9BAF",
+        Microwave: "#0CADA3",
+        MedicineContainer: "#DF3A23",
+        PhoneBook: "#A3BB18",
+        Raisins: "#460B7E",
+        Rasins: "#460B7E"
     }
 
     static getIcons() {

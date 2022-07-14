@@ -2,20 +2,31 @@ import ActivityInstanceEvent, { IEvent } from "./ActivityInstanceEvent"
 
 export interface IActivityInstance {
     name: string;
+    type: string;
     events: IEvent[];
 }
 
 class ActivityInstance {
 
     name: string;
+    type: string;
     events: ActivityInstanceEvent[];
 
     constructor(instanceObj: IActivityInstance) {
         this.name = instanceObj["name"];
-        this.events = []
+        this.type = instanceObj["type"];
+        this.events = [];
         instanceObj["events"].forEach(ev => {
             this.events.push(new ActivityInstanceEvent(ev));
         });
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    setType(type: string) {
+        this.type = type;
     }
 
     getEvents() {

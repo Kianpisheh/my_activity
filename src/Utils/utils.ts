@@ -1,3 +1,6 @@
+import Activity from "../model/Activity";
+import ActivityInstance from "../model/ActivityInstance";
+import IEvent from "../model/ActivityInstanceEvent"
 
 interface ITime {
     startTime: number,
@@ -9,35 +12,35 @@ interface IInterval {
     x2: number
 }
 
-export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh: number) {
+export function mergeConsecEvents(timestamps: ITime[], events: IEvent[], mergeTh: number) {
 
     let newTimestamps: ITime[] = [];
-    let newEvents: string[] = [];
+    let newEvents: IEvent[] = [];
     let idxMap: { [key: number]: number; } = {};
 
     if (!timestamps || !events || timestamps.length === 0) {
         return null;
     }
 
-    let newStartTime: number = timestamps?.[0]?.startTime ?? 0;
+    let newStartTime: number = timestamps?.[0]?.startTime;
     let lastIdx = 0;
     for (let i = 1; i < timestamps.length; i++) {
-        let currentTime: number = timestamps[i]?.startTime ?? -1;
-        let prevTime: number = timestamps[i - 1]?.endTime ?? -1;
+        let currentTime: number = timestamps[i]?.startTime;
+        let prevTime: number = timestamps[i - 1]?.endTime;
 
-        if ((currentTime - prevTime > mergeTh) || (events[i] !== events[i - 1])) {
-            newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i - 1]?.endTime ?? 0 });
-            newStartTime = timestamps[i]?.startTime ?? 0;
-            newEvents.push(events[i] ?? "");
-            idxMap[i] = newEvents.length - 1;
-            for (let k = lastIdx + 1; k < i; k++) {
+        if ((currentTime - prevTime > mergeTh) || (events[i].getType() !== events[i - 1].getType())) {
+            newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i - 1]?.endTime });
+            newStartTime = timestamps[i]?.startTime;
+            newEvents.push(events[i - 1]);
+            idxMap[i - 1] = newEvents.length - 1;
+            for (let k = lastIdx + 1; k < i - 1; k++) {
                 idxMap[k] = newEvents.length - 2;
             }
             lastIdx = i;
 
             if (i === (timestamps.length - 1)) {
-                newTimestamps.push({ startTime: timestamps[i]?.startTime ?? 0, endTime: timestamps[i]?.endTime ?? 0 });
-                newEvents.push(events[i] ?? "");
+                newTimestamps.push({ startTime: timestamps[i]?.startTime, endTime: timestamps[i]?.endTime });
+                newEvents.push(events[i]);
                 idxMap[i] = newEvents.length - 1;
                 for (let k = lastIdx + 1; k < i; k++) {
                     idxMap[k] = newEvents.length - 2;
@@ -45,8 +48,8 @@ export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh
                 lastIdx = i;
             }
         } else if (i === (timestamps.length - 1)) {
-            newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i]?.endTime ?? 0 });
-            newEvents.push(events[i] ?? "");
+            newTimestamps.push({ startTime: newStartTime, endTime: timestamps[i]?.endTime });
+            newEvents.push(events[i]);
             idxMap[i] = newEvents.length - 1;
             for (let k = lastIdx + 1; k < i; k++) {
                 idxMap[k] = newEvents.length - 2;
@@ -58,10 +61,10 @@ export function mergeConsecEvents(timestamps: ITime[], events: string[], mergeTh
     return { times: newTimestamps, events: newEvents, idxMap: idxMap };
 }
 
-export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh: number) {
+export function mergeCloseEvents(timestamps: ITime[], events: IEvent[], mergeTh: number) {
     let times = [...timestamps];
     let newTimestamps: ITime[] = [];
-    let newEvents: string[] = [];
+    let newEvents: IEvent[] = [];
 
     let lastCluster: number[] = [];
     let allClusters: number[] = [];
@@ -82,13 +85,13 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
                 let t1: number = times[lastCluster[0] ?? 0]?.startTime ?? 0;
                 let t2: number = times[lastCluster[lastCluster.length - 1] ?? 0]?.endTime ?? 0;
                 newTimestamps.push({ startTime: t1, endTime: t2 });
-                newEvents.push(events[lastIdx] ?? "");
+                newEvents.push(events[lastIdx]);
                 for (let k = 0; k < lastCluster.length; k++) {
                     idxMap[lastCluster[k]] = newEvents.length - 1;
                 }
                 if (j === (times.length - 2)) {
                     newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
-                    newEvents.push(events[j + 1] ?? "");
+                    newEvents.push(events[j + 1]);
                     idxMap[j + 1] = newEvents.length - 1;
                     for (let k = 0; k < lastCluster.length; k++) {
                         idxMap[lastCluster[k]] = newEvents.length - 1;
@@ -96,12 +99,12 @@ export function mergeCloseEvents(timestamps: ITime[], events: string[], mergeTh:
                 }
                 break;
             } else { // next event is close enough
-                if (events[j + 1] === events[lastIdx]) { // same event
+                if (events[j + 1].getType() === events[lastIdx].getType()) { // same event
                     lastCluster.push(j + 1);
                     allClusters.push(j + 1);
                     if (j === (times.length - 2)) {
                         newTimestamps.push({ startTime: times[j + 1].startTime, endTime: times[j + 1].endTime });
-                        newEvents.push(events[j + 1] ?? "");
+                        newEvents.push(events[j + 1]);
                         for (let k = 0; k < lastCluster.length; k++) {
                             idxMap[lastCluster[k]] = newEvents.length - 1;
                         }
@@ -207,8 +210,8 @@ export function pascalCase(key: string): string {
     return newKey;
 }
 
-export function getEnclosedEvents(x1: number, x2: number, X: IInterval[], events: string[]) {
-    let enEvents: string[] = [];
+export function getEnclosedEvents(x1: number, x2: number, X: IInterval[], events: IEvent[]) {
+    let enEvents: IEvent[] = [];
     let enX: IInterval[] = []
     let firstIdx = -1;
     for (let i = 0; i < X.length; i++) {
@@ -253,4 +256,49 @@ export function findTimeOverlap(startTimes: number[], endTimes: number[], timest
     }
 
     return idxList;
+}
+
+
+export function getClassificationResult(activityInstances: ActivityInstance[], predictedActivities: string[][], currentActivity: Activity) {
+
+    if (!predictedActivities.length || !currentActivity) {
+        return {}
+    }
+
+    let FP: number[] = [];
+    let FN: number[] = [];
+    let TP: number[] = [];
+    let N: number = 0;
+
+    let At = currentActivity.getName();
+    for (let i = 0; i < activityInstances.length; i++) {
+        let Ai = activityInstances[i].getType();
+        let Ap = predictedActivities[i]?.[0];
+
+        if (Ai === At) {
+            N += 1;
+            if (Ap === Ai) {
+                TP.push(i);
+            } else {
+                FN.push(i);
+            }
+        } else {
+            if (Ap === At) {
+                FP.push(i);
+            }
+        }
+    }
+
+    let allFPs: { [idx: string]: number[] } = {}; // {drinking: [1, 4, 6]}
+    allFPs["all"] = [...FP];
+    for (let i = 0; i < FP.length; i++) {
+        let idx: number = FP[i];
+        if (activityInstances[idx].getType() in allFPs) {
+            allFPs[activityInstances[idx].getType()].push(idx)
+        } else {
+            allFPs[activityInstances[idx].getType()] = [idx]
+        }
+    }
+    return { "TP": TP, "FN": FN, "N": N, "FP": allFPs };
+
 }

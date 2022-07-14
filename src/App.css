@@ -1,8 +1,14 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
 .App {
   display: flex;
   text-align: center;
   height: 100%;
 }
+
+body {
+    font-family: 'Titillium Web', sans-serif;
+  }
 
 html, body, #app, #app>div, #root {
   height: 100%
@@ -14,9 +20,17 @@ html, body, #app, #app>div, #root {
   flex-direction: column;
   height: 100%;
   float: left;
-  width: 250px;
+  width: 350px;
   background-color: #f0ede4;
   align-items: center;
+}
+
+.classification-status-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 35%;
+    margin-top: 30px;
 }
 
 .tools-container {
@@ -29,10 +43,23 @@ html, body, #app, #app>div, #root {
   flex-grow: 1;
 }
 
-.axiom-pane-container {
-  display: flex;
-  width: 80%;
-  align-items: flex-start;
+.bottom-tools-container {
+    display: flex;
+  width: 100%;
+  justify-content: center;
   margin-top: 25px;
   height: 40%;
+}
+
+.axiom-pane-container {
+  display: flex;
+  width: 36%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25px;
+  height: 400px;
+}
+
+.ruleitems-container {
+    width: 40%;
 }

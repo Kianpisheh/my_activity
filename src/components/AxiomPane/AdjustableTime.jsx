@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import Checkbox from "react-custom-checkbox";
+
 import "./AdjustableTime.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
@@ -38,11 +40,12 @@ function AdjustableTime(props) {
             className="time-distance-container"
             style={{ opacity: active ? "1" : "0.3" }}
         >
-            <span style={{ fontSize: 12 }}>{props.title}</span>
+            {/* <span style={{ fontSize: 12 }}>{props.title}</span> */}
             <div className="time-distance-adjust">
                 <input
                     id="sec"
                     type="number"
+                    min={0}
                     value={time === null ? "-----" : time + ""}
                     onChange={(event) =>
                         props.messageCallback(
@@ -57,28 +60,23 @@ function AdjustableTime(props) {
                     onMouseUp={(ev) => {
                         props.messageCallback(AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE, {})
                     }}
-                    style={{ width: 45, textAlign: "center", cursor: "default" }}
+                    style={{ width: 45, textAlign: "center", cursor: "default", fontSize: 10, color: "#605f5f" }}
                 />
             </div>
-            <input
-                className="time-adjust-checkbox"
-                type="checkbox"
-                onChange={() =>
-                    setActive(
-                        !active,
-                        props.messageCallback(
-                            AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED,
-                            {
-                                id: props.idx,
-                                active: !active,
-                                time: time,
-                                type: props.title,
-                            }
-                        )
+            {/* <Checkbox style={{ size: 12, backgroundColor: "#E5E2CD", border: "none" }} checked={active} onChange={() =>
+                setActive(
+                    !active,
+                    props.messageCallback(
+                        AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED,
+                        {
+                            id: props.idx,
+                            active: !active,
+                            time: time,
+                            type: props.title,
+                        }
                     )
-                }
-                checked={active}
-            ></input>
+                )
+            } /> */}
         </div>
     );
 }

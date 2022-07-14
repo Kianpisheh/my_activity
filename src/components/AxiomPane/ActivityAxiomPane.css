@@ -1,91 +1,125 @@
+.ax-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
 .main-container {
-  display: flex;
-  column-gap: 10px;
-  width: 60%;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 67%;
+    background-color: #f0ede4;
+    min-height: 180px;
+    max-height: 450px;
+    overflow-y: auto;
+    padding-top: 15px;
+    padding-bottom: 20px;
+
+}
+
+.axiom-crafter-container {
+    width: 33%;
+    height: 100%;
+}
+
+.temporal-axioms-container {
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    max-height: 450px;
 }
 
 .Axiom-pane {
-  align-items: center;
-  background-color: #f0ede4;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  justify-content: flex-start;
-  padding-bottom: 10px;
-  width: 60%;
-  height: 100%;
-}
-
-.Axioms-container {
-  align-items: center;
-  justify-content: flex-start;
-  display: flex;
-  flex-direction: column;
-  row-gap: 10px;
-  width: 100%;
-  overflow: scroll;
-
+    display: flex;
+    flex-direction: column;
 }
 
 .add-ui {
-  display: flex;
-  width: 100%;
-  column-gap: 10px;
+    display: flex;
+    width: 100%;
+    column-gap: 10px;
+    align-self: flex-end;
 }
 
 .add-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 5px;
-  background-color: rgb(224, 222, 205);
-  padding-top: 10px;
-  padding-bottom: 10px;
-  width: 150px;
-  box-shadow: 2px 2px 3px rgba(134, 134, 130, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 5px;
+    background-color: rgb(224, 222, 205);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 150px;
+    box-shadow: 2px 2px 3px rgba(134, 134, 130, 0.4);
 }
 
-.h-line {
-  border-bottom: 1px solid rgb(131, 128, 105);
-  width: 100%;
+#title-div {
+    width: 85%;
+    display: flex;
+    align-self: center;
+    align-items: flex-start;
+    margin-bottom: 5px;
 }
 
-#activity-title {
-  display: flex;
-  font-size: 10pt;
-  justify-content: flex-start;
-  width: 85%;
+.activity-title {
+    display: flex;
+    justify-self: flex-start;
+    width: 100%;
 }
 
 #add-axiom-btn {
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  background-color: #4d8e7f;
-  color: #f0ede4;
-  padding: 5px 6px 5px 6px;
-  font-size: 12px;
-  box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
-  height: 30px;
-  padding-left: 15px;
-  padding-right: 15px;
-  align-self: center;
-  justify-self: center;
-  cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    background-color: #4d8e7f;
+    color: #f0ede4;
+    padding: 5px 6px 5px 6px;
+    font-size: 12px;
+    box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
+    height: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-self: center;
+    justify-self: center;
+    cursor: pointer;
+}
+
+.add-int-btn {
+    justify-content: center;
+    align-items: center;
+    justify-self: flex-end;
+    width: 18px;
+    height: 18px;
+    text-align: justify;
+    border-radius: 100%;
+    border: none;
+    outline: none;
+    background-color: #95dba5;
+    color: #444141;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
 }
 
 div::-webkit-scrollbar {
-  width: 8px;         
+    width: 8px;
 }
 
 div::-webkit-scrollbar-track {
-background: #E3DDCA;        /* color of the tracking area */
+    background: #E3DDCA;
+    /* color of the tracking area */
 }
 
 div::-webkit-scrollbar-thumb {
-background-color: #E3DDCA;    /* color of the scroll thumb */
-border-radius: 10px;       /* roundness of the scroll thumb */
+    background-color: #E3DDCA;
+    /* color of the scroll thumb */
+    border-radius: 10px;
+    /* roundness of the scroll thumb */
 }

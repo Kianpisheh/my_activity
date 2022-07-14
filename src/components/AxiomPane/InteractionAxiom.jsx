@@ -21,6 +21,10 @@ function InteractionAxiom(props) {
         return;
     }
 
+    if (!events.length) {
+        return
+    }
+
     let interactionIcons = [];
     for (let i = 0; i < events.length; i++) {
         const Icon = Icons.getIcon(pascalCase(events[i]), true);
@@ -36,6 +40,7 @@ function InteractionAxiom(props) {
                 onMouseLeave={() => setObjectedHovered(-1)}
             >
                 <Icon
+                    key={i}
                     style={{
                         width: props.config.ic_w,
                         height: props.config.ic_h,
@@ -81,35 +86,38 @@ function InteractionAxiom(props) {
     }
 
     return (
-        <React.Fragment>
-            <div
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                className="interaction-axiom"
-                style={divStyle}
-            >
-                {[...interactionIcons]}
+        <div className="interaction-axiom">
+            <div className="axiom-content">
+                <div
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                    className="object-icons"
+                    style={divStyle}
+                >
+                    {[...interactionIcons]}
+                </div>
+                <div
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
+                    className="rem-btn"
+                    style={{ width: "0%", marginTop: "14px" }}
+                >
+                    {hovered && (
+                        <button
+                            className="remove-axiom-btn"
+                            onClick={() => {
+                                props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
+                                    idx: props.idx,
+                                });
+                                setSelected(new Set());
+                            }}
+                        >
+                            X
+                        </button>
+                    )}
+                </div>
             </div>
-            <div
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                className="rem-btn"
-            >
-                {hovered && (
-                    <button
-                        className="remove-axiom-btn"
-                        onClick={() => {
-                            props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
-                                idx: props.idx,
-                            });
-                            setSelected(new Set());
-                        }}
-                    >
-                        X
-                    </button>
-                )}
-            </div>
-        </React.Fragment>
+        </div>
     );
 }
 

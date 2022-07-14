@@ -1,18 +1,21 @@
 .time-distance-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-items: center;
-  row-gap: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
 }
 
 .time-adjust-checkbox {
-  opacity: 1;
+    opacity: 1;
 }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button {  
+input[type=checkbox]:checked {
+    filter: brightness(0) saturate(100%) invert(91%) sepia(6%) saturate(1514%) hue-rotate(324deg) brightness(112%) contrast(87%);
+}
 
-   opacity: 1;
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
 
+    opacity: 1;
 }

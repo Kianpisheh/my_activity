@@ -30,16 +30,18 @@ function EventIconThumb(props) {
     ) {
         return;
     }
-    const xMax = props.thumbX[props.thumbX.length - 1].x2;
+    const xMax = props.thumbX[props.thumbX.length - 1].x2 + 3 * ic_w;
     const svgWidth = Math.ceil(scale[props.idx] * xMax);
     const vb = "0 0 " + svgWidth + " " + ic_h;
 
     let filteredNum = 0;
     for (let i = 0; i < props.iconEvents.length; i++) {
-        if (props.filters.includes(props.iconEvents[i])) {
+        if (props.filters.includes(props.iconEvents[i].getType())) {
             filteredNum += 1;
         }
     }
+
+    const locationOverlay = false && <LocationOverlay eventsX={props.thumbX} events={props.thumbEvents}></LocationOverlay>
 
     return (
         <div className="event-icon-thumb-conatiner">
@@ -63,7 +65,7 @@ function EventIconThumb(props) {
                     }
 
                     return (
-                        (props.filters.includes(props.thumbEvents[idx]) ||
+                        (props.filters.includes(props.thumbEvents[idx].getType()) ||
                             filteredNum === 0) && (
                             <g key={idx + "_gg"}>
                                 <rect
@@ -74,7 +76,7 @@ function EventIconThumb(props) {
                                     height={2 * rc_h}
                                     rx={r}
                                     fill={Icons.getColor(
-                                        pascalCase(props.thumbEvents[idx])
+                                        pascalCase(props.thumbEvents[idx].getType())
                                     )}
                                 // onMouseEnter={() => { setShowPositionTip(true) }}
                                 ></rect>
@@ -85,7 +87,7 @@ function EventIconThumb(props) {
 
                 {props.iconX.map((x, idx) => {
                     const Icon = Icons.getIcon(
-                        pascalCase(props.iconEvents[idx])
+                        pascalCase(props.iconEvents[idx].getType())
                     );
 
                     // icon opacity
@@ -111,7 +113,7 @@ function EventIconThumb(props) {
                                 onMouseLeave={() => setHovered(-1)}
                                 opacity={opacity}
                                 fill={Icons.getColor(
-                                    pascalCase(props.iconEvents[idx])
+                                    pascalCase(props.iconEvents[idx].getType())
                                 )}
                                 pointerEvents={"bounding-box"}
                                 x={
@@ -133,19 +135,18 @@ function EventIconThumb(props) {
                                     transform: "rotate(90)",
                                 }}
                             >
-                                {props.iconEvents[idx]}
+                                {props.iconEvents[idx].getType()}
                             </text>
                         );
                     }
 
-                    const tooltip = <Tooltip key={idx + "_tt"} x={props.iconX[idx].x1 + ic_w / 2} y={props.iconY[idx] - 5} text={props.iconEvents[idx]}></Tooltip>
+                    const tooltip = <Tooltip key={idx + "_tt"} x={props.iconX[idx].x1 + ic_w / 2} y={props.iconY[idx] - 5} text={props.iconEvents[idx].getType()}></Tooltip>
                     const shadow = <Shadow key={idx} id={idx} x={props.iconX[idx].x1} y={props.iconY[idx]} width={ic_w} height={ic_h}></Shadow>
-                    const locationOverlay = <LocationOverlay location={props.location}></LocationOverlay>
 
                     return (
                         <g key={idx + "_g2"}>
                             [{props.explanationIndividuals.length && props.explanationIndividuals.includes(idx) && shadow},
-                            {(props.filters.includes(props.iconEvents[idx]) ||
+                            {(props.filters.includes(props.iconEvents[idx].getType()) ||
                                 filteredNum === 0) &&
                                 <g key={idx + "_g"}>
                                     {hovered === idx && tooltip}
@@ -154,6 +155,7 @@ function EventIconThumb(props) {
                         </g>
                     );
                 })}
+                {locationOverlay}
             </svg>
         </div>
     );

@@ -1,17 +1,28 @@
 .interaction-axiom {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 60px;
+    row-gap: 10px;
+}
+
+.axiom-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.object-icons {
   display: flex;
   align-items: center;
   justify-content: center;
   column-gap: 30px;
   background-color: #f9f7f1;
   border-radius: 5px;
-  height: 50px;
   width: 86%;
-  margin-left: 20px;
-}
-
-.rem-btn {
-  width: 7%;
   height: 100%;
 }
 
@@ -27,8 +38,8 @@
   font-size: 9px;
   cursor: pointer;
   display: block;
-  margin-left: -10px;
-  margin-top: -6px;
+  margin-top: 0px;
+  align-self: flex-end;
 }
 
 .remove-object-btn {
@@ -44,7 +55,7 @@
   cursor: pointer;
   display: block;
   margin-left: 0px;
-  margin-top: -15px;
+  margin-top: 3px;
 }
 
 .rem-object-btn-div {
@@ -53,3 +64,14 @@
   align-items: center;
   justify-items: center;
 }
+
+#divider {
+    height: 1px; 
+    width: 85%;
+    border-left: 0;
+    border-bottom: 0;
+    border-right: 0;
+    border-color: #FFFFFF;
+    margin-top: 5px 
+}
+

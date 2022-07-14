@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 
 import "./DurationAxiom.css";
 
-import EventIcons from "../../Utils/EventIcons";
 import AdjustableTime from "./AdjustableTime";
 import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
@@ -43,52 +42,55 @@ function DurationAxiom(props) {
     const Icon = Icons.getIcon(pascalCase(events[0]), true);
     const TimeDistIcon = Icons.getIcon("TimeDistance");
     return (
-        <React.Fragment>
-            <div
-                className="duration-axiom"
-                style={divStyle}
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-            >
-                <AdjustableTime
-                    idx={props.idx}
-                    key="more than"
-                    data={props.data}
-                    title="more than"
-                    messageCallback={props.messageCallback}
-                ></AdjustableTime>
-                <div className="mid-section">
-                    <Icon style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon>
-                    <TimeDistIcon style={{ "width": 60, "height": 10, fill: "#3A2A0D", float: "left" }}></TimeDistIcon>
-                    <span style={{ fontSize: 12 }}>{axiomText}</span>
+        <div className="time-dist-axiom-container">
+            <div className="time-axiom-main-content-2" onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}>
+                <div
+                    className="rem-btn-td"
+                >
+                    {hovered && (
+                        <button
+                            className="remove-axiom-btn-td"
+                            onClick={() =>
+                                props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
+                                    idx: props.idx,
+                                })
+                            }
+                        >
+                            X
+                        </button>
+                    )}
                 </div>
-                <AdjustableTime
-                    idx={props.idx}
-                    key="less than"
-                    data={props.data}
-                    title="less than"
-                    messageCallback={props.messageCallback}
-                ></AdjustableTime>
+                <div className="time-upper-div">
+                    <div className="time-distance-icons-2">
+                        <Icon
+                            style={{
+                                width: props.config.ic_w,
+                                height: props.config.ic_h,
+                                fill: "#3A2A0D",
+                            }}
+                        ></Icon>
+                    </div>
+                </div>
+                <div className="time-lower-div">
+                    <AdjustableTime
+                        idx={props.idx}
+                        key="more than"
+                        data={props.data}
+                        title="more than"
+                        messageCallback={props.messageCallback}
+                    ></AdjustableTime>
+                    <span style={{ fontSize: 12, color: "#605f5f" }}>{axiomText}</span>
+                    <AdjustableTime
+                        idx={props.idx}
+                        key="less than"
+                        data={props.data}
+                        title="less than"
+                        messageCallback={props.messageCallback}
+                    ></AdjustableTime>
+                </div>
             </div>
-            <div
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                className="rem-btn"
-            >
-                {hovered && (
-                    <button
-                        className="remove-axiom-btn"
-                        onClick={() =>
-                            props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
-                                idx: props.idx,
-                            })
-                        }
-                    >
-                        X
-                    </button>
-                )}
-            </div>
-        </React.Fragment>
+        </div>
     );
 }
 

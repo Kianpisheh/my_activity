@@ -1,7 +1,6 @@
 .Axiom {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
   width: 100%;
 }

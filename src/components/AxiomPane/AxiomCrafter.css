@@ -1,73 +1,92 @@
-.axiom-crafter-container {
-  background-color: #f0ede4;
-  display: flex;
-  flex-direction: column;
-  border-radius: 5px;
-  height: 200px;
-  align-self: flex-end;
-  justify-items: center;
-  align-items: center;
-  width: 170px;
-  row-gap: 10px;
+#ax-crafter-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 170px;
+    min-height: 180px;
+    max-height: 450px;
+    background-color: #ebe8dc;
+
 }
 
-.axiom-crafter-container ul {
-  display: flex;
-  flex-direction: column;
-  row-gap: 6px;
-  height: 85%;
-  width: 100%;
-  margin: 0;
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 15px;
-  overflow: auto;
+#ax-crafter-header {
+    background-color: #e9e6de;
+    margin-bottom: 10px;
+    height: 40px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    border-bottom:1px solid  rgb(207, 207, 190);
 }
 
-.axiom-crafter-container ul li {
-  display: flex;
-  border-radius: 5px;
-  align-items: center;
-  justify-items: center;
-  background-color: #f9f7f1;
-  width: 85%;
-  align-self: center;
-  justify-self: center;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  cursor: pointer;
+#header-title {
+    font-size: 12px;
+    color: #464545;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 15px;
 }
 
-.axiom-crafter-container ul li text {
-  align-self: center;
-  justify-self: center;
+.axiom-crafter-icons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: 45px;
+    gap: 10px;
+    border-radius: 5px;
+    width: 100%;
+    height: 290px;
+    overflow-y: scroll;
+    padding-right: 0;
+}
+
+.craft-icon-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    row-gap: 5px;
+}
+
+#axiom-done-btn-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e9e6de;
+    height: 50px;
+    border-top:1px solid rgb(207, 207, 190);
+    margin-top: 10px;
 }
 
 #axiom-crafter-done-btn {
-  background-color: #8b8676;
-  color: #f0ede4;
-  outline: none;
-  border: none;
-  border-radius: 3px;
-  box-shadow: 2px 2px 3px rgba(103, 98, 51, 0.4);
-  height: 25px;
-  width: 60px;
-  justify-self: end;
-  margin-bottom: 15px;
-  cursor: pointer;
-  padding-top: 5px;
-  padding-bottom: 5px;
+    display: flex;
+    background-color: #8b8676;
+    color: #f0ede4;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 2px 2px 3px rgba(103, 98, 51, 0.4);
+    height: 25px;
+    width: 60px;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 div::-webkit-scrollbar {
-  height: 8px;         
+    height: 8px;
 }
 
 div::-webkit-scrollbar-track {
-background: rgba(238, 235, 232, 0.976);        /* color of the tracking area */
+    background: rgba(238, 235, 232, 0.976);
+    /* color of the tracking area */
 }
 
 div::-webkit-scrollbar-thumb {
-background-color: rgb(203, 203, 221);    /* color of the scroll thumb */
-border-radius: 10px;       /* roundness of the scroll thumb */
+    background-color: rgb(203, 203, 221);
+    /* color of the scroll thumb */
+    border-radius: 10px;
+    /* roundness of the scroll thumb */
 }

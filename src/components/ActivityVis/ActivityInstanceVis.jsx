@@ -64,18 +64,27 @@ function ActivityInstanceVis(props) {
     // create an example for event-locations
     let events = activity.getEvents();
     events.forEach(ev => {
-        if (ev.startTime < 180) {
+        if (ev.startTime - events[0].startTime < 50) {
             ev.location = "kitchen";
         } else {
             ev.location = "living_room";
         }
     })
 
-    let mergedConsecRes = mergeConsecEvents(
-        timestamps,
-        activity.getEventList(),
-        merge_th
-    );
+    let mergedConsecRes;
+    if (props.merge[0]) {
+        mergedConsecRes = mergeConsecEvents(
+            timestamps,
+            activity.getEvents(),
+            merge_th
+        );
+    } else {
+        let idxMap = {};
+        for (let k = 0; k < timestamps.length; k++) {
+            idxMap[k] = k;
+        }
+        mergedConsecRes = { "events": activity.getEvents(), "times": timestamps, "idxMap": idxMap }
+    }
 
     // merge close consecutive events
     const mergedConsecEvents = mergedConsecRes["events"];
@@ -87,7 +96,16 @@ function ActivityInstanceVis(props) {
         : mergedConsecTimes;
 
     // merge close events
-    let mergedCloseRes = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 1);
+    let mergedCloseRes;
+    if (props.merge[1]) {
+        mergedCloseRes = mergeCloseEvents(nonlinearScaledTimes, mergedConsecEvents, 1);
+    } else {
+        let idxMap = {};
+        for (let k = 0; k < mergedConsecTimes.length; k++) {
+            idxMap[k] = k;
+        }
+        mergedCloseRes = { "events": mergedConsecEvents, "times": mergedConsecTimes, "idxMap": idxMap }
+    }
     const mergedCloseTimes = mergedCloseRes["times"];
     const mergedCloseEvents = mergedCloseRes["events"];
 
@@ -95,11 +113,10 @@ function ActivityInstanceVis(props) {
     let overlapIdx = [];
     if (explanation && explanation.getType() === "why") {
         overlapIdx = findTimeOverlap(explanation.getStartTimes(), explanation.getEndTimes(), timestamps);
-        // TODO: the index is off by one.
     }
 
     for (let i = 0; i < overlapIdx.length; i++) {
-        overlapIdx[i] = mergedCloseRes.idxMap[mergedConsecRes.idxMap[overlapIdx[i]]]
+        overlapIdx[i] = mergedCloseRes.idxMap[mergedConsecRes.idxMap[overlapIdx[i]] ?? overlapIdx[i]] ?? overlapIdx[i];
     }
 
     const thumbX = time2Pixel(nonlScale ? nonlinearScaledTimes : mergedConsecTimes, scale[0]);
@@ -164,7 +181,7 @@ function ActivityInstanceVis(props) {
                 <div
                     className="graph"
                     style={{
-                        width: Math.ceil(thumbX[thumbX.length - 1].x2),
+                        width: Math.ceil(thumbX[thumbX.length - 1].x2) + 3 * ic_w,
                     }}
                     onMouseUp={() => {
                         if (regions[0].width > 0.002) {
@@ -208,7 +225,7 @@ function ActivityInstanceVis(props) {
                             width: Math.ceil(
                                 nonScaledEnclosedThumbX[
                                     nonScaledEnclosedThumbX.length - 1
-                                ].x2
+                                ].x2 + 3 * ic_w
                             ),
                             height: 300,
                         }}

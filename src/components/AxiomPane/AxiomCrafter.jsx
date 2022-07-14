@@ -15,8 +15,11 @@ function AxiomCrafter(props) {
     }
 
     return (
-        <div className="axiom-crafter-container">
-            <ul>
+        <div id="ax-crafter-container">
+            <div id="ax-crafter-header">
+                <span id="header-title">Select items</span>
+            </div>
+            <div className="axiom-crafter-icons">
                 {props.objects.map((key, idx) => {
                     let itemBorder = "none";
                     if (selectedItems.includes(key)) {
@@ -24,7 +27,7 @@ function AxiomCrafter(props) {
                     }
                     const Icon = Icons.getIcon(pascalCase(key));
                     return (
-                        <li
+                        <div className="craft-icon-container"
                             key={idx}
                             style={{ border: itemBorder }}
                             onClick={(ev) => {
@@ -39,16 +42,18 @@ function AxiomCrafter(props) {
                         >
                             {Icon && <Icon style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon>}
                             <text style={{ fontSize: 9, textAlign: "center", padding: 0 }}>{key}</text>
-                        </li>
+                        </div>
                     );
                 })}
-            </ul>
-            <button
-                id="axiom-crafter-done-btn"
-                onClick={(ev) => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 }, ev)}
-            >
-                Done
-            </button>
+            </div>
+            <div id="axiom-done-btn-div">
+                <button
+                    id="axiom-crafter-done-btn"
+                    onClick={(ev) => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 }, ev)}
+                >
+                    Done
+                </button>
+            </div>
         </div>
     );
 }

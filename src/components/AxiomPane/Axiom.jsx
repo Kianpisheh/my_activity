@@ -39,6 +39,7 @@ function Axiom(props) {
                 config={props.config}
                 messageCallback={props.messageCallback}
                 explanation={props.explanation}
+                onAddTimeConstraintAxiom={props.onAddTimeConstraintAxiom}
             ></TimeDistanceInteraction>
         );
     } else if (axiomType === AxiomTypes.TYPE_DURATION) {

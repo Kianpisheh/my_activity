@@ -1,41 +1,50 @@
-.duration-axiom {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #f9f7f1;
-  border-radius: 5px;
-  column-gap: 20px;
-  height: 95px;
-  justify-content: center;
-  width: 86%;
+.time-dist-axiom-container {
+    display: flex;
+    flex-direction: column;
+    width: 86%;
+    height: 85px;
 }
 
-.mid-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  row-gap: 7px;
-  width: 150px;
+.time-axiom-main-content-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f7f1;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
 }
 
-.rem-btn {
-  width: 7%;
-  height: 100%;
+.time-distance-icons-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 10px;
 }
 
-.remove-axiom-btn {
-  width: 18px;
-  height: 18px;
-  text-align: justify;
-  border-radius: 100%;
-  border: none;
-  outline: none;
-  background-color: #b33d2d;
-  color: #f9f7f1;
-  font-size: 9px;
-  cursor: pointer;
-  display: block;
-  margin-left: -10px;
-  margin-top: -6px;
+.rem-btn-td {
+    display: flex;
+    width: 0%;
+    height: 0%;
+    align-self: flex-end;
+    margin-right: 10px;
+}
+
+.remove-axiom-btn-td {
+    justify-content: center;
+    align-items: center;
+    width: 18px;
+    height: 18px;
+    text-align: justify;
+    border-radius: 100%;
+    border: none;
+    outline: none;
+    background-color: #b33d2d;
+    color: #f9f7f1;
+    font-size: 9px;
+    cursor: pointer;
+    display: flex;
+    margin-top: -15px;
 }
