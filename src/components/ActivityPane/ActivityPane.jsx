@@ -1,16 +1,14 @@
 import "./ActivityPane.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
-import ActivtiyItem from "./ActivtyItem";
+import ActivtiyItem from "./ActivityItem";
 import ActivityListColors from "./ActivityListColors"
 
 function ActivityPane(props) {
 
     return (
         <div className="activity-pane-container">
-            <span id="title" style={{ fontSize: 12 }}>
-                Registered activities
-            </span>
+            <span className="section-title" id="title">Registered activities</span>
             <div className="activities-container">
                 <ul>
                     {props.activities.map((activity, idx) => {

@@ -63,9 +63,10 @@ function ActivityAxiomPane(props) {
                         style={{
                             fontSize: 13,
                             fontWeight: "600",
-                            color: "#555555",
+                            color: "#6a603f",
                             backgroundColor: "transparent",
                             marginLeft: 0,
+                            marginTop: 0,
                             padding: 0,
                         }}
                         onChange={(value) =>
@@ -83,20 +84,7 @@ function ActivityAxiomPane(props) {
                     <div style={{
                         display: "flex", width: "100%", alignContent: "center", height: "30px"
                     }}>
-                        <span
-                            style={{
-                                fontSize: 13,
-                                color: "#555555",
-                                fontWeight: 400,
-                                display: "flex",
-                                marginLeft: "7.5%",
-                                width: "110px",
-                                height: "100%",
-                                marginBottom: "5px"
-                            }}
-                        >
-                            Interaction axioms
-                        </span>
+                        <span className="sub-section-title">Interaction axioms</span>
                         <div style={{ display: "flex", marginLeft: 10 }}>
                             <button
                                 className="add-int-btn" onClick={() => createInteractionAxiom()}>
@@ -117,19 +105,7 @@ function ActivityAxiomPane(props) {
                     </div>
                     <hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
                     <div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
-                        <span
-                            style={{
-                                fontSize: 13,
-                                color: "#555555",
-                                fontWeight: 400,
-                                display: "flex",
-                                marginLeft: "7.5%",
-                                width: "110px",
-                                marginBottom: "5px"
-                            }}
-                        >
-                            Temporal axioms
-                        </span>
+                        <span className="sub-section-title">Temporal axioms</span>
                         <div style={{ display: "flex", marginLeft: 10 }}>
                             <button
                                 className="add-int-btn" onClick={() => createTimeConstraintAxiom()}>
@@ -140,8 +116,8 @@ function ActivityAxiomPane(props) {
                     <div className="temporal-axioms-container">
                         {axioms.slice(1).map((axiom, idx) => (
                             <Axiom
-                                idx={idx}
-                                key={idx}
+                                idx={idx + 1}
+                                key={idx + 1}
                                 data={axiom}
                                 config={props.config}
                                 messageCallback={props.sendMessage}

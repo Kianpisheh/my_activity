@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
     explain,
@@ -244,7 +245,56 @@ function App() {
 
     return (
         <div className="App">
-            <div
+
+            <div id="act-instances-pane">
+                <ActivityInstancePane
+                    activtiyInstances={activityInstances}
+                    onSelectedItemChange={handleActInstanceChange}
+                    currentActInstanceIdx={currentActInstanceIdx}
+                    activities={activities}
+                    predictedActivities={predictedActivities}
+                ></ActivityInstancePane>
+            </div>
+            <div id="act-instance-vis">
+                <ActivityInstanceVis
+                    config={config}
+                    activity={activityInstances[currentActInstanceIdx]}
+                    predictedActivities={predictedActivities}
+                    explanation={explanation}
+                    onScaleChange={handleScaleChange}
+                    currentActivityIdx={currentActivtyIdx}
+                    currentActInstanceIdx={currentActInstanceIdx}
+                    merge={[true, true]}
+                ></ActivityInstanceVis>
+            </div>
+            <div id="activities-pane">
+                <ActivityPane
+                    activities={activities}
+                    onActivitiyListChange={handleActivityListChange}
+                    onAction={handleActionRequest}
+                    currentActivityIdx={currentActivtyIdx}
+                ></ActivityPane>
+            </div>
+            <div id="axiom-pane">
+                {currentActivity && (
+                    <ActivityAxiomPane
+                        activity={currentActivity}
+                        sendMessage={onAxiomPaneMessage}
+                        config={config}
+                        explanation={explanation}
+                    ></ActivityAxiomPane>
+                )}
+            </div>
+            <div id="explanations">
+                <RuleitemsPane
+                    currentActivityInstance={activityInstances[currentActInstanceIdx]}
+                    ruleitems={ruleitems}
+                    onRuleitemRequest={handleRuleitemRequest}
+                    classificationResult={classificationRes}
+                ></RuleitemsPane>
+            </div>
+
+            {/* <div
                 className="action-menue-container"
                 style={{ position: "absolute", left: action.x, top: action.y }}
             >
@@ -321,9 +371,9 @@ function App() {
                             classificationResult={classificationRes}
                         ></RuleitemsPane>
                         <button onClick={() => handleRuleitemRequest()}>Ruleitems</button>
-                    </div>
-                </div>
-            </div>
+                    </div> */}
+            {/* </div> */}
+            {/* </div> */}
         </div>
     );
 }

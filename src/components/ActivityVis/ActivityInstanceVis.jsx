@@ -154,15 +154,11 @@ function ActivityInstanceVis(props) {
         selectionBox = true;
     }
 
-
     return (
         <div
             className="activity-vis-container"
-            style={{ height: mainDivHeight }}
         >
-            <div id="title" style={{ fontSize: 12 }}>
-                Activity events
-            </div>
+            <span className="section-title" id="title">Activity events</span>
             <div
                 className="graph-container"
                 onMouseUp={() => setCount(count + 1)}

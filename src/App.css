@@ -1,9 +1,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
-.App {
-  display: flex;
-  text-align: center;
+.App{
+  display: grid;
+  grid-template-columns: 250px 1fr 1fr;
+  grid-template-rows: 380px 1fr;
   height: 100%;
+  --main-beige: #f0ede4;
+  --light-beige: #f9f7f1;
+  --borders: #dcd7c8;
+  --section-titles: #6a603f;
+  --list-item-text: #554a27;
+  background-color: var(--main-beige);
 }
 
 body {
@@ -14,15 +21,33 @@ html, body, #app, #app>div, #root {
   height: 100%
 }
 
+#act-instances-pane {
+    padding-top: 20px;
+}
 
-.left-pane-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  float: left;
-  width: 350px;
-  background-color: #f0ede4;
-  align-items: center;
+#act-instance-vis {
+    padding-top: 20px;
+    grid-column: 2 / 4;
+    border-left: 1px solid var(--borders);
+}
+
+#activities-pane {
+    padding-top: 20px;
+    border-right: 1px solid var(--borders);
+    border-top: 1px solid var(--borders);
+}
+
+#axiom-pane {
+    border-top: 1px solid var(--borders);
+    border-right: 1px solid var(--borders);
+}
+
+#explanations {
+    background-color: var(--main-beige);
+    height: 100%;
+    width: 100%;
+    grid-column: 3 / 4;
+    border-top: 1px solid var(--borders);
 }
 
 .classification-status-div {
@@ -31,16 +56,6 @@ html, body, #app, #app>div, #root {
     width: 100%;
     height: 35%;
     margin-top: 30px;
-}
-
-.tools-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  background-color: #f7f6f1;
-  overflow: hidden;
-  flex-grow: 1;
 }
 
 .bottom-tools-container {
@@ -62,4 +77,17 @@ html, body, #app, #app>div, #root {
 
 .ruleitems-container {
     width: 40%;
+}
+
+
+.section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--section-titles);
+    padding-left: 15px;
+}
+
+.list-item {
+    color: var(--list-item-text);
+    padding-left: 19px;
 }

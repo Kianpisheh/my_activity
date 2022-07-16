@@ -37,7 +37,7 @@ function ActivtiyItem(props) {
                     );
                 }}
             >
-                <text>{props.activity.name}</text>
+                <text className="list-item">{props.activity.name}</text>
                 {!hovered && (
                     <svg id="svg-act-color">
                         <rect

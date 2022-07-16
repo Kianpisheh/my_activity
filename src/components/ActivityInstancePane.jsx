@@ -4,9 +4,7 @@ import ActivityListColors from "./ActivityPane/ActivityListColors"
 function ActivtityInstancePane(props) {
     return (
         <div className="act-instance-pane-container">
-            <span id="title" style={{ fontSize: 12 }}>
-                Activity instances
-            </span>
+            <span className="section-title" id="title">Activity instances</span>
             <div className="activity-instances">
                 <ul>
                     {props.activtiyInstances.map((activity, idx) => {
@@ -35,7 +33,7 @@ function ActivtityInstancePane(props) {
                                     );
                                 }}
                             >
-                                <text>{activity.getName()}</text>
+                                <text className="list-item">{activity.getName()}</text>
                                 {(color !== "") && <svg id="svg-act-color">
                                     <rect
                                         id="rect-act-color"

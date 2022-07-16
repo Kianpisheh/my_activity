@@ -2,11 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
-    height: 600px;
-    background-color: #f0ede4;
-    margin-top: 20px;
-    justify-content: center;
+    background-color: var(--main-beige);
+    height: 100%;
+    width: 100%;
+    justify-content: flex-start;
     justify-items: center;
 }
 
@@ -15,6 +14,7 @@
     width: 90%;
     text-align: left;
     justify-self: center;
+
 }
 
 .graph-container {
@@ -25,7 +25,7 @@
     width: 90%;
     padding: 0;
     margin: 0;
-    background-color: #f9f7f1;
+    background-color: var(--light-beige);
     justify-items: center;
     justify-content: center;
 }
@@ -69,7 +69,7 @@ div::-webkit-scrollbar {
 }
   
 div::-webkit-scrollbar-track {
-background: rgba(238, 235, 232, 0.976);        /* color of the tracking area */
+background: var(--light-beige);        /* color of the tracking area */
 }
 
 div::-webkit-scrollbar-thumb {

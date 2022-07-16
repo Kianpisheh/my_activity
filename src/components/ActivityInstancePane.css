@@ -1,26 +1,23 @@
 .act-instance-pane-container {
     display: flex;
     flex-direction: column;
-    border-radius: 5px;
-    width: 220px;
-    height: 300px;
-    background-color: #f0ede4;
-    max-height: 300px;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-beige);
+    justify-content: flex-start;
     align-items: center;
   }
 
 #title {
     align-self: flex-start;
-    margin-left: 15px;
 }
 
 .activity-instances {
     display: flex;
     flex-direction: column;
-    background-color: #f9f7f1;
+    /* background-color: #f9f7f1; */
     width: 100%;
-    height: 70%;
+    height: 90%;
     justify-content: center;
     align-items: center;
   }
@@ -61,5 +58,4 @@
   .activity-instances ul li text {
     font-size: 13px;
     width: fit-content;
-    padding-left: 10px;
   }

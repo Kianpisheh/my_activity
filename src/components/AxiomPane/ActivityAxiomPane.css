@@ -9,13 +9,10 @@
     flex-direction: column;
     justify-content: flex-start;
     width: 67%;
-    background-color: #f0ede4;
+    background-color: var(--main-beige);
     min-height: 180px;
     max-height: 450px;
     overflow-y: auto;
-    padding-top: 15px;
-    padding-bottom: 20px;
-
 }
 
 .axiom-crafter-container {
@@ -74,6 +71,17 @@
     width: 100%;
 }
 
+.sub-section-title {
+    font-size: 13px;
+    color: #555555;
+    font-weight: 400;
+    display: flex;
+    margin-left: 7.5%;
+    margin-bottom: 5px;
+    width: 110px;
+    height: 100%;
+}
+
 #add-axiom-btn {
     border: none;
     border-radius: 5px;
@@ -113,7 +121,6 @@ div::-webkit-scrollbar {
 }
 
 div::-webkit-scrollbar-track {
-    background: #E3DDCA;
     /* color of the tracking area */
 }
 

@@ -27,6 +27,7 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
             values["time"],
             values["type"]
         );
+        console.log(newAxioms);
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 
     } else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED) {
