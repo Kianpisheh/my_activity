@@ -302,3 +302,5 @@ export function getClassificationResult(activityInstances: ActivityInstance[], p
     return { "TP": TP, "FN": FN, "N": N, "FP": allFPs };
 
 }
+
+

@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {
     explain,
@@ -23,8 +22,7 @@ import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
-import ActionMenu from "./components/ActionMenu";
-import ActivityClassificationStatus from "./components/ActivityClassificationStatus";
+import ExplanationPanel from "./components/ExplanationPanel/ExplanationPanel";
 import RuleitemsPane from "./components/RuleitemsPane";
 
 import { handleAxiomPaneMessages } from "./Handlers";
@@ -179,7 +177,7 @@ function App() {
     //---------------------------------------------------//
 
     //------------ClassisficationStutus-----------------//
-    function handleIntanceClick(idx) {
+    function handleInstanceClick(idx) {
         setCurrentActInstanceIdx(idx);
     }
     //-------------------------------------------------//
@@ -245,7 +243,6 @@ function App() {
 
     return (
         <div className="App">
-
             <div id="act-instances-pane">
                 <ActivityInstancePane
                     activtiyInstances={activityInstances}
@@ -286,12 +283,22 @@ function App() {
                 )}
             </div>
             <div id="explanations">
-                <RuleitemsPane
+                <ExplanationPanel
+                    classificationResults={classificationRes}
+                    parentWidth={leftPaneWidth}
+                    onInstanceClick={handleInstanceClick}
+                    predictedActivities={predictedActivities}
+                    currentActInstanceIdx={currentActInstanceIdx}
+                    currentActivity={currentActivity}
+                    actInstances={activityInstances}
+                    onActInstanceChange={handleActInstanceChange}
+                ></ExplanationPanel>
+                {/* <RuleitemsPane
                     currentActivityInstance={activityInstances[currentActInstanceIdx]}
                     ruleitems={ruleitems}
                     onRuleitemRequest={handleRuleitemRequest}
                     classificationResult={classificationRes}
-                ></RuleitemsPane>
+                ></RuleitemsPane> */}
             </div>
 
             {/* <div
@@ -330,7 +337,7 @@ function App() {
                 <div className="classification-status-div">
                     <ActivityClassificationStatus
                         parentWidth={leftPaneWidth}
-                        onInstanceClick={handleIntanceClick}
+                        onInstanceClick={handleInstanceClick}
                         classificationResult={classificationRes}
                     ></ActivityClassificationStatus>
                 </div>
@@ -379,5 +386,3 @@ function App() {
 }
 
 export default App;
-
-

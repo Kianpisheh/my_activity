@@ -1,3 +1,4 @@
+import { start } from "repl";
 
 export interface IEvent {
     name: string;
@@ -36,6 +37,18 @@ class ActivityInstanceEvent {
 
     getLocation(): string {
         return this.location;
+    }
+
+    getDuration(): number {
+        return this.endTime - this.startTime;
+    }
+
+    getStartTime(): number {
+        return this.startTime;
+    }
+
+    getEndTime(): number {
+        return this.endTime;
     }
 
 }

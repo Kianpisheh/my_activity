@@ -12,6 +12,22 @@ class Constraint {
         this.th2 = th2;
         this.type = type;
     }
+
+    getEvents(): string[] {
+        return this.events;
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    getTh2() {
+        return this.th2;
+    }
+
+    getTh1() {
+        return this.th1;
+    }
 }
 
 export default Constraint;

@@ -7,9 +7,11 @@
   height: 100%;
   --main-beige: #f0ede4;
   --light-beige: #f9f7f1;
+  --hover-beige: #ebe8dd;
   --borders: #dcd7c8;
   --section-titles: #6a603f;
   --list-item-text: #554a27;
+  --explanation: #2DD8E3;
   background-color: var(--main-beige);
 }
 
@@ -90,4 +92,9 @@ html, body, #app, #app>div, #root {
 .list-item {
     color: var(--list-item-text);
     padding-left: 19px;
+}
+
+.explanations {
+    display: flex;
+    flex-direction: column;
 }

@@ -1,4 +1,23 @@
 
+.result-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.result-act-all-classes {
+    display: flex;
+    column-gap: 30px;
+    width: 90%;
+    align-self: center;
+    justify-self: center;
+    padding-top: 15px;
+}
+
+.result-act-class {
+    display: flex;
+    flex-direction: column;
+}
+
 .classification-status-container {
     width: 90%;
     display: flex;
@@ -72,4 +91,15 @@ background: rgba(238, 235, 232, 0.976);        /* color of the tracking area */
 ul::-webkit-scrollbar-thumb {
 background-color: rgb(203, 203, 221);    /* color of the scroll thumb */
 border-radius: 10px;       /* roundness of the scroll thumb */
+}
+
+
+.results-rects-container {
+    display: grid;
+    grid-template-columns: repeat(6, 20px);
+    grid-auto-rows: 20px;
+    gap: 4px;
+    width: 140px;
+    height: 140px;
+    place-items: center;
 }

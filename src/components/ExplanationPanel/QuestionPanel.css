@@ -1,0 +1,22 @@
+.question-list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    align-items: center;
+}
+
+.question-container {
+    display: flex;
+    background-color: var(--light-beige);
+    width: 85%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.question {
+    padding-left: 20px;
+}
