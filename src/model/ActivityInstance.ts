@@ -74,6 +74,15 @@ class ActivityInstance {
         return this.name;
     }
 
+    hasEvent(event: string) {
+        for (const ev of this.events) {
+            if (ev.getType() === event.toLowerCase()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     notSatisfied(activity: Activity) {
         let actInstanceEvents = this.getEventList();
         let notSatisfiedInteractionAxs: string[] = [];
@@ -93,9 +102,9 @@ class ActivityInstance {
             let notSatevents = constraint.events.filter(ev => notSatisfiedInteractionAxs.includes(ev.toLowerCase()));
             if (notSatevents.length || !this.isConstraintSatisfied(constraint)) {
                 if (constraint.type === "time_distance") {
-                    notSatisfiedTemporalAxs.push("time_distance:" + constraint.events[0] + ":" + constraint.events[1]);
+                    notSatisfiedTemporalAxs.push("time_distance:" + constraint.events[0] + ":" + constraint.events[1] + ":" + constraint.th1 + ":" + constraint.th2);
                 } else if (constraint.type === "duration") {
-                    notSatisfiedTemporalAxs.push("duration:" + constraint.events[0]);
+                    notSatisfiedTemporalAxs.push("duration:" + constraint.events[0] + ":" + constraint.th1 + ":" + constraint.th2);
                 }
                 continue;
             }
@@ -103,9 +112,6 @@ class ActivityInstance {
 
         return notSatisfiedInteractionAxs.concat(notSatisfiedTemporalAxs);
     }
-
-
-
 
     isConstraintSatisfied(constraint: Constraint): boolean {
         const constraintType = constraint.type;

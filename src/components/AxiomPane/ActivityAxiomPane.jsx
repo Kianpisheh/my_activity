@@ -10,28 +10,28 @@ import "react-edit-text/dist/index.css";
 import Icons from "../../icons/Icons";
 
 function ActivityAxiomPane(props) {
-    const [addMenuVisibility, setAddMenuVisibility] = useState("hidden");
     const [definingRule, setDefiningRule] = useState(false);
     const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
 
-    const createInteractionAxiom = useCallback(() => {
-        setAddMenuVisibility("hidden");
-        setDefiningRule(true);
-        setRuleType(AxiomTypes.TYPE_INTERACTION);
-    }, []);
-    const createTimeConstraintAxiom = useCallback(() => {
-        setAddMenuVisibility("hidden");
-        setDefiningRule(true);
-        setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
-    }, []);
+    // const createInteractionAxiom = useCallback(() => {
+    //     setDefiningRule(true);
+    //     setRuleType(AxiomTypes.TYPE_INTERACTION);
+    // }, []);
+    // const createTimeConstraintAxiom = useCallback((axType) => {
+    //     setDefiningRule(true);
+    //     if (axType !== "") {
+    //         setRuleType(axType);
+    //     }
+    // }, []);
 
     let axioms = [];
     if (props.activity != null) {
         axioms = props.activity.getAxioms();
     }
 
-    function handleAxiomCreation(data, ev) {
+    function handleAxiomCreation(data) {
         setDefiningRule(false);
+        setRuleType(data.type);
         props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
     }
 
@@ -39,9 +39,7 @@ function ActivityAxiomPane(props) {
     if (ruleType === AxiomTypes.TYPE_INTERACTION) {
         objectList = [...Icons.getEventList()];
     } else if (
-        ruleType === AxiomTypes.TYPE_TIME_DISTANCE ||
-        ruleType === AxiomTypes.TYPE_DURATION
-    ) {
+        ruleType === AxiomTypes.TYPE_TEMPORAL) {
         objectList = AxiomManager.findInteractionObjects([...axioms]);
     }
 
@@ -86,10 +84,7 @@ function ActivityAxiomPane(props) {
                     }}>
                         <span className="sub-section-title">Interaction axioms</span>
                         <div style={{ display: "flex", marginLeft: 10 }}>
-                            <button
-                                className="add-int-btn" onClick={() => createInteractionAxiom()}>
-                                +
-                            </button>
+                            <button className="add-int-btn" onClick={() => { setRuleType(AxiomTypes.TYPE_INTERACTION); setDefiningRule(true); }}>+</button>
                         </div>
                     </div>
                     <div className="interaction-axioms-container">
@@ -100,7 +95,6 @@ function ActivityAxiomPane(props) {
                             config={props.config}
                             messageCallback={props.sendMessage}
                             explanation={props.explanation}
-                            onAddTimeConstraintAxiom={createInteractionAxiom}
                         ></Axiom>
                     </div>
                     <hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
@@ -108,7 +102,7 @@ function ActivityAxiomPane(props) {
                         <span className="sub-section-title">Temporal axioms</span>
                         <div style={{ display: "flex", marginLeft: 10 }}>
                             <button
-                                className="add-int-btn" onClick={() => createTimeConstraintAxiom()}>
+                                className="add-int-btn" onClick={() => { setRuleType(AxiomTypes.TYPE_TEMPORAL); setDefiningRule(true) }}>
                                 +
                             </button>
                         </div>
@@ -122,7 +116,6 @@ function ActivityAxiomPane(props) {
                                 config={props.config}
                                 messageCallback={props.sendMessage}
                                 explanation={props.explanation}
-                                onAddTimeConstraintAxiom={createTimeConstraintAxiom}
                             ></Axiom>
                         ))}
                     </div>{" "}
@@ -132,9 +125,9 @@ function ActivityAxiomPane(props) {
                 {definingRule && (
                     <AxiomCrafter
                         config={props.config}
-                        axiomType={ruleType}
                         objects={objectList}
                         handleAxiomCreation={handleAxiomCreation}
+                        ruleType={ruleType}
                     ></AxiomCrafter>
                 )}
             </div>

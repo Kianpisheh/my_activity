@@ -1,0 +1,40 @@
+.how-to-panel-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    justify-content: flex-start;
+    align-items: center;
+    width: 235px;
+    height: 240px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 5px;
+}
+
+.how-time-distance-axiom {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--light-beige);
+    height: 65px;
+    width: 85%;
+    justify-content: center;
+    align-items: center;
+    row-gap: 5px;
+}
+
+.how-time-distance-axiom:hover {
+    background-color: var(--hover-beige);
+
+}
+
+.howto-time-dist-icons-container {
+    display: flex;
+}
+
+.how-to-lower-td-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+

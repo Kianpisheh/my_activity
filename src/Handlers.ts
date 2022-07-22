@@ -27,7 +27,6 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
             values["time"],
             values["type"]
         );
-        console.log(newAxioms);
         newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 
     } else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED) {
@@ -60,7 +59,6 @@ function handleAxiomPaneMessages(message: string, values: { [key: string]: any }
         let currActivity = currentActivity;
         currActivity.addEventOR(Array.from(values.selectedEvents));
         newActivities[currentActivtyIdx] = currActivity;
-        console.log(currActivity.getEventORList());
 
     } else if (message === AxiomTypes.MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS) {
         let axioms = currentActivity.getAxioms();

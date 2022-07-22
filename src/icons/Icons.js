@@ -54,6 +54,8 @@ import SvgMicrowave from "./Microwave";
 import SvgMedicineContainer from "./MedicineContainer"
 import SvgPhoneBook from "./PhoneBook";
 import SvgRaisin from "./Raisin";
+import SvgUpArrow from "./UpArrow";
+import SvgDownArrow from "./DownArrow";
 
 class Icons {
 
@@ -124,7 +126,9 @@ class Icons {
         MedicineContainer: SvgMedicineContainer,
         PhoneBook: SvgPhoneBook,
         Raisins: SvgRaisin,
-        Rasins: SvgRaisin
+        Rasins: SvgRaisin,
+        UpArrow: SvgUpArrow,
+        DownArrow: SvgDownArrow
 
     }
 
@@ -190,7 +194,9 @@ class Icons {
         MedicineContainer: "#DF3A23",
         PhoneBook: "#A3BB18",
         Raisins: "#460B7E",
-        Rasins: "#460B7E"
+        Rasins: "#460B7E",
+        UpArrow: "#1391D8",
+        DownArrow: "#1391D8",
     }
 
     static getIcons() {

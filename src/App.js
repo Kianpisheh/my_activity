@@ -23,7 +23,6 @@ import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
 import ExplanationPanel from "./components/ExplanationPanel/ExplanationPanel";
-import RuleitemsPane from "./components/RuleitemsPane";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 
@@ -292,13 +291,9 @@ function App() {
                     currentActivity={currentActivity}
                     actInstances={activityInstances}
                     onActInstanceChange={handleActInstanceChange}
-                ></ExplanationPanel>
-                {/* <RuleitemsPane
-                    currentActivityInstance={activityInstances[currentActInstanceIdx]}
-                    ruleitems={ruleitems}
+                    ruleItems={ruleitems}
                     onRuleitemRequest={handleRuleitemRequest}
-                    classificationResult={classificationRes}
-                ></RuleitemsPane> */}
+                ></ExplanationPanel>
             </div>
 
             {/* <div

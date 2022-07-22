@@ -4,7 +4,7 @@
     row-gap: 15px;
     justify-content: flex-start;
     align-items: center;
-    width: 220px;
+    width: 235px;
     height: 240px;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -73,5 +73,4 @@
     justify-self: start;
     align-self: start;
 }
-
 

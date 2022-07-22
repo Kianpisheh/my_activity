@@ -1,14 +1,14 @@
 import "./RuleitemsPane.css";
 
-import Icons from "../icons/Icons";
+import Icons from "../../icons/Icons";
 
 import RuleitemsExplainer from "./RuleitemsExplainer";
-import { pascalCase } from "../Utils/utils";
+import { pascalCase } from "../../Utils/utils";
 
 function RuleitemsPane(props) {
     const { currentActivityInstance, ruleitems } = props;
 
-    if (Object.keys(ruleitems).length === 0 || !currentActivityInstance) {
+    if (!ruleitems || Object.keys(ruleitems)?.length === 0 || !currentActivityInstance) {
         return;
     }
 

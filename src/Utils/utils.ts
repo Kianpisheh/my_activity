@@ -268,6 +268,7 @@ export function getClassificationResult(activityInstances: ActivityInstance[], p
     let FP: number[] = [];
     let FN: number[] = [];
     let TP: number[] = [];
+    let TN: number[] = []
     let N: number = 0;
 
     let At = currentActivity.getName();
@@ -285,6 +286,8 @@ export function getClassificationResult(activityInstances: ActivityInstance[], p
         } else {
             if (Ap === At) {
                 FP.push(i);
+            } else {
+                TN.push(i)
             }
         }
     }
@@ -299,7 +302,7 @@ export function getClassificationResult(activityInstances: ActivityInstance[], p
             allFPs[activityInstances[idx].getType()] = [idx]
         }
     }
-    return { "TP": TP, "FN": FN, "N": N, "FP": allFPs };
+    return { "TP": TP, "FN": FN, "TN": TN, "N": N, "FP": allFPs };
 
 }
 

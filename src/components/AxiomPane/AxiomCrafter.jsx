@@ -9,9 +9,21 @@ function AxiomCrafter(props) {
 
     let initialTh1 = null;
     let initialTh2 = null;
-    if (props.axiomType === AxiomTypes.TYPE_TIME_DISTANCE || props.axiomType === AxiomTypes.TYPE_DURATION) {
+    if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
         initialTh1 = 5;
         initialTh2 = 20;
+    }
+
+    let axiomType = "";
+    if (props.ruleType === AxiomTypes.TYPE_INTERACTION) {
+        axiomType = AxiomTypes.TYPE_INTERACTION;
+    }
+
+    if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
+        axiomType =
+            selectedItems.length > 1
+                ? AxiomTypes.TYPE_TIME_DISTANCE
+                : AxiomTypes.TYPE_DURATION;
     }
 
     return (
@@ -27,21 +39,38 @@ function AxiomCrafter(props) {
                     }
                     const Icon = Icons.getIcon(pascalCase(key));
                     return (
-                        <div className="craft-icon-container"
+                        <div
+                            className="craft-icon-container"
                             key={idx}
                             style={{ border: itemBorder }}
                             onClick={(ev) => {
                                 let new_items = addToSelected(
                                     key,
                                     selectedItems,
-                                    props.axiomType,
+                                    props.ruleType,
                                     ev.shiftKey
                                 );
                                 setSelectedItems(new_items);
                             }}
                         >
-                            {Icon && <Icon style={{ "width": props.config.ic_w, "height": props.config.ic_h, fill: "#3A2A0D" }}></Icon>}
-                            <text style={{ fontSize: 9, textAlign: "center", padding: 0 }}>{key}</text>
+                            {Icon && (
+                                <Icon
+                                    style={{
+                                        width: props.config.ic_w,
+                                        height: props.config.ic_h,
+                                        fill: "#3A2A0D",
+                                    }}
+                                ></Icon>
+                            )}
+                            <text
+                                style={{
+                                    fontSize: 9,
+                                    textAlign: "center",
+                                    padding: 0,
+                                }}
+                            >
+                                {key}
+                            </text>
                         </div>
                     );
                 })}
@@ -49,7 +78,14 @@ function AxiomCrafter(props) {
             <div id="axiom-done-btn-div">
                 <button
                     id="axiom-crafter-done-btn"
-                    onClick={(ev) => props.handleAxiomCreation({ events: selectedItems, type: props.axiomType, th1: initialTh1, th2: initialTh2 }, ev)}
+                    onClick={() =>
+                        props.handleAxiomCreation({
+                            events: selectedItems,
+                            type: axiomType,
+                            th1: initialTh1,
+                            th2: initialTh2,
+                        })
+                    }
                 >
                     Done
                 </button>
@@ -58,9 +94,9 @@ function AxiomCrafter(props) {
     );
 }
 
-function addToSelected(key, items, axiomType, shiftKey) {
+function addToSelected(key, items, ruleType, shiftKey) {
     if (!items.includes(key) || shiftKey) {
-        if ((axiomType === AxiomTypes.TYPE_TIME_DISTANCE) && (items.length > 1)) {
+        if (ruleType === AxiomTypes.TYPE_TEMPORAL && items.length > 1) {
             // remove the oldest
             items = items.filter((item) => item !== items[0]);
         }
