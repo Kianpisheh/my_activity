@@ -35,18 +35,6 @@ function QuestionPanel(props) {
 
 export default QuestionPanel;
 
-function getQuestionType(selectedInstancesIdx) {
-	let questionType = "";
-	const selectedInstancesType = Object.keys(selectedInstancesIdx)[0];
-	if (selectedInstancesType === "FP") {
-		questionType = "why";
-	} else if (selectedInstancesType === "FN") {
-		questionType = "why_not";
-	}
-
-	return questionType;
-}
-
 function getQuestions(selectedIdx, activity, predActivity) {
 	let resTypes = Object.keys(selectedIdx);
 

@@ -1,11 +1,4 @@
-function createResRects(
-	data,
-	type,
-	rectSize,
-	onRectSelection,
-	selectedIdx,
-	highlightedIdx
-) {
+function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx) {
 	let color = "#CE3131";
 	let opacity = 1;
 	let res = [];
@@ -45,17 +38,9 @@ function createResRects(
 				}
 
 				return (
-					<svg
-						key={idx + "_rect-container"}
-						width={rectSize + 4}
-						height={rectSize + 4}
-						filter={fi}
-					>
+					<svg key={idx + "_rect-container"} width={rectSize + 4} height={rectSize + 4} filter={fi}>
 						<defs>
-							<linearGradient
-								id="gradient"
-								gradientTransform="rotate(109.6)"
-							>
+							<linearGradient id="gradient" gradientTransform="rotate(109.6)">
 								<stop offset="3.2%" stop-color="#B4B2B2" />
 								<stop offset="51.1%" stop-color="#4D8E7F" />
 							</linearGradient>
@@ -104,13 +89,7 @@ function CircleNum(num) {
 	return (
 		<svg width={22} height={22} viewBox="0 0 22 22">
 			<circle cx={10} cy={10} r={10} fill="#2DD8E3"></circle>
-			<text
-				x={11 - offset}
-				y="50%"
-				dominantBaseline={"middle"}
-				textAnchor={"middle"}
-				fontSize={11}
-			>
+			<text x={11 - offset} y="50%" dominantBaseline={"middle"} textAnchor={"middle"} fontSize={11}>
 				{num}
 			</text>
 		</svg>
@@ -131,7 +110,7 @@ export function subtractIntervals(ts1, te1, ts2, te2) {
 			[te2, te1],
 		];
 	} else {
-		return [[ts1, te1]];
+		return [];
 	}
 }
 

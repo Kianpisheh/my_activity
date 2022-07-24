@@ -354,8 +354,7 @@ export function handleWhyQuery(
 	const TPAxiomStats = getAxiomStats(instances, axioms, classificationResult["TP"]);
 
 	for (let i = 1; i < axioms.length; i++) {
-		let oo = { 0: TPAxiomStats };
-		getWhyHowToSuggestions(FPAxiomStats, TPAxiomStats, axioms[i]);
+		const temporalLimits = getWhyHowToSuggestions(FPAxiomStats, TPAxiomStats, axioms[i]);
 	}
 }
 
@@ -387,7 +386,7 @@ function getWhyHowToSuggestions(
 	TPAxiomStat: { [axIdx: number]: AxiomStat },
 	axiom: AxiomData
 ) {
-	const policy = "FP0";
+	let suggestions: { [type: string]: any } = {};
 	// remove all FPs
 	let newInterval = [];
 	const axType = axiom.getType();
@@ -412,31 +411,30 @@ function getWhyHowToSuggestions(
 			}
 		}
 
-		if (policy === "FP0") {
-			newInterval = subtractIntervals(axiom.getTh1(), axiom.getTh2(), tfp1, tfp2);
-		} else if (policy === "FN_SMAE") {
-			let newFPInterval = subtractIntervals(tfp1, tfp2, ttp1, ttp2);
-			if (newFPInterval.length) {
-				newInterval = subtractIntervals(
-					axiom.getTh1(),
-					axiom.getTh2(),
-					newFPInterval[0][0],
-					newFPInterval[0][1]
-				);
-			}
-			if (newFPInterval.length === 2) {
-				newInterval = newInterval.concat(
-					subtractIntervals(axiom.getTh1(), axiom.getTh2(), newFPInterval[1][0], newFPInterval[1][1])
-				);
-			}
-		}
+		newInterval = subtractIntervals(axiom.getTh1(), axiom.getTh2(), tfp1, tfp2);
+		suggestions["FP0"] = [...newInterval];
 
+        // FN_SAME suggestion
+		let newFPInterval = subtractIntervals(tfp1, tfp2, ttp1, ttp2);
+        if (newFPInterval.length === 0) {
+            continue;
+        }
+		if (newFPInterval.length) {
+			newInterval = subtractIntervals(axiom.getTh1(), axiom.getTh2(), newFPInterval[0][0], newFPInterval[0][1]);
+		}
+		if (newFPInterval.length === 2) {
+			newInterval = newInterval.concat(
+				subtractIntervals(axiom.getTh1(), axiom.getTh2(), newFPInterval[1][0], newFPInterval[1][1])
+			);
+		}
 		if (newInterval.length === 4) {
 			newInterval.splice(1, 2);
 			newInterval.push([ttp1, ttp2]);
 		}
+        if (newInterval.length) {
+		    suggestions["FN_SMAE"] = [...newInterval];
+        }
 	}
-
 	return newInterval;
 }
 
