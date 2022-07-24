@@ -9,7 +9,7 @@ import HowToPanel from "./HowToPanel";
 import RuleitemsPane from "./RuleitemsPane";
 
 import handleInstanceSelection from "./handler";
-import { getUnsatisfiedAxioms, handleWhyNotAxiomClick } from "./handler";
+import { answerQuestion, handleWhyNotAxiomClick, handleWhyQuery } from "./handler";
 
 function ExplanationPanel(props) {
 	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
@@ -18,6 +18,8 @@ function ExplanationPanel(props) {
 	const [whyNotHowToSuggestion, setWhyNotHowToSuggestion] = useState({});
 	const [newTPs, setNewTPs] = useState([]);
 	const [newFPs, setNewFPs] = useState([]);
+	const [fpAxiomStats, setFPAxiomStats] = useState({});
+	const [questionType, setQuestionType] = useState("");
 
 	console.log(selectedInstancesIdx);
 
@@ -32,13 +34,7 @@ function ExplanationPanel(props) {
 					newTPs={newTPs}
 					newFPs={newFPs}
 					onInstanceSelection={(idx, type) => {
-						setSelectedInstancesIdx(
-							handleInstanceSelection(
-								idx,
-								type,
-								selectedInstancesIdx
-							)
-						);
+						setSelectedInstancesIdx(handleInstanceSelection(idx, type, selectedInstancesIdx));
 						props.onActInstanceChange(idx);
 					}}
 					highlightedInstancesIdx={highlightedInstancesIdx}
@@ -51,26 +47,43 @@ function ExplanationPanel(props) {
 					selectedInstancesIdx={selectedInstancesIdx}
 					currentActInstanceIdx={props.currentActInstanceIdx}
 					actInstances={props.actInstances}
-					onQuestionAsked={(questionType) =>
-						answerQuestion(questionType)
+					onWhyQuery={() =>
+						handleWhyQuery(
+							props.actInstances,
+							props.currentActivity,
+							selectedInstancesIdx,
+							props.classificationResults
+						)
 					}
+					onQuestionAsked={(questionType) => {
+						const data = answerQuestion(
+							questionType,
+							props.actInstances,
+							props.currentActivity,
+							selectedInstancesIdx
+						);
+
+						setQuestionType(questionType);
+						if (data["dType"] === "axiom_stats") {
+							setFPAxiomStats(data["data"]);
+						} else if (data["dType"] === "unsatisfied_axioms") {
+							setUnsatisfiedAxioms(data["data"]);
+						}
+					}}
 				></QuestionPanel>
 			</div>
 			<div id="why-not-pan">
 				<WhyAndWhyNotPanel
 					axioms={unsatisfiedAxioms}
+					axiomStats={fpAxiomStats}
+					questionType={questionType}
+					currentActivity={props.currentActivity}
 					onWhyNotAxiomHover={(indeces) => {
-						console.log(indeces);
 						setHighlightedInstancesIdx(indeces);
 					}}
 					onAxiomClick={(indeces, ax) => {
 						setWhyNotHowToSuggestion(
-							handleWhyNotAxiomClick(
-								props.actInstances,
-								indeces,
-								ax,
-								props.classificationResults["TN"]
-							)
+							handleWhyNotAxiomClick(props.actInstances, indeces, ax, props.classificationResults["TN"])
 						);
 					}}
 				></WhyAndWhyNotPanel>

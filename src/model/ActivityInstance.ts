@@ -1,6 +1,9 @@
 import ActivityInstanceEvent, { IEvent } from "./ActivityInstanceEvent"
 import Activity from "./Activity";
 import Constraint from "./Constraint";
+import AxiomData from "./AxiomData";
+import AxiomTypes from "./AxiomTypes";
+import AxiomStat from "./AxiomStats";
 
 export interface IActivityInstance {
     name: string;
@@ -83,6 +86,39 @@ class ActivityInstance {
         return false;
     }
 
+    getStat(axiom: AxiomData) {
+        let axiomStat = new AxiomStat(axiom.getEvents());
+
+        const axiomType = axiom.getType();
+
+        // time_distance or duratiom axioms
+        if ((AxiomTypes.TYPE_DURATION + AxiomTypes.TYPE_TIME_DISTANCE).includes(axiomType)) {
+            if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+                const axiomEvents: string[] = axiom.getEvents();
+                const eventInstances1 = this.getEvent(axiomEvents[0]);
+                const eventInstances2 = this.getEvent(axiomEvents[1]);
+
+                for (let i = 0; i < eventInstances1.length; i++) {
+                    const duration1 = eventInstances1[i].getEndTime() - eventInstances1[i].getStartTime();
+                    axiomStat.updateEventDuration(duration1, axiomEvents[0]); 
+                    for (let j = 0; j < eventInstances2.length; j++) {
+                        const timeDsitance = eventInstances2[j].getStartTime() - eventInstances1[i].getEndTime();
+                        if (timeDsitance < 0) {
+                            continue;
+                        }
+                        axiomStat.updateTimeDistance(timeDsitance);
+                        if (j === 0) {
+                            const duration2 = eventInstances2[j].getEndTime() - eventInstances2[j].getStartTime();
+                            axiomStat.updateEventDuration(duration2, axiomEvents[1]); 
+                        }
+                    }
+                }
+            }
+        }
+
+        return axiomStat;
+    }
+
     notSatisfied(activity: Activity) {
         let actInstanceEvents = this.getEventList();
         let notSatisfiedInteractionAxs: string[] = [];
@@ -145,7 +181,7 @@ class ActivityInstance {
     getEvent(evq: string): ActivityInstanceEvent[] {
         let eventList: ActivityInstanceEvent[] = [];
         for (const event of this.events) {
-            if (event.getType() === evq) {
+            if (event.getType().toLowerCase() === evq.toLowerCase()) {
                 eventList.push(event);
             }
         }

@@ -8,7 +8,6 @@ export interface IEvent {
     location: string;
 }
 class ActivityInstanceEvent {
-
     name: string;
     type: string;
     startTime: number;

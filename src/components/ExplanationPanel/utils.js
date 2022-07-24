@@ -117,6 +117,24 @@ function CircleNum(num) {
 	);
 }
 
+export function subtractIntervals(ts1, te1, ts2, te2) {
+	// i1 is enclosed by i2
+	if (ts1 > ts2 && ts1 < te2 && te1 > ts2 && te1 < te2) {
+		return [];
+	} else if (ts1 > ts2 && ts1 < te2 && te1 > te2) {
+		return [[te2, te1]];
+	} else if (ts1 < ts2 && te1 > ts2 && te1 < te2) {
+		return [[ts1, ts2]];
+	} else if (ts1 < ts2 && te1 > te2) {
+		return [
+			[ts1, ts2],
+			[te2, te1],
+		];
+	} else {
+		return [[ts1, te1]];
+	}
+}
+
 export { createResRects, triangle, CircleNum };
 
 // // FP status

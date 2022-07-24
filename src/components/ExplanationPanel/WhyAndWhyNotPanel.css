@@ -4,7 +4,7 @@
     row-gap: 15px;
     justify-content: flex-start;
     align-items: center;
-    width: 235px;
+    width: 400px;
     height: 240px;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -72,5 +72,16 @@
     height: 100%;
     justify-self: start;
     align-self: start;
+}
+
+.ax-stat-container {
+    width: 85%;
+    background-color: var(--light-beige);
+    padding: 10px;
+
+}
+
+.ax-stat-container:hover {
+    background-color: var(--hover-beige);;
 }
 
