@@ -23,8 +23,8 @@ function QuestionPanel(props) {
 			<div className="question-list">
 				{questions.map((q, idx) => {
 					return (
-						<div key={idx} className="question-container" onClick={() => props.onWhyQuery()}>
-							{q}
+						<div key={idx} className="question-container" onClick={() => props.onQuery(q["type"])}>
+							{q["text"]}
 						</div>
 					);
 				})}
@@ -45,16 +45,18 @@ function getQuestions(selectedIdx, activity, predActivity) {
 		sample = "samples are";
 	}
 
-	let q = "";
+	let q = { text: "", type: "" };
 	if (resTypes[0] === "FP") {
-		q = (
+		q["type"] = "FP";
+		q["text"] = (
 			<span className="question" style={{ fontSize: 13 }}>
 				Why {thisThese} {sample} recognized as <span style={{ color: "#F16415" }}>{predActivity}</span>?
 			</span>
 		);
 		return [q];
 	} else if (resTypes[0] === "FN") {
-		q = (
+		q["type"] = "FN";
+		q["text"] = (
 			<span className="question" style={{ fontSize: 13 }}>
 				Why {thisThese} {sample} <span style={{ fontWeight: 600 }}>not</span> recognized as{" "}
 				<span style={{ color: "#F16415" }}>{activity}</span>?

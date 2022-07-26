@@ -187,7 +187,57 @@ class ActivityInstance {
         }
         return eventList;
     }
+
+
+    isSatisfied(axioms: AxiomData[]) {
+        let numSatisfied = 0;
+        for (const ax of axioms) {
+            const axType = ax.getType();
+            const event1 = ax.getEvents()[0];
+            const event2 = ax.getEvents()[1];
+
+            // interaction axiom
+            if (axType === AxiomTypes.TYPE_INTERACTION) {
+                if (this.hasEvent(event1)) {
+                    numSatisfied += 1;
+                }
+            }
+            // time-distance axiom
+            if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+                    if (this.hasEvent(event1) && this.hasEvent(event2)) {
+                        let evInstance1 = this.getEvent(event1.toLowerCase());
+                        let evInstance2 = this.getEvent(event2.toLowerCase());
+                        loop1: for (let i = 0; i < evInstance1.length; i++) {
+                            for (let j = 0; j < evInstance2.length; j++) {
+                                const timeDsitance = evInstance2[j].getStartTime() - evInstance1[i].getEndTime();
+                                if (timeDsitance < ax.getTh2() && timeDsitance > ax.getTh1()) {
+                                    numSatisfied += 1;
+                                    break loop1;
+                                }
+                            }
+                        }
+                    }
+            }
+            // duration axiom
+            if (axType === AxiomTypes.TYPE_DURATION) {
+                if (this.hasEvent(event1) && this.hasEvent(event2)) {
+                    let eventInstances: ActivityInstanceEvent[] = this.getEvent(event1);
+                    for (const evInstance of eventInstances) {
+                        const evDuration = evInstance.getDuration();
+                        if (evDuration < ax.getTh2() && evDuration > ax.getTh1()) {
+                            numSatisfied += 1;
+                            break
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return numSatisfied === axioms.length;
+    }
 }
+
 
 
 export default ActivityInstance;

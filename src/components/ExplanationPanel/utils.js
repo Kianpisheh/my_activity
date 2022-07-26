@@ -5,7 +5,8 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 	if (type === "TPFN") {
 		res = data["TP"].concat(data["FN"]);
 	} else {
-		res = data["FP"].concat(data["newFPs"]);
+		res = Array.from(new Set(data["FP"].concat(data["newFPs"])));
+		res = [...data["FP"]];
 	}
 
 	return (
@@ -17,10 +18,26 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 					resType = idx < data["TP"].length ? "TP" : "FN";
 				} else if (type === "FP") {
 					resType = "FP";
-					opacity = idx >= data["FP"].length ? 0.5 : 1;
 				}
-				if (data["newTPs"] && data["newTPs"].includes(r)) {
+
+				// removed false positives
+				if (data["FP"] && data["FP"].includes(r) && !data["newFPs"].includes(r) && data["queryMode"]) {
+					opacity = 0.5;
+				}
+
+				// new false positives
+				if (data["FP"] && data["newFPs"].includes(r) && !data["FP"].includes(r) && data["queryMode"]) {
+					opacity = 0.5;
+				}
+
+				// new true positives
+				if (data["TP"] && data["newTPs"].includes(r) && !data["TP"].includes(r) && data["queryMode"]) {
 					color = "url(#gradient)";
+				}
+
+				// removed true positives (i.e., new FNs)
+				if (data["TP"] && !data["newTPs"].includes(r) && data["TP"].includes(r) && data["queryMode"]) {
+					color = "url(#gradient2)";
 				}
 
 				// style border if the instance is selected
@@ -43,6 +60,11 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 							<linearGradient id="gradient" gradientTransform="rotate(109.6)">
 								<stop offset="3.2%" stop-color="#B4B2B2" />
 								<stop offset="51.1%" stop-color="#4D8E7F" />
+							</linearGradient>
+							<linearGradient id="gradient2" gradientTransform="rotate(109.6)">
+								<stop offset="0%" stop-color="rgba(77,142,127,1)" />
+								<stop offset="20%" stop-color="rgba(152,152,166,1)" />
+								<stop offset="100%" stop-color="rgba(210,210,210,1)" />
 							</linearGradient>
 						</defs>
 						<rect

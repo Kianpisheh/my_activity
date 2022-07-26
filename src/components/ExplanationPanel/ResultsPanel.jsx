@@ -5,14 +5,7 @@ import "./ResultsPanel.css";
 import { createResRects } from "./utils";
 
 function ResultsPanel(props) {
-	const {
-		selectedInstancesIdx,
-		classificationResult,
-		highlightedInstancesIdx,
-		newTPs,
-		newFPs,
-		newFPsLabel,
-	} = props;
+	const { selectedInstancesIdx, classificationResult, highlightedInstancesIdx, newTPs, newFPs, newFPsLabel } = props;
 
 	const { FP, FN, TP, N, TN } = props.classificationResult;
 	const [myTP, setMyTP] = useState(0);
@@ -24,10 +17,7 @@ function ResultsPanel(props) {
 		return;
 	}
 
-	if (
-		classificationResult["TP"] &&
-		classificationResult["TP"].length !== myTP
-	) {
+	if (classificationResult["TP"] && classificationResult["TP"].length !== myTP) {
 		setTargetChange(classificationResult["TP"].length - myTP);
 		setMyTP(classificationResult["TP"].length);
 	}
@@ -37,13 +27,8 @@ function ResultsPanel(props) {
 	let change = false;
 	if (FP) {
 		for (let [activity, fp] of Object.entries(FP)) {
-			if (
-				!myFP ||
-				!myFP[activity] ||
-				fp.length !== myFP[activity].length
-			) {
-				newFPChange[activity] =
-					fp.length - (myFP[activity]?.length ?? 0);
+			if (!myFP || !myFP[activity] || fp.length !== myFP[activity].length) {
+				newFPChange[activity] = fp.length - (myFP[activity]?.length ?? 0);
 				change = true;
 			}
 		}
@@ -63,6 +48,7 @@ function ResultsPanel(props) {
 				newFPs: newFPs,
 				newFPsLabel: newFPsLabel,
 				newTPs: newTPs,
+				queryMode: props.queryMode,
 			},
 			"TPFN",
 			rectSize,
@@ -75,7 +61,7 @@ function ResultsPanel(props) {
 		for (const [activityName, fp] of Object.entries(FP)) {
 			results.push(
 				createResRects(
-					{ FP: fp, newFPs: newFPs, newFPsLabel: newFPsLabel },
+					{ FP: fp, newFPs: newFPs, newFPsLabel: newFPsLabel, queryMode: props.queryMode },
 					"FP",
 					rectSize,
 					props.onInstanceSelection,

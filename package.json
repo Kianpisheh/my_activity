@@ -12,6 +12,7 @@
     "@types/react-dom": "^18.0.5",
     "axios": "^0.27.2",
     "hex-to-css-filter": "^5.4.0",
+    "lodash.isequal": "^4.5.0",
     "react": "^18.1.0",
     "react-custom-checkbox": "^2.0.2",
     "react-dom": "^18.1.0",

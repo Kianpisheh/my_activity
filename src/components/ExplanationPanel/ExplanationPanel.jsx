@@ -9,19 +9,14 @@ import HowToPanel from "./HowToPanel";
 import RuleitemsPane from "./RuleitemsPane";
 
 import handleInstanceSelection from "./handler";
-import { answerQuestion, handleWhyNotAxiomClick, handleWhyQuery } from "./handler";
+import { answerQuestion, handleWhyQuery, handleWhyNotQuery } from "./handler";
 
 function ExplanationPanel(props) {
 	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
 	const [unsatisfiedAxioms, setUnsatisfiedAxioms] = useState({});
 	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
-	const [whyNotHowToSuggestion, setWhyNotHowToSuggestion] = useState({});
-	const [newTPs, setNewTPs] = useState([]);
-	const [newFPs, setNewFPs] = useState([]);
 	const [fpAxiomStats, setFPAxiomStats] = useState({});
 	const [questionType, setQuestionType] = useState("");
-
-	console.log(selectedInstancesIdx);
 
 	return (
 		<div className="explanation-panel-container">
@@ -31,8 +26,9 @@ function ExplanationPanel(props) {
 					onInstanceClick={props.onInstanceClick}
 					classificationResult={props.classificationResults}
 					selectedInstancesIdx={selectedInstancesIdx}
-					newTPs={newTPs}
-					newFPs={newFPs}
+					newTPs={props.newTPs}
+					newFPs={props.newFPs}
+					queryMode={props.queryMode}
 					onInstanceSelection={(idx, type) => {
 						setSelectedInstancesIdx(handleInstanceSelection(idx, type, selectedInstancesIdx));
 						props.onActInstanceChange(idx);
@@ -47,14 +43,25 @@ function ExplanationPanel(props) {
 					selectedInstancesIdx={selectedInstancesIdx}
 					currentActInstanceIdx={props.currentActInstanceIdx}
 					actInstances={props.actInstances}
-					onWhyQuery={() =>
-						handleWhyQuery(
-							props.actInstances,
-							props.currentActivity,
-							selectedInstancesIdx,
-							props.classificationResults
-						)
-					}
+					onQuery={(queryType) => {
+						if (queryType === "FP") {
+							const whyHowToSuggestions = handleWhyQuery(
+								props.actInstances,
+								props.currentActivity,
+								selectedInstancesIdx,
+								props.classificationResults
+							);
+							props.onWhyHowToSuggestions(whyHowToSuggestions);
+						} else if (queryType === "FN") {
+							const whyNotHowToSuggestions = handleWhyNotQuery(
+								props.actInstances,
+								props.currentActivity,
+								selectedInstancesIdx,
+								props.classificationResults
+							);
+							props.onWhyHowToSuggestions(whyNotHowToSuggestions);
+						}
+					}}
 					onQuestionAsked={(questionType) => {
 						const data = answerQuestion(
 							questionType,
@@ -81,21 +88,21 @@ function ExplanationPanel(props) {
 					onWhyNotAxiomHover={(indeces) => {
 						setHighlightedInstancesIdx(indeces);
 					}}
-					onAxiomClick={(indeces, ax) => {
-						setWhyNotHowToSuggestion(
-							handleWhyNotAxiomClick(props.actInstances, indeces, ax, props.classificationResults["TN"])
-						);
-					}}
+					// onAxiomClick={(indeces, ax) => {
+					// 	setWhyNotHowToSuggestion(
+					// 		handleWhyNotAxiomClick(props.actInstances, indeces, ax, props.classificationResults["TN"])
+					// 	);
+					// }}
 				></WhyAndWhyNotPanel>
 			</div>
 			<div id="how-to-pan">
-				<HowToPanel
+				{/* <HowToPanel
 					whyNotHowToSuggestion={whyNotHowToSuggestion}
 					onHowToAxiomHover={(newTPs, newFPs) => {
 						setNewTPs(newTPs);
 						setNewFPs(newFPs);
 					}}
-				></HowToPanel>
+				></HowToPanel> */}
 			</div>
 			{/* <div id="how-to-pan">
                 <RuleitemsPane

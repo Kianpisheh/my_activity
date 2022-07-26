@@ -1,0 +1,54 @@
+.suggestions-container {
+ display: flex;
+ flex-direction: column;
+ row-gap: 15px;
+ align-items: center;
+}
+
+/* TemporalAdjustmentAxiom */
+.temp-adj-axiom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 65px;
+    background-color: var(--light-beige);
+    border-radius: 3px;
+}
+
+.temp-adj-axiom-container:hover {
+    background-color: var(--hover-beige);
+}
+
+.temp-adj-icons {
+    display: flex;
+    column-gap: 10px;
+    width: 55%;
+    justify-content: center;
+    align-items: center;
+}
+
+.temp-adj-limits {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+}
+
+.temp-adj-limits p {
+    font-size: 11px;
+    margin: 0px;
+    width: 140px;
+    color: #65654b;
+}
+
+/* DurationAdjustmentAxiom */
+.duration-adj-icons {
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    justify-content: center;
+    align-items: center;
+}

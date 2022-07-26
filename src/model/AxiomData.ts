@@ -1,3 +1,5 @@
+import AxiomTypes from "./AxiomTypes";
+
 interface IAxiom {
   events: string[];
   type: string;
@@ -56,6 +58,38 @@ class AxiomData {
   setTh2(th2: number) {
     this.th2 = th2;
   }
+
+  getAxiomString() {
+    if (this.type === AxiomTypes.TYPE_TIME_DISTANCE) {
+        return AxiomTypes.TYPE_TIME_DISTANCE + ":" + this.events[0] + ":" + this.events[1] + ":" + this.th1 + ":" + this.th2;
+    } else if (this.type === AxiomTypes.TYPE_DURATION) {
+        return AxiomTypes.TYPE_DURATION + ":" + this.events[0] + ":" + this.th1 + ":" + this.th2;
+    } else if (this.type === AxiomTypes.TYPE_INTERACTION) {
+        return AxiomTypes.TYPE_INTERACTION + ":" + this.events[0];
+    }
+  }
+
+  static axiomFromString(axiomString: string) {
+    const { axType, event1, event2, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString); 
+    const axiom = new AxiomData({type: axType, events: [event1, event2], th1:th1, th2: th2})
+    return axiom;
+  }
+
+
+static destrcutAxiomFromString(axiomString: string) {
+    const axType = axiomString.split(":")[0];
+    const event1: string = axiomString.split(":")[1];
+    const event2: string = axiomString.split(":")[2];
+    let th1: number = +axiomString.split(":")[3];
+    let th2: number = +axiomString.split(":")[4]; // axType: time_distance
+    if (axType === AxiomTypes.TYPE_DURATION) {
+        th1 = +axiomString.split(":")[2];
+        th2 = +axiomString.split(":")[3];
+    }
+
+    return { axType: axType, event1: event1, event2: event2, th1: th1, th2: th2 };
+}
+
 }
 
 export default AxiomData;
