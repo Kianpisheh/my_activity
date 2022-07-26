@@ -62,21 +62,6 @@ function ExplanationPanel(props) {
 							props.onWhyHowToSuggestions(whyNotHowToSuggestions);
 						}
 					}}
-					onQuestionAsked={(questionType) => {
-						const data = answerQuestion(
-							questionType,
-							props.actInstances,
-							props.currentActivity,
-							selectedInstancesIdx
-						);
-
-						setQuestionType(questionType);
-						if (data["dType"] === "axiom_stats") {
-							setFPAxiomStats(data["data"]);
-						} else if (data["dType"] === "unsatisfied_axioms") {
-							setUnsatisfiedAxioms(data["data"]);
-						}
-					}}
 				></QuestionPanel>
 			</div>
 			<div id="why-not-pan">

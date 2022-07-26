@@ -5,10 +5,16 @@ import AxiomData from "../../model/AxiomData";
 import AxiomTypes from "../../model/AxiomTypes";
 import HowToAxiom from "../../model/HowToAxiom";
 
-import {classifyInstances} from "./WhySuggestions";
 import isEqual from 'lodash.isequal';
+import { getAxiomStats } from "./WhySuggestions";
 
 export function getWhyNotHowToSuggestions(axiom: AxiomData, axiomIdx: number, currentActivity: Activity, selectedFNs: number[], classificationResult: { [resType: string]: any }, instances: ActivityInstance[]): HowToAxiom[] {
+    
+    // 1. find temporal statistics of the axiom if applicable
+    const FNInstances = instances.filter((val, i) => selectedFNs.includes(i));
+    const FNAxiomStat = getAxiomStats(FNInstances, axiom);
+    
+    // 2. find axiom suggestions (HowTo)
     let suggestions: HowToAxiom[] = [];
     const axType = axiom.getType();
     if (axType === AxiomTypes.TYPE_TIME_DISTANCE || axType === AxiomTypes.TYPE_DURATION) { 
@@ -63,10 +69,7 @@ function getTempAxiomRemovalSuggestion(
     let newFPs: number[] = [];
 
     return new HowToAxiom("temporal_axiom_removal", axiom, axiomIdx, [], "FN_MIN", [], [])
-    // classifyInstances(
-    //     actInstances.filter((val, i) => TNs.includes(i)),
-    //     axiomString
-    // );
+   
 }
 
 function getTimeExpansionSuggestion(

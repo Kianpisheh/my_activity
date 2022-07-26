@@ -6,7 +6,7 @@ import AxiomData from "../../model/AxiomData";
 import AxiomStat from "../../model/AxiomStats";
 
 
-import {getWhyHowToSuggestions} from "../HowToPanel/WhySuggestions";
+import {getWhyHowToSuggestions, getAxiomStats} from "../HowToPanel/WhySuggestions";
 import {getWhyNotHowToSuggestions} from "../HowToPanel/WhyNotSuggestions";
 import HowToAxiom from "../../model/HowToAxiom";
 
@@ -83,22 +83,22 @@ export function handleWhyNotAxiomClick(
     }
 }
 
-export function answerQuestion(
-    questionType: string,
-    instances: ActivityInstance[],
-    activity: Activity,
-    selectedInstancesIdx: { [resType: string]: number[] }
-) {
-    if (questionType === "why_not") {
-        const unsAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
-        return { data: unsAxioms, dType: "unsatisfied_axioms" };
-    } else if (questionType === "why") {
-        const axioms = activity.getAxioms();
-
-        const FPAxiomStats = getAxiomStats(instances, axioms, selectedInstancesIdx["FP"]);
-        return { data: FPAxiomStats, dType: "axiom_stats" };
-    }
-}
+// export function answerQuestion(
+//     questionType: string,
+//     instances: ActivityInstance[],
+//     activity: Activity,
+//     selectedInstancesIdx: { [resType: string]: number[] }
+// ) {
+//     if (questionType === "why_not") {
+//         const unsAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
+//         return { data: unsAxioms, dType: "unsatisfied_axioms" };
+//     } else if (questionType === "why") {
+//         const axioms = activity.getAxioms();
+//         const FPs = selectedInstancesIdx["FP"];
+//         const FPAxiomStats = getAxiomStats(instances.filter((val, i) => FPs.includes(i)), axioms);
+//         return { data: FPAxiomStats, dType: "axiom_stats" };
+//     }
+// }
 
 export function handleWhyNotQuery(
     instances: ActivityInstance[],
@@ -129,38 +129,12 @@ export function handleWhyQuery(
     classificationResult: { [type: string]: any }
 ) {
     const axioms = activity.getAxioms();
-    const FPAxiomStats = getAxiomStats(instances, axioms, selectedInstancesIdx["FP"]);
-    const TPAxiomStats = getAxiomStats(instances, axioms, classificationResult["TP"]);
-
     let suggestions: HowToAxiom[] = [];
     for (let i = 1; i < axioms.length; i++) {
-        suggestions = getWhyHowToSuggestions(FPAxiomStats, TPAxiomStats, axioms[i], i, activity, classificationResult, instances);
+        suggestions = getWhyHowToSuggestions(selectedInstancesIdx["FP"], axioms[i], i, activity, classificationResult, instances);
     }
 
     return suggestions;
-}
-
-function getAxiomStats(instances: ActivityInstance[], axioms: AxiomData[], selectedIdx: number[]) {
-    let stats: { [idx: number]: AxiomStat } = {};
-
-    let j = 0;
-    for (const ax of axioms) {
-        let i = 0;
-        let axiomStat: AxiomStat = new AxiomStat(ax.events);
-        for (const idx of selectedIdx) {
-            const stat = instances[idx].getStat(ax);
-            if (i === 0) {
-                axiomStat = stat;
-            } else {
-                axiomStat = axiomStat.merge(stat);
-            }
-            i += 1;
-        }
-        stats[j] = axiomStat;
-        j += 1;
-    }
-
-    return stats;
 }
 
 export default handleInstanceSelection;
