@@ -110,8 +110,8 @@ function CircleNum(num) {
 
 	return (
 		<svg width={22} height={22} viewBox="0 0 22 22">
-			<circle cx={10} cy={10} r={10} fill="#2DD8E3"></circle>
-			<text x={11 - offset} y="50%" dominantBaseline={"middle"} textAnchor={"middle"} fontSize={11}>
+			<circle cx={10} cy={10} r={10} fill="var(--explanation)"></circle>
+			<text x={11 - offset} y="50%" dominantBaseline={"middle"} textAnchor={"middle"} fontSize={11} fill="white">
 				{num}
 			</text>
 		</svg>

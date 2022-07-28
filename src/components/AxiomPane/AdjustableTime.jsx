@@ -58,7 +58,7 @@ function AdjustableTime(props) {
                         )
                     }
                     onMouseUp={(ev) => {
-                        props.messageCallback(AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE, {})
+                        props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_FINALIZED, {})
                     }}
                     style={{ width: 45, textAlign: "center", cursor: "default", fontSize: 10, color: "#605f5f" }}
                 />

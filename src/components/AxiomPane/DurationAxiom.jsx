@@ -11,87 +11,80 @@ import { pascalCase } from "../../Utils/utils";
 function DurationAxiom(props) {
     const [hovered, setHovered] = useState(false);
 
-    let events = [];
-    const whyIds = useContext(WhyAxiomIdsContext);
+    const axiom = props.data;
+	const th1 = axiom.getTh1();
+	const th2 = axiom.getTh2();
+	const events = axiom.getEvents();
+	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
+	const TimeDistIcon = Icons.getIcon("TimeDistance3");
 
-    if (props.data != null) {
-        events = props.data.getEvents();
-    } else {
-        return;
-    }
+    // check if this is an unsatisfied axiom based on the user query
+	let numnum = [];
+	// for (const [axiomString, selFNIds] of Object.entries(props.unsatisfiedAxioms)) {
+	// 	const ax = AxiomData.axiomFromString(axiomString);
+	// 	if (isEqual(ax, props.data)) {
+	// 		numnum = (
+	// 			<div id="why-not-num-container" onClick={() => props.onUnsatisfiedAxiomClick}>
+	// 				{CircleNum(selFNIds.length)}
+	// 			</div>
+	// 		);
+	// 	}
+	// }
 
-    let axiomText = "";
-    if (props.data.getTh1() !== -1) {
-        axiomText += props.data.getTh1() + " <";
-    }
-    axiomText += " duration";
-    if (props.data.getTh2() !== -1) {
-        axiomText += " < " + props.data.getTh2();
-    }
-
-    let divStyle = {};
-    if (whyIds.includes(props.idx)) {
-        divStyle = {
-            borderColor: "#ADCEE8",
-            border: "1px",
-            borderStyle: "solid",
-            boxShadow: "0px 0px 4px 4px #2C87DB",
-            opacity: 0.7,
-        };
-    }
-    const Icon = Icons.getIcon(pascalCase(events[0]), true);
-    const TimeDistIcon = Icons.getIcon("TimeDistance");
     return (
-        <div className="time-dist-axiom-container">
-            <div className="time-axiom-main-content-2" onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}>
-                <div
-                    className="rem-btn-td"
-                >
-                    {hovered && (
-                        <button
-                            className="remove-axiom-btn-td"
-                            onClick={() =>
-                                props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
-                                    idx: props.idx,
-                                })
-                            }
-                        >
-                            X
-                        </button>
-                    )}
-                </div>
-                <div className="time-upper-div">
-                    <div className="time-distance-icons-2">
-                        <Icon
-                            style={{
-                                width: props.config.ic_w,
-                                height: props.config.ic_h,
-                                fill: "#3A2A0D",
-                            }}
-                        ></Icon>
-                    </div>
-                </div>
-                <div className="time-lower-div">
+		<div
+			className="temp-adj-axiom-container2"
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+		>
+			<div className="duration-adj-icons">
+				<div className="icon-container">
+					<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25, marginTop: -15 }}></Icon1>
+				</div>
+				<div className="icon-container" style={{ width: 100, height: 10, marginTop: -17 }}>
+					<TimeDistIcon style={{ fill: "#807457", width: 100, height: 10 }}></TimeDistIcon>
+				</div>
+			</div>
+			<div id="vertical-line-sep" style={{ borderLeft: "1px solid #A5A2A2", height: "80%" }}></div>
+			<div className="temp-adj-limits2">
+				<span style={{display: "flex", flexDirection: "row"}}>
+					<p style={{width: 110}}>
+						at least <span style={{ fontWeight: 600 }}>{props.data.getTh1()}</span> sec later{" "}
+					</p>
+					<AdjustableTime
+						key={"more than"}
+						idx={props.idx}
+						data={props.data}
+						title="more than"
+						messageCallback={props.messageCallback}
+					></AdjustableTime>
+				</span>
+				<span style={{display: "flex", flexDirection: "row"}}>
+					<p style={{width: 110}}>
+						at most <span style={{ fontWeight: 600 }}>{props.data.getTh2()}</span> sec later
+					</p>
                     <AdjustableTime
-                        idx={props.idx}
-                        key="more than"
-                        data={props.data}
-                        title="more than"
-                        messageCallback={props.messageCallback}
-                    ></AdjustableTime>
-                    <span style={{ fontSize: 12, color: "#605f5f" }}>{axiomText}</span>
-                    <AdjustableTime
-                        idx={props.idx}
-                        key="less than"
-                        data={props.data}
-                        title="less than"
-                        messageCallback={props.messageCallback}
-                    ></AdjustableTime>
-                </div>
-            </div>
-        </div>
-    );
+						key={"less than"}
+						idx={props.idx}
+						data={props.data}
+						title="less than"
+						messageCallback={props.messageCallback}
+					></AdjustableTime>
+				</span>
+			</div>
+            <div className="rem-btn-td2">
+                {(hovered && numnum.length === 0) && (
+                    <button
+                        className="remove-axiom-btn-td"
+                    onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}
+                    >
+                    X
+                </button>
+                )}
+			</div>
+            {numnum}
+		</div>
+	);
 }
 
 export default DurationAxiom;

@@ -1,4 +1,7 @@
 {
-    "window.zoomLevel": 0,
-    "editor.mouseWheelZoom": true
+	"window.zoomLevel": 0,
+	"editor.mouseWheelZoom": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true
 }

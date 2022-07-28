@@ -1,50 +1,56 @@
-.time-dist-axiom-container {
-    display: flex;
-    flex-direction: column;
-    width: 86%;
-    height: 85px;
+.time-dist-axiom-container2 {
+	display: flex;
+	flex-direction: column;
+	width: 86%;
+	height: 85px;
 }
 
 .time-axiom-main-content-2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #f9f7f1;
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #f9f7f1;
+	border-radius: 5px;
+	width: 100%;
+	height: 100%;
 }
 
 .time-distance-icons-2 {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 10px;
 }
 
 .rem-btn-td {
-    display: flex;
-    width: 0%;
-    height: 0%;
-    align-self: flex-end;
-    margin-right: 10px;
+	display: flex;
+	width: 0%;
+	height: 0%;
+	align-self: flex-end;
+	margin-right: 10px;
 }
 
 .remove-axiom-btn-td {
-    justify-content: center;
-    align-items: center;
-    width: 18px;
-    height: 18px;
-    text-align: justify;
-    border-radius: 100%;
-    border: none;
-    outline: none;
-    background-color: #b33d2d;
-    color: #f9f7f1;
-    font-size: 9px;
-    cursor: pointer;
-    display: flex;
-    margin-top: -15px;
+	justify-content: center;
+	align-items: center;
+	width: 18px;
+	height: 18px;
+	text-align: justify;
+	border-radius: 100%;
+	border: none;
+	outline: none;
+	background-color: #b33d2d;
+	color: #f9f7f1;
+	font-size: 9px;
+	cursor: pointer;
+	display: flex;
+	margin-top: -15px;
+}
+
+#why-not-num-container {
+	height: 100%;
+	justify-self: start;
+	align-self: start;
 }

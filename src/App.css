@@ -1,100 +1,102 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap');
-.App{
-  display: grid;
-  grid-template-columns: 250px 1fr 1fr 1fr;
-  grid-template-rows: 380px 1fr;
-  height: 100%;
-  --main-beige: #f0ede4;
-  --light-beige: #f9f7f1;
-  --hover-beige: #ebe8dd;
-  --borders: #dcd7c8;
-  --section-titles: #6a603f;
-  --list-item-text: #554a27;
-  --explanation: #2DD8E3;
-  background-color: var(--main-beige);
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap");
+.App {
+	display: grid;
+	grid-template-columns: 250px 1fr 1fr 1fr;
+	grid-template-rows: 380px 1fr;
+	height: 100%;
+	--main-beige: #f0ede4;
+	--light-beige: #f9f7f1;
+	--hover-beige: #ebe8dd;
+	--borders: #dcd7c8;
+	--section-titles: #6a603f;
+	--list-item-text: #554a27;
+	--explanation: #2a86e3;
+	background-color: var(--main-beige);
 }
 
 body {
-    font-family: 'Titillium Web', sans-serif;
-  }
+	font-family: "Titillium Web", sans-serif;
+}
 
-html, body, #app, #app>div, #root {
-  height: 100%
+html,
+body,
+#app,
+#app > div,
+#root {
+	height: 100%;
 }
 
 #act-instances-pane {
-    padding-top: 20px;
+	padding-top: 20px;
 }
 
 #act-instance-vis {
-    padding-top: 20px;
-    grid-column: 2 / 5;
-    border-left: 1px solid var(--borders);
+	padding-top: 20px;
+	grid-column: 2 / 5;
+	border-left: 1px solid var(--borders);
 }
 
 #activities-pane {
-    padding-top: 20px;
-    border-right: 1px solid var(--borders);
-    border-top: 1px solid var(--borders);
+	padding-top: 20px;
+	border-right: 1px solid var(--borders);
+	border-top: 1px solid var(--borders);
 }
 
 #axiom-pane {
-    border-top: 1px solid var(--borders);
-    border-right: 1px solid var(--borders);
+	border-top: 1px solid var(--borders);
+	border-right: 1px solid var(--borders);
 }
 
 #explanations {
-    background-color: var(--main-beige);
-    height: 100%;
-    width: 100%;
-    grid-column: 4 / 5;
-    border-top: 1px solid var(--borders);
+	background-color: var(--main-beige);
+	height: 100%;
+	width: 100%;
+	grid-column: 4 / 5;
+	border-top: 1px solid var(--borders);
 }
 
 .classification-status-div {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 35%;
-    margin-top: 30px;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height: 35%;
+	margin-top: 30px;
 }
 
 .bottom-tools-container {
-    display: flex;
-  width: 100%;
-  justify-content: center;
-  margin-top: 25px;
-  height: 40%;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	margin-top: 25px;
+	height: 40%;
 }
 
 .axiom-pane-container {
-  display: flex;
-  width: 36%;
-  align-items: center;
-  justify-content: center;
-  margin-top: 25px;
-  height: 400px;
+	display: flex;
+	width: 36%;
+	align-items: center;
+	justify-content: center;
+	margin-top: 25px;
+	height: 400px;
 }
 
 .ruleitems-container {
-    width: 40%;
+	width: 40%;
 }
 
-
 .section-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--section-titles);
-    padding-left: 15px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--section-titles);
+	padding-left: 15px;
 }
 
 .list-item {
-    color: var(--list-item-text);
-    padding-left: 19px;
+	color: var(--list-item-text);
+	padding-left: 19px;
 }
 
 .explanations {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }

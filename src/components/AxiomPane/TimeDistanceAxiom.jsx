@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 
 import "./TimeDistanceAxiom.css";
+import AxiomData from "../../model/AxiomData";
+import WhyNotWhatQueryController from "../../Controllers/WhyNotWhatQueryController";
 
 import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 
-function TimeDistanceInteraction(props) {
+import isEqual from "lodash.isequal";
+import { CircleNum } from "../ExplanationPanel/utils";
+
+function TimeDistanceAxiom(props) {
 	const [hovered, setHovered] = useState(false);
 
 	let events = [];
@@ -18,81 +23,39 @@ function TimeDistanceInteraction(props) {
 		return;
 	}
 
-	let axiomText = "";
-	if (props.data.getTh1() !== null) {
-		axiomText += props.data.getTh1() + " <";
-	}
-	axiomText += " duration";
-	if (props.data.getTh2() !== null) {
-		axiomText += " < " + props.data.getTh2();
-	}
-
 	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 	const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
-	const TimeDistIcon = Icons.getIcon("TimeDistance");
+	const TimeDistIcon = Icons.getIcon("TimeDistance2");
 
-	// check if this axiom is satisfied
-	let opacity = 1;
-	if (props.explanation && props.explanation.getType() === "why_not") {
-		opacity = props.explanation.contains(props.data) ? 1 : 0.3;
-		if (props.explanation.contains(props.data)) {
-			let x = 1;
-		}
-	}
+	// check if this is an unsatisfied axiom based on the user query
+	const numnum = getWhyNotNum(props.unsatisfiedAxioms, props.data, props.onWhyNotWhatQuery, props.activityInstances);
 
 	return (
-		<div className="time-dist-axiom-container">
+		<div
+			className="temp-adj-axiom-container2"
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+		>
+			<div className="temp-adj-icons">
+				<div className="icon-container">
+					<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon1>
+				</div>
+				<div className="icon-container" style={{ width: 100, height: 25 }}>
+					<TimeDistIcon style={{ fill: "#807457", width: 100, height: 25 }}></TimeDistIcon>
+				</div>
+				<div className="icon-container" style={{ width: 25, height: 25 }}>
+					<Icon2 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon2>
+				</div>
+			</div>
 			<div
-				className="time-axiom-main-content"
-				onMouseEnter={() => setHovered(true)}
-				onMouseLeave={() => setHovered(false)}
-			>
-				<div className="rem-btn-td">
-					{hovered && (
-						<button
-							className="remove-axiom-btn-td"
-							onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}
-						>
-							X
-						</button>
-					)}
-				</div>
-				<div className="time-upper-div">
-					<div
-						className="time-distance-icons"
-						onClick={() =>
-							props.messageCallback(AxiomTypes.MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS, { idx: props.idx })
-						}
-					>
-						<Icon1
-							style={{
-								width: props.config.ic_w,
-								height: props.config.ic_h,
-								fill: "#3A2A0D",
-							}}
-							opacity={opacity}
-						></Icon1>
-						<TimeDistIcon
-							style={{
-								width: 65,
-								height: 30,
-								fill: "#807457",
-								marginTop: "-8px",
-							}}
-							opacity={opacity}
-						></TimeDistIcon>
-						<Icon2
-							style={{
-								width: props.config.ic_w,
-								height: props.config.ic_h,
-								fill: "#3A2A0D",
-							}}
-							opacity={opacity}
-						></Icon2>
-					</div>
-				</div>
-
-				<div className="time-lower-div">
+				id="vertical-line-sep"
+				style={{ borderLeft: "1px solid #A5A2A2", height: "80%", alignSelf: "center" }}
+			></div>
+			<div className="temp-adj-limits2">
+				<span style={{ display: "flex", flexDirection: "row" }}>
+					<p style={{ width: 110 }}>
+						at least <span style={{ fontWeight: 600 }}>{props.data.getTh1()}</span> sec later{" "}
+					</p>
 					<AdjustableTime
 						key={"more than"}
 						idx={props.idx}
@@ -100,7 +63,11 @@ function TimeDistanceInteraction(props) {
 						title="more than"
 						messageCallback={props.messageCallback}
 					></AdjustableTime>
-					<span style={{ fontSize: 12, color: "#605f5f" }}>{axiomText}</span>
+				</span>
+				<span style={{ display: "flex", flexDirection: "row" }}>
+					<p style={{ width: 110 }}>
+						at most <span style={{ fontWeight: 600 }}>{props.data.getTh2()}</span> sec later
+					</p>
 					<AdjustableTime
 						key={"less than"}
 						idx={props.idx}
@@ -108,10 +75,43 @@ function TimeDistanceInteraction(props) {
 						title="less than"
 						messageCallback={props.messageCallback}
 					></AdjustableTime>
-				</div>
+				</span>
 			</div>
+			<div className="rem-btn-td2">
+				{hovered && numnum.length === 0 && (
+					<button
+						className="remove-axiom-btn-td"
+						onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}
+					>
+						X
+					</button>
+				)}
+			</div>
+			{numnum}
 		</div>
 	);
 }
 
-export default TimeDistanceInteraction;
+export default TimeDistanceAxiom;
+
+function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances) {
+	let numnum = [];
+	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
+		const ax = AxiomData.axiomFromString(axiomString);
+		if (isEqual(ax, axiom)) {
+			const instances = activityInstances.filter((inst, idx) => selFNIds.includes(idx));
+			numnum = (
+				<div
+					id="why-not-num-container"
+					onClick={() => {
+						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
+						onWhyNotWhatQuery(whatExp);
+					}}
+				>
+					{CircleNum(selFNIds.length)}
+				</div>
+			);
+		}
+	}
+	return numnum;
+}

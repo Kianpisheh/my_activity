@@ -35,16 +35,13 @@ function App() {
 	const [ruleitems, setRuleitems] = useState({});
 	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
 	const [whyHowToSuggestions, setWhyHowToSuggestions] = useState([]);
+	const [unsatisfiedAxioms, setUnsatisfiedAxioms] = useState({});
 	const [scale, setScale] = useState([25, 25]);
 	const [newTPs, setNewTPs] = useState([]);
 	const [newFPs, setNewFPs] = useState([]);
 	const [queryMode, setQueryMode] = useState(false);
-	const [action, setAction] = useState({
-		required: false,
-		x: 0,
-		y: 0,
-	});
 	const [explanation, setExplanations] = useState(null);
+    const [whyNotWhat, setWhyNotWhat] = useState(null);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -61,13 +58,21 @@ function App() {
 				currentActivtyIdx,
 				currentActivity
 			);
-
-			setActivities(
-				newActivities,
-				updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx)
-			);
+         
+            setActivities(
+                newActivities,
+                handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx)
+            );
+            
 		}
 	}
+
+    function handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx) {
+        if (message === AxiomTypes.MSG_TIME_CONSTRAINT_FINALIZED) {
+            updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx);
+        }
+
+    }
 
 	let currentActivity = null;
 	if (currentActivtyIdx >= 0) {
@@ -141,11 +146,6 @@ function App() {
 		}
 
 		setScale(newScale);
-	}
-
-	function handleActionRequest(itemID, x, y) {
-		setAction({ required: true, x: x, y: y });
-		setCurrentActivityIdx(itemID);
 	}
 
 	//-----------------Explanations----------------------//
@@ -250,7 +250,6 @@ function App() {
 				<ActivityPane
 					activities={activities}
 					onActivitiyListChange={handleActivityListChange}
-					onAction={handleActionRequest}
 					currentActivityIdx={currentActivtyIdx}
 				></ActivityPane>
 			</div>
@@ -261,6 +260,9 @@ function App() {
 						sendMessage={onAxiomPaneMessage}
 						config={config}
 						explanation={explanation}
+						unsatisfiedAxioms={unsatisfiedAxioms}
+                        onWhyNotWhatQuery={(what) => {console.log(what); setWhyNotWhat(what);}}
+                        activityInstances={activityInstances}
 					></ActivityAxiomPane>
 				)}
 			</div>
@@ -273,6 +275,8 @@ function App() {
 						setNewFPs(newFPs);
 						setQueryMode(queryMode);
 					}}
+                    whyNotWhat={whyNotWhat}
+                    onWhyNotHowTo={(suggestions) => setWhyHowToSuggestions(suggestions)}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
@@ -290,90 +294,9 @@ function App() {
 					newFPs={newFPs}
 					queryMode={queryMode}
 					onRuleitemRequest={handleRuleitemRequest}
-					onWhyHowToSuggestions={(suggestions) => setWhyHowToSuggestions(suggestions)}
+					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
 				></ExplanationPanel>
 			</div>
-
-			{/* <div
-                className="action-menue-container"
-                style={{ position: "absolute", left: action.x, top: action.y }}
-            >
-                {action.required && (
-                    <ActionMenu
-                        className="action-menue"
-                        actions={["Why?", "Why not?"]}
-                        onExplanationRequest={handleExplanationRequest}
-                    ></ActionMenu>
-                )}
-            </div>
-
-            <div
-                className="left-pane-container"
-                onClick={() => {
-                    setAction({ required: false, x: 0, y: 0 });
-                }}
-                style={{ width: leftPaneWidth }}
-            >
-                <ActivityInstancePane
-                    activtiyInstances={activityInstances}
-                    onSelectedItemChange={handleActInstanceChange}
-                    currentActInstanceIdx={currentActInstanceIdx}
-                    activities={activities}
-                    predictedActivities={predictedActivities}
-                ></ActivityInstancePane>
-                <ActivityPane
-                    activities={activities}
-                    onActivitiyListChange={handleActivityListChange}
-                    onAction={handleActionRequest}
-                    currentActivityIdx={currentActivtyIdx}
-                ></ActivityPane>
-                <div className="classification-status-div">
-                    <ActivityClassificationStatus
-                        parentWidth={leftPaneWidth}
-                        onInstanceClick={handleInstanceClick}
-                        classificationResult={classificationRes}
-                    ></ActivityClassificationStatus>
-                </div>
-            </div>
-
-            <div
-                className="tools-container"
-                onClick={() => {
-                    setAction({ required: false, x: 0, y: 0 });
-                }}
-            >
-                <ActivityInstanceVis
-                    config={config}
-                    activity={activityInstances[currentActInstanceIdx]}
-                    predictedActivities={predictedActivities}
-                    explanation={explanation}
-                    onScaleChange={handleScaleChange}
-                    currentActivityIdx={currentActivtyIdx}
-                    currentActInstanceIdx={currentActInstanceIdx}
-                    merge={[true, true]}
-                ></ActivityInstanceVis>
-                <div className="bottom-tools-container">
-                    <div className="axiom-pane-container">
-                        {currentActivity && (
-                            <ActivityAxiomPane
-                                activity={currentActivity}
-                                sendMessage={onAxiomPaneMessage}
-                                config={config}
-                                explanation={explanation}
-                            ></ActivityAxiomPane>
-                        )}
-                    </div>
-                    <div className="ruleitems-container">
-                        <RuleitemsPane
-                            currentActivityInstance={activityInstances[currentActInstanceIdx]}
-                            ruleitems={ruleitems}
-                            onRuleitemRequest={handleRuleitemRequest}
-                            classificationResult={classificationRes}
-                        ></RuleitemsPane>
-                        <button onClick={() => handleRuleitemRequest()}>Ruleitems</button>
-                    </div> */}
-			{/* </div> */}
-			{/* </div> */}
 		</div>
 	);
 }

@@ -1,12 +1,9 @@
 import Activity from "../../model/Activity";
 import ActivityInstance from "../../model/ActivityInstance";
-import ActivityInstanceEvent from "../../model/ActivityInstanceEvent";
 import AxiomTypes from "../../model/AxiomTypes";
 import AxiomData from "../../model/AxiomData";
-import AxiomStat from "../../model/AxiomStats";
 
-
-import {getWhyHowToSuggestions, getAxiomStats} from "../HowToPanel/WhySuggestions";
+import {getWhyHowToSuggestions} from "../HowToPanel/WhySuggestions";
 import {getWhyNotHowToSuggestions} from "../HowToPanel/WhyNotSuggestions";
 import HowToAxiom from "../../model/HowToAxiom";
 
@@ -20,8 +17,7 @@ function handleInstanceSelection(idx: number, type: string, selectedInstances: {
         }
     }
 
-    if (!new_selectedIdx[type]) {
-        new_selectedIdx[type] = [];
+    if (!new_selectedIdx[type]) {new_selectedIdx[type] = [];
     }
 
     if (new_selectedIdx[type].includes(idx)) {
@@ -55,61 +51,16 @@ export function getUnsatisfiedAxioms(
     return allAxioms;
 }
 
-export function handleWhyNotAxiomClick(
-    actInstances: ActivityInstance[],
-    instancesIdx: number[],
-    axiom: string,
-    TNInstancesIdx: number[]
-) {
-    let axiomChangeSuggestions: { [type: string]: any } = {};
-    const axType = axiom.split(":")[0];
-
-    if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
-        axiomChangeSuggestions[AxiomTypes.AX_CHANGE_LIMIT_EXPANTION] = FNTimeDistanceExpantionHowTo(
-            actInstances,
-            instancesIdx,
-            TNInstancesIdx,
-            axiom
-        );
-
-        // find FN changes
-        axiomChangeSuggestions[AxiomTypes.AX_CHANGE_TEMPORAL_REMOVAL] = FNTimeDistanceRemoveHowTo(
-            actInstances,
-            instancesIdx,
-            TNInstancesIdx,
-            axiom
-        );
-        return axiomChangeSuggestions;
-    }
-}
-
-// export function answerQuestion(
-//     questionType: string,
-//     instances: ActivityInstance[],
-//     activity: Activity,
-//     selectedInstancesIdx: { [resType: string]: number[] }
-// ) {
-//     if (questionType === "why_not") {
-//         const unsAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
-//         return { data: unsAxioms, dType: "unsatisfied_axioms" };
-//     } else if (questionType === "why") {
-//         const axioms = activity.getAxioms();
-//         const FPs = selectedInstancesIdx["FP"];
-//         const FPAxiomStats = getAxiomStats(instances.filter((val, i) => FPs.includes(i)), axioms);
-//         return { data: FPAxiomStats, dType: "axiom_stats" };
-//     }
-// }
-
 export function handleWhyNotQuery(
     instances: ActivityInstance[],
     activity: Activity,
     selectedInstancesIdx: { [resType: string]: number[] },
     classificationResult: { [type: string]: any }
 ) {
-    const unsAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
+    const unsatisfiedAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
     let i = 0;
     let suggestions: HowToAxiom[] = [];
-    for (const [ax, selectedFNs] of Object.entries(unsAxioms)) {
+    for (const [ax, selectedFNs] of Object.entries(unsatisfiedAxioms)) {
         const axiom = AxiomData.axiomFromString(ax);
         if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
             i += 1;
@@ -130,9 +81,7 @@ export function handleWhyQuery(
 ) {
     const axioms = activity.getAxioms();
     let suggestions: HowToAxiom[] = [];
-    for (let i = 1; i < axioms.length; i++) {
-        suggestions = getWhyHowToSuggestions(selectedInstancesIdx["FP"], axioms[i], i, activity, classificationResult, instances);
-    }
+    suggestions = getWhyHowToSuggestions(selectedInstancesIdx["FP"], axioms[1], 1, activity, classificationResult, instances);
 
     return suggestions;
 }

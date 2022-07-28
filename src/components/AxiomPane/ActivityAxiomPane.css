@@ -1,132 +1,134 @@
 .ax-container {
-    display: flex;
-    width: 100%;
-    height: 100%;
+	display: flex;
+	width: 100%;
+	height: 100%;
 }
 
 .main-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    background-color: var(--main-beige);
-    min-height: 180px;
-    max-height: 450px;
-    overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 100%;
+	background-color: var(--main-beige);
+	min-height: 180px;
+	max-height: 650px;
+	overflow-y: auto;
 }
 
 .axiom-crafter-container {
-    width: 0%;
-    height: 100%;
+	display: flex;
+	width: 85%;
+	height: 100%;
+	align-self: center;
 }
 
 .temporal-axioms-container {
-    align-items: center;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
-    max-height: 450px;
+	align-items: center;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	justify-content: flex-start;
+	width: 100%;
+	height: 100%;
+	max-height: 450px;
 }
 
 .Axiom-pane {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .add-ui {
-    display: flex;
-    width: 100%;
-    column-gap: 10px;
-    align-self: flex-end;
+	display: flex;
+	width: 100%;
+	column-gap: 10px;
+	align-self: flex-end;
 }
 
 .add-menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 5px;
-    background-color: rgb(224, 222, 205);
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 150px;
-    box-shadow: 2px 2px 3px rgba(134, 134, 130, 0.4);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 5px;
+	background-color: rgb(224, 222, 205);
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 150px;
+	box-shadow: 2px 2px 3px rgba(134, 134, 130, 0.4);
 }
 
 #title-div {
-    width: 85%;
-    display: flex;
-    align-self: center;
-    align-items: flex-start;
-    margin-bottom: 5px;
+	width: 85%;
+	display: flex;
+	align-self: center;
+	align-items: flex-start;
+	margin-bottom: 5px;
 }
 
 .activity-title {
-    display: flex;
-    justify-self: flex-start;
-    width: 100%;
+	display: flex;
+	justify-self: flex-start;
+	width: 100%;
 }
 
 .sub-section-title {
-    font-size: 13px;
-    color: #555555;
-    font-weight: 400;
-    display: flex;
-    margin-left: 7.5%;
-    margin-bottom: 5px;
-    width: 110px;
-    height: 100%;
+	font-size: 13px;
+	color: #555555;
+	font-weight: 400;
+	display: flex;
+	margin-left: 7.5%;
+	margin-bottom: 5px;
+	width: 110px;
+	height: 100%;
 }
 
 #add-axiom-btn {
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    background-color: #4d8e7f;
-    color: #f0ede4;
-    padding: 5px 6px 5px 6px;
-    font-size: 12px;
-    box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
-    height: 30px;
-    padding-left: 15px;
-    padding-right: 15px;
-    align-self: center;
-    justify-self: center;
-    cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	background-color: #4d8e7f;
+	color: #f0ede4;
+	padding: 5px 6px 5px 6px;
+	font-size: 12px;
+	box-shadow: 2px 2px 3px rgb(77, 142, 127, 0.4);
+	height: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+	align-self: center;
+	justify-self: center;
+	cursor: pointer;
 }
 
 .add-int-btn {
-    justify-content: center;
-    align-items: center;
-    justify-self: flex-end;
-    width: 18px;
-    height: 18px;
-    text-align: justify;
-    border-radius: 100%;
-    border: none;
-    outline: none;
-    background-color: #95dba5;
-    color: #444141;
-    font-size: 10px;
-    cursor: pointer;
-    display: flex;
+	justify-content: center;
+	align-items: center;
+	justify-self: flex-end;
+	width: 18px;
+	height: 18px;
+	text-align: justify;
+	border-radius: 100%;
+	border: none;
+	outline: none;
+	background-color: #95dba5;
+	color: #444141;
+	font-size: 10px;
+	cursor: pointer;
+	display: flex;
 }
 
 div::-webkit-scrollbar {
-    width: 8px;
+	width: 8px;
 }
 
 div::-webkit-scrollbar-track {
-    /* color of the tracking area */
+	/* color of the tracking area */
 }
 
 div::-webkit-scrollbar-thumb {
-    background-color: #E3DDCA;
-    /* color of the scroll thumb */
-    border-radius: 10px;
-    /* roundness of the scroll thumb */
+	background-color: #e3ddca;
+	/* color of the scroll thumb */
+	border-radius: 10px;
+	/* roundness of the scroll thumb */
 }

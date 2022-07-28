@@ -4,19 +4,14 @@ import "./ExplanationPanel.css";
 
 import ResultsPanel from "./ResultsPanel";
 import QuestionPanel from "./QuestionPanel";
-import WhyAndWhyNotPanel from "./WhyAndWhyNotPanel";
-import HowToPanel from "./HowToPanel";
-import RuleitemsPane from "./RuleitemsPane";
 
+import WhyFPQueryController from "../../Controllers/WhyFPQueryController"
+import WhyNotQueryController from "../../Controllers/WhyNotQueryController"
 import handleInstanceSelection from "./handler";
-import { answerQuestion, handleWhyQuery, handleWhyNotQuery } from "./handler";
 
 function ExplanationPanel(props) {
 	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
-	const [unsatisfiedAxioms, setUnsatisfiedAxioms] = useState({});
 	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
-	const [fpAxiomStats, setFPAxiomStats] = useState({});
-	const [questionType, setQuestionType] = useState("");
 
 	return (
 		<div className="explanation-panel-container">
@@ -45,7 +40,7 @@ function ExplanationPanel(props) {
 					actInstances={props.actInstances}
 					onQuery={(queryType) => {
 						if (queryType === "FP") {
-							const whyHowToSuggestions = handleWhyQuery(
+							const whyHowToSuggestions = WhyFPQueryController.handleWhyQuery(
 								props.actInstances,
 								props.currentActivity,
 								selectedInstancesIdx,
@@ -53,22 +48,20 @@ function ExplanationPanel(props) {
 							);
 							props.onWhyHowToSuggestions(whyHowToSuggestions);
 						} else if (queryType === "FN") {
-							const whyNotHowToSuggestions = handleWhyNotQuery(
+							const unsatisfiedAxioms = WhyNotQueryController.handleWhyNotQuery(
 								props.actInstances,
 								props.currentActivity,
 								selectedInstancesIdx,
 								props.classificationResults
 							);
-							props.onWhyHowToSuggestions(whyNotHowToSuggestions);
+							props.onWhyNotExplanations(unsatisfiedAxioms);
+							//props.onWhyHowToSuggestions(unsatisfiedAxioms);
 						}
 					}}
 				></QuestionPanel>
 			</div>
-			<div id="why-not-pan">
+			{/* <div id="why-not-pan">
 				<WhyAndWhyNotPanel
-					axioms={unsatisfiedAxioms}
-					axiomStats={fpAxiomStats}
-					questionType={questionType}
 					currentActivity={props.currentActivity}
 					onWhyNotAxiomHover={(indeces) => {
 						setHighlightedInstancesIdx(indeces);
@@ -79,17 +72,21 @@ function ExplanationPanel(props) {
 					// 	);
 					// }}
 				></WhyAndWhyNotPanel>
-			</div>
-			<div id="how-to-pan">
-				{/* <HowToPanel
-					whyNotHowToSuggestion={whyNotHowToSuggestion}
-					onHowToAxiomHover={(newTPs, newFPs) => {
-						setNewTPs(newTPs);
-						setNewFPs(newFPs);
-					}}
-				></HowToPanel> */}
-			</div>
-			{/* <div id="how-to-pan">
+			</div> */}
+		</div>
+	);
+}
+
+export default ExplanationPanel;
+
+
+
+
+
+
+
+// eslint-disable-next-line no-lone-blocks
+{/* <div id="how-to-pan">
                 <RuleitemsPane
                     currentActivityInstance={props.actInstances[props.currentActInstanceIdx]}
                     ruleitems={props.ruleitems}
@@ -97,8 +94,3 @@ function ExplanationPanel(props) {
                     classificationResult={props.classificationResults}
                 ></RuleitemsPane>
             </div> */}
-		</div>
-	);
-}
-
-export default ExplanationPanel;

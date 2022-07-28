@@ -127,7 +127,7 @@ export function getWhyHowToSuggestions(
 				new HowToAxiom(
 					"time_contraction",
 					axiom,
-					Number(Object.keys(FPAxiomStat)[0]),
+					axIdx,
 					interval,
 					"FN_SAME",
 					newTPs,
@@ -136,6 +136,7 @@ export function getWhyHowToSuggestions(
 			);
 		});
 	}
+    
 	return suggestions;
 }
 
