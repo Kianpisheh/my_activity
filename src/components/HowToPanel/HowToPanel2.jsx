@@ -6,19 +6,25 @@ import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
 function HowToPanel2(props) {
 	const { whyNotWhat, suggestions } = props;
 
-	let explanationsContent = [];
+    let whyNotWhatExplanation = [];
 
 	if (whyNotWhat) {
-		explanationsContent.push(
+		whyNotWhatExplanation.push(
 			<WhyNotWhatExplanation
 				stats={whyNotWhat}
 				onWhyNotHowTo={props.onWhyNotHowTo}
+                classificationResult={props.classificationResult}
+                activity={props.activity}
+                instances={props.instances}
+                selectedInstancesIdx={props.selectedInstancesIdx}
 			></WhyNotWhatExplanation>
 		);
 	}
 
+    let whyNotHowToExplanation = [];
+
 	if (suggestions && suggestions.length) {
-		explanationsContent.push(
+		whyNotHowToExplanation.push(
 			<WhyNotHowToExplanations
 				suggestions={suggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
@@ -26,6 +32,10 @@ function HowToPanel2(props) {
 		);
 	}
 
-	return <div className="exp-container">{[...explanationsContent]}</div>;
+	return <div className="exp-container">
+            {[...whyNotWhatExplanation]}
+           {whyNotHowToExplanation.length && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+            {[...whyNotHowToExplanation]}
+        </div>;
 }
 export default HowToPanel2;

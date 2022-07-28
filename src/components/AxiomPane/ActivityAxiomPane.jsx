@@ -8,22 +8,10 @@ import AxiomTypes from "../../model/AxiomTypes";
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 import Icons from "../../icons/Icons";
-import AxiomData from "../../model/AxiomData";
 
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
 	const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
-
-	// const createInteractionAxiom = useCallback(() => {
-	//     setDefiningRule(true);
-	//     setRuleType(AxiomTypes.TYPE_INTERACTION);
-	// }, []);
-	// const createTimeConstraintAxiom = useCallback((axType) => {
-	//     setDefiningRule(true);
-	//     if (axType !== "") {
-	//         setRuleType(axType);
-	//     }
-	// }, []);
 
 	let axioms = [];
 	if (props.activity != null) {

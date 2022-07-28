@@ -42,6 +42,7 @@ function App() {
 	const [queryMode, setQueryMode] = useState(false);
 	const [explanation, setExplanations] = useState(null);
     const [whyNotWhat, setWhyNotWhat] = useState(null);
+    const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({})
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -261,8 +262,9 @@ function App() {
 						config={config}
 						explanation={explanation}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        onWhyNotWhatQuery={(what) => {console.log(what); setWhyNotWhat(what);}}
+                        onWhyNotWhatQuery={(what) => setWhyNotWhat(what)}
                         activityInstances={activityInstances}
+                        selectedInstancesIdx={selectedInstancesIdx}
 					></ActivityAxiomPane>
 				)}
 			</div>
@@ -276,7 +278,11 @@ function App() {
 						setQueryMode(queryMode);
 					}}
                     whyNotWhat={whyNotWhat}
-                    onWhyNotHowTo={(suggestions) => setWhyHowToSuggestions(suggestions)}
+                    onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
+                    classificationResult={classificationRes}
+                    activity={currentActivity}
+                    instances={activityInstances}
+                    selectedInstancesIdx={selectedInstancesIdx}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
@@ -293,8 +299,10 @@ function App() {
 					newTPs={newTPs}
 					newFPs={newFPs}
 					queryMode={queryMode}
+                    selectedInstancesIdx={selectedInstancesIdx}
 					onRuleitemRequest={handleRuleitemRequest}
 					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
+                    onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
 				></ExplanationPanel>
 			</div>
 		</div>

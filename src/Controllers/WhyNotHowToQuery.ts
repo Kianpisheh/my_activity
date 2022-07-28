@@ -4,26 +4,26 @@ import AxiomData from "../model/AxiomData";
 import AxiomTypes from "../model/AxiomTypes";
 import HowToAxiom from "../model/HowToAxiom";
 import { getWhyNotHowToSuggestions } from "../components/HowToPanel/WhyNotSuggestions";
-import { getUnsatisfiedAxioms } from "../components/ExplanationPanel/handler";
 
 class WhyNotHowToQueryController {
-	static handleWhyNotQuery(
-		instances: ActivityInstance[],
+	static handleWhyNotHowToQuery(
+		unsatisfiedAxiom: AxiomData,
 		activity: Activity,
-		selectedInstancesIdx: { [resType: string]: number[] },
-		classificationResult: { [type: string]: any }
+		classificationResult: { [type: string]: any },
+		instances: ActivityInstance[],
+		selectedInstancesIdx: number[]
 	) {
-		// let i = 0;
-		// let suggestions: HowToAxiom[] = [];
-		// for (const [ax, selectedFNs] of Object.entries(unsatisfiedAxioms)) {
-		// 	const axiom = AxiomData.axiomFromString(ax);
-		// 	if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
-		// 		i += 1;
-		// 		continue;
-		// 	}
-		// 	suggestions = getWhyNotHowToSuggestions(axiom, i, activity, selectedFNs, classificationResult, instances);
-		// 	i += 1;
-		// }
+		let i = 0;
+		let suggestions: HowToAxiom[] = [];
+		suggestions = getWhyNotHowToSuggestions(
+			unsatisfiedAxiom,
+			i,
+			activity,
+			selectedInstancesIdx,
+			classificationResult,
+			instances
+		);
+		return suggestions;
 	}
 }
 

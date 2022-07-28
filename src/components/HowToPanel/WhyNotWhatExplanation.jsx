@@ -1,12 +1,14 @@
 import "./WhyNotWhatExplanation.css";
 
+import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQuery";
+
 import Icons from "../../icons/Icons";
-import { pascalCase } from "../../Utils/utils";
+import { getClassificationResult, pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ExplanationPanel/utils";
 
 function WhyNotWhatExplanation(props) {
-	const { stats } = props;
+	const { stats, activity, instances, classificationResult, selectedInstancesIdx } = props;
 	if (!stats) {
 		return;
 	}
@@ -26,7 +28,15 @@ function WhyNotWhatExplanation(props) {
 	return (
 		<div className="stat-container">
 			{axiomStatComp}
-			<div id="why-not-what-qmark" onClick={() => {props.onWhyNotHowTo()}}>{CircleNum("?")}</div>
+			<div
+				id="why-not-what-qmark"
+				onClick={() => {
+					const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(stats.getAxiom(), activity, classificationResult, instances, selectedInstancesIdx["FN"]);
+					props.onWhyNotHowTo(whyNotHowToSuggestions);
+				}}
+			>
+				{CircleNum("?")}
+			</div>
 		</div>
 	);
 }

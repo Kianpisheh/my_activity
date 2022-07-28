@@ -10,7 +10,6 @@ import WhyNotQueryController from "../../Controllers/WhyNotQueryController"
 import handleInstanceSelection from "./handler";
 
 function ExplanationPanel(props) {
-	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
 	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
 
 	return (
@@ -20,13 +19,14 @@ function ExplanationPanel(props) {
 					parentWidth={props.parentWidth}
 					onInstanceClick={props.onInstanceClick}
 					classificationResult={props.classificationResults}
-					selectedInstancesIdx={selectedInstancesIdx}
+					selectedInstancesIdx={props.selectedInstancesIdx}
 					newTPs={props.newTPs}
 					newFPs={props.newFPs}
 					queryMode={props.queryMode}
 					onInstanceSelection={(idx, type) => {
-						setSelectedInstancesIdx(handleInstanceSelection(idx, type, selectedInstancesIdx));
+						const selInstancesIdx = handleInstanceSelection(idx, type, props.selectedInstancesIdx);
 						props.onActInstanceChange(idx);
+                        props.onInstanceSelection(selInstancesIdx);
 					}}
 					highlightedInstancesIdx={highlightedInstancesIdx}
 				></ResultsPanel>
@@ -35,7 +35,7 @@ function ExplanationPanel(props) {
 				<QuestionPanel
 					classificationResult={props.classificationResults}
 					predictedActivities={props.predictedActivities}
-					selectedInstancesIdx={selectedInstancesIdx}
+					selectedInstancesIdx={props.selectedInstancesIdx}
 					currentActInstanceIdx={props.currentActInstanceIdx}
 					actInstances={props.actInstances}
 					onQuery={(queryType) => {
@@ -43,7 +43,7 @@ function ExplanationPanel(props) {
 							const whyHowToSuggestions = WhyFPQueryController.handleWhyQuery(
 								props.actInstances,
 								props.currentActivity,
-								selectedInstancesIdx,
+								props.selectedInstancesIdx,
 								props.classificationResults
 							);
 							props.onWhyHowToSuggestions(whyHowToSuggestions);
@@ -51,28 +51,14 @@ function ExplanationPanel(props) {
 							const unsatisfiedAxioms = WhyNotQueryController.handleWhyNotQuery(
 								props.actInstances,
 								props.currentActivity,
-								selectedInstancesIdx,
+								props.selectedInstancesIdx,
 								props.classificationResults
 							);
 							props.onWhyNotExplanations(unsatisfiedAxioms);
-							//props.onWhyHowToSuggestions(unsatisfiedAxioms);
 						}
 					}}
 				></QuestionPanel>
 			</div>
-			{/* <div id="why-not-pan">
-				<WhyAndWhyNotPanel
-					currentActivity={props.currentActivity}
-					onWhyNotAxiomHover={(indeces) => {
-						setHighlightedInstancesIdx(indeces);
-					}}
-					// onAxiomClick={(indeces, ax) => {
-					// 	setWhyNotHowToSuggestion(
-					// 		handleWhyNotAxiomClick(props.actInstances, indeces, ax, props.classificationResults["TN"])
-					// 	);
-					// }}
-				></WhyAndWhyNotPanel>
-			</div> */}
 		</div>
 	);
 }
