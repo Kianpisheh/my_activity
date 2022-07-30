@@ -10,6 +10,8 @@
 	--borders: #dcd7c8;
 	--section-titles: #6a603f;
 	--list-item-text: #554a27;
+	--inactive-event: #8c8b8b;
+	--missing-line: #a77c7c;
 	--explanation: #2a86e3;
 	background-color: var(--main-beige);
 }

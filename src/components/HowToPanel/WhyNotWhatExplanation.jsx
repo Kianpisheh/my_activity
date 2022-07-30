@@ -3,7 +3,7 @@ import "./WhyNotWhatExplanation.css";
 import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQuery";
 
 import Icons from "../../icons/Icons";
-import { getClassificationResult, pascalCase } from "../../Utils/utils";
+import {pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ExplanationPanel/utils";
 
@@ -30,8 +30,15 @@ function WhyNotWhatExplanation(props) {
 			{axiomStatComp}
 			<div
 				id="why-not-what-qmark"
+                onMouseOver={() => props.onWhyNotNumHover()}
 				onClick={() => {
-					const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(stats.getAxiom(), activity, classificationResult, instances, selectedInstancesIdx["FN"]);
+					const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
+						stats.getAxiom(),
+						activity,
+						classificationResult,
+						instances,
+						selectedInstancesIdx["FN"]
+					);
 					props.onWhyNotHowTo(whyNotHowToSuggestions);
 				}}
 			>
@@ -61,21 +68,70 @@ function DurationAxiomStat(props) {
 
 function TimeDistanceAxiomStat(props) {
 	const { stats, axiom } = props;
-	const { minTimeDistance, maxTimeDistance } = stats;
+	const { minTimeDistance, maxTimeDistance, minDuration1, minDuration2 } = stats;
 	const events = axiom.getEvents();
 	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 	const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
 
+	const hasTimeDistance = minTimeDistance && maxTimeDistance;
+
+	// lost interactions
+	let iconColor1 = "#3A2A0D";
+	let isMissing1 = false;
+	if (!minDuration1) {
+		iconColor1 = "var(--inactive-event)";
+		isMissing1 = true;
+	}
+	let iconColor2 = "#3A2A0D";
+	let isMissing2 = false;
+	if (!minDuration2) {
+		iconColor2 = "var(--inactive-event)";
+		isMissing2 = true;
+	}
+
 	return (
-		<div className="td-stat-container2">
-			<div className="icon-container2">
-				<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon1>
+		<div id="outer-container">
+			<div className="td-stat-container2" style={{marginTop: !hasTimeDistance && 10}}>
+				<div className="icon-container2">
+					{((!isMissing1 && !isMissing2) || isMissing1) && (
+						<svg width={25} height={25}>
+							<Icon1 fill={iconColor1} style={{ width: 25, height: 25 }} />
+							{isMissing1 && (
+								<svg width={25} height={25}>
+									<line x1={25} x2={0} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
+								</svg>
+							)}
+						</svg>
+					)}
+				</div>
+				{hasTimeDistance && (
+					<div className="td-stat-data-container2">
+						<TimeDistanceStat
+							key={"td-s"}
+							tdmax={maxTimeDistance}
+							tdmin={minTimeDistance}
+						></TimeDistanceStat>
+					</div>
+				)}
+				<div className="icon-container2">
+					{((!isMissing1 && !isMissing2) || isMissing2) && (
+						<svg width={25} height={25}>
+							<Icon2 fill={iconColor2} style={{ width: 25, height: 25 }} />
+							{isMissing2 && (
+								<svg width={25} height={25}>
+									<line x1={0} x2={25} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
+								</svg>
+							)}
+						</svg>
+					)}
+				</div>
 			</div>
-			<div className="td-stat-data-container2">
-				<TimeDistanceStat key={"td-s"} tdmax={maxTimeDistance} tdmin={minTimeDistance}></TimeDistanceStat>
-			</div>
-			<div className="icon-container2">
-				<Icon2 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon2>
+			<div id="missing-events-msg" style={{marginTop: !hasTimeDistance && -5}}>
+				{!hasTimeDistance && (
+					<svg height={13} width={"100%"}>
+						<text fill="#5F5656" x={"43%"} y={10} fontSize={11}>missing event(s)</text>
+					</svg>
+				)}
 			</div>
 		</div>
 	);

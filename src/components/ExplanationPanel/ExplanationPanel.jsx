@@ -10,7 +10,6 @@ import WhyNotQueryController from "../../Controllers/WhyNotQueryController"
 import handleInstanceSelection from "./handler";
 
 function ExplanationPanel(props) {
-	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
 
 	return (
 		<div className="explanation-panel-container">
@@ -28,7 +27,7 @@ function ExplanationPanel(props) {
 						props.onActInstanceChange(idx);
                         props.onInstanceSelection(selInstancesIdx);
 					}}
-					highlightedInstancesIdx={highlightedInstancesIdx}
+					highlightedInstancesIdx={props.highlightedInstancesIdx}
 				></ResultsPanel>
 			</div>
 			<div id="quest-pan">

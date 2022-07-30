@@ -34,7 +34,7 @@ function HowToPanel2(props) {
 
 	return <div className="exp-container">
             {[...whyNotWhatExplanation]}
-           {whyNotHowToExplanation.length && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+           {whyNotHowToExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
             {[...whyNotHowToExplanation]}
         </div>;
 }

@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 
 import "./TimeDistanceAxiom.css";
-import AxiomData from "../../model/AxiomData";
-import WhyNotWhatQueryController from "../../Controllers/WhyNotWhatQueryController";
 
 import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
-
-import isEqual from "lodash.isequal";
-import { CircleNum } from "../ExplanationPanel/utils";
+import { getWhyNotNum } from "./Axiom";
 
 function TimeDistanceAxiom(props) {
 	const [hovered, setHovered] = useState(false);
@@ -28,7 +24,13 @@ function TimeDistanceAxiom(props) {
 	const TimeDistIcon = Icons.getIcon("TimeDistance2");
 
 	// check if this is an unsatisfied axiom based on the user query
-	const numnum = getWhyNotNum(props.unsatisfiedAxioms, props.data, props.onWhyNotWhatQuery, props.activityInstances);
+	const numnum = getWhyNotNum(
+		props.unsatisfiedAxioms,
+		props.data,
+		props.onWhyNotWhatQuery,
+		props.activityInstances,
+		props.onWhyNotNumHover
+	);
 
 	return (
 		<div
@@ -93,25 +95,3 @@ function TimeDistanceAxiom(props) {
 }
 
 export default TimeDistanceAxiom;
-
-function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances) {
-	let numnum = [];
-	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
-		const ax = AxiomData.axiomFromString(axiomString);
-		if (isEqual(ax, axiom)) {
-			const instances = activityInstances.filter((inst, idx) => selFNIds.includes(idx));
-			numnum = (
-				<div
-					id="why-not-num-container"
-					onClick={() => {
-						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
-						onWhyNotWhatQuery(whatExp);
-					}}
-				>
-					{CircleNum(selFNIds.length)}
-				</div>
-			);
-		}
-	}
-	return numnum;
-}

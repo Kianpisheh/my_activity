@@ -6,6 +6,12 @@ import TimeDistanceAxiom from "./TimeDistanceAxiom";
 import DurationAxiom from "./DurationAxiom";
 import InteractionORAxiom from "./InteractionORAxiom";
 
+import AxiomData from "../../model/AxiomData";
+import WhyNotWhatQueryController from "../../Controllers/WhyNotWhatQueryController";
+
+import isEqual from "lodash.isequal";
+import { CircleNum } from "../ExplanationPanel/utils";
+
 function Axiom(props) {
 	let axiomComponent = null;
 	let axiomType = props.data.type;
@@ -21,6 +27,7 @@ function Axiom(props) {
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                 onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                 activityInstances={props.activityInstances}
+                onWhyNotNumHover={props.onWhyNotNumHover}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
@@ -34,6 +41,7 @@ function Axiom(props) {
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                 activityInstances={props.activityInstances}
+                onWhyNotNumHover={props.onWhyNotNumHover}
 			></InteractionORAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -48,6 +56,7 @@ function Axiom(props) {
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                 onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                 activityInstances={props.activityInstances}
+                onWhyNotNumHover={props.onWhyNotNumHover}
 			></TimeDistanceAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -62,6 +71,7 @@ function Axiom(props) {
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                 onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                 activityInstances={props.activityInstances}
+                onWhyNotNumHover={props.onWhyNotNumHover}
 			></DurationAxiom>
 		);
 	}
@@ -71,4 +81,26 @@ function Axiom(props) {
 
 export default Axiom;
 
-//<ORAxiom data=[e1, e2]></ORAxiom>
+export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover) {
+	let numnum = [];
+	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
+		const ax = AxiomData.axiomFromString(axiomString);
+		if (isEqual(ax, axiom)) {
+			const instances = activityInstances.filter((inst, idx) => selFNIds.includes(idx));
+			numnum = (
+				<div
+					id="why-not-num-container"
+					onMouseOver={() => onWhyNotNumHover(selFNIds)}
+					onMouseLeave={() => onWhyNotNumHover([])}
+                    onClick={() => {
+						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
+						onWhyNotWhatQuery(whatExp);
+					}}
+				>
+					{CircleNum(selFNIds.length)}
+				</div>
+			);
+		}
+	}
+	return numnum;
+}

@@ -2,6 +2,8 @@ import React, { useContext, useState } from "react";
 
 import "./InteractionAxiom.css";
 
+import { CircleNum } from "../ExplanationPanel/utils";
+
 import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
@@ -25,15 +27,23 @@ function InteractionAxiom(props) {
 		return;
 	}
 
+	// check if each interaction is an unsatisfied axiom based on the user query
+	let numnum = {}; // event -> num
+	for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
+		const axType = axString.split(":")[0];
+		if (axType === AxiomTypes.TYPE_INTERACTION) {
+			const event = axString.split(":")[1];
+			numnum[event] = indeces;
+		}
+	}
+
 	let interactionIcons = [];
 	for (let i = 0; i < events.length; i++) {
 		const Icon = Icons.getIcon(pascalCase(events[i]), true);
 		// icon opacity
 		let opacity = 1;
 		if (props.explanation && props.explanation.getType() === "why_not") {
-			opacity = props.explanation.getEvents().includes(events[i])
-				? 1
-				: 0.3;
+			opacity = props.explanation.getEvents().includes(events[i]) ? 1 : 0.3;
 		}
 		interactionIcons.push(
 			<div
@@ -52,33 +62,30 @@ function InteractionAxiom(props) {
 					}}
 					opacity={opacity}
 					onClick={(clickEvent) =>
-						setSelected(
-							handleIconSelection(
-								selected,
-								events[i],
-								clickEvent,
-								props.messageCallback
-							)
-						)
+						setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
 					}
 				></Icon>
-				{objectHovered === i && (
+				{objectHovered === i && !numnum[events[i]] && (
 					<button
 						className="remove-object-btn"
 						onClick={() => {
-							props.messageCallback(
-								AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION,
-								{
-									axiomIdx: props.idx,
-									eventType: events[i],
-								}
-							);
+							props.messageCallback(AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION, {
+								axiomIdx: props.idx,
+								eventType: events[i],
+							});
 							setSelected(new Set());
 						}}
 					>
 						X
 					</button>
 				)}
+				<div
+					id="why-not-num-container"
+					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
+					onMouseLeave={() => props.onWhyNotNumHover([])}
+				>
+					{numnum[events[i]] && CircleNum(numnum[events[i]].length)}
+				</div>
 			</div>
 		);
 	}
@@ -115,12 +122,9 @@ function InteractionAxiom(props) {
 						<button
 							className="remove-axiom-btn"
 							onClick={() => {
-								props.messageCallback(
-									AxiomTypes.MSG_REMOVE_AXIOM,
-									{
-										idx: props.idx,
-									}
-								);
+								props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {
+									idx: props.idx,
+								});
 								setSelected(new Set());
 							}}
 						>
@@ -153,3 +157,9 @@ function handleIconSelection(selectedSet, event, clickEvent, messageCallback) {
 }
 
 export default InteractionAxiom;
+
+// onClick={() => {
+//                         const instances = props.activityInstances.filter((val, idx) => numnum[events[i]].includes(idx))
+// 						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
+// 						props.onWhyNotWhatQuery(whatExp);
+// 					}}

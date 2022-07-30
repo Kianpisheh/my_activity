@@ -1,3 +1,11 @@
+#outer-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
 .stat-container {
 	display: flex;
 	justify-content: center;
@@ -29,6 +37,10 @@
 .icon-container2 {
 	display: flex;
 	align-items: center;
+}
+
+#missing-events-msg {
+	width: 100%;
 }
 
 #why-not-what-qmark {

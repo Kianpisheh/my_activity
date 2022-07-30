@@ -42,7 +42,9 @@ function App() {
 	const [queryMode, setQueryMode] = useState(false);
 	const [explanation, setExplanations] = useState(null);
     const [whyNotWhat, setWhyNotWhat] = useState(null);
-    const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({})
+    const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
+    const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
+
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -69,10 +71,9 @@ function App() {
 	}
 
     function handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx) {
-        if (message === AxiomTypes.MSG_TIME_CONSTRAINT_FINALIZED) {
+        if (message !== AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
             updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx);
         }
-
     }
 
 	let currentActivity = null;
@@ -265,6 +266,7 @@ function App() {
                         onWhyNotWhatQuery={(what) => setWhyNotWhat(what)}
                         activityInstances={activityInstances}
                         selectedInstancesIdx={selectedInstancesIdx}
+                        onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 					></ActivityAxiomPane>
 				)}
 			</div>
@@ -283,6 +285,7 @@ function App() {
                     activity={currentActivity}
                     instances={activityInstances}
                     selectedInstancesIdx={selectedInstancesIdx}
+                    onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
@@ -303,6 +306,7 @@ function App() {
 					onRuleitemRequest={handleRuleitemRequest}
 					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
                     onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
+                    highlightedInstancesIdx={highlightedInstancesIdx}
 				></ExplanationPanel>
 			</div>
 		</div>

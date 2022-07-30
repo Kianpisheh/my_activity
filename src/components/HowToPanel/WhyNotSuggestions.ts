@@ -67,27 +67,57 @@ export function getWhyNotHowToSuggestions(
 		const FNs = classificationResult["FN"];
 		const TNs = classificationResult["TN"];
 
-		let outputIdx = [];
-		for (const idx of selectedFNs) {
-			const instance = actInstances[idx];
+		// let outputIdx = [];
+		// for (const idx of selectedFNs) {
+		// 	const instance = actInstances[idx];
 
-			if (axType === AxiomTypes.TYPE_DURATION) {
-				if (instance.getEvent(event1).length > 0) {
-					outputIdx.push(idx);
-				}
-			} else if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
-				if (
-					instance.getEvent(event1.toLowerCase()).length > 0 &&
-					instance.getEvent(event2.toLowerCase()).length > 0
-				) {
-					outputIdx.push(idx);
-				}
+		// 	if (axType === AxiomTypes.TYPE_DURATION) {
+		// 		if (instance.getEvent(event1).length > 0) {
+		// 			outputIdx.push(idx);
+		// 		}
+		// 	} else if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+		// 		if (
+		// 			instance.getEvent(event1.toLowerCase()).length > 0 &&
+		// 			instance.getEvent(event2.toLowerCase()).length > 0
+		// 		) {
+		// 			outputIdx.push(idx);
+		// 		}
+		// 	}
+		// }
+
+		// remove the unsatisfied axiom
+		let newAxiomSet = [...currentActivity.getAxioms()];
+		for (let j = 0; j < newAxiomSet.length; j++) {
+			if (isEqual(newAxiomSet[j], axiom)) {
+				newAxiomSet.splice(j, 1);
+				break;
 			}
 		}
 
+		// new TPs
+		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		let oldFNTPInstances = [];
+		for (let k = 0; k < oldTPFNs.length; k++) {
+			oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
+		}
+		let newTPs: number[] = [];
+		for (let i = 0; i < oldFNTPInstances.length; i++) {
+			if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
+				newTPs.push(oldTPFNs[i]);
+			}
+		}
+		// new FPs
+		const oldTNs = classificationResult["TN"];
+		let oldTNInstances = actInstances.filter((val, idx) => oldTNs.includes(idx));
 		let newFPs: number[] = [];
+		for (let i = 0; i < oldTNInstances.length; i++) {
+			if (oldTNInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNs[i]);
+			}
+		}
 
-		return new HowToAxiom("temporal_axiom_removal", axiom, axiomIdx, [], "FN_MIN", [], []);
+		const suggestion = new HowToAxiom("time_removal", axiom, axiomIdx, [th1, th2], "FN_MIN", newTPs, newFPs);
+		return suggestion;
 	}
 
 	function getTimeExpansionSuggestion(

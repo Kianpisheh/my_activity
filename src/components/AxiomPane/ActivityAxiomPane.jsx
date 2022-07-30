@@ -97,6 +97,7 @@ function ActivityAxiomPane(props) {
 							onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                             onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                             activityInstances={props.activityInstances}
+                            onWhyNotNumHover={props.onWhyNotNumHover}
 						></Axiom>
 					</div>
                     <div className="axiom-crafter-container">
@@ -137,6 +138,7 @@ function ActivityAxiomPane(props) {
 								onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
                                 onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                                 activityInstances={props.activityInstances}
+                                onWhyNotNumHover={props.onWhyNotNumHover}
 							></Axiom>
 						))}
 					</div>{" "}

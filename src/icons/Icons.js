@@ -58,6 +58,7 @@ import SvgUpArrow from "./UpArrow";
 import SvgDownArrow from "./DownArrow";
 import SvgTimeDistance2 from "./TimeDistance2";
 import SvgTimeDistance3 from "./TimeDistance3";
+import SvgTrashcan from "./Trashcan";
 
 class Icons {
 	static icons = {
@@ -132,6 +133,7 @@ class Icons {
 		DownArrow: SvgDownArrow,
 		TimeDistance2: SvgTimeDistance2,
 		TimeDistance3: SvgTimeDistance3,
+        Trashcan: SvgTrashcan
 	};
 
 	static colors = {
@@ -201,6 +203,7 @@ class Icons {
 		DownArrow: "#1391D8",
 		TimeDistance2: "#1391D8",
 		TimeDistance3: "#1391D8",
+		Trashcan: "#1391D8",
 	};
 
 	static getIcons() {

@@ -58,6 +58,10 @@ class AxiomStat {
 		}
 	}
 
+	hasTimeDistance() {
+		return this.minTimeDistance && this.maxTimeDistance;
+	}
+
 	updateEventDuration(d: number, event: string) {
 		if (event === this.events[0]) {
 			if (!this.maxDuration1) {
@@ -92,13 +96,30 @@ class AxiomStat {
 		}
 
 		let outputAxStat = new AxiomStat(this.events, this.axiom);
-		outputAxStat.maxTimeDistance = Math.max(this.maxTimeDistance, other.maxTimeDistance);
-		outputAxStat.minTimeDistance = Math.min(this.minTimeDistance, other.minTimeDistance);
-		outputAxStat.minDuration1 = Math.min(this.minDuration1, other.minDuration1);
-		outputAxStat.maxDuration1 = Math.max(this.maxDuration1, other.maxDuration1);
-		outputAxStat.minDuration2 = Math.min(this.minDuration2, other.minDuration2);
-		outputAxStat.maxDuration2 = Math.max(this.maxDuration2, other.maxDuration2);
-
+		outputAxStat.maxTimeDistance = Math.max(
+			this.maxTimeDistance ? this.maxTimeDistance : -Infinity,
+			other.maxTimeDistance ? other.maxTimeDistance : -Infinity
+		);
+		outputAxStat.minTimeDistance = Math.min(
+			this.minTimeDistance ? this.minTimeDistance : Infinity,
+			other.minTimeDistance ? other.minTimeDistance : Infinity
+		);
+		outputAxStat.minDuration1 = Math.min(
+			this.minDuration1 ? this.minDuration1 : Infinity,
+			other.minDuration1 ? other.minDuration1 : Infinity
+		);
+		outputAxStat.maxDuration1 = Math.max(
+			this.maxDuration1 ? this.maxDuration1 : -Infinity,
+			other.maxDuration1 ? other.maxDuration1 : -Infinity
+		);
+		outputAxStat.minDuration2 = Math.min(
+			this.minDuration2 ? this.minDuration2 : Infinity,
+			other.minDuration2 ? other.minDuration2 : Infinity
+		);
+		outputAxStat.maxDuration2 = Math.max(
+			this.maxDuration2 ? this.maxDuration2 : -Infinity,
+			other.maxDuration2 ? other.maxDuration2 : -Infinity
+		);
 		return outputAxStat;
 	}
 
@@ -109,6 +130,7 @@ class AxiomStat {
 		let axiomStat: AxiomStat = new AxiomStat(axiom.events, axiom);
 		for (const instance of instances) {
 			const stat = instance.getStat(axiom);
+
 			if (i === 0) {
 				axiomStat = stat;
 			} else {
