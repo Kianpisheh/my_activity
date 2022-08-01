@@ -28,6 +28,11 @@ function Axiom(props) {
                 onWhyNotWhatQuery={props.onWhyNotWhatQuery}
                 activityInstances={props.activityInstances}
                 onWhyNotNumHover={props.onWhyNotNumHover}
+                classificationResult={props.classificationResult}
+                activity={props.activity}
+                selectedInstancesIdx={props.selectedInstancesIdx}
+                onWhyNotHowTo={props.onWhyNotHowTo}
+                stats={props.whyNotWhat}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {

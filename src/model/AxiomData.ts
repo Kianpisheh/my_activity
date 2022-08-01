@@ -38,6 +38,10 @@ class AxiomData {
 		return this.events;
 	}
 
+	setEvents(evs: string[]) {
+		this.events = [...evs];
+	}
+
 	removeEvent(eventType: string) {
 		this.events = this.events.filter((ev) => ev !== eventType);
 	}
@@ -80,7 +84,11 @@ class AxiomData {
 
 	static axiomFromString(axiomString: string) {
 		const { axType, event1, event2, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString);
-		const axiom = new AxiomData({ type: axType, events: [event1, event2], th1: th1, th2: th2 });
+		let events = [event1];
+		if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+			events.push(event2);
+		}
+		const axiom = new AxiomData({ type: axType, events: events, th1: th1, th2: th2 });
 		return axiom;
 	}
 

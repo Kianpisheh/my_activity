@@ -91,27 +91,31 @@ class ActivityInstance {
 		const axiomType = axiom.getType();
 
 		// time_distance or duratiom axioms
-		if ((AxiomTypes.TYPE_DURATION + AxiomTypes.TYPE_TIME_DISTANCE).includes(axiomType)) {
-			if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
-				const axiomEvents: string[] = axiom.getEvents();
-				const eventInstances1 = this.getEvent(axiomEvents[0]);
-				const eventInstances2 = this.getEvent(axiomEvents[1]);
+		const axiomEvents: string[] = axiom.getEvents();
+		if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+			const eventInstances1 = this.getEvent(axiomEvents[0]);
+			const eventInstances2 = this.getEvent(axiomEvents[1]);
 
-				for (let i = 0; i < eventInstances1.length; i++) {
-					const duration1 = eventInstances1[i].getEndTime() - eventInstances1[i].getStartTime();
-					axiomStat.updateEventDuration(duration1, axiomEvents[0]);
-					for (let j = 0; j < eventInstances2.length; j++) {
-						const timeDsitance = eventInstances2[j].getStartTime() - eventInstances1[i].getEndTime();
-						if (timeDsitance < 0) {
-							continue;
-						}
-						axiomStat.updateTimeDistance(timeDsitance);
-						if (j === 0) {
-							const duration2 = eventInstances2[j].getEndTime() - eventInstances2[j].getStartTime();
-							axiomStat.updateEventDuration(duration2, axiomEvents[1]);
-						}
+			for (let i = 0; i < eventInstances1.length; i++) {
+				const duration1 = eventInstances1[i].getEndTime() - eventInstances1[i].getStartTime();
+				axiomStat.updateEventDuration(duration1, axiomEvents[0]);
+				for (let j = 0; j < eventInstances2.length; j++) {
+					const timeDsitance = eventInstances2[j].getStartTime() - eventInstances1[i].getEndTime();
+					if (timeDsitance < 0) {
+						continue;
+					}
+					axiomStat.updateTimeDistance(timeDsitance);
+					if (j === 0) {
+						const duration2 = eventInstances2[j].getEndTime() - eventInstances2[j].getStartTime();
+						axiomStat.updateEventDuration(duration2, axiomEvents[1]);
 					}
 				}
+			}
+		} else if (AxiomTypes.TYPE_DURATION) {
+			const eventInstances = this.getEvent(axiomEvents[0]);
+			for (let i = 0; i < eventInstances.length; i++) {
+				const duration1 = eventInstances[i].getEndTime() - eventInstances[i].getStartTime();
+				axiomStat.updateEventDuration(duration1, axiomEvents[0]);
 			}
 		}
 
@@ -205,12 +209,21 @@ class ActivityInstance {
 			const event1 = ax.getEvents()[0];
 			const event2 = ax.getEvents()[1];
 
-			// interaction axiom
+			// interaction axioms
 			if (axType === AxiomTypes.TYPE_INTERACTION) {
-				if (this.hasEvent(event1)) {
+				let intEventsNum = 0;
+				for (const ev of ax.getEvents()) {
+					if (this.hasEvent(ev)) {
+						intEventsNum += 1;
+					}
+				}
+				if (intEventsNum === ax.getEvents().length) {
 					numSatisfied += 1;
+				} else {
+					return false;
 				}
 			}
+
 			// time-distance axiom
 			if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
 				if (this.hasEvent(event1) && this.hasEvent(event2)) {
@@ -229,11 +242,11 @@ class ActivityInstance {
 			}
 			// duration axiom
 			if (axType === AxiomTypes.TYPE_DURATION) {
-				if (this.hasEvent(event1) && this.hasEvent(event2)) {
+				if (this.hasEvent(event1)) {
 					let eventInstances: ActivityInstanceEvent[] = this.getEvent(event1);
 					for (const evInstance of eventInstances) {
 						const evDuration = evInstance.getDuration();
-						if (evDuration < ax.getTh2() && evDuration > ax.getTh1()) {
+						if (evDuration <= ax.getTh2() && evDuration >= ax.getTh1()) {
 							numSatisfied += 1;
 							break;
 						}

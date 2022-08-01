@@ -63,5 +63,8 @@ function getQuestions(selectedIdx, activity, predActivity) {
 			</span>
 		);
 		return [q];
-	}
+	} else {
+        q["text"] = <span>????</span>
+        return [q];
+    }
 }

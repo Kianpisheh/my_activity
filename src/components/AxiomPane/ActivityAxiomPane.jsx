@@ -95,21 +95,26 @@ function ActivityAxiomPane(props) {
 							explanation={props.explanation}
 							unsatisfiedAxioms={props.unsatisfiedAxioms}
 							onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                            onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                            activityInstances={props.activityInstances}
-                            onWhyNotNumHover={props.onWhyNotNumHover}
+							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+							activityInstances={props.activityInstances}
+							onWhyNotNumHover={props.onWhyNotNumHover}
+							classificationResult={props.classificationResult}
+							activity={props.activity}
+							selectedInstancesIdx={props.selectedInstancesIdx}
+							onWhyNotHowTo={props.onWhyNotHowTo}
+                            stats={props.whyNotWhat}
 						></Axiom>
 					</div>
-                    <div className="axiom-crafter-container">
-                        {(definingRule === "interaction") && (
-                            <AxiomCrafter
-                                config={props.config}
-                                objects={objectList}
-                                handleAxiomCreation={handleAxiomCreation}
-                                ruleType={ruleType}
-                            ></AxiomCrafter>
-                        )}
-			        </div>
+					<div className="axiom-crafter-container">s
+						{definingRule === "interaction" && (
+							<AxiomCrafter
+								config={props.config}
+								objects={objectList}
+								handleAxiomCreation={handleAxiomCreation}
+								ruleType={ruleType}
+							></AxiomCrafter>
+						)}
+					</div>
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
 						<span className="sub-section-title">Temporal axioms</span>
@@ -136,22 +141,27 @@ function ActivityAxiomPane(props) {
 								explanation={props.explanation}
 								unsatisfiedAxioms={props.unsatisfiedAxioms}
 								onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                                onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                                activityInstances={props.activityInstances}
-                                onWhyNotNumHover={props.onWhyNotNumHover}
+								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+								activityInstances={props.activityInstances}
+								onWhyNotNumHover={props.onWhyNotNumHover}
+								classificationResult={props.classificationResult}
+								activity={props.activity}
+								selectedInstancesIdx={props.selectedInstancesIdx}
+								onWhyNotHowTo={props.onWhyNotHowTo}
+                                stats={props.whyNotWhat}
 							></Axiom>
 						))}
 					</div>{" "}
-                    <div className="axiom-crafter-container">
-                        {(definingRule === "temporal") && (
-                            <AxiomCrafter
-                                config={props.config}
-                                objects={objectList}
-                                handleAxiomCreation={handleAxiomCreation}
-                                ruleType={ruleType}
-                            ></AxiomCrafter>
-                        )}
-			        </div>
+					<div className="axiom-crafter-container">
+						{definingRule === "temporal" && (
+							<AxiomCrafter
+								config={props.config}
+								objects={objectList}
+								handleAxiomCreation={handleAxiomCreation}
+								ruleType={ruleType}
+							></AxiomCrafter>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

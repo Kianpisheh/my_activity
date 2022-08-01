@@ -46,6 +46,18 @@ export function getWhyNotHowToSuggestions(
 		if (suggestion2) {
 			suggestions.push(suggestion2);
 		}
+	} else if (axType === AxiomTypes.TYPE_INTERACTION) {
+		const suggestion = getInteractionAxiomRemovalSuggestion(
+			axiom,
+			axiomIdx,
+			currentActivity,
+			selectedFNs,
+			classificationResult,
+			instances
+		);
+		if (suggestion) {
+			suggestions.push(suggestion);
+		}
 	}
 
 	return suggestions;
@@ -59,31 +71,8 @@ export function getWhyNotHowToSuggestions(
 		classificationResult: { [resType: string]: any },
 		actInstances: ActivityInstance[]
 	): HowToAxiom {
-		const axType = axiom.getType();
 		const th1 = axiom.getTh1();
 		const th2 = axiom.getTh2();
-		const event1 = axiom.getEvents()[0];
-		const event2 = axiom.getEvents()[0];
-		const FNs = classificationResult["FN"];
-		const TNs = classificationResult["TN"];
-
-		// let outputIdx = [];
-		// for (const idx of selectedFNs) {
-		// 	const instance = actInstances[idx];
-
-		// 	if (axType === AxiomTypes.TYPE_DURATION) {
-		// 		if (instance.getEvent(event1).length > 0) {
-		// 			outputIdx.push(idx);
-		// 		}
-		// 	} else if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
-		// 		if (
-		// 			instance.getEvent(event1.toLowerCase()).length > 0 &&
-		// 			instance.getEvent(event2.toLowerCase()).length > 0
-		// 		) {
-		// 			outputIdx.push(idx);
-		// 		}
-		// 	}
-		// }
 
 		// remove the unsatisfied axiom
 		let newAxiomSet = [...currentActivity.getAxioms()];
@@ -222,7 +211,7 @@ export function getWhyNotHowToSuggestions(
 			return null;
 		}
 
-		const newAxiom = new AxiomData({ type: axiom.getType(), th1: newTh1, th2: newTh2, events: [event1, event2] });
+		const newAxiom = new AxiomData({ type: axiom.getType(), th1: newTh1, th2: newTh2, events: axiom.getEvents() });
 
 		// new axiom has replaced the old one
 		let newAxiomSet = [...currentActivity.getAxioms()];
@@ -264,6 +253,61 @@ export function getWhyNotHowToSuggestions(
 			newFPs
 		);
 
+		return suggestion;
+	}
+
+	function getInteractionAxiomRemovalSuggestion(
+		axiom: AxiomData,
+		axiomIdx: number,
+		currentActivity: Activity,
+		selectedFNs: number[],
+		classificationResult: { [resType: string]: any },
+		actInstances: ActivityInstance[]
+	): HowToAxiom {
+		// remove the unsatisfied interaction event
+		// remove all axioms that have the unsatisfied interaction event
+		let oldAxiomSet = currentActivity.getAxioms();
+		let newAxiomSet = [];
+		for (let j = 0; j < oldAxiomSet.length; j++) {
+			if (oldAxiomSet[j].getType() === AxiomTypes.TYPE_INTERACTION) {
+				let newEvents = oldAxiomSet[j].getEvents().filter((ev) => ev !== axiom.getEvents()[0]);
+				let newAxiom = new AxiomData({
+					type: AxiomTypes.TYPE_INTERACTION,
+					th1: -1,
+					th2: -1,
+					events: newEvents,
+				});
+				newAxiomSet.push(newAxiom);
+			} else {
+				if (!oldAxiomSet[j].getEvents().includes(axiom.getEvents()[0])) {
+					newAxiomSet.push(oldAxiomSet[j]);
+				}
+			}
+		}
+
+		// new TPs
+		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		let oldFNTPInstances = [];
+		for (let k = 0; k < oldTPFNs.length; k++) {
+			oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
+		}
+		let newTPs: number[] = [];
+		for (let i = 0; i < oldFNTPInstances.length; i++) {
+			if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
+				newTPs.push(oldTPFNs[i]);
+			}
+		}
+		// new FPs
+		const oldTNs = classificationResult["TN"];
+		let oldTNInstances = actInstances.filter((val, idx) => oldTNs.includes(idx));
+		let newFPs: number[] = [];
+		for (let i = 0; i < oldTNInstances.length; i++) {
+			if (oldTNInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNs[i]);
+			}
+		}
+
+		const suggestion = new HowToAxiom("interaction_removal", axiom, axiomIdx, [-1, -1], "FN_MIN", newTPs, newFPs);
 		return suggestion;
 	}
 }

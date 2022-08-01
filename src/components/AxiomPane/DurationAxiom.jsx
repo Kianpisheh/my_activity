@@ -1,35 +1,31 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 import "./DurationAxiom.css";
 
 import AdjustableTime from "./AdjustableTime";
-import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
+import { getWhyNotNum } from "./Axiom";
+
 
 function DurationAxiom(props) {
     const [hovered, setHovered] = useState(false);
 
     const axiom = props.data;
-	const th1 = axiom.getTh1();
-	const th2 = axiom.getTh2();
 	const events = axiom.getEvents();
 	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 	const TimeDistIcon = Icons.getIcon("TimeDistance3");
 
     // check if this is an unsatisfied axiom based on the user query
-	let numnum = [];
-	// for (const [axiomString, selFNIds] of Object.entries(props.unsatisfiedAxioms)) {
-	// 	const ax = AxiomData.axiomFromString(axiomString);
-	// 	if (isEqual(ax, props.data)) {
-	// 		numnum = (
-	// 			<div id="why-not-num-container" onClick={() => props.onUnsatisfiedAxiomClick}>
-	// 				{CircleNum(selFNIds.length)}
-	// 			</div>
-	// 		);
-	// 	}
-	// }
+	const numnum = getWhyNotNum(
+		props.unsatisfiedAxioms,
+		props.data,
+		props.onWhyNotWhatQuery,
+		props.activityInstances,
+		props.onWhyNotNumHover
+	);
+
 
     return (
 		<div

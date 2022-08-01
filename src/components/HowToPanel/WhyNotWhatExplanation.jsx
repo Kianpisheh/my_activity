@@ -1,9 +1,9 @@
 import "./WhyNotWhatExplanation.css";
 
-import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQuery";
+import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQueryController";
 
 import Icons from "../../icons/Icons";
-import {pascalCase } from "../../Utils/utils";
+import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ExplanationPanel/utils";
 
@@ -30,7 +30,6 @@ function WhyNotWhatExplanation(props) {
 			{axiomStatComp}
 			<div
 				id="why-not-what-qmark"
-                onMouseOver={() => props.onWhyNotNumHover()}
 				onClick={() => {
 					const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 						stats.getAxiom(),
@@ -91,7 +90,7 @@ function TimeDistanceAxiomStat(props) {
 
 	return (
 		<div id="outer-container">
-			<div className="td-stat-container2" style={{marginTop: !hasTimeDistance && 10}}>
+			<div className="td-stat-container2" style={{ marginTop: !hasTimeDistance && 10 }}>
 				<div className="icon-container2">
 					{((!isMissing1 && !isMissing2) || isMissing1) && (
 						<svg width={25} height={25}>
@@ -126,10 +125,12 @@ function TimeDistanceAxiomStat(props) {
 					)}
 				</div>
 			</div>
-			<div id="missing-events-msg" style={{marginTop: !hasTimeDistance && -5}}>
+			<div id="missing-events-msg" style={{ marginTop: !hasTimeDistance && -5 }}>
 				{!hasTimeDistance && (
 					<svg height={13} width={"100%"}>
-						<text fill="#5F5656" x={"43%"} y={10} fontSize={11}>missing event(s)</text>
+						<text fill="#5F5656" x={"43%"} y={10} fontSize={11}>
+							missing event(s)
+						</text>
 					</svg>
 				)}
 			</div>
@@ -166,7 +167,10 @@ function DurationStat(props) {
 	const Icon = Icons.getIcon(pascalCase(event), true);
 
 	return (
-		<div className="duration-stat-container">
+		<div
+			className="duration-stat-container"
+			style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+		>
 			<Icon
 				key={event}
 				fill={"#534E45"}
@@ -176,21 +180,21 @@ function DurationStat(props) {
 					padding: 2,
 				}}
 			></Icon>
-			<svg width={80} height={70} transform="translate(13,0)">
-				<rect x={20} y={0} key={event + "_rect"} width={15} height={8} fill={"#534E45"} rx={3}></rect>
-				<line x1={20} y1={7} x2={0} y2={30} stroke="#5F5656" strokeDasharray="5,5" strokeLinecap="round" />
-				<line x1={35} y1={7} x2={50} y2={30} stroke="#5F5656" strokeDasharray="5,5" strokeLinecap="round" />
-				<line x1={1} y1={32} x2={49} y2={32} stroke="#5F5656" strokeLinecap="round" />
-				<text fill="#5F5656" fontSize={11} y={47} x={5}>
+			<svg width={70} height={23}>
+				<rect x={28} y={0} key={event + "_rect"} width={15} height={8} fill={"#534E45"} rx={3}></rect>
+				<line x1={28} y1={7} x2={0} y2={20} stroke="#5F5656" strokeDasharray="5,5" strokeLinecap="round" />
+				<line x1={45} y1={7} x2={70} y2={20} stroke="#5F5656" strokeDasharray="5,5" strokeLinecap="round" />
+				<line x1={1} y1={22} x2={69} y2={22} stroke="#5F5656" strokeLinecap="round" />
+			</svg>
+            <svg width={110} height={15}>
+				<text fill="#5F5656" fontSize={11} y={13} x={10}>
 					between
-				</text>
-				<text fill="#5F5656" fontSize={11} y={59} x={0}>
 					<tspan fontWeight={700}>{Math.round(mind * 10) / 10 + " "}</tspan>
 					and
 					<tspan fontWeight={700}>{" " + Math.round(maxd * 10) / 10 + " "}</tspan>
 					sec
 				</text>
-			</svg>
+                </svg>
 		</div>
 	);
 }

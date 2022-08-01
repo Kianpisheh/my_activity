@@ -266,7 +266,10 @@ function App() {
                         onWhyNotWhatQuery={(what) => setWhyNotWhat(what)}
                         activityInstances={activityInstances}
                         selectedInstancesIdx={selectedInstancesIdx}
+                        classificationResult={classificationRes}
                         onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+                        onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
+                        whyNotWhat={whyNotWhat}
 					></ActivityAxiomPane>
 				)}
 			</div>

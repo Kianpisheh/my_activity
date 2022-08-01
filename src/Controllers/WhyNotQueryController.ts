@@ -6,8 +6,7 @@ class WhyNotQueryController {
 	static handleWhyNotQuery(
 		instances: ActivityInstance[],
 		activity: Activity,
-		selectedInstancesIdx: { [resType: string]: number[] },
-		classificationResult: { [type: string]: any }
+		selectedInstancesIdx: { [resType: string]: number[] }
 	) {
 		return getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
 	}

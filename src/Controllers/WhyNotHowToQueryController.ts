@@ -1,7 +1,6 @@
 import Activity from "../model/Activity";
 import ActivityInstance from "../model/ActivityInstance";
 import AxiomData from "../model/AxiomData";
-import AxiomTypes from "../model/AxiomTypes";
 import HowToAxiom from "../model/HowToAxiom";
 import { getWhyNotHowToSuggestions } from "../components/HowToPanel/WhyNotSuggestions";
 

@@ -1,13 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, {useState } from "react";
 
 import "./InteractionAxiom.css";
 
 import { CircleNum } from "../ExplanationPanel/utils";
-
-import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
+
+import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQueryController";
+import AxiomData from "../../model/AxiomData";
 
 function InteractionAxiom(props) {
 	const [hovered, setHovered] = useState(false);
@@ -15,7 +16,6 @@ function InteractionAxiom(props) {
 	const [selected, setSelected] = useState(new Set());
 
 	let events = [];
-	const whyIds = useContext(WhyAxiomIdsContext);
 
 	if (props.data != null) {
 		events = props.data.getEvents();
@@ -28,11 +28,13 @@ function InteractionAxiom(props) {
 	}
 
 	// check if each interaction is an unsatisfied axiom based on the user query
-	let numnum = {}; // event -> num
+	let unsatisfiedAxiom = null;
+    let numnum = {}; // event -> num
 	for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
 		const axType = axString.split(":")[0];
 		if (axType === AxiomTypes.TYPE_INTERACTION) {
 			const event = axString.split(":")[1];
+            unsatisfiedAxiom = new AxiomData({type:axType, th1:-1, th2:-1, events: [event]})
 			numnum[event] = indeces;
 		}
 	}
@@ -83,6 +85,15 @@ function InteractionAxiom(props) {
 					id="why-not-num-container"
 					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
 					onMouseLeave={() => props.onWhyNotNumHover([])}
+                    onClick={() => {
+                        const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
+						unsatisfiedAxiom,
+						props.activity,
+						props.classificationResult,
+						props.activityInstances,
+						props.selectedInstancesIdx["FN"]
+					);
+                    props.onWhyNotHowTo(whyNotHowToSuggestions);}}
 				>
 					{numnum[events[i]] && CircleNum(numnum[events[i]].length)}
 				</div>
@@ -90,16 +101,6 @@ function InteractionAxiom(props) {
 		);
 	}
 
-	let divStyle = {};
-	if (whyIds.includes(props.idx)) {
-		divStyle = {
-			borderColor: "#ADCEE8",
-			border: "1px",
-			borderStyle: "solid",
-			boxShadow: "0px 0px 4px 4px #2C87DB",
-			opacity: 0.7,
-		};
-	}
 
 	return (
 		<div className="interaction-axiom">
@@ -108,7 +109,6 @@ function InteractionAxiom(props) {
 					onMouseEnter={() => setHovered(true)}
 					onMouseLeave={() => setHovered(false)}
 					className="object-icons"
-					style={divStyle}
 				>
 					{[...interactionIcons]}
 				</div>
