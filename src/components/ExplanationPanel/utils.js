@@ -6,8 +6,9 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 		res = data["TP"].concat(data["FN"]);
 	} else {
 		res = Array.from(new Set(data["FP"].concat(data["newFPs"])));
-		res = [...data["FP"]];
 	}
+
+    console.log(data["newFPs"])
 
 	return (
 		<div className="results-rects-container">

@@ -48,9 +48,6 @@ function App() {
     const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
     const [whyQueryMode, setWhyQueryMode] = useState(false);
 
-
-    console.log(whyQueryMode)
-
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
 			let instances = [];
