@@ -1,18 +1,19 @@
 import "./HowToPanel2.css";
 
 import WhyNotHowToExplanations from "./WhyNotHowToExplanations";
+import WhyHowToExplanations from "./WhyHowToExplanations";
 import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
+import WhyWhatExplanation from "./WhyWhatExplanation";
 
 function HowToPanel2(props) {
-	const {whyOrWhyNotWhat, suggestions } = props;
+	const {whyWhat, whyNotWhat, whyNotHowTosuggestions, whyHowTosuggestions } = props;
 
-    let whyNotWhatExplanation = [];
+    let whatExplanation = [];
 
-
-	if (whyOrWhyNotWhat) {
-		whyNotWhatExplanation.push(
+	if (whyNotWhat) {
+		whatExplanation.push(
 			<WhyNotWhatExplanation
-				stats={whyOrWhyNotWhat}
+				stats={whyNotWhat}
 				onWhyNotHowTo={props.onWhyNotHowTo}
                 classificationResult={props.classificationResult}
                 activity={props.activity}
@@ -20,23 +21,41 @@ function HowToPanel2(props) {
                 selectedInstancesIdx={props.selectedInstancesIdx}
 			></WhyNotWhatExplanation>
 		);
+	} else if (whyWhat) {
+		whatExplanation.push(
+			<WhyWhatExplanation
+				stats={whyWhat}
+				onWhyHowTo={props.onWhyHowTo}
+                classificationResult={props.classificationResult}
+                activity={props.activity}
+                instances={props.instances}
+                selectedInstancesIdx={props.selectedInstancesIdx}
+			></WhyWhatExplanation>
+		);
 	}
 
-    let whyNotHowToExplanation = [];
+    let suggestions = [];
 
-	if (suggestions && suggestions.length) {
-		whyNotHowToExplanation.push(
+	if (whyNotHowTosuggestions && whyNotHowTosuggestions.length) {
+		suggestions.push(
 			<WhyNotHowToExplanations
-				suggestions={suggestions}
+				suggestions={whyNotHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 			></WhyNotHowToExplanations>
+		);
+	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
+		suggestions.push(
+			<WhyHowToExplanations
+				suggestions={whyHowTosuggestions}
+				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
+			></WhyHowToExplanations>
 		);
 	}
 
 	return <div className="exp-container">
-            {[...whyNotWhatExplanation]}
-           {whyNotHowToExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
-            {[...whyNotHowToExplanation]}
+            {[...whatExplanation]}
+           {suggestions.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+            {[...suggestions]}
         </div>;
 }
 export default HowToPanel2;

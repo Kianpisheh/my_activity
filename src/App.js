@@ -35,13 +35,15 @@ function App() {
 	const [ruleitems, setRuleitems] = useState({});
 	const [currentActInstanceIdx, setCurrentActInstanceIdx] = useState(-1);
 	const [whyHowToSuggestions, setWhyHowToSuggestions] = useState([]);
+	const [whyNotHowToSuggestions, setWhyNotHowToSuggestions] = useState([]);
 	const [unsatisfiedAxioms, setUnsatisfiedAxioms] = useState({});
 	const [scale, setScale] = useState([25, 25]);
 	const [newTPs, setNewTPs] = useState([]);
 	const [newFPs, setNewFPs] = useState([]);
 	const [queryMode, setQueryMode] = useState(false);
 	const [explanation, setExplanations] = useState(null);
-    const [whyOrWhyNotWhat, setWhyOrWhyNotWhat] = useState(null);
+    const [whyNotWhat, setWhyNotWhat] = useState(null);
+    const [whyWhat, setWhyWhat] = useState(null);
     const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
     const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
     const [whyQueryMode, setWhyQueryMode] = useState(false);
@@ -266,29 +268,31 @@ function App() {
 						config={config}
 						explanation={explanation}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        onWhyNotWhatQuery={(what) => setWhyOrWhyNotWhat(what)}
-                        onWhyWhatQuery={(what) => setWhyOrWhyNotWhat(what)}
+                        onWhyNotWhatQuery={(what) => {setWhyNotWhat(what); setWhyWhat(null);}}
+                        onWhyWhatQuery={(what) => {setWhyNotWhat(null); setWhyWhat(what);}}
                         activityInstances={activityInstances}
                         selectedInstancesIdx={selectedInstancesIdx}
                         classificationResult={classificationRes}
                         onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
                         onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
-                        whyNotWhat={whyOrWhyNotWhat}
                         whyQueryMode={whyQueryMode}
 					></ActivityAxiomPane>
 				)}whyWhatExp
 			</div>
 			<div id="how-to-panel">
 				<HowToPanel2
-					suggestions={whyHowToSuggestions}
+					whyHowTosuggestions={whyHowToSuggestions}
+					whyNotHowTosuggestions={whyNotHowToSuggestions}
 					width={"100%"}
 					onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
 						setNewTPs(newTPs);
 						setNewFPs(newFPs);
 						setQueryMode(queryMode);
 					}}
-                    whyOrWhyNotWhat={whyOrWhyNotWhat}
-                    onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
+                    whyNotWhat={whyNotWhat}
+                    whyWhat={whyWhat}
+                    onWhyNotHowTo={(suggestions1) => {setWhyNotHowToSuggestions(suggestions1); setWhyHowToSuggestions([]);}}
+                    onWhyHowTo={(suggestions2) => {setWhyNotHowToSuggestions([]); setWhyHowToSuggestions(suggestions2);}}
                     classificationResult={classificationRes}
                     activity={currentActivity}
                     instances={activityInstances}

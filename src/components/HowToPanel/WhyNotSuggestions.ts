@@ -16,10 +16,6 @@ export function getWhyNotHowToSuggestions(
 	classificationResult: { [resType: string]: any },
 	instances: ActivityInstance[]
 ): HowToAxiom[] {
-	// 1. find temporal statistics of the axiom if applicable
-	const FNInstances = instances.filter((val, i) => selectedFNs.includes(i));
-	const FNAxiomStat = getAxiomStats(FNInstances, axiom);
-
 	// 2. find axiom suggestions (HowTo)
 	let suggestions: HowToAxiom[] = [];
 	const axType = axiom.getType();
@@ -96,12 +92,12 @@ export function getWhyNotHowToSuggestions(
 			}
 		}
 		// new FPs
-		const oldTNs = classificationResult["TN"];
-		let oldTNInstances = actInstances.filter((val, idx) => oldTNs.includes(idx));
+		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
 		let newFPs: number[] = [];
-		for (let i = 0; i < oldTNInstances.length; i++) {
-			if (oldTNInstances[i].isSatisfied(newAxiomSet)) {
-				newFPs.push(oldTNs[i]);
+		for (let i = 0; i < oldTNFPInstances.length; i++) {
+			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNFPs[i]);
 			}
 		}
 
@@ -233,13 +229,14 @@ export function getWhyNotHowToSuggestions(
 				newTPs.push(oldTPFNs[i]);
 			}
 		}
+
 		// new FPs
-		const oldTNs = classificationResult["TN"];
-		let oldTNInstances = actInstances.filter((val, idx) => oldTNs.includes(idx));
+		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
 		let newFPs: number[] = [];
-		for (let i = 0; i < oldTNInstances.length; i++) {
-			if (oldTNInstances[i].isSatisfied(newAxiomSet)) {
-				newFPs.push(oldTNs[i]);
+		for (let i = 0; i < oldTNFPInstances.length; i++) {
+			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNFPs[i]);
 			}
 		}
 

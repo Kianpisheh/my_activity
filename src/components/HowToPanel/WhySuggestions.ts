@@ -6,6 +6,7 @@ import AxiomTypes from "../../model/AxiomTypes";
 import HowToAxiom from "../../model/HowToAxiom";
 
 import { subtractIntervals } from "../ExplanationPanel/utils.js";
+import isEqual from "lodash.isequal";
 
 export function getWhyHowToSuggestions(
 	selectedFPs: number[],
@@ -15,17 +16,64 @@ export function getWhyHowToSuggestions(
 	classificationResult: { [resType: string]: any },
 	instances: ActivityInstance[]
 ): HowToAxiom[] {
+	const suggestions1 = getFP0TimeContractionSuggestion(
+		axiom,
+		0,
+		currentActivity,
+		selectedFPs,
+		classificationResult,
+		instances
+	);
+
+	const suggestions2 = getFNSameTimeContractionSuggestion(
+		axiom,
+		0,
+		currentActivity,
+		selectedFPs,
+		classificationResult,
+		instances
+	);
+
+	return suggestions2.concat(suggestions1);
+}
+
+export function getAxiomStats(instances: ActivityInstance[], axiom: AxiomData) {
+	let stats: AxiomStat = null;
+
+	let i = 0;
+	let axiomStat: AxiomStat = new AxiomStat(axiom.events);
+	for (const instance of instances) {
+		const stat = instance.getStat(axiom);
+		if (i === 0) {
+			axiomStat = stat;
+		} else {
+			axiomStat = axiomStat.merge(stat);
+		}
+		i += 1;
+	}
+	stats = axiomStat;
+
+	return stats;
+}
+
+function getFP0TimeContractionSuggestion(
+	axiom: AxiomData,
+	axiomIdx: number,
+	currentActivity: Activity,
+	selectedFPs: number[],
+	classificationResult: { [resType: string]: any },
+	actInstances: ActivityInstance[]
+) {
 	const TPs = classificationResult["TP"];
 	// 1. find temporal statistics of the axiom if applicable (Why)
-	const FPInstances = instances.filter((val, i) => selectedFPs.includes(i));
+	const FPInstances = actInstances.filter((val, i) => selectedFPs.includes(i));
 	const FPAxiomStat = getAxiomStats(FPInstances, axiom);
-    const TPInstances = instances.filter((val, i) => TPs.includes(i));
-    const TPAxiomStat = getAxiomStats(TPInstances, axiom);
+	const TPInstances = actInstances.filter((val, i) => TPs.includes(i));
+	const TPAxiomStat = getAxiomStats(TPInstances, axiom);
 
 	// 2. find axiom suggestions (HowTo)
 	let suggestions: HowToAxiom[] = [];
 	// remove all FPs
-	let newInterval = [];
 	const axType = axiom.getType();
 
 	let tfp1, ttp1;
@@ -56,22 +104,84 @@ export function getWhyHowToSuggestions(
 			th1: interval[0],
 			th2: interval[1],
 		});
+
 		// new axiom has replaced the old one
 		let newAxiomSet = [...currentActivity.getAxioms()];
-		newAxiomSet[axIdx] = newAxiom;
-
-		const oldTPs = classificationResult["TP"];
-		let oldTPInstances = instances.filter((val, idx) => oldTPs.includes(idx));
-		let newTPs: number[] = [];
-		for (let i = 0; i < oldTPInstances.length; i++) {
-			if (oldTPInstances[i].isSatisfied(newAxiomSet)) {
-				newTPs.push(oldTPs[i]);
+		for (let j = 0; j < newAxiomSet.length; j++) {
+			if (isEqual(newAxiomSet[j], axiom)) {
+				newAxiomSet[j] = newAxiom;
 			}
 		}
+
+		// new TPs
+		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		let oldFNTPInstances = [];
+		for (let k = 0; k < oldTPFNs.length; k++) {
+			oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
+		}
+		let newTPs: number[] = [];
+		for (let i = 0; i < oldFNTPInstances.length; i++) {
+			if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
+				newTPs.push(oldTPFNs[i]);
+			}
+		}
+		// new FPs
+		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
+		let newFPs: number[] = [];
+		for (let i = 0; i < oldTNFPInstances.length; i++) {
+			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNFPs[i]);
+			}
+		}
+
 		suggestions.push(
 			new HowToAxiom("time_contraction", axiom, Number(Object.keys(FPAxiomStat)[0]), interval, "FP0", newTPs, [])
 		);
 	});
+
+	return suggestions;
+}
+
+function getFNSameTimeContractionSuggestion(
+	axiom: AxiomData,
+	axiomIdx: number,
+	currentActivity: Activity,
+	selectedFPs: number[],
+	classificationResult: { [resType: string]: any },
+	actInstances: ActivityInstance[]
+) {
+	const TPs = classificationResult["TP"];
+	// 1. find temporal statistics of the axiom if applicable (Why)
+	const FPInstances = actInstances.filter((val, i) => selectedFPs.includes(i));
+	const FPAxiomStat = getAxiomStats(FPInstances, axiom);
+	const TPInstances = actInstances.filter((val, i) => TPs.includes(i));
+	const TPAxiomStat = getAxiomStats(TPInstances, axiom);
+
+	// 2. find axiom suggestions (HowTo)
+	let suggestions: HowToAxiom[] = [];
+	// remove all FPs
+	let newInterval = [];
+	const axType = axiom.getType();
+
+	let tfp1, ttp1;
+	let tfp2, ttp2;
+
+	if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+		tfp1 = FPAxiomStat.minTimeDistance;
+		tfp2 = FPAxiomStat.maxTimeDistance;
+		if (TPAxiomStat) {
+			ttp1 = TPAxiomStat.minTimeDistance;
+			ttp2 = TPAxiomStat.maxTimeDistance;
+		}
+	} else if (axType === AxiomTypes.TYPE_DURATION) {
+		tfp1 = FPAxiomStat.minDuration1;
+		tfp2 = FPAxiomStat.maxDuration1;
+		if (TPAxiomStat) {
+			ttp1 = TPAxiomStat.minDuration1;
+			ttp2 = TPAxiomStat.maxDuration1;
+		}
+	}
 
 	// FN_SAME suggestion
 	let newFPInterval = subtractIntervals(tfp1, tfp2, ttp1, ttp2);
@@ -93,7 +203,7 @@ export function getWhyHowToSuggestions(
 
 	// find new TPs and new FPs
 	if (newInterval.length) {
-		newIntervals.forEach((interval: number[]) => {
+		newInterval.forEach((interval: number[]) => {
 			const newAxiom = new AxiomData({
 				events: axiom.getEvents(),
 				type: axiom.getType(),
@@ -103,58 +213,37 @@ export function getWhyHowToSuggestions(
 
 			// new axiom has replaced the old one
 			let newAxiomSet = [...currentActivity.getAxioms()];
-			newAxiomSet[axIdx] = newAxiom;
+			for (let j = 0; j < newAxiomSet.length; j++) {
+				if (isEqual(newAxiomSet[j], axiom)) {
+					newAxiomSet[j] = newAxiom;
+				}
+			}
 
 			// new TPs
-			const oldFNs = classificationResult["FN"];
-			let oldFNInstances = instances.filter((val, idx) => oldFNs.includes(idx));
+			const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+			let oldFNTPInstances = [];
+			for (let k = 0; k < oldTPFNs.length; k++) {
+				oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
+			}
 			let newTPs: number[] = [];
-			for (let i = 0; i < oldFNInstances.length; i++) {
-				if (oldFNInstances[i].isSatisfied(newAxiomSet)) {
-					newTPs.push(oldFNs[i]);
+			for (let i = 0; i < oldFNTPInstances.length; i++) {
+				if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
+					newTPs.push(oldTPFNs[i]);
 				}
 			}
 			// new FPs
-			const oldTNs = classificationResult["TN"];
-			let oldTNInstances = instances.filter((val, idx) => oldTNs.includes(idx));
+			const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+			let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
 			let newFPs: number[] = [];
-			for (let i = 0; i < oldTNInstances.length; i++) {
-				if (oldTNInstances[i].isSatisfied(newAxiomSet)) {
-					newFPs.push(oldTNs[i]);
+			for (let i = 0; i < oldTNFPInstances.length; i++) {
+				if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
+					newFPs.push(oldTNFPs[i]);
 				}
 			}
-			suggestions.push(
-				new HowToAxiom(
-					"time_contraction",
-					axiom,
-					axIdx,
-					interval,
-					"FN_SAME",
-					newTPs,
-					newFPs
-				)
-			);
+
+			suggestions.push(new HowToAxiom("time_contraction", axiom, 0, interval, "FN_SAME", newTPs, newFPs));
 		});
 	}
-    
+
 	return suggestions;
-}
-
-export function getAxiomStats(instances: ActivityInstance[], axiom: AxiomData) {
-	let stats: AxiomStat = null;
-
-	let i = 0;
-	let axiomStat: AxiomStat = new AxiomStat(axiom.events);
-	for (const instance of instances) {
-		const stat = instance.getStat(axiom);
-		if (i === 0) {
-			axiomStat = stat;
-		} else {
-			axiomStat = axiomStat.merge(stat);
-		}
-		i += 1;
-	}
-	stats = axiomStat;
-
-	return stats;
 }

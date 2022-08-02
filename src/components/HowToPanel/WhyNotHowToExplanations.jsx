@@ -16,7 +16,6 @@ function WhyNotHowToExplanations(props) {
 		const { axiom } = suggestion;
 		const suggestionType = suggestion.getType();
 		if (
-			suggestionType === "time_contraction" ||
 			suggestionType === "time_expansion" ||
 			suggestionType === "time_removal"
 		) {
@@ -54,7 +53,7 @@ function WhyNotHowToExplanations(props) {
 
 export default WhyNotHowToExplanations;
 
-function InteractionRemovalAxiom(props) {
+export function InteractionRemovalAxiom(props) {
 	const { axiom, newTPs, newFPs } = props.suggestion;
 	const events = axiom.getEvents();
 	const Icon = Icons.getIcon(pascalCase(events[0]), true);
@@ -78,7 +77,7 @@ function InteractionRemovalAxiom(props) {
 	);
 }
 
-function TemporalAdjustmentAxiom(props) {
+export function TemporalAdjustmentAxiom(props) {
 	const { axiom, suggestedAxiomData, newTPs, newFPs } = props.suggestion;
 	const th1 = Math.round(suggestedAxiomData[0] * 10) / 10;
 	const th2 = Math.round(suggestedAxiomData[1] * 10) / 10;
@@ -134,7 +133,7 @@ function TemporalAdjustmentAxiom(props) {
 	);
 }
 
-function DurationAdjustmentAxiom(props) {
+export function DurationAdjustmentAxiom(props) {
 	const { axiom, suggestedAxiomData, newFPs, newTPs } = props.suggestion;
 	const th1 = Math.round(suggestedAxiomData[0] * 10) / 10;
 	const th2 = Math.round(suggestedAxiomData[1] * 10) / 10;

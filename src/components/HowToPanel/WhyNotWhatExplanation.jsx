@@ -49,7 +49,7 @@ function WhyNotWhatExplanation(props) {
 
 export default WhyNotWhatExplanation;
 
-function DurationAxiomStat(props) {
+export function DurationAxiomStat(props) {
 	const { stats, axiom } = props;
 	const event = axiom.getEvents()?.[0];
 
@@ -65,7 +65,7 @@ function DurationAxiomStat(props) {
 	);
 }
 
-function TimeDistanceAxiomStat(props) {
+export function TimeDistanceAxiomStat(props) {
 	const { stats, axiom } = props;
 	const { minTimeDistance, maxTimeDistance, minDuration1, minDuration2 } = stats;
 	const events = axiom.getEvents();
@@ -138,7 +138,7 @@ function TimeDistanceAxiomStat(props) {
 	);
 }
 
-function TimeDistanceStat(props) {
+export function TimeDistanceStat(props) {
 	const { tdmax, tdmin } = props;
 	const TimeDistIcon = Icons.getIcon("TimeDistance2");
 
@@ -162,7 +162,7 @@ function TimeDistanceStat(props) {
 	);
 }
 
-function DurationStat(props) {
+export function DurationStat(props) {
 	const { event, mind, maxd } = props;
 	const Icon = Icons.getIcon(pascalCase(event), true);
 

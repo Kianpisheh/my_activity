@@ -1,0 +1,52 @@
+#outer-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+
+.stat-container {
+	display: flex;
+	justify-content: center;
+	height: 80px;
+	width: 80%;
+	border-radius: 5px;
+	background-color: var(--light-beige);
+}
+
+.td-stat-container2 {
+	display: flex;
+	column-gap: 10px;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.td-stat-data-container2 {
+	width: 125px;
+}
+
+.timed-istance-stat-container2 {
+	display: flex;
+	width: 100%;
+	align-self: center;
+}
+
+.icon-container2 {
+	display: flex;
+	align-items: center;
+}
+
+#missing-events-msg {
+	width: 100%;
+}
+
+#why-not-what-qmark {
+	display: flex;
+	height: 100%;
+	margin-top: -9px;
+	margin-right: -9px;
+	cursor: pointer;
+}
