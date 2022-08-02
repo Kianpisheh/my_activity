@@ -6,7 +6,7 @@ import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
-import { getWhyNotNum } from "./Axiom";
+import { getWhyNotNum, QMark } from "./Axiom";
 
 
 function DurationAxiom(props) {
@@ -69,7 +69,7 @@ function DurationAxiom(props) {
 				</span>
 			</div>
             <div className="rem-btn-td2">
-                {(hovered && numnum.length === 0) && (
+                {(!props.whyQueryMode && hovered && numnum.length === 0) && (
                     <button
                         className="remove-axiom-btn-td"
                     onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}
@@ -78,7 +78,15 @@ function DurationAxiom(props) {
                 </button>
                 )}
 			</div>
-            {numnum}
+            {!props.whyQueryMode && numnum}
+            {props.whyQueryMode && (
+				<QMark
+					onWhyWhatQuery={props.onWhyWhatQuery}
+					instances={props.activityInstances}
+					axiom={axiom}
+                    selectedIdx={props.selectedInstancesIdx["FP"]}
+				></QMark>
+			)}
 		</div>
 	);
 }

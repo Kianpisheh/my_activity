@@ -41,10 +41,13 @@ function App() {
 	const [newFPs, setNewFPs] = useState([]);
 	const [queryMode, setQueryMode] = useState(false);
 	const [explanation, setExplanations] = useState(null);
-    const [whyNotWhat, setWhyNotWhat] = useState(null);
+    const [whyOrWhyNotWhat, setWhyOrWhyNotWhat] = useState(null);
     const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
     const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
+    const [whyQueryMode, setWhyQueryMode] = useState(false);
 
+
+    console.log(whyQueryMode)
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -263,15 +266,17 @@ function App() {
 						config={config}
 						explanation={explanation}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        onWhyNotWhatQuery={(what) => setWhyNotWhat(what)}
+                        onWhyNotWhatQuery={(what) => setWhyOrWhyNotWhat(what)}
+                        onWhyWhatQuery={(what) => setWhyOrWhyNotWhat(what)}
                         activityInstances={activityInstances}
                         selectedInstancesIdx={selectedInstancesIdx}
                         classificationResult={classificationRes}
                         onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
                         onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
-                        whyNotWhat={whyNotWhat}
+                        whyNotWhat={whyOrWhyNotWhat}
+                        whyQueryMode={whyQueryMode}
 					></ActivityAxiomPane>
-				)}
+				)}whyWhatExp
 			</div>
 			<div id="how-to-panel">
 				<HowToPanel2
@@ -282,7 +287,7 @@ function App() {
 						setNewFPs(newFPs);
 						setQueryMode(queryMode);
 					}}
-                    whyNotWhat={whyNotWhat}
+                    whyOrWhyNotWhat={whyOrWhyNotWhat}
                     onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
                     classificationResult={classificationRes}
                     activity={currentActivity}
@@ -310,6 +315,8 @@ function App() {
 					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
                     onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
                     highlightedInstancesIdx={highlightedInstancesIdx}
+                    whyQueryMode={whyQueryMode}
+                    onWhyExplanation={(qMode) => setWhyQueryMode(qMode)}
 				></ExplanationPanel>
 			</div>
 		</div>

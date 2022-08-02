@@ -7,10 +7,11 @@ import DurationAxiom from "./DurationAxiom";
 import InteractionORAxiom from "./InteractionORAxiom";
 
 import AxiomData from "../../model/AxiomData";
+import WhyWhatQueryController from "../../Controllers/WhyWhatQueryController";
 import WhyNotWhatQueryController from "../../Controllers/WhyNotWhatQueryController";
 
 import isEqual from "lodash.isequal";
-import { CircleNum } from "../ExplanationPanel/utils";
+import { CircleNum, CircleQMark } from "../ExplanationPanel/utils";
 
 function Axiom(props) {
 	let axiomComponent = null;
@@ -25,14 +26,16 @@ function Axiom(props) {
 				explanation={props.explanation}
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                activityInstances={props.activityInstances}
-                onWhyNotNumHover={props.onWhyNotNumHover}
-                classificationResult={props.classificationResult}
-                activity={props.activity}
-                selectedInstancesIdx={props.selectedInstancesIdx}
-                onWhyNotHowTo={props.onWhyNotHowTo}
-                stats={props.whyNotWhat}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyWhatQuery={props.onWhyWhatQuery}
+				activityInstances={props.activityInstances}
+				onWhyNotNumHover={props.onWhyNotNumHover}
+				classificationResult={props.classificationResult}
+				activity={props.activity}
+				selectedInstancesIdx={props.selectedInstancesIdx}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				stats={props.whyNotWhat}
+				whyQueryMode={props.whyQueryMode}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
@@ -45,8 +48,8 @@ function Axiom(props) {
 				explanation={props.explanation}
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                activityInstances={props.activityInstances}
-                onWhyNotNumHover={props.onWhyNotNumHover}
+				activityInstances={props.activityInstances}
+				onWhyNotNumHover={props.onWhyNotNumHover}
 			></InteractionORAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -59,9 +62,12 @@ function Axiom(props) {
 				explanation={props.explanation}
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                activityInstances={props.activityInstances}
-                onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyWhatQuery={props.onWhyWhatQuery}
+				activityInstances={props.activityInstances}
+				onWhyNotNumHover={props.onWhyNotNumHover}
+				whyQueryMode={props.whyQueryMode}
+                selectedInstancesIdx={props.selectedInstancesIdx}
 			></TimeDistanceAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -74,9 +80,12 @@ function Axiom(props) {
 				explanation={props.explanation}
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
-                onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                activityInstances={props.activityInstances}
-                onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyWhatQuery={props.onWhyWhatQuery}
+				activityInstances={props.activityInstances}
+				onWhyNotNumHover={props.onWhyNotNumHover}
+				whyQueryMode={props.whyQueryMode}
+				selectedInstancesIdx={props.selectedInstancesIdx}
 			></DurationAxiom>
 		);
 	}
@@ -97,7 +106,7 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 					id="why-not-num-container"
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
-                    onClick={() => {
+					onClick={() => {
 						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
 						onWhyNotWhatQuery(whatExp);
 					}}
@@ -108,4 +117,22 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 		}
 	}
 	return numnum;
+}
+
+export function QMark(props) {
+
+    const {axiom, instances, onWhyWhatQuery, selectedIdx} = props;
+
+    const FPInstances = instances.filter((val, idx) => selectedIdx.includes(idx))
+	return (
+		<div
+			id="qmark-container"
+			onClick={() => {
+				const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(axiom, FPInstances);
+				onWhyWhatQuery(whyWhatExp);
+			}}
+		>
+			{CircleQMark()}
+		</div>
+	);
 }

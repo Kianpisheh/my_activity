@@ -118,6 +118,17 @@ function CircleNum(num) {
 	);
 }
 
+export function CircleQMark() {
+    return (
+		<svg width={22} height={22} viewBox="0 0 22 22">
+			<circle cx={10} cy={10} r={10} fill="var(--explanation)"></circle>
+			<text x={10} y="50%" dominantBaseline={"middle"} textAnchor={"middle"} fontSize={11} fill="white">
+				?
+			</text>
+		</svg>
+	);
+}
+
 export function subtractIntervals(ts1, te1, ts2, te2) {
 	// i1 is enclosed by i2
 	if (ts1 > ts2 && ts1 < te2 && te1 > ts2 && te1 < te2) {

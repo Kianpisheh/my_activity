@@ -54,3 +54,12 @@
 	justify-self: start;
 	align-self: start;
 }
+
+#qmark-container {
+	height: 100%;
+	justify-self: start;
+	align-self: start;
+	margin-top: -10px;
+	margin-right: -10px;
+	cursor: pointer;
+}

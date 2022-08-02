@@ -1,11 +1,5 @@
 import Activity from "../../model/Activity";
 import ActivityInstance from "../../model/ActivityInstance";
-import AxiomTypes from "../../model/AxiomTypes";
-import AxiomData from "../../model/AxiomData";
-
-import { getWhyHowToSuggestions } from "../HowToPanel/WhySuggestions";
-import { getWhyNotHowToSuggestions } from "../HowToPanel/WhyNotSuggestions";
-import HowToAxiom from "../../model/HowToAxiom";
 
 function handleInstanceSelection(idx: number, type: string, selectedInstances: { [type: string]: number[] }) {
 	let new_selectedIdx = { ...selectedInstances };
@@ -49,48 +43,6 @@ export function getUnsatisfiedAxioms(
 	}
 
 	return allAxioms;
-}
-
-export function handleWhyNotQuery(
-	instances: ActivityInstance[],
-	activity: Activity,
-	selectedInstancesIdx: { [resType: string]: number[] },
-	classificationResult: { [type: string]: any }
-) {
-	const unsatisfiedAxioms = getUnsatisfiedAxioms(instances, selectedInstancesIdx["FN"], activity);
-	let i = 0;
-	let suggestions: HowToAxiom[] = [];
-	for (const [ax, selectedFNs] of Object.entries(unsatisfiedAxioms)) {
-		const axiom = AxiomData.axiomFromString(ax);
-		if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
-			i += 1;
-			continue;
-		}
-		suggestions = getWhyNotHowToSuggestions(axiom, i, activity, selectedFNs, classificationResult, instances);
-		i += 1;
-	}
-
-	return suggestions;
-}
-
-export function handleWhyQuery(
-	instances: ActivityInstance[],
-	activity: Activity,
-	selectedInstancesIdx: { [resType: string]: number[] },
-	classificationResult: { [type: string]: any }
-) {
-	const axioms = activity.getAxioms();
-	let suggestions: HowToAxiom[] = [];
-	suggestions = getWhyHowToSuggestions(
-		selectedInstancesIdx["FP"],
-		axioms[1],
-		1,
-		activity,
-		classificationResult,
-		instances
-	);
-
-	return suggestions;
 }
 
 export default handleInstanceSelection;

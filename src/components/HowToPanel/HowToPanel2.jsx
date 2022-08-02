@@ -4,14 +4,15 @@ import WhyNotHowToExplanations from "./WhyNotHowToExplanations";
 import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
 
 function HowToPanel2(props) {
-	const { whyNotWhat, suggestions } = props;
+	const {whyOrWhyNotWhat, suggestions } = props;
 
     let whyNotWhatExplanation = [];
 
-	if (whyNotWhat) {
+
+	if (whyOrWhyNotWhat) {
 		whyNotWhatExplanation.push(
 			<WhyNotWhatExplanation
-				stats={whyNotWhat}
+				stats={whyOrWhyNotWhat}
 				onWhyNotHowTo={props.onWhyNotHowTo}
                 classificationResult={props.classificationResult}
                 activity={props.activity}

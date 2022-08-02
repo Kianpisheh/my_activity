@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import AxiomManager from "../../model/AxiomManager";
 import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
@@ -24,7 +24,7 @@ function ActivityAxiomPane(props) {
 		props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
 	}
 
-	var objectList = [];
+	let objectList = [];
 	if (ruleType === AxiomTypes.TYPE_INTERACTION) {
 		objectList = [...Icons.getEventList()];
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
@@ -96,6 +96,7 @@ function ActivityAxiomPane(props) {
 							unsatisfiedAxioms={props.unsatisfiedAxioms}
 							onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+							onWhyWhatQuery={props.onWhyWhatQuery}
 							activityInstances={props.activityInstances}
 							onWhyNotNumHover={props.onWhyNotNumHover}
 							classificationResult={props.classificationResult}
@@ -103,6 +104,7 @@ function ActivityAxiomPane(props) {
 							selectedInstancesIdx={props.selectedInstancesIdx}
 							onWhyNotHowTo={props.onWhyNotHowTo}
                             stats={props.whyNotWhat}
+                            whyQueryMode={props.whyQueryMode}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">s
@@ -142,6 +144,7 @@ function ActivityAxiomPane(props) {
 								unsatisfiedAxioms={props.unsatisfiedAxioms}
 								onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+							    onWhyWhatQuery={props.onWhyWhatQuery}
 								activityInstances={props.activityInstances}
 								onWhyNotNumHover={props.onWhyNotNumHover}
 								classificationResult={props.classificationResult}
@@ -149,6 +152,7 @@ function ActivityAxiomPane(props) {
 								selectedInstancesIdx={props.selectedInstancesIdx}
 								onWhyNotHowTo={props.onWhyNotHowTo}
                                 stats={props.whyNotWhat}
+                                whyQueryMode={props.whyQueryMode}
 							></Axiom>
 						))}
 					</div>{" "}

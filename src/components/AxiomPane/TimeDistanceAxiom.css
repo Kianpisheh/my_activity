@@ -108,3 +108,12 @@
 	margin-right: -10px;
 	cursor: pointer;
 }
+
+#why-not-num-container {
+	height: 100%;
+	justify-self: start;
+	align-self: start;
+	margin-top: -10px;
+	margin-right: -10px;
+	cursor: pointer;
+}

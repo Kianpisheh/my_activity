@@ -39,13 +39,8 @@ function ExplanationPanel(props) {
 					actInstances={props.actInstances}
 					onQuery={(queryType) => {
 						if (queryType === "FP") {
-							const whyHowToSuggestions = WhyFPQueryController.handleWhyQuery(
-								props.actInstances,
-								props.currentActivity,
-								props.selectedInstancesIdx,
-								props.classificationResults
-							);
-							props.onWhyHowToSuggestions(whyHowToSuggestions);
+							const qMode = WhyFPQueryController.handleWhyQuery(props.queryMode);
+							props.onWhyExplanation(qMode);
 						} else if (queryType === "FN") {
 							const unsatisfiedAxioms = WhyNotQueryController.handleWhyNotQuery(
 								props.actInstances,
