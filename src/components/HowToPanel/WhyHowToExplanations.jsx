@@ -1,5 +1,5 @@
 import AxiomTypes from "../../model/AxiomTypes";
-import { DurationAdjustmentAxiom, TemporalAdjustmentAxiom } from "./WhyNotHowToExplanations";
+import { DurationAdjustmentAxiom, InteractionAdditionAxiom, TemporalAdjustmentAxiom } from "./WhyNotHowToExplanations";
 
 function WhyHowToExplanations(props) {
 	const { suggestions, onWhyHowToAxiomHover } = props;
@@ -11,9 +11,7 @@ function WhyHowToExplanations(props) {
 	for (const suggestion of suggestions) {
 		const { axiom } = suggestion;
 		const suggestionType = suggestion.getType();
-		if (
-			suggestionType === "time_contraction"
-		) {
+		if (suggestionType === "time_contraction") {
 			if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
 				suggestionItems.push(
 					<DurationAdjustmentAxiom
@@ -32,7 +30,11 @@ function WhyHowToExplanations(props) {
 				);
 			}
 		} else if (suggestionType === "interaction_addition") {
-			
+			suggestionItems.push(
+            <InteractionAdditionAxiom
+				suggestion={suggestion}
+				onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+			></InteractionAdditionAxiom>);
 		}
 	}
 

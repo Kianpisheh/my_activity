@@ -8,8 +8,6 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 		res = Array.from(new Set(data["FP"].concat(data["newFPs"])));
 	}
 
-    console.log(data["newFPs"])
-
 	return (
 		<div className="results-rects-container">
 			{res.map((r, idx) => {

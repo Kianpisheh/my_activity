@@ -7,6 +7,10 @@ import HowToAxiom from "../../model/HowToAxiom";
 
 import { subtractIntervals } from "../ExplanationPanel/utils.js";
 import isEqual from "lodash.isequal";
+import RuleitemData from "../../model/RuleitemData";
+
+import sortBy from "lodash/sortBy";
+import { isTemplateSpan } from "typescript";
 
 export function getWhyHowToSuggestions(
 	selectedFPs: number[],
@@ -14,27 +18,46 @@ export function getWhyHowToSuggestions(
 	axIdx: number,
 	currentActivity: Activity,
 	classificationResult: { [resType: string]: any },
-	instances: ActivityInstance[]
+	instances: ActivityInstance[],
+	ruleitems: RuleitemData[]
 ): HowToAxiom[] {
-	const suggestions1 = getFP0TimeContractionSuggestion(
-		axiom,
-		0,
-		currentActivity,
-		selectedFPs,
-		classificationResult,
-		instances
-	);
+	const axType = axiom.getType();
 
-	const suggestions2 = getFNSameTimeContractionSuggestion(
-		axiom,
-		0,
-		currentActivity,
-		selectedFPs,
-		classificationResult,
-		instances
-	);
+	let suggestions: HowToAxiom[] = [];
 
-	return suggestions2.concat(suggestions1);
+	if (axType === AxiomTypes.TYPE_DURATION || axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+		const suggestions1 = getFP0TimeContractionSuggestion(
+			axiom,
+			0,
+			currentActivity,
+			selectedFPs,
+			classificationResult,
+			instances
+		);
+
+		const suggestions2 = getFNSameTimeContractionSuggestion(
+			axiom,
+			0,
+			currentActivity,
+			selectedFPs,
+			classificationResult,
+			instances
+		);
+
+		suggestions = suggestions2.concat(suggestions1);
+	} else if (axType === axiom.getType()) {
+		const suggestion3 = getInteractionAdditionAxiomSuggestions(
+			axiom,
+			ruleitems[currentActivity.getName()],
+			classificationResult,
+			currentActivity,
+			instances,
+			selectedFPs
+		);
+		suggestions = suggestion3;
+	}
+
+	return suggestions;
 }
 
 export function getAxiomStats(instances: ActivityInstance[], axiom: AxiomData) {
@@ -243,6 +266,90 @@ function getFNSameTimeContractionSuggestion(
 
 			suggestions.push(new HowToAxiom("time_contraction", axiom, 0, interval, "FN_SAME", newTPs, newFPs));
 		});
+	}
+
+	return suggestions;
+}
+
+function getInteractionAdditionAxiomSuggestions(
+	axiom: AxiomData,
+	ruleitems: RuleitemData[],
+	classificationResult: { [type: string]: any },
+	currentActivity: Activity,
+	instances: ActivityInstance[],
+	selectedFPs: number[]
+) {
+	const SUPP_TH = 0.85;
+	const CONF_TH = 0.9;
+	const activityNum = ActivityInstance.getNum(currentActivity.getName(), instances);
+	let candidateRuleitems: RuleitemData[] = [];
+
+	// find the eligible (high supp and conf) candidates
+	for (const ruleitem of ruleitems) {
+		if (ruleitem.getConf() >= CONF_TH && ruleitem.getSupp() / activityNum >= SUPP_TH) {
+			candidateRuleitems.push(ruleitem);
+		}
+	}
+
+	// remove subset rule items
+	let candidateRuleitems2: RuleitemData[] = [];
+	loop1: for (let i = 0; i < candidateRuleitems.length; i++) {
+		const items1 = candidateRuleitems[i].getItems();
+		for (let j = 0; j < candidateRuleitems.length; j++) {
+			if (i === j) continue;
+			const items2 = candidateRuleitems[j].getItems();
+			if (items1.every((val) => items2.includes(val))) {
+				continue loop1;
+			}
+		}
+		candidateRuleitems2.push(candidateRuleitems[i]);
+	}
+
+	// rank ruleitems
+	candidateRuleitems2 = sortBy(candidateRuleitems2, [
+		function (rItem: RuleitemData) {
+			return rItem.getItems().length;
+		},
+		"supp",
+		"conf",
+	]);
+	candidateRuleitems2 = candidateRuleitems2.reverse();
+
+	// now create the suggestions
+	let suggestions = [];
+	for (const ruleitem of candidateRuleitems2.slice(0, 3)) {
+		// new axiom has replaced the old one
+		let newAxiomSet = [...currentActivity.getAxioms()];
+		// remove the curr interaction axiom
+		newAxiomSet.filter((axiom) => axiom.getType() !== AxiomTypes.TYPE_INTERACTION);
+		// replace the newAxiom with the old one
+		let newItems = ruleitem.getItems().map((item) => item[0].toUpperCase() + item.slice(1).toLowerCase());
+		let newAxiom = new AxiomData({ type: AxiomTypes.TYPE_INTERACTION, events: newItems, th1: -1, th2: -1 });
+		newAxiomSet.push(newAxiom);
+
+		// new TPs
+		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		let oldFNTPInstances = [];
+		for (let k = 0; k < oldTPFNs.length; k++) {
+			oldFNTPInstances.push(instances[oldTPFNs[k]]);
+		}
+		let newTPs: number[] = [];
+		for (let i = 0; i < oldFNTPInstances.length; i++) {
+			if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
+				newTPs.push(oldTPFNs[i]);
+			}
+		}
+		// new FPs
+		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		let oldTNFPInstances = instances.filter((val, idx) => oldTNFPs.includes(idx));
+		let newFPs: number[] = [];
+		for (let i = 0; i < oldTNFPInstances.length; i++) {
+			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
+				newFPs.push(oldTNFPs[i]);
+			}
+		}
+
+		suggestions.push(new HowToAxiom("interaction_addition", newAxiom, 0, null, "FP_MIN", [...newTPs], [...newFPs]));
 	}
 
 	return suggestions;

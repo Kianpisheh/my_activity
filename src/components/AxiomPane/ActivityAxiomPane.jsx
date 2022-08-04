@@ -92,7 +92,6 @@ function ActivityAxiomPane(props) {
 							data={axioms[0]}
 							config={props.config}
 							messageCallback={props.sendMessage}
-							explanation={props.explanation}
 							unsatisfiedAxioms={props.unsatisfiedAxioms}
 							onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
@@ -105,9 +104,11 @@ function ActivityAxiomPane(props) {
 							onWhyNotHowTo={props.onWhyNotHowTo}
                             stats={props.whyNotWhat}
                             whyQueryMode={props.whyQueryMode}
+                            onWhyHowToQuery={props.onWhyHowToQuery}
+                            ruleitems={props.ruleitems}
 						></Axiom>
 					</div>
-					<div className="axiom-crafter-container">s
+					<div className="axiom-crafter-container">
 						{definingRule === "interaction" && (
 							<AxiomCrafter
 								config={props.config}
@@ -140,7 +141,6 @@ function ActivityAxiomPane(props) {
 								data={axiom}
 								config={props.config}
 								messageCallback={props.sendMessage}
-								explanation={props.explanation}
 								unsatisfiedAxioms={props.unsatisfiedAxioms}
 								onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
@@ -153,6 +153,7 @@ function ActivityAxiomPane(props) {
 								onWhyNotHowTo={props.onWhyNotHowTo}
                                 stats={props.whyNotWhat}
                                 whyQueryMode={props.whyQueryMode}
+                                onWhyHowToQuery={props.onWhyHowToQuery}
 							></Axiom>
 						))}
 					</div>{" "}

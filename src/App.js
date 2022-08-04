@@ -15,7 +15,6 @@ import "./App.css";
 import AxiomTypes from "./model/AxiomTypes";
 import Activity from "./model/Activity";
 import ActivityInstance from "./model/ActivityInstance";
-import ExplanationManager from "./model/ExplanationManager";
 import Ruleitem from "./model/RuleitemData";
 
 import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
@@ -42,11 +41,11 @@ function App() {
 	const [newFPs, setNewFPs] = useState([]);
 	const [queryMode, setQueryMode] = useState(false);
 	const [explanation, setExplanations] = useState(null);
-    const [whyNotWhat, setWhyNotWhat] = useState(null);
-    const [whyWhat, setWhyWhat] = useState(null);
-    const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
-    const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
-    const [whyQueryMode, setWhyQueryMode] = useState(false);
+	const [whyNotWhat, setWhyNotWhat] = useState(null);
+	const [whyWhat, setWhyWhat] = useState(null);
+	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
+	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
+	const [whyQueryMode, setWhyQueryMode] = useState(false);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -63,20 +62,19 @@ function App() {
 				currentActivtyIdx,
 				currentActivity
 			);
-         
-            setActivities(
-                newActivities,
-                handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx)
-            );
-            
+
+			setActivities(
+				newActivities,
+				handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx)
+			);
 		}
 	}
 
-    function handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx) {
-        if (message !== AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
-            updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx);
-        }
-    }
+	function handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx) {
+		if (message !== AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
+			updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx);
+		}
+	}
 
 	let currentActivity = null;
 	if (currentActivtyIdx >= 0) {
@@ -152,22 +150,6 @@ function App() {
 		setScale(newScale);
 	}
 
-	//-----------------Explanations----------------------//
-	function handleExplanationRequest(req) {
-		let prom = explain(
-			activityInstances[currentActInstanceIdx]["name"],
-			activities[currentActivtyIdx]["name"],
-			req.toLowerCase()
-		);
-
-		prom.then((data) => {
-			let explanation = ExplanationManager.getExplanations(data.data);
-			let ids = ExplanationManager.getSatisfiedAxiomIds(currentActivity.getAxioms(), explanation);
-			setExplanations(explanation);
-		});
-	}
-	//---------------------------------------------------//
-
 	//------------ClassisficationStutus-----------------//
 	function handleInstanceClick(idx) {
 		setCurrentActInstanceIdx(idx);
@@ -186,6 +168,7 @@ function App() {
 	// load activities
 	useEffect(() => {
 		let activitiesPromise = retrieveActivities("http://localhost:8082/activity");
+        handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;
 			let activityItems = [];
@@ -225,6 +208,7 @@ function App() {
 
 	const leftPaneWidth = 250;
 
+
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
 
 	return (
@@ -263,18 +247,31 @@ function App() {
 						activity={currentActivity}
 						sendMessage={onAxiomPaneMessage}
 						config={config}
-						explanation={explanation}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        onWhyNotWhatQuery={(what) => {setWhyNotWhat(what); setWhyWhat(null);}}
-                        onWhyWhatQuery={(what) => {setWhyNotWhat(null); setWhyWhat(what);}}
-                        activityInstances={activityInstances}
-                        selectedInstancesIdx={selectedInstancesIdx}
-                        classificationResult={classificationRes}
-                        onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
-                        onWhyNotHowTo={(suggestions1) => setWhyHowToSuggestions(suggestions1)}
-                        whyQueryMode={whyQueryMode}
+                        ruleitems={ruleitems}
+						onWhyNotWhatQuery={(what) => {
+							setWhyNotWhat(what);
+							setWhyWhat(null);
+						}}
+						onWhyWhatQuery={(what) => {
+							setWhyNotWhat(null);
+							setWhyWhat(what);
+						}}
+						activityInstances={activityInstances}
+						selectedInstancesIdx={selectedInstancesIdx}
+						classificationResult={classificationRes}
+						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+						onWhyNotHowTo={(suggestions) => {
+							setWhyHowToSuggestions(suggestions);
+							setWhyHowToSuggestions([]);
+						}}
+						onWhyHowToQuery={(suggestions) => {
+							setWhyNotHowToSuggestions([]);
+							setWhyHowToSuggestions(suggestions);
+						}}
+						whyQueryMode={whyQueryMode}
 					></ActivityAxiomPane>
-				)}whyWhatExp
+				)}
 			</div>
 			<div id="how-to-panel">
 				<HowToPanel2
@@ -286,15 +283,21 @@ function App() {
 						setNewFPs(newFPs);
 						setQueryMode(queryMode);
 					}}
-                    whyNotWhat={whyNotWhat}
-                    whyWhat={whyWhat}
-                    onWhyNotHowTo={(suggestions1) => {setWhyNotHowToSuggestions(suggestions1); setWhyHowToSuggestions([]);}}
-                    onWhyHowTo={(suggestions2) => {setWhyNotHowToSuggestions([]); setWhyHowToSuggestions(suggestions2);}}
-                    classificationResult={classificationRes}
-                    activity={currentActivity}
-                    instances={activityInstances}
-                    selectedInstancesIdx={selectedInstancesIdx}
-                    onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+					whyNotWhat={whyNotWhat}
+					whyWhat={whyWhat}
+					onWhyNotHowTo={(suggestions1) => {
+						setWhyNotHowToSuggestions(suggestions1);
+						setWhyHowToSuggestions([]);
+					}}
+					onWhyHowTo={(suggestions2) => {
+						setWhyNotHowToSuggestions([]);
+						setWhyHowToSuggestions(suggestions2);
+					}}
+					classificationResult={classificationRes}
+					activity={currentActivity}
+					instances={activityInstances}
+					selectedInstancesIdx={selectedInstancesIdx}
+					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
@@ -311,13 +314,13 @@ function App() {
 					newTPs={newTPs}
 					newFPs={newFPs}
 					queryMode={queryMode}
-                    selectedInstancesIdx={selectedInstancesIdx}
+					selectedInstancesIdx={selectedInstancesIdx}
 					onRuleitemRequest={handleRuleitemRequest}
 					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
-                    onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
-                    highlightedInstancesIdx={highlightedInstancesIdx}
-                    whyQueryMode={whyQueryMode}
-                    onWhyExplanation={(qMode) => setWhyQueryMode(qMode)}
+					onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
+					highlightedInstancesIdx={highlightedInstancesIdx}
+					whyQueryMode={whyQueryMode}
+					onWhyExplanation={(qMode) => setWhyQueryMode(qMode)}
 				></ExplanationPanel>
 			</div>
 		</div>

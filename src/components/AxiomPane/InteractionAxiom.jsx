@@ -9,6 +9,7 @@ import Icons from "../../icons/Icons";
 
 import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQueryController";
 import AxiomData from "../../model/AxiomData";
+import { QMark } from "./Axiom";
 
 function InteractionAxiom(props) {
 	const [hovered, setHovered] = useState(false);
@@ -118,7 +119,7 @@ function InteractionAxiom(props) {
 					className="rem-btn"
 					style={{ width: "0%", marginTop: "14px" }}
 				>
-					{hovered && (
+					{(hovered && !props.whyQueryMode) &&(
 						<button
 							className="remove-axiom-btn"
 							onClick={() => {
@@ -131,6 +132,18 @@ function InteractionAxiom(props) {
 							X
 						</button>
 					)}
+                    {props.whyQueryMode && (
+				<QMark
+                    ruleitems={props.ruleitems}
+                    activity={props.activity}
+                    classificationResult={props.classificationResult}
+					onWhyWhatQuery={props.onWhyWhatQuery}
+					onWhyHowToQuery={props.onWhyHowToQuery}
+					instances={props.activityInstances}
+					axiom={props.data}
+                    selectedIdx={props.selectedInstancesIdx["FP"]}
+				></QMark>
+			)}
 				</div>
 			</div>
 		</div>

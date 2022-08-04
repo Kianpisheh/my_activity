@@ -254,8 +254,17 @@ class ActivityInstance {
 				}
 			}
 		}
-
 		return numSatisfied === axioms.length;
+	}
+
+	static getNum(activity: string, instances: ActivityInstance[]): number {
+		let num = 0;
+		for (const instance of instances) {
+			if (instance.getType() === activity) {
+				num += 1;
+			}
+		}
+		return num;
 	}
 }
 

@@ -133,6 +133,28 @@ export function TemporalAdjustmentAxiom(props) {
 	);
 }
 
+export function InteractionAdditionAxiom(props) {
+    const { axiom, newTPs, newFPs } = props.suggestion;
+	const events = axiom.getEvents();
+
+    let icons = [];
+    for (let ev of events) {
+	    const Icon = Icons.getIcon(pascalCase(ev), true);
+        icons.push(<svg width={25} height={25}> 
+<Icon fill="#3A2A0D" style={{ width: 25, height: 25 }} /></svg>);
+    }
+    return <div
+			className="temp-adj-axiom-container"
+			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+			style={{ position: "relative" }}
+		>
+			<div className="icon-container3">
+				{[...icons]}
+			</div>
+		</div>
+}
+
 export function DurationAdjustmentAxiom(props) {
 	const { axiom, suggestedAxiomData, newFPs, newTPs } = props.suggestion;
 	const th1 = Math.round(suggestedAxiomData[0] * 10) / 10;
