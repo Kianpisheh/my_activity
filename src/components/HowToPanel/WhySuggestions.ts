@@ -5,7 +5,7 @@ import AxiomStat from "../../model/AxiomStats";
 import AxiomTypes from "../../model/AxiomTypes";
 import HowToAxiom from "../../model/HowToAxiom";
 
-import { subtractIntervals } from "../ExplanationPanel/utils.js";
+import { subtractIntervals } from "../ResultsPanel/utils.js";
 import isEqual from "lodash.isequal";
 import RuleitemData from "../../model/RuleitemData";
 

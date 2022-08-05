@@ -2,7 +2,7 @@ import React, {useState } from "react";
 
 import "./InteractionAxiom.css";
 
-import { CircleNum } from "../ExplanationPanel/utils";
+import { CircleNum } from "../ResultsPanel/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";

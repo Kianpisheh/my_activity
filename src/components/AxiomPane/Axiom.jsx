@@ -10,7 +10,7 @@ import AxiomData from "../../model/AxiomData";
 import WhyWhatQueryController from "../../Controllers/WhyWhatQueryController";
 
 import isEqual from "lodash.isequal";
-import { CircleNum, CircleQMark } from "../ExplanationPanel/utils";
+import { CircleNum, CircleQMark } from "../ResultsPanel/utils";
 import WhyHowToQueryController from "../../Controllers/WhyHowToQueryController";
 
 function Axiom(props) {

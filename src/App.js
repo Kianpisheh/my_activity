@@ -20,12 +20,10 @@ import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
-import ExplanationPanel from "./components/ExplanationPanel/ExplanationPanel";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
 import QuestionMenu, { QueryQuestion } from "./components/QuestionMenu/QuestionMenu";
-import SystemStatus from "./model/SystemMode";
 import WhyNotHowToQueryController from "./Controllers/WhyNotHowToQueryController";
 import WhyNotQueryController from "./Controllers/WhyNotQueryController";
 import WhyFPQueryController from "./Controllers/WhyFPQueryController";
@@ -33,6 +31,10 @@ import SystemMode from "./model/SystemMode";
 import WhyNotWhatQueryController from "./Controllers/WhyNotWhatQueryController";
 import WhyWhatQueryController from "./Controllers/WhyWhatQueryController";
 import WhyHowToQueryController from "./Controllers/WhyHowToQueryController";
+import ResultsPanel from "./components/ResultsPanel/ResultsPanel";
+
+import handleInstanceSelection from "./components/ResultsPanel/handler";
+
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -389,36 +391,28 @@ function App() {
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
-				<ExplanationPanel
-					classificationResults={classificationRes}
+                <ResultsPanel
 					parentWidth={leftPaneWidth}
 					onInstanceClick={handleInstanceClick}
-					predictedActivities={predictedActivities}
-					currentActInstanceIdx={currentActInstanceIdx}
-					currentActivity={currentActivity}
-					actInstances={activityInstances}
-					onActInstanceChange={handleActInstanceChange}
-					ruleItems={ruleitems}
+					classificationResult={classificationRes}
+					selectedInstancesIdx={selectedInstancesIdx}
 					newTPs={newTPs}
 					newFPs={newFPs}
 					queryMode={queryMode}
-					selectedInstancesIdx={selectedInstancesIdx}
-					onRuleitemRequest={handleRuleitemRequest}
-					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
-					onInstanceSelection={(selectedIdx) => {
-						if (selectedIdx?.["FP"]?.length === 0 || selectedIdx?.["FN"]?.length === 0) {
+					onInstanceSelection={(idx, type) => {
+						const selInstancesIdx = handleInstanceSelection(idx, type, selectedInstancesIdx);
+						handleActInstanceChange(idx);
+                        if (selInstancesIdx?.["FP"]?.length === 0 || selInstancesIdx?.["FN"]?.length === 0) {
 							setSystemMode(SystemMode.NOTHING);
-						} else if (Object.keys(selectedIdx)[0] === "FN") {
+						} else if (Object.keys(selInstancesIdx)[0] === "FN") {
 							setSystemMode(SystemMode.FN_SELECTED);
-						} else if (Object.keys(selectedIdx)[0] === "FP") {
+						} else if (Object.keys(selInstancesIdx)[0] === "FP") {
 							setSystemMode(SystemMode.FP_SELECTED);
 						}
-						setSelectedInstancesIdx(selectedIdx);
+						setSelectedInstancesIdx(selInstancesIdx);
 					}}
 					highlightedInstancesIdx={highlightedInstancesIdx}
-					whyQueryMode={whyQueryMode}
-					onWhyExplanation={(qMode) => setWhyQueryMode(qMode)}
-				></ExplanationPanel>
+				></ResultsPanel>
 			</div>
 		</div>
 	);

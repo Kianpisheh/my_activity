@@ -1,5 +1,5 @@
 import AxiomTypes from "../../model/AxiomTypes";
-import { CircleNum } from "../ExplanationPanel/utils";
+import { CircleNum } from "../ResultsPanel/utils";
 import { DurationAxiomStat, TimeDistanceAxiomStat } from "./WhyNotWhatExplanation";
 import WhyHowToQueryController from "../../Controllers/WhyHowToQueryController"
 

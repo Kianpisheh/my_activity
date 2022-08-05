@@ -1,6 +1,6 @@
 import Activity from "../model/Activity";
 import ActivityInstance from "../model/ActivityInstance";
-import { getUnsatisfiedAxioms } from "../components/ExplanationPanel/handler";
+import { getUnsatisfiedAxioms } from "../components/ResultsPanel/handler";
 
 class WhyNotQueryController {
 	static handleWhyNotQuery(

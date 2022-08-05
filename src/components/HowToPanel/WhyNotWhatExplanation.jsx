@@ -3,7 +3,7 @@ import "./WhyNotWhatExplanation.css";
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
-import { CircleNum } from "../ExplanationPanel/utils";
+import { CircleNum } from "../ResultsPanel/utils";
 
 function WhyNotWhatExplanation(props) {
 	const { stats} = props;
