@@ -27,15 +27,8 @@ function WhyWhatExplanation(props) {
 			{axiomStatComp}
 			<div
 				id="why-not-what-qmark"
-				onClick={() => {
-					const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
-						stats.getAxiom(),
-						activity,
-						classificationResult,
-						instances,
-						selectedInstancesIdx["FP"]
-					);
-					props.onWhyHowTo(whyHowToSuggestions);
+				onClick={(ev) => {
+					props.onWhyHowTo(ev.pageX, ev.pageY);
 				}}
 			>
 				{CircleNum("?")}

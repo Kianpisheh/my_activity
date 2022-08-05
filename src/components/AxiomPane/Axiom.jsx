@@ -8,7 +8,6 @@ import InteractionORAxiom from "./InteractionORAxiom";
 
 import AxiomData from "../../model/AxiomData";
 import WhyWhatQueryController from "../../Controllers/WhyWhatQueryController";
-import WhyNotWhatQueryController from "../../Controllers/WhyNotWhatQueryController";
 
 import isEqual from "lodash.isequal";
 import { CircleNum, CircleQMark } from "../ExplanationPanel/utils";
@@ -107,13 +106,12 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
 		const ax = AxiomData.axiomFromString(axiomString);
 		if (isEqual(ax, axiom)) {
-			const instances = activityInstances.filter((inst, idx) => selFNIds.includes(idx));
 			numnum = (
 				<div
 					id="why-not-num-container"
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
-					onClick={(ev) => onQuestionMenu(ev.pageX, ev.pageY, ax)}
+					onClick={(ev) => onWhyNotWhatQuery(ev.pageX, ev.pageY, ax)}
 				>
 					{CircleNum(selFNIds.length)}
 				</div>
@@ -126,24 +124,22 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 export function QMark(props) {
 	const { axiom, instances, onWhyWhatQuery, selectedIdx, onWhyHowToQuery, activity, classificationResult } = props;
 
-	const FPInstances = instances.filter((val, idx) => selectedIdx.includes(idx));
 	return (
 		<div
 			id="qmark-container"
-			onClick={() => {
+			onClick={(ev) => {
 				if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
-					const suggestions = WhyHowToQueryController.handleWhyHowToQuery(
-						axiom,
-						activity,
-						classificationResult,
-						instances,
-						selectedIdx,
-						props.ruleitems
-					);
-					onWhyHowToQuery(suggestions);
+					// const suggestions = WhyHowToQueryController.handleWhyHowToQuery(
+					// 	axiom,
+					// 	activity,
+					// 	classificationResult,
+					// 	instances,
+					// 	selectedIdx,
+					// 	props.ruleitems
+					// );
+					// onWhyHowToQuery(suggestions);
 				}
-				const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(axiom, FPInstances);
-				onWhyWhatQuery(whyWhatExp);
+				onWhyWhatQuery(ev.pageX, ev.pageY, axiom);
 			}}
 		>
 			{CircleQMark()}

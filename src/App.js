@@ -31,6 +31,8 @@ import WhyNotQueryController from "./Controllers/WhyNotQueryController";
 import WhyFPQueryController from "./Controllers/WhyFPQueryController";
 import SystemMode from "./model/SystemMode";
 import WhyNotWhatQueryController from "./Controllers/WhyNotWhatQueryController";
+import WhyWhatQueryController from "./Controllers/WhyWhatQueryController";
+import WhyHowToQueryController from "./Controllers/WhyHowToQueryController";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -99,6 +101,7 @@ function App() {
 				classificationRes
 			);
 			setUnsatisfiedAxioms(unsatisfiedAxioms);
+            setQmenuPos([-1, -1])
 		} else if (questionType === QueryQuestion.WHY) {
 			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
 			setWhyQueryMode(qMode);
@@ -107,7 +110,15 @@ function App() {
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, activityInstances);
 			setWhyNotWhat(whatExp);
 			setWhyWhat(null);
-		} else if (questionType === QueryQuestion.HOW_TO) {
+            setQmenuPos([-1, -1]);
+            systemMode(SystemMode.AXIOM_WHY_NOT_QUERY);
+		} else if (questionType === QueryQuestion.WHY_AXIOM) {
+            const FPInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx?.["FP"]?.includes(idx));
+            const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(queriedAxiom, FPInstances);
+            setWhyWhat(whyWhatExp);
+            setWhyNotWhat(null);
+            setQmenuPos([-1, -1]);
+        } else if (questionType === QueryQuestion.HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
 				currentActivity,
@@ -115,9 +126,22 @@ function App() {
 				activityInstances,
 				selectedInstancesIdx["FN"]
 			);
-			setWhyHowToSuggestions(whyNotHowToSuggestions);
+            setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
-		}
+            setQmenuPos([-1, -1]);
+		} else if (questionType === QueryQuestion.HOW_NOT_TO) {
+            const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
+						queriedAxiom,
+						currentActivity,
+						classificationRes,
+						activityInstances,
+						selectedInstancesIdx["FP"],
+						ruleitems
+			);
+            setWhyHowToSuggestions(whyHowToSuggestions);
+			setWhyNotHowToSuggestions([]);
+            setQmenuPos([-1, -1]);
+        }
 	}
 
 	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
@@ -249,7 +273,6 @@ function App() {
 
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
 
-    console.log(qmenuPos);
 	return (
 		<div
 			className="App"
@@ -307,31 +330,20 @@ function App() {
 						config={config}
 						unsatisfiedAxioms={unsatisfiedAxioms}
 						ruleitems={ruleitems}
-						onQuestionMenu={(x, y, ax) => {
+						onWhyNotWhatQuery={(x, y, ax) => {
 							setQueriedAxiom(ax);
 							setQmenuPos([x, y]);
 							setSystemMode(SystemMode.UNSATISFIED_AXIOM);
 						}}
-						onWhyNotWhatQuery={(what) => {
-							setWhyNotWhat(what);
-							setWhyWhat(null);
-						}}
-						onWhyWhatQuery={(what) => {
-							setWhyNotWhat(null);
-							setWhyWhat(what);
+                        onWhyWhatQuery={(x, y, ax) => {
+							setQueriedAxiom(ax);
+							setQmenuPos([x, y]);
+							setSystemMode(SystemMode.SATISFIED_AXIOM);
 						}}
 						activityInstances={activityInstances}
 						selectedInstancesIdx={selectedInstancesIdx}
 						classificationResult={classificationRes}
 						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
-						onWhyNotHowTo={(suggestions) => {
-							setWhyHowToSuggestions(suggestions);
-							setWhyHowToSuggestions([]);
-						}}
-						onWhyHowToQuery={(suggestions) => {
-							setWhyNotHowToSuggestions([]);
-							setWhyHowToSuggestions(suggestions);
-						}}
 						whyQueryMode={whyQueryMode}
 					></ActivityAxiomPane>
 				)}
@@ -348,13 +360,13 @@ function App() {
 					}}
 					whyNotWhat={whyNotWhat}
 					whyWhat={whyWhat}
-					onWhyNotHowTo={(suggestions1) => {
-						setWhyNotHowToSuggestions(suggestions1);
-						setWhyHowToSuggestions([]);
+					onWhyNotHowTo={(x, y) => {
+                        setSystemMode(SystemMode.AXIOM_HOW_TO)
+                        setQmenuPos([x, y]);
 					}}
-					onWhyHowTo={(suggestions2) => {
-						setWhyNotHowToSuggestions([]);
-						setWhyHowToSuggestions(suggestions2);
+					onWhyHowTo={(x, y) => {
+						setSystemMode(SystemMode.AXIOM_HOW_NOT_TO)
+                        setQmenuPos([x, y]);
 					}}
 					classificationResult={classificationRes}
 					activity={currentActivity}

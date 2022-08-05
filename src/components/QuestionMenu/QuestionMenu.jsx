@@ -59,6 +59,16 @@ function getQuestions(sysStatus, data) {
         const q1 = <span className="question-content">Why this condition is not satisfied for the {targetActivity} activity?</span>;
         const q2 = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
         questions = [q1, q2];
+    } else if (sysStatus === SystemMode.SATISFIED_AXIOM) {
+        const q1 = <span className="question-content">Why this condition is satisfied for the {targetActivity} activity?</span>;
+        const q2 = <span className="question-content">How to modify this condition so it is not satisfied for the {targetActivity} activity?</span>
+        questions = [q1, q2];
+    } else if (sysStatus === SystemMode.AXIOM_HOW_TO) {
+        const q = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
+        questions = [q];
+    } else if (sysStatus === SystemMode.AXIOM_HOW_NOT_TO) {
+        const q = <span className="question-content">How to make the system to not recognize {thisThese} {sample} as {targetActivity}?</span>;
+        questions = [q];
     }
 
     return questions;
@@ -72,9 +82,9 @@ function getQuestionType(question) {
     } else if (qq.includes("not recognized as")) {
         return QueryQuestion.WHY_NOT;
     } else if (qq.includes("How to") && qq.includes(" not ")) {
-        return QueryQuestion.HOW_TO_NOT;
-    } else if (qq.includes("How to") && !qq.includes(" not ")) {
         return QueryQuestion.HOW_TO;
+    } else if (qq.includes("How to") && !qq.includes(" not ")) {
+        return QueryQuestion.HOW_NOT_TO;
     } else if (qq.includes("condition") && !qq.includes(" not ")) {
         return QueryQuestion.WHY_AXIOM;
     } else if (qq.includes("condition") && qq.includes(" not ")) {
@@ -86,7 +96,7 @@ export class QueryQuestion {
     static WHY = "why";
     static WHY_NOT = "why not";
     static HOW_TO =  "how to";
-    static HOW_TO_NOT = "how to not";
+    static HOW_NOT_TO = "how not to";
     static WHY_NOT_AXIOM = "why not axiom";
     static WHY_AXIOM = "why axiom";
 }

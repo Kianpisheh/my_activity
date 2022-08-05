@@ -129,6 +129,7 @@ function InteractionAxiom(props) {
                     activity={props.activity}
                     classificationResult={props.classificationResult}
 					onWhyWhatQuery={props.onWhyWhatQuery}
+					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 					onWhyHowToQuery={props.onWhyHowToQuery}
 					instances={props.activityInstances}
 					axiom={props.data}
