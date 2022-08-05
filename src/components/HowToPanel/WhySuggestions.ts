@@ -10,7 +10,6 @@ import isEqual from "lodash.isequal";
 import RuleitemData from "../../model/RuleitemData";
 
 import sortBy from "lodash/sortBy";
-import { isTemplateSpan } from "typescript";
 
 export function getWhyHowToSuggestions(
 	selectedFPs: number[],

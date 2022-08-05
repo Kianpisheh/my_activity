@@ -3,13 +3,11 @@ import React, { useState, useContext } from "react";
 import "./InteractionORAxiom.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
-import WhyAxiomIdsContext from "../../contexts/WhyAxiomIdsContext";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 
 function InteractionOR(props) {
     const [hovered, setHovered] = useState(false);
-    const whyIds = useContext(WhyAxiomIdsContext);
 
     let events = [];
     if (props.data != null) {
@@ -18,17 +16,7 @@ function InteractionOR(props) {
         return;
     }
 
-    let divStyle = {};
-    if (whyIds.includes(props.idx)) {
-        divStyle = {
-            borderColor: "#ADCEE8",
-            border: "1px",
-            borderStyle: "solid",
-            boxShadow: "0px 0px 4px 4px #2C87DB",
-            opacity: 0.7,
-        };
-    }
-
+    
     const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
     const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
 
@@ -36,7 +24,6 @@ function InteractionOR(props) {
         <React.Fragment>
             <div
                 className="interaction-or-axiom"
-                style={divStyle}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >

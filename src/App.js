@@ -25,6 +25,7 @@ import ExplanationPanel from "./components/ExplanationPanel/ExplanationPanel";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
+import QuestionMenu from "./components/QuestionMenu/QuestionMenu";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -46,6 +47,7 @@ function App() {
 	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
 	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
 	const [whyQueryMode, setWhyQueryMode] = useState(false);
+	const [qmenuPos, setQmenuPos] = useState([-1, -1]);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -168,7 +170,7 @@ function App() {
 	// load activities
 	useEffect(() => {
 		let activitiesPromise = retrieveActivities("http://localhost:8082/activity");
-        handleRuleitemRequest();
+		handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;
 			let activityItems = [];
@@ -208,11 +210,26 @@ function App() {
 
 	const leftPaneWidth = 250;
 
-
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
 
 	return (
-		<div className="App">
+		<div
+			className="App"
+			onContextMenu={(ev) => {
+                ev.preventDefault();
+				if (qmenuPos[0] < 0) {
+					setQmenuPos([ev.pageX - 300, ev.pageY]);
+				} else {
+					setQmenuPos([-1, -1]);
+				}
+                
+			}}
+		>
+			{qmenuPos?.[0] > 0 && (
+				<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
+					<QuestionMenu selectedIdx={selectedInstancesIdx} currentActivity={currentActivity}></QuestionMenu>
+				</div>
+			)}
 			<div id="act-instances-pane">
 				<ActivityInstancePane
 					activtiyInstances={activityInstances}
@@ -248,7 +265,7 @@ function App() {
 						sendMessage={onAxiomPaneMessage}
 						config={config}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        ruleitems={ruleitems}
+						ruleitems={ruleitems}
 						onWhyNotWhatQuery={(what) => {
 							setWhyNotWhat(what);
 							setWhyWhat(null);
