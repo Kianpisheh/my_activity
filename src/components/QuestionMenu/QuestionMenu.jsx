@@ -12,11 +12,12 @@ function QuestionMenu(props) {
     return <div className="question-menu-container">
         <div className="question-list-container">
             {Q.map((q,idx) => {
-                const Icon = Icons.getIcon(pascalCase("Mug"), true);
                 const qType = getQuestionType(q);
+                let ii = pascalCase(questionIcon(qType));
+                const Icon = Icons.getIcon(ii, true);
                 return <div className="question-container2" onClick={() => props.onQuery(qType)}>
                     <div className="question-icon">
-                        <Icon key={idx} style={{width: 26, height: 26}}></Icon>
+                        <Icon key={idx} style={{width: 35, height: 35}}></Icon>
                     </div>
                     <div className="question-text">
                         {q}
@@ -89,6 +90,22 @@ function getQuestionType(question) {
         return QueryQuestion.WHY_AXIOM;
     } else if (qq.includes("condition") && qq.includes(" not ")) {
         return QueryQuestion.WHY_NOT_AXIOM;
+    }
+}
+
+function questionIcon(questionType) {
+    if (questionType === QueryQuestion.WHY) {
+        return "Why";
+    } else if (questionType === QueryQuestion.WHY_NOT) {
+        return "WhyNot";
+    } else if (questionType === QueryQuestion.HOW_TO) {
+        return "HowTo"
+    } else if (questionType === QueryQuestion.HOW_NOT_TO) {
+        return "HowNotTo"
+    } else if (questionType === QueryQuestion.WHY_AXIOM) {
+        return "WhyAxiom"
+    } else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
+        return "WhyNotAxiom"
     }
 }
 

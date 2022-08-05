@@ -106,6 +106,7 @@ function App() {
 			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
 			setWhyQueryMode(qMode);
 			setSystemMode(SystemMode.FP_SELECTED);
+            setQmenuPos([-1, -1])
 		} else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, activityInstances);
 			setWhyNotWhat(whatExp);
@@ -282,8 +283,20 @@ function App() {
 					setQmenuPos([ev.pageX - 300, ev.pageY]);
 				}
 			}}
-			onClick={(ev) => {if (ev.ctrlKey) setQmenuPos([-1, -1])}}
-		>
+			onClick={(ev) => {
+                if (ev.ctrlKey) {
+                    setWhyNotHowToSuggestions([]);
+                    setWhyHowToSuggestions([]);
+                    setQueryMode(false);
+                    setQmenuPos([-1, -1]);
+                    setSystemMode(SystemMode.NOTHING);
+                    setWhyNotWhat(null);
+                    setWhyWhat(null);
+                    setWhyQueryMode(false);
+                    setSelectedInstancesIdx({})
+                }
+            }}     
+		    >
 			{qmenuPos?.[0] > 0 && (
 				<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
 					<QuestionMenu

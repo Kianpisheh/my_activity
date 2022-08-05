@@ -59,6 +59,12 @@ import SvgDownArrow from "./DownArrow";
 import SvgTimeDistance2 from "./TimeDistance2";
 import SvgTimeDistance3 from "./TimeDistance3";
 import SvgTrashcan from "./Trashcan";
+import SvgWhy from "./Why";
+import SvgWhyNot from "./WhyNot";
+import SvgHowTo from "./HowTo";
+import SvgHowNotTo from "./HowNotTo";
+import SvgWhyAxiom from "./WhyAxiom";
+import SvgWhyNotAxiom from "./WhyNotAxiom";
 
 class Icons {
 	static icons = {
@@ -133,7 +139,13 @@ class Icons {
 		DownArrow: SvgDownArrow,
 		TimeDistance2: SvgTimeDistance2,
 		TimeDistance3: SvgTimeDistance3,
-        Trashcan: SvgTrashcan
+        Trashcan: SvgTrashcan,
+        Why: SvgWhy,
+        WhyNot: SvgWhyNot,
+        WhyAxiom: SvgWhyAxiom,
+        WhyNotAxiom: SvgWhyNotAxiom,
+        HowTo: SvgHowTo,
+        HowNotTo: SvgHowNotTo,
 	};
 
 	static colors = {
@@ -204,6 +216,7 @@ class Icons {
 		TimeDistance2: "#1391D8",
 		TimeDistance3: "#1391D8",
 		Trashcan: "#1391D8",
+
 	};
 
 	static getIcons() {
