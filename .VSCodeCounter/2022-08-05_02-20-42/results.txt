@@ -1,0 +1,259 @@
+Date : 2022-08-05 02:20:42
+Directory : /media/kian/Local Disk/HAKEE/my_activity
+Total : 211 files,  38937 codes, 313 comments, 1243 blanks, all 40493 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          3 |     28,719 |          0 |          3 |     28,722 |
+| JavaScript React   |         33 |      2,927 |         41 |        331 |      3,299 |
+| TypeScript         |         27 |      2,181 |         57 |        355 |      2,593 |
+| JavaScript         |         72 |      2,104 |         69 |        294 |      2,467 |
+| SVG                |         44 |      1,678 |         32 |         43 |      1,753 |
+| CSS                |         29 |      1,252 |         12 |        173 |      1,437 |
+| Markdown           |          1 |         38 |          0 |         33 |         71 |
+| HTML               |          1 |         20 |         23 |          1 |         44 |
+| JSON with Comments |          1 |         18 |         79 |         10 |        107 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |        211 |     38,937 |        313 |      1,243 |     40,493 |
+| public                                                                                          |          2 |         45 |         23 |          2 |         70 |
+| src                                                                                             |        205 |     10,142 |        211 |      1,196 |     11,549 |
+| src/APICalls                                                                                    |          1 |         34 |          0 |          7 |         41 |
+| src/Controllers                                                                                 |          6 |        100 |          0 |         18 |        118 |
+| src/Utils                                                                                       |          3 |        653 |          7 |        103 |        763 |
+| src/components                                                                                  |         65 |      4,807 |        149 |        583 |      5,539 |
+| src/components/ActivityPane                                                                     |          5 |        202 |          1 |         27 |        230 |
+| src/components/ActivityVis                                                                      |         15 |        822 |         11 |        110 |        943 |
+| src/components/AxiomPane                                                                        |         16 |      1,344 |         34 |        141 |      1,519 |
+| src/components/ExplanationPanel                                                                 |         13 |        967 |         56 |        118 |      1,141 |
+| src/components/HowToPanel                                                                       |         11 |      1,228 |         45 |        146 |      1,419 |
+| src/components/QuestionMenu                                                                     |          2 |        131 |          0 |         24 |        155 |
+| src/icons                                                                                       |         64 |      1,311 |          0 |        198 |      1,509 |
+| src/images                                                                                      |         44 |      1,678 |         32 |         43 |      1,753 |
+| src/images/action_events                                                                        |         37 |      1,628 |         30 |         39 |      1,697 |
+| src/model                                                                                       |         13 |      1,007 |         11 |        185 |      1,203 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                        | language           | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /media/kian/Local Disk/HAKEE/my_activity/README.md                                              | Markdown           |         38 |          0 |         33 |         71 |
+| /media/kian/Local Disk/HAKEE/my_activity/package-lock.json                                      | JSON               |     28,638 |          0 |          1 |     28,639 |
+| /media/kian/Local Disk/HAKEE/my_activity/package.json                                           | JSON               |         56 |          0 |          1 |         57 |
+| /media/kian/Local Disk/HAKEE/my_activity/public/index.html                                      | HTML               |         20 |         23 |          1 |         44 |
+| /media/kian/Local Disk/HAKEE/my_activity/public/manifest.json                                   | JSON               |         25 |          0 |          1 |         26 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/APICalls/activityAPICalls.js                       | JavaScript         |         34 |          0 |          7 |         41 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/App.css                                            | CSS                |         93 |          0 |         16 |        109 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/App.js                                             | JavaScript         |        343 |          5 |         26 |        374 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/App.test.js                                        | JavaScript         |          7 |          0 |          2 |          9 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyFPQueryController.ts                | TypeScript         |         10 |          0 |          3 |         13 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyHowToQueryController.ts             | TypeScript         |         30 |          0 |          3 |         33 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyNotHowToQueryController.ts          | TypeScript         |         27 |          0 |          3 |         30 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyNotQueryController.ts               | TypeScript         |         13 |          0 |          3 |         16 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyNotWhatQueryController.ts           | TypeScript         |         10 |          0 |          3 |         13 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Controllers/WhyWhatQueryController.ts              | TypeScript         |         10 |          0 |          3 |         13 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Handlers.ts                                        | TypeScript         |         66 |          0 |          6 |         72 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Utils/ColorUtil.js                                 | JavaScript         |        256 |          3 |         37 |        296 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Utils/EventIcons.ts                                | TypeScript         |        145 |          0 |         12 |        157 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/Utils/utils.ts                                     | TypeScript         |        252 |          4 |         54 |        310 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityInstancePane.css                | CSS                |         54 |          1 |          7 |         62 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityInstancePane.jsx                | JavaScript React   |         54 |          1 |          3 |         58 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityPane/ActivityItem.css           | CSS                |         47 |          0 |          4 |         51 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityPane/ActivityItem.jsx           | JavaScript React   |         66 |          0 |          7 |         73 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityPane/ActivityListColors.ts      | TypeScript         |          7 |          0 |          6 |         13 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityPane/ActivityPane.css           | CSS                |         45 |          1 |          5 |         51 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityPane/ActivityPane.jsx           | JavaScript React   |         37 |          0 |          5 |         42 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/ActivityInstanceVis.css     | CSS                |         69 |          0 |          9 |         78 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/ActivityInstanceVis.jsx     | JavaScript React   |        246 |          5 |         30 |        281 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventDurationThumb.css      | CSS                |          6 |          0 |          0 |          6 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventDurationThumb.jsx      | JavaScript React   |         86 |          1 |         13 |        100 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventFilter.css             | CSS                |         14 |          0 |          1 |         15 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventFilter.jsx             | JavaScript React   |         16 |          0 |          4 |         20 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventIconThumb.css          | CSS                |          4 |          0 |          1 |          5 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/EventIconThumb.jsx          | JavaScript React   |        143 |          4 |         18 |        165 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/LocationOverlay.jsx         | JavaScript React   |         18 |          1 |          7 |         26 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/ScalingTab.css              | CSS                |          8 |          0 |          0 |          8 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/ScalingTab.jsx              | JavaScript React   |         24 |          0 |          4 |         28 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/Shadow.jsx                  | JavaScript React   |         41 |          0 |          3 |         44 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/TimeAxis.css                | CSS                |          7 |          0 |          0 |          7 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/TimeAxis.jsx                | JavaScript React   |        119 |          0 |         19 |        138 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ActivityVis/Tooltip.jsx                 | JavaScript React   |         21 |          0 |          1 |         22 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/ActivityAxiomPane.css         | CSS                |        117 |          3 |         15 |        135 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/ActivityAxiomPane.jsx         | JavaScript React   |        169 |          0 |          8 |        177 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/AdjustableTime.css            | CSS                |         17 |          0 |          4 |         21 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/AdjustableTime.jsx            | JavaScript React   |         59 |         16 |         10 |         85 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/Axiom.css                     | CSS                |          6 |          0 |          1 |          7 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/Axiom.jsx                     | JavaScript React   |        143 |          0 |         10 |        153 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/AxiomCrafter.css              | CSS                |         80 |          3 |         10 |         93 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/AxiomCrafter.jsx              | JavaScript React   |        102 |          1 |          9 |        112 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/DurationAxiom.css             | CSS                |         59 |          0 |          7 |         66 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/DurationAxiom.jsx             | JavaScript React   |         84 |          1 |         10 |         95 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/InteractionAxiom.css          | CSS                |         69 |          0 |          7 |         76 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/InteractionAxiom.jsx          | JavaScript React   |        156 |          7 |         16 |        179 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/InteractionORAxiom.css        | CSS                |         28 |          0 |          1 |         29 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/InteractionORAxiom.jsx        | JavaScript React   |         55 |          0 |         10 |         65 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/TimeDistanceAxiom.css         | CSS                |        105 |          2 |         13 |        120 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/AxiomPane/TimeDistanceAxiom.jsx         | JavaScript React   |         95 |          1 |         10 |        106 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/AxiomStats.css         | CSS                |         16 |          0 |          2 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/AxiomStats.jsx         | JavaScript React   |        167 |          0 |         14 |        181 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/ExplanationPanel.css   | CSS                |         18 |          0 |          4 |         22 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/ExplanationPanel.jsx   | JavaScript React   |         29 |          0 |          6 |         35 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/HowToPanel.css         | CSS                |         34 |          0 |          7 |         41 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/HowToPanel.jsx         | JavaScript React   |        186 |          0 |         11 |        197 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/ResultsPanel.css       | CSS                |         88 |          0 |         17 |        105 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/ResultsPanel.jsx       | JavaScript React   |         76 |          1 |         11 |         88 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/RuleitemsExplainer.jsx | JavaScript React   |         43 |          0 |          3 |         46 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/RuleitemsPane.css      | CSS                |         45 |          0 |          6 |         51 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/RuleitemsPane.jsx      | JavaScript React   |         98 |          0 |         10 |        108 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/handler.ts             | TypeScript         |         39 |          1 |          9 |         49 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/ExplanationPanel/utils.js               | JavaScript         |        128 |         54 |         18 |        200 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/HowToPanel2.css              | CSS                |         15 |          0 |          2 |         17 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/HowToPanel2.jsx              | JavaScript React   |         54 |          0 |          8 |         62 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyHowToExplanations.jsx     | JavaScript React   |         44 |          0 |          5 |         49 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyNotHowToExplanations.css  | CSS                |         51 |          2 |          8 |         61 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyNotHowToExplanations.jsx  | JavaScript React   |        190 |          0 |         17 |        207 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyNotSuggestions.ts         | TypeScript         |        268 |         17 |         26 |        311 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyNotWhatExplanation.css    | CSS                |         45 |          0 |          8 |         53 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyNotWhatExplanation.jsx    | JavaScript React   |        182 |          2 |         19 |        203 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhySuggestions.ts            | TypeScript         |        293 |         24 |         39 |        356 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyWhatExplanation.css       | CSS                |         45 |          0 |          8 |         53 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/HowToPanel/WhyWhatExplanation.jsx       | JavaScript React   |         41 |          0 |          6 |         47 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/QuestionMenu/QuestionMenu.css           | CSS                |         53 |          0 |          7 |         60 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/QuestionMenu/QuestionMenu.jsx           | JavaScript React   |         78 |          0 |         17 |         95 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/components/Ruleitem.jsx                            | JavaScript React   |          5 |          0 |          7 |         12 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/custom.d.ts                                        | TypeScript         |          4 |          0 |          0 |          4 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Banana.js                                    | JavaScript         |         17 |          0 |          3 |         20 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Bottle.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Bowl.js                                      | JavaScript         |         24 |          0 |          3 |         27 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Cabinet.js                                   | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Cloth.js                                     | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Coffee.js                                    | JavaScript         |         17 |          0 |          3 |         20 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/CoffeeGrinder.js                             | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/CoffeeMachine.js                             | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/CoffeeMaker.js                               | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/CoffeePot.js                                 | JavaScript         |         23 |          0 |          3 |         26 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Colander.js                                  | JavaScript         |         26 |          0 |          3 |         29 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Container.js                                 | JavaScript         |         11 |          0 |          3 |         14 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Cupboard.js                                  | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Cutlery.js                                   | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/CuttingBoard.js                              | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Detergent.js                                 | JavaScript         |         27 |          0 |          3 |         30 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Door.js                                      | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/DownArrow.js                                 | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Drawer.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Fork.js                                      | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Fridge.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/FruitJuice.js                                | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Glass.js                                     | JavaScript         |         20 |          0 |          3 |         23 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Icons.js                                     | JavaScript         |        229 |          0 |          9 |        238 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Jar.js                                       | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Kettle.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Knife.js                                     | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/MedicineContainer.js                         | JavaScript         |         27 |          0 |          3 |         30 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Microwave.js                                 | JavaScript         |         18 |          0 |          3 |         21 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/MokaPot.js                                   | JavaScript         |         15 |          0 |          2 |         17 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Mug.js                                       | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/NotFound.js                                  | JavaScript         |         10 |          0 |          5 |         15 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Pan.js                                       | JavaScript         |         22 |          0 |          3 |         25 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Peach.js                                     | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/PhoneBook.js                                 | JavaScript         |         21 |          0 |          3 |         24 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Pitcher.js                                   | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Plate.js                                     | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Pot.js                                       | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/PotatoPeeler.js                              | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Raisin.js                                    | JavaScript         |         15 |          0 |          4 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Scissors.js                                  | JavaScript         |         17 |          0 |          3 |         20 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Soap.js                                      | JavaScript         |         17 |          0 |          3 |         20 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Spatula.js                                   | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Sponge.js                                    | JavaScript         |         24 |          0 |          3 |         27 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Spoon.js                                     | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Stove.js                                     | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/StoveLighter.js                              | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Stovetop.js                                  | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Straw.js                                     | JavaScript         |         19 |          0 |          3 |         22 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Tap.js                                       | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Teaspoon.js                                  | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/TimeDistance.js                              | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/TimeDistance2.js                             | JavaScript         |         20 |          0 |          3 |         23 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/TimeDistance3.js                             | JavaScript         |         21 |          0 |          3 |         24 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Toothbrush.js                                | JavaScript         |         13 |          0 |          3 |         16 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Trashcan.js                                  | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Tupperware.js                                | JavaScript         |          9 |          0 |          3 |         12 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/UpArrow.js                                   | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Utensils.js                                  | JavaScript         |         26 |          0 |          3 |         29 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/WaterBottle.js                               | JavaScript         |         15 |          0 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/WaterFaucet.js                               | JavaScript         |         16 |          0 |          3 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/ZoomIn.js                                    | JavaScript         |         20 |          0 |          3 |         23 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/ZoomOut.js                                   | JavaScript         |         18 |          0 |          3 |         21 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/index.js                                     | JavaScript         |         32 |          0 |          1 |         33 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/banana.svg                    | SVG                |         48 |          1 |          1 |         50 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/bottle.svg                    | SVG                |         50 |          1 |          1 |         52 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/bowl.svg                      | SVG                |         41 |          1 |          1 |         43 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/coffee_machine.svg            | SVG                |         61 |          1 |          1 |         63 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/coffee_pot.svg                | SVG                |         46 |          1 |          1 |         48 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/container.svg                 | SVG                |          5 |          0 |          1 |          6 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/cutlery.svg                   | SVG                |         55 |          1 |          1 |         57 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/detergent.svg                 | SVG                |         20 |          0 |          2 |         22 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/door.svg                      | SVG                |         47 |          1 |          1 |         49 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/drawer.svg                    | SVG                |         59 |          1 |          1 |         61 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/fridge.svg                    | SVG                |         44 |          1 |          1 |         46 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/fruit_juice.svg               | SVG                |         58 |          1 |          1 |         60 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/glass.svg                     | SVG                |         42 |          1 |          1 |         44 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/jar.svg                       | SVG                |         45 |          1 |          1 |         47 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/kettle.svg                    | SVG                |         69 |          1 |          1 |         71 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/knife.svg                     | SVG                |         44 |          1 |          1 |         46 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/mug.svg                       | SVG                |         46 |          1 |          1 |         48 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/not_found.svg                 | SVG                |          7 |          0 |          2 |          9 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/peach.svg                     | SVG                |         53 |          1 |          1 |         55 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/pitcher.svg                   | SVG                |         41 |          1 |          1 |         43 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/plate.svg                     | SVG                |         76 |          1 |          1 |         78 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/potato_peeler.svg             | SVG                |         46 |          1 |          1 |         48 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/sanitizer-alt-svgrepo-com.svg | SVG                |          1 |          0 |          0 |          1 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/scissors.svg                  | SVG                |         54 |          1 |          1 |         56 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/soap.svg                      | SVG                |         72 |          1 |          1 |         74 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/sponge.svg                    | SVG                |         17 |          0 |          2 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/spoon-svgrepo-com.svg         | SVG                |         39 |          1 |          1 |         41 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/stove.svg                     | SVG                |         70 |          1 |          1 |         72 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/stove_lighter.svg             | SVG                |         48 |          1 |          1 |         50 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/stovetop.svg                  | SVG                |         66 |          1 |          1 |         68 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/strainer-svgrepo-com.svg      | SVG                |         16 |          1 |          1 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/straw.svg                     | SVG                |          4 |          0 |          1 |          5 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/tap.svg                       | SVG                |         59 |          1 |          1 |         61 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/tooth_brush.svg               | SVG                |         59 |          1 |          1 |         61 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/tupperware.svg                | SVG                |          4 |          0 |          1 |          5 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/water_bottle.svg              | SVG                |         50 |          1 |          1 |         52 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/action_events/water_faucet.svg              | SVG                |         66 |          1 |          1 |         68 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/add_activity_btn.svg                        | SVG                |         18 |          0 |          1 |         19 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/decrease_sec.svg                            | SVG                |          1 |          0 |          0 |          1 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/increase_sec.svg                            | SVG                |          1 |          0 |          0 |          1 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/increase_sec2.svg                           | SVG                |          1 |          0 |          0 |          1 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/time_distance.svg                           | SVG                |          3 |          0 |          1 |          4 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/zoom_in.svg                                 | SVG                |         13 |          1 |          1 |         15 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/images/zoom_out.svg                                | SVG                |         13 |          1 |          1 |         15 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/index.css                                          | CSS                |         14 |          0 |          3 |         17 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/index.js                                           | JavaScript         |         12 |          3 |          3 |         18 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/Activity.ts                                  | TypeScript         |        162 |          3 |         34 |        199 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/ActivityInstance.ts                          | TypeScript         |        232 |          7 |         33 |        272 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/ActivityInstanceEvent.ts                     | TypeScript         |         44 |          0 |         11 |         55 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/AxiomData.ts                                 | TypeScript         |         92 |          0 |         19 |        111 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/AxiomManager.ts                              | TypeScript         |         84 |          1 |         16 |        101 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/AxiomStats.ts                                | TypeScript         |        125 |          0 |         23 |        148 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/AxiomTypes.ts                                | TypeScript         |         26 |          0 |          1 |         27 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/Constraint.ts                                | TypeScript         |         25 |          0 |          8 |         33 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/Explanation.ts                               | TypeScript         |         85 |          0 |         13 |         98 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/ExplanationManager.ts                        | TypeScript         |         36 |          0 |          6 |         42 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/HowToAxiom.ts                                | TypeScript         |         37 |          0 |          7 |         44 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/RuleitemData.ts                              | TypeScript         |         50 |          0 |         12 |         62 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/model/SystemMode.ts                                | TypeScript         |          9 |          0 |          2 |         11 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/reportWebVitals.js                                 | JavaScript         |         12 |          0 |          2 |         14 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/setupTests.js                                      | JavaScript         |          1 |          4 |          1 |          6 |
+| /media/kian/Local Disk/HAKEE/my_activity/tsconfig.json                                          | JSON with Comments |         18 |         79 |         10 |        107 |
+| Total                                                                                           |                    |     38,937 |        313 |      1,243 |     40,493 |
++-------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

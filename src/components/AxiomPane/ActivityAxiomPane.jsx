@@ -106,6 +106,7 @@ function ActivityAxiomPane(props) {
                             whyQueryMode={props.whyQueryMode}
                             onWhyHowToQuery={props.onWhyHowToQuery}
                             ruleitems={props.ruleitems}
+                            onQuestionMenu={props.onQuestionMenu}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
@@ -154,6 +155,7 @@ function ActivityAxiomPane(props) {
                                 stats={props.whyNotWhat}
                                 whyQueryMode={props.whyQueryMode}
                                 onWhyHowToQuery={props.onWhyHowToQuery}
+                                onQuestionMenu={props.onQuestionMenu}
 							></Axiom>
 						))}
 					</div>{" "}

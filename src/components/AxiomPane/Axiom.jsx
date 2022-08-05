@@ -39,6 +39,7 @@ function Axiom(props) {
 				stats={props.whyNotWhat}
 				whyQueryMode={props.whyQueryMode}
 				ruleitems={props.ruleitems}
+                onQuestionMenu={props.onQuestionMenu}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
@@ -73,6 +74,7 @@ function Axiom(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
+                onQuestionMenu={props.onQuestionMenu}
 			></TimeDistanceAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -90,6 +92,7 @@ function Axiom(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
+                onQuestionMenu={props.onQuestionMenu}
 			></DurationAxiom>
 		);
 	}
@@ -99,7 +102,7 @@ function Axiom(props) {
 
 export default Axiom;
 
-export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover) {
+export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover, onQuestionMenu) {
 	let numnum = [];
 	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
 		const ax = AxiomData.axiomFromString(axiomString);
@@ -110,10 +113,7 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 					id="why-not-num-container"
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
-					onClick={() => {
-						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
-						onWhyNotWhatQuery(whatExp);
-					}}
+					onClick={(ev) => onQuestionMenu(ev.pageX, ev.pageY, ax)}
 				>
 					{CircleNum(selFNIds.length)}
 				</div>

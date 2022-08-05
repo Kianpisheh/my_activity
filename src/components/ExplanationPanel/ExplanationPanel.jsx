@@ -2,7 +2,6 @@
 import "./ExplanationPanel.css";
 
 import ResultsPanel from "./ResultsPanel";
-import QuestionPanel from "./QuestionPanel";
 
 import WhyFPQueryController from "../../Controllers/WhyFPQueryController"
 import WhyNotQueryController from "../../Controllers/WhyNotQueryController"
@@ -29,47 +28,8 @@ function ExplanationPanel(props) {
 					highlightedInstancesIdx={props.highlightedInstancesIdx}
 				></ResultsPanel>
 			</div>
-			<div id="quest-pan">
-				<QuestionPanel
-					classificationResult={props.classificationResults}
-					predictedActivities={props.predictedActivities}
-					selectedInstancesIdx={props.selectedInstancesIdx}
-					currentActInstanceIdx={props.currentActInstanceIdx}
-					actInstances={props.actInstances}
-					onQuery={(queryType) => {
-						if (queryType === "FP") {
-							const qMode = WhyFPQueryController.handleWhyQuery(props.queryMode);
-							props.onWhyExplanation(qMode);
-						} else if (queryType === "FN") {
-							const unsatisfiedAxioms = WhyNotQueryController.handleWhyNotQuery(
-								props.actInstances,
-								props.currentActivity,
-								props.selectedInstancesIdx,
-								props.classificationResults
-							);
-							props.onWhyNotExplanations(unsatisfiedAxioms);
-						}
-					}}
-				></QuestionPanel>
-			</div>
 		</div>
 	);
 }
 
 export default ExplanationPanel;
-
-
-
-
-
-
-
-// eslint-disable-next-line no-lone-blocks
-{/* <div id="how-to-pan">
-                <RuleitemsPane
-                    currentActivityInstance={props.actInstances[props.currentActInstanceIdx]}
-                    ruleitems={props.ruleitems}
-                    onRuleitemRequest={props.onRuleitemRequest}
-                    classificationResult={props.classificationResults}
-                ></RuleitemsPane>
-            </div> */}

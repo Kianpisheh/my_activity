@@ -23,7 +23,8 @@ function DurationAxiom(props) {
 		props.data,
 		props.onWhyNotWhatQuery,
 		props.activityInstances,
-		props.onWhyNotNumHover
+		props.onWhyNotNumHover,
+        props.onQuestionMenu
 	);
 
 
@@ -85,6 +86,7 @@ function DurationAxiom(props) {
 					instances={props.activityInstances}
 					axiom={axiom}
                     selectedIdx={props.selectedInstancesIdx["FP"]}
+                    onQuestionMenu={props.onQuestionMenu}
 				></QMark>
 			)}
 		</div>

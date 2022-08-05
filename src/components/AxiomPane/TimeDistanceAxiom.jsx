@@ -29,7 +29,8 @@ function TimeDistanceAxiom(props) {
 		props.data,
 		props.onWhyNotWhatQuery,
 		props.activityInstances,
-		props.onWhyNotNumHover
+		props.onWhyNotNumHover,
+        props.onQuestionMenu
 	);
 
 	return (

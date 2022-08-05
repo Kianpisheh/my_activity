@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-	explain,
 	retrieveActivities,
 	retrieveInstances,
 	updateDatabase,
@@ -25,7 +24,13 @@ import ExplanationPanel from "./components/ExplanationPanel/ExplanationPanel";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
-import QuestionMenu from "./components/QuestionMenu/QuestionMenu";
+import QuestionMenu, { QueryQuestion } from "./components/QuestionMenu/QuestionMenu";
+import SystemStatus from "./model/SystemMode";
+import WhyNotHowToQueryController from "./Controllers/WhyNotHowToQueryController";
+import WhyNotQueryController from "./Controllers/WhyNotQueryController";
+import WhyFPQueryController from "./Controllers/WhyFPQueryController";
+import SystemMode from "./model/SystemMode";
+import WhyNotWhatQueryController from "./Controllers/WhyNotWhatQueryController";
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -48,6 +53,8 @@ function App() {
 	const [highlightedInstancesIdx, setHighlightedInstancesIdx] = useState([]);
 	const [whyQueryMode, setWhyQueryMode] = useState(false);
 	const [qmenuPos, setQmenuPos] = useState([-1, -1]);
+	const [systemMode, setSystemMode] = useState("");
+	const [queriedAxiom, setQueriedAxiom] = useState(null);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -81,6 +88,36 @@ function App() {
 	let currentActivity = null;
 	if (currentActivtyIdx >= 0) {
 		currentActivity = activities[currentActivtyIdx];
+	}
+
+	function handleQuery(questionType) {
+		if (questionType === QueryQuestion.WHY_NOT) {
+			const unsatisfiedAxioms = WhyNotQueryController.handleWhyNotQuery(
+				activityInstances,
+				currentActivity,
+				selectedInstancesIdx,
+				classificationRes
+			);
+			setUnsatisfiedAxioms(unsatisfiedAxioms);
+		} else if (questionType === QueryQuestion.WHY) {
+			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
+			setWhyQueryMode(qMode);
+			setSystemMode(SystemMode.FP_SELECTED);
+		} else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
+			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, activityInstances);
+			setWhyNotWhat(whatExp);
+			setWhyWhat(null);
+		} else if (questionType === QueryQuestion.HOW_TO) {
+			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
+				queriedAxiom,
+				currentActivity,
+				classificationRes,
+				activityInstances,
+				selectedInstancesIdx["FN"]
+			);
+			setWhyHowToSuggestions(whyNotHowToSuggestions);
+			setWhyHowToSuggestions([]);
+		}
 	}
 
 	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
@@ -212,22 +249,26 @@ function App() {
 
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
 
+    console.log(qmenuPos);
 	return (
 		<div
 			className="App"
 			onContextMenu={(ev) => {
-                ev.preventDefault();
+				ev.preventDefault();
 				if (qmenuPos[0] < 0) {
 					setQmenuPos([ev.pageX - 300, ev.pageY]);
-				} else {
-					setQmenuPos([-1, -1]);
 				}
-                
 			}}
+			onClick={(ev) => {if (ev.ctrlKey) setQmenuPos([-1, -1])}}
 		>
 			{qmenuPos?.[0] > 0 && (
 				<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
-					<QuestionMenu selectedIdx={selectedInstancesIdx} currentActivity={currentActivity}></QuestionMenu>
+					<QuestionMenu
+						selectedIdx={selectedInstancesIdx}
+						currentActivity={currentActivity}
+						onQuery={handleQuery}
+						systemMode={systemMode}
+					></QuestionMenu>
 				</div>
 			)}
 			<div id="act-instances-pane">
@@ -266,6 +307,11 @@ function App() {
 						config={config}
 						unsatisfiedAxioms={unsatisfiedAxioms}
 						ruleitems={ruleitems}
+						onQuestionMenu={(x, y, ax) => {
+							setQueriedAxiom(ax);
+							setQmenuPos([x, y]);
+							setSystemMode(SystemMode.UNSATISFIED_AXIOM);
+						}}
 						onWhyNotWhatQuery={(what) => {
 							setWhyNotWhat(what);
 							setWhyWhat(null);
@@ -334,7 +380,16 @@ function App() {
 					selectedInstancesIdx={selectedInstancesIdx}
 					onRuleitemRequest={handleRuleitemRequest}
 					onWhyNotExplanations={(unsatisfiedAxioms) => setUnsatisfiedAxioms(unsatisfiedAxioms)}
-					onInstanceSelection={(selectedIdx) => setSelectedInstancesIdx(selectedIdx)}
+					onInstanceSelection={(selectedIdx) => {
+						if (selectedIdx?.["FP"]?.length === 0 || selectedIdx?.["FN"]?.length === 0) {
+							setSystemMode(SystemMode.NOTHING);
+						} else if (Object.keys(selectedIdx)[0] === "FN") {
+							setSystemMode(SystemMode.FN_SELECTED);
+						} else if (Object.keys(selectedIdx)[0] === "FP") {
+							setSystemMode(SystemMode.FP_SELECTED);
+						}
+						setSelectedInstancesIdx(selectedIdx);
+					}}
 					highlightedInstancesIdx={highlightedInstancesIdx}
 					whyQueryMode={whyQueryMode}
 					onWhyExplanation={(qMode) => setWhyQueryMode(qMode)}

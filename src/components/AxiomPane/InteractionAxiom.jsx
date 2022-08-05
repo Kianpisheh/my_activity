@@ -86,17 +86,8 @@ function InteractionAxiom(props) {
 					id="why-not-num-container"
 					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
 					onMouseLeave={() => props.onWhyNotNumHover([])}
-                    onClick={() => {
-                        const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
-						unsatisfiedAxiom,
-						props.activity,
-						props.classificationResult,
-						props.activityInstances,
-						props.selectedInstancesIdx["FN"]
-					);
-                    props.onWhyNotHowTo(whyNotHowToSuggestions);}}
-				>
-					{numnum[events[i]] && CircleNum(numnum[events[i]].length)}
+                    onClick={(ev) => { ev.stopPropagation(); props.onQuestionMenu(ev.pageX, ev.pageY, unsatisfiedAxiom);}}>
+					    {numnum[events[i]] && CircleNum(numnum[events[i]].length)}
 				</div>
 			</div>
 		);
@@ -170,9 +161,3 @@ function handleIconSelection(selectedSet, event, clickEvent, messageCallback) {
 }
 
 export default InteractionAxiom;
-
-// onClick={() => {
-//                         const instances = props.activityInstances.filter((val, idx) => numnum[events[i]].includes(idx))
-// 						const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(axiom, instances);
-// 						props.onWhyNotWhatQuery(whatExp);
-// 					}}
