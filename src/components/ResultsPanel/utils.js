@@ -1,5 +1,6 @@
 function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx) {
 	let color = "#CE3131";
+    let fpColor = "#CE3131";
 	let opacity = 1;
 	let res = [];
 	if (type === "TPFN") {
@@ -21,12 +22,12 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 
 				// removed false positives
 				if (data["FP"] && data["FP"].includes(r) && !data["newFPs"].includes(r) && data["queryMode"]) {
-					opacity = 0.5;
+					color = "url(#gradient4)";
 				}
 
 				// new false positives
 				if (data["FP"] && data["newFPs"].includes(r) && !data["FP"].includes(r) && data["queryMode"]) {
-					opacity = 0.5;
+					color = "url(#gradient3)";
 				}
 
 				// new true positives
@@ -56,6 +57,18 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 				return (
 					<svg key={idx + "_rect-container"} width={rectSize + 4} height={rectSize + 4} filter={fi}>
 						<defs>
+                            {/* new false positives gradient */}
+                            <linearGradient id="gradient3" gradientTransform="rotate(109.6)">
+								<stop offset="6%" stop-color="rgba(200,200,200,0.5)" />
+								<stop offset="15%" stop-color="rgba(242,0,39,0.3)" />
+								<stop offset="100%" stop-color="rgba(242,0,39,0.5)" />
+							</linearGradient>
+                            {/* removed false positives gradient */}
+                            <linearGradient id="gradient4" gradientTransform="rotate(109.6)">
+								<stop offset="6%" stop-color="rgba(242,0,39,1)" />
+								<stop offset="30%" stop-color="rgba(242,0,39,0.3)" />
+								<stop offset="100%" stop-color="rgba(200,200,200,0.5)" />
+							</linearGradient>
 							<linearGradient id="gradient" gradientTransform="rotate(109.6)">
 								<stop offset="3.2%" stop-color="#B4B2B2" />
 								<stop offset="51.1%" stop-color="#4D8E7F" />

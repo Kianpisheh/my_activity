@@ -78,7 +78,7 @@ class ActivityInstance {
 
 	hasEvent(event: string) {
 		for (const ev of this.events) {
-			if (ev.getType() === event.toLowerCase()) {
+			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
 				return true;
 			}
 		}
@@ -195,7 +195,7 @@ class ActivityInstance {
 	getEvent(evq: string): ActivityInstanceEvent[] {
 		let eventList: ActivityInstanceEvent[] = [];
 		for (const event of this.events) {
-			if (event.getType().toLowerCase() === evq.toLowerCase()) {
+			if (this.pascalCase2(event.getType()) === this.pascalCase2(evq)) {
 				eventList.push(event);
 			}
 		}
@@ -265,6 +265,13 @@ class ActivityInstance {
 			}
 		}
 		return num;
+	}
+
+	pascalCase2(str: string): string {
+		return str
+			.split("_")
+			.map((strPart) => strPart.charAt(0).toUpperCase() + strPart.slice(1))
+			.join("");
 	}
 }
 

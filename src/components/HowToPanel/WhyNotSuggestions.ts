@@ -124,10 +124,10 @@ export function getWhyNotHowToSuggestions(
 
 		for (const idx of selectedFNs) {
 			const instance = actInstances[idx];
-			let eventInstances1: ActivityInstanceEvent[] = instance.getEvent(event1.toLowerCase());
+			let eventInstances1: ActivityInstanceEvent[] = instance.getEvent(event1);
 			let eventInstances2: ActivityInstanceEvent[] = [];
 			if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
-				eventInstances2 = instance.getEvent(event2.toLowerCase());
+				eventInstances2 = instance.getEvent(event2);
 			}
 
 			if (axType === AxiomTypes.TYPE_DURATION && !eventInstances1.length) {
