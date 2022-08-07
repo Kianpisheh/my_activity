@@ -12,7 +12,6 @@
 	display: grid;
 	grid-template-columns: 1fr 13px;
 	row-gap: 20px;
-	height: 90px;
 	width: 80%;
 	border-radius: 5px;
 }

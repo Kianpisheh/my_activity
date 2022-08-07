@@ -83,9 +83,9 @@ function getQuestionType(question) {
     } else if (qq.includes("not recognized as")) {
         return QueryQuestion.WHY_NOT;
     } else if (qq.includes("How to") && qq.includes(" not ")) {
-        return QueryQuestion.HOW_TO;
-    } else if (qq.includes("How to") && !qq.includes(" not ")) {
         return QueryQuestion.HOW_NOT_TO;
+    } else if (qq.includes("How to") && !qq.includes(" not ")) {
+        return QueryQuestion.HOW_TO;
     } else if (qq.includes("condition") && !qq.includes(" not ")) {
         return QueryQuestion.WHY_AXIOM;
     } else if (qq.includes("condition") && qq.includes(" not ")) {

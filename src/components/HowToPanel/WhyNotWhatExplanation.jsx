@@ -241,5 +241,3 @@ export function DurationStat(props) {
 		</div>
 	);
 }
-
-// export default AxiomStats;
