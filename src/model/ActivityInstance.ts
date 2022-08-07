@@ -123,13 +123,12 @@ class ActivityInstance {
 	}
 
 	notSatisfied(activity: Activity) {
-		let actInstanceEvents = this.getEventList();
 		let notSatisfiedInteractionAxs: string[] = [];
 		let notSatisfiedTemporalAxs = [];
 
 		// first check interaction axioms
 		for (const ev of activity.getEvents()) {
-			if (!actInstanceEvents.includes(ev.toLocaleLowerCase())) {
+			if (!this.hasEvent(ev)) {
 				notSatisfiedInteractionAxs.push("interaction:" + ev);
 			}
 		}
@@ -177,8 +176,8 @@ class ActivityInstance {
 				}
 			}
 		} else if (constraintType === "time_distance") {
-			let eventInstances1: ActivityInstanceEvent[] = this.getEvent(constraint.events[0].toLowerCase());
-			let eventInstances2: ActivityInstanceEvent[] = this.getEvent(constraint.events[1].toLowerCase());
+			let eventInstances1: ActivityInstanceEvent[] = this.getEvent(constraint.events[0]);
+			let eventInstances2: ActivityInstanceEvent[] = this.getEvent(constraint.events[1]);
 			for (let i = 0; i < eventInstances1.length; i++) {
 				for (let j = 0; j < eventInstances2.length; j++) {
 					const timeDsitance = eventInstances2[j].getStartTime() - eventInstances1[i].getEndTime();
@@ -227,8 +226,8 @@ class ActivityInstance {
 			// time-distance axiom
 			if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
 				if (this.hasEvent(event1) && this.hasEvent(event2)) {
-					let evInstance1 = this.getEvent(event1.toLowerCase());
-					let evInstance2 = this.getEvent(event2.toLowerCase());
+					let evInstance1 = this.getEvent(event1);
+					let evInstance2 = this.getEvent(event2);
 					loop1: for (let i = 0; i < evInstance1.length; i++) {
 						for (let j = 0; j < evInstance2.length; j++) {
 							const timeDsitance = evInstance2[j].getStartTime() - evInstance1[i].getEndTime();

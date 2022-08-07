@@ -208,9 +208,9 @@ export function TimeDistanceAxiomStatText(props) {
 				<span>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> occurs</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
-				{multiple && <span style={{ color: "var(--explanation", fontWeight: 600 }}>{minTimeDistance}</span>}
+				{multiple && <span style={{ color: "var(--explanation", fontWeight: 600 }}>{Math.round(10*minTimeDistance)/10}</span>}
 				{multiple && <span style={{ color: "#5F5656" }}> and</span>}
-				<span style={{ color: "var(--explanation", fontWeight: 600 }}> {maxTimeDistance}</span>
+				<span style={{ color: "var(--explanation", fontWeight: 600 }}> {Math.round(10*maxTimeDistance)/10}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					{" "}
 					after the interaction with the{" "}
