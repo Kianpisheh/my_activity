@@ -10,10 +10,12 @@ class AxiomStat {
 	maxDuration2: number;
 	events: string[];
 	axiom: AxiomData;
+	numInstances: number;
 
 	constructor(events: string[], axiom: AxiomData) {
 		this.events = events;
 		this.axiom = axiom;
+		this.numInstances = 1;
 	}
 
 	setMinTimeDistance(td: number) {
@@ -104,22 +106,29 @@ class AxiomStat {
 			this.minTimeDistance ? this.minTimeDistance : Infinity,
 			other.minTimeDistance ? other.minTimeDistance : Infinity
 		);
+
 		outputAxStat.minDuration1 = Math.min(
 			this.minDuration1 ? this.minDuration1 : Infinity,
 			other.minDuration1 ? other.minDuration1 : Infinity
 		);
+
 		outputAxStat.maxDuration1 = Math.max(
 			this.maxDuration1 ? this.maxDuration1 : -Infinity,
 			other.maxDuration1 ? other.maxDuration1 : -Infinity
 		);
+
 		outputAxStat.minDuration2 = Math.min(
 			this.minDuration2 ? this.minDuration2 : Infinity,
 			other.minDuration2 ? other.minDuration2 : Infinity
 		);
+
 		outputAxStat.maxDuration2 = Math.max(
 			this.maxDuration2 ? this.maxDuration2 : -Infinity,
 			other.maxDuration2 ? other.maxDuration2 : -Infinity
 		);
+
+		outputAxStat.numInstances = this.numInstances + other.numInstances;
+
 		return outputAxStat;
 	}
 
@@ -130,7 +139,6 @@ class AxiomStat {
 		let axiomStat: AxiomStat = new AxiomStat(axiom.events, axiom);
 		for (const instance of instances) {
 			const stat = instance.getStat(axiom);
-
 			if (i === 0) {
 				axiomStat = stat;
 			} else {

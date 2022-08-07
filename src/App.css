@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&display=swap");
 .App {
 	display: grid;
-	grid-template-columns: 250px 4fr 4fr 3fr;
+	grid-template-columns: 250px 5fr 5fr 4fr;
 	grid-template-rows: 380px 1fr;
 	height: 100%;
 	--main-beige: #f0ede4;

@@ -53,16 +53,16 @@ function HowToPanel2(props) {
 	}
 
 	return <div className="exp-container">
-        <div className="title-section">
+        <div id="exp-title-section">
             <span className="section-title">Explanations</span>
         </div>
-            <div className="axiom-explanations-container">
-                {[...whatExplanation]}
-            </div>
-           {suggestions.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
-           <div className="how-to-explanations-container">
-                {[...suggestions]}
-            </div>
+        <div className="axiom-explanations-container">
+            {[...whatExplanation]}
+        </div>
+        {suggestions.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+        <div className="how-to-explanations-container">
+            {[...suggestions]}
+        </div>
         </div>;
 }
 export default HowToPanel2;

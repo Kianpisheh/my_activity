@@ -1,6 +1,6 @@
 .result-container {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 4fr 5fr;
 	padding-top: 15px;
 	row-gap: 15px;
 }

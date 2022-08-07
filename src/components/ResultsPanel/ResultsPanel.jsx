@@ -84,19 +84,19 @@ function ResultsPanel(props) {
 			</div>
             <div id="result-legends-container">
                 <div>
-                    <svg height={18} width={190}>
+                    <svg height={18} width={210}>
                         <rect y={3} width={15} height={7} fill={"#4D8E7F"} rx={2}></rect>
                         <text x={25} y={10}  style={{fontSize: 11}}>Correctly recognized activity samples</text>
                     </svg>
                 </div>
                 <div>
-                    <svg height={18} width={190}>
+                    <svg height={18} width={210}>
                         <rect  y={3} width={15} height={7} fill={"#CE3151"} rx={2}></rect>
                         <text  x={25} y={10} style={{fontSize: 11}}>Incorrectly recognized activity samples</text>
                     </svg>
                 </div>
                 <div>
-                    <svg height={18} width={190}>
+                    <svg height={18} width={210}>
                         <rect  y={3} width={15} height={7} fill={"#B4B2B2"} rx={2}></rect>
                         <text  x={25} y={10} style={{fontSize: 11}}>Not recognized activity samples</text>
                     </svg>

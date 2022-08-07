@@ -50,3 +50,7 @@
 	margin-right: -9px;
 	cursor: pointer;
 }
+
+.td-stat-container {
+	width: 100%;
+}

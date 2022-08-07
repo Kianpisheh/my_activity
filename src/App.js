@@ -110,7 +110,8 @@ function App() {
 			setSystemMode(SystemMode.FP_SELECTED);
             setQmenuPos([-1, -1])
 		} else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
-			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, activityInstances);
+            const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx))
+			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, FNInstances);
 			setWhyNotWhat(whatExp);
 			setWhyWhat(null);
             setQmenuPos([-1, -1]);

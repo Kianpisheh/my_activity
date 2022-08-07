@@ -3,9 +3,9 @@ import * as React from "react";
 const SvgPot = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 512 512"
+    viewBox="0 0 512 350"
     style={{
-      enableBackground: "new 0 0 512 512",
+      enableBackground: "new 0 0 512 412",
     }}
     xmlSpace="preserve"
     {...props}
