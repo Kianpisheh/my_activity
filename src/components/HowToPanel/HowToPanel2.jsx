@@ -4,9 +4,37 @@ import WhyNotHowToExplanations from "./WhyNotHowToExplanations";
 import WhyHowToExplanations from "./WhyHowToExplanations";
 import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
 import WhyWhatExplanation from "./WhyWhatExplanation";
+import WhyExplanation from "./WhyExplanation";
+import WhyNotExplanation from "./WhyNotExplanation";
+
+import SystemMode from "../../model/SystemMode";
 
 function HowToPanel2(props) {
-	const { whyWhat, whyNotWhat, whyNotHowTosuggestions, whyHowTosuggestions } = props;
+	const {
+		whyWhat,
+		whyNotWhat,
+		whyNotHowTosuggestions,
+		whyHowTosuggestions,
+		systemMode,
+		selectedInstancesIdx,
+		instances,
+        activity
+	} = props;
+
+	let whyExplanation = [];
+	if (systemMode === SystemMode.UNSATISFIED_AXIOM) {
+		const selectedInstances = instances.filter((instance, idx) =>
+			Object.values(selectedInstancesIdx)[0].includes(idx)
+		);
+		const numInstances = selectedInstances.length;
+		whyExplanation.push(<WhyNotExplanation numInstances={numInstances} systemMode={systemMode} activity={activity}></WhyNotExplanation>);
+	} else if (systemMode === SystemMode.WHY_ASKED) {
+        const selectedInstances = instances.filter((instance, idx) =>
+			Object.values(selectedInstancesIdx)[0].includes(idx)
+		);
+		const numInstances = selectedInstances.length;
+		whyExplanation.push(<WhyExplanation numInstances={numInstances} systemMode={systemMode} activity={activity}></WhyExplanation>);
+    }
 
 	let whatExplanation = [];
 
@@ -68,6 +96,12 @@ function HowToPanel2(props) {
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
 			<div className="how-to-explanations-container">{[...suggestions]}</div>
+			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
+				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
+			)}
+			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
+				<div className="why-explanation-container">{[...whyExplanation]}</div>
+			)}
 		</div>
 	);
 }

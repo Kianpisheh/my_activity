@@ -40,7 +40,6 @@ function AdjustableTime(props) {
             className="time-distance-container"
             style={{ opacity: active ? "1" : "0.3" }}
         >
-            {/* <span style={{ fontSize: 12 }}>{props.title}</span> */}
             <div className="time-distance-adjust">
                 <input
                     id="sec"
@@ -63,20 +62,6 @@ function AdjustableTime(props) {
                     style={{ width: 45, textAlign: "center", cursor: "default", fontSize: 10, color: "#605f5f" }}
                 />
             </div>
-            {/* <Checkbox style={{ size: 12, backgroundColor: "#E5E2CD", border: "none" }} checked={active} onChange={() =>
-                setActive(
-                    !active,
-                    props.messageCallback(
-                        AxiomTypes.MSG_TIME_CONSTRAINT_STATUS_UPDATED,
-                        {
-                            id: props.idx,
-                            active: !active,
-                            time: time,
-                            type: props.title,
-                        }
-                    )
-                )
-            } /> */}
         </div>
     );
 }

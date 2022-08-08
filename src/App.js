@@ -104,25 +104,27 @@ function App() {
 			);
 			setUnsatisfiedAxioms(unsatisfiedAxioms);
             setQmenuPos([-1, -1])
+			setSystemMode(SystemMode.WHY_NOT_ASKED);
 		} else if (questionType === QueryQuestion.WHY) {
 			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
 			setWhyQueryMode(qMode);
-			setSystemMode(SystemMode.FP_SELECTED);
+			setSystemMode(SystemMode.WHY_ASKED);
             setQmenuPos([-1, -1])
-		} else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
+		} else if (questionType === QueryQuestion.WHY_NOT_WHAT) {
             const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx))
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, FNInstances);
 			setWhyNotWhat(whatExp);
 			setWhyWhat(null);
             setQmenuPos([-1, -1]);
-            systemMode(SystemMode.AXIOM_WHY_NOT_QUERY);
-		} else if (questionType === QueryQuestion.WHY_AXIOM) {
+            setSystemMode(SystemMode.WHY_NOT_WHAT_ASKED);
+		} else if (questionType === QueryQuestion.WHY_WHAT) {
             const FPInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx?.["FP"]?.includes(idx));
             const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(queriedAxiom, FPInstances);
             setWhyWhat(whyWhatExp);
             setWhyNotWhat(null);
             setQmenuPos([-1, -1]);
-        } else if (questionType === QueryQuestion.HOW_TO) {
+            setSystemMode(SystemMode.WHY_WHAT_ASKED);
+        } else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
 				currentActivity,
@@ -133,7 +135,8 @@ function App() {
             setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
             setQmenuPos([-1, -1]);
-		} else if (questionType === QueryQuestion.HOW_NOT_TO) {
+            setSystemMode(SystemMode.WHY_NOT_HOW_TO_ASKED);
+		} else if (questionType === QueryQuestion.WHY_HOW_TO) {
             const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
 						queriedAxiom,
 						currentActivity,
@@ -145,6 +148,7 @@ function App() {
             setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
             setQmenuPos([-1, -1]);
+            setSystemMode(SystemMode.WHY_HOW_TO_ASKED);
         }
 	}
 
@@ -349,12 +353,10 @@ function App() {
 						onWhyNotWhatQuery={(x, y, ax) => {
 							setQueriedAxiom(ax);
 							setQmenuPos([x, y]);
-							setSystemMode(SystemMode.UNSATISFIED_AXIOM);
 						}}
                         onWhyWhatQuery={(x, y, ax) => {
 							setQueriedAxiom(ax);
 							setQmenuPos([x, y]);
-							setSystemMode(SystemMode.SATISFIED_AXIOM);
 						}}
 						activityInstances={activityInstances}
 						selectedInstancesIdx={selectedInstancesIdx}
@@ -377,11 +379,9 @@ function App() {
 					whyNotWhat={whyNotWhat}
 					whyWhat={whyWhat}
 					onWhyNotHowTo={(x, y) => {
-                        setSystemMode(SystemMode.AXIOM_HOW_TO)
                         setQmenuPos([x, y]);
 					}}
 					onWhyHowTo={(x, y) => {
-						setSystemMode(SystemMode.AXIOM_HOW_NOT_TO)
                         setQmenuPos([x, y]);
 					}}
 					classificationResult={classificationRes}
@@ -389,6 +389,7 @@ function App() {
 					instances={activityInstances}
 					selectedInstancesIdx={selectedInstancesIdx}
 					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+                    systemMode={systemMode}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">

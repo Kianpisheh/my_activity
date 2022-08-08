@@ -56,6 +56,8 @@ export function getWhyHowToSuggestions(
 		suggestions = suggestion3;
 	}
 
+	suggestions = checkDuplicate(suggestions);
+
 	return suggestions;
 }
 
@@ -149,7 +151,10 @@ function getFP0TimeContractionSuggestion(
 		}
 		// new FPs
 		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
-		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
+		let oldTNFPInstances = [];
+		for (let k = 0; k < oldTNFPs.length; k++) {
+			oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
+		}
 		let newFPs: number[] = [];
 		for (let i = 0; i < oldTNFPInstances.length; i++) {
 			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
@@ -255,7 +260,10 @@ function getFNSameTimeContractionSuggestion(
 			}
 			// new FPs
 			const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
-			let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
+			let oldTNFPInstances = [];
+			for (let k = 0; k < oldTNFPs.length; k++) {
+				oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
+			}
 			let newFPs: number[] = [];
 			for (let i = 0; i < oldTNFPInstances.length; i++) {
 				if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
@@ -268,6 +276,24 @@ function getFNSameTimeContractionSuggestion(
 	}
 
 	return suggestions;
+}
+
+function checkDuplicate(suggestions: HowToAxiom[]) {
+	let uniqueSuggestions: HowToAxiom[] = [];
+	loop: for (let i = 0; i < suggestions.length; i++) {
+		for (let j = i - 1; j >= 0; j--) {
+			if (suggestions[i].suggestedAxiomData[0] === suggestions[j].suggestedAxiomData[0]) {
+				if (suggestions[i].suggestedAxiomData[1] === suggestions[j].suggestedAxiomData[1]) {
+					if (suggestions[i].type === suggestions[j].type) {
+						break loop;
+					}
+				}
+			}
+		}
+		uniqueSuggestions.push(suggestions[i]);
+	}
+
+	return uniqueSuggestions;
 }
 
 function getInteractionAdditionAxiomSuggestions(

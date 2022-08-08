@@ -51,6 +51,7 @@
   "devDependencies": {
     "@svgr/cli": "^6.2.1",
     "@svgr/webpack": "^6.2.1",
+    "@types/lodash.isequal": "^4.5.6",
     "@types/react-edit-text": "^4.4.0"
   }
 }

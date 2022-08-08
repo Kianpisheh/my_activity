@@ -1,7 +1,9 @@
 import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ResultsPanel/utils";
 import { DurationAxiomStat, TimeDistanceAxiomStat } from "./WhyNotWhatExplanation";
-import WhyHowToQueryController from "../../Controllers/WhyHowToQueryController"
+
+import { TimeDistanceAxiomStatText } from "./WhyNotWhatExplanation";
+import { DurationAxiomStatText } from "./WhyNotWhatExplanation";
 
 function WhyWhatExplanation(props) {
 
@@ -14,9 +16,12 @@ function WhyWhatExplanation(props) {
 	const axiomType = axiom?.getType();
 
 	let axiomStatComp = null;
+	let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+		axiomStatText = <TimeDistanceAxiomStatText stats={stats}></TimeDistanceAxiomStatText>;
 		axiomStatComp = <TimeDistanceAxiomStat stats={stats} axiom={axiom}></TimeDistanceAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
+        axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
 	} else {
 		return;
@@ -24,7 +29,8 @@ function WhyWhatExplanation(props) {
 
 	return (
 		<div className="stat-container">
-			{axiomStatComp}
+			<div className="text-explanation-container">{axiomStatText}</div>
+			<div className="stat-axiom-explanation-container">{axiomStatComp}</div>
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {

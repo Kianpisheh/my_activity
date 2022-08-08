@@ -33,13 +33,15 @@ function TimeDistanceAxiom(props) {
         props.onQuestionMenu
 	);
 
+    let opacity = numnum ? 0.3 : 1;
+
 	return (
 		<div
 			className="temp-adj-axiom-container2"
 			onMouseEnter={() => setHovered(true)}
 			onMouseLeave={() => setHovered(false)}
 		>
-			<div className="temp-adj-icons">
+			<div className="temp-adj-icons" style={{opacity: opacity}}>
 				<div className="icon-container">
 					<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon1>
 				</div>
@@ -52,12 +54,12 @@ function TimeDistanceAxiom(props) {
 			</div>
 			<div
 				id="vertical-line-sep"
-				style={{ borderLeft: "1px solid #A5A2A2", height: "80%", alignSelf: "center" }}
+				style={{ borderLeft: "1px solid #A5A2A2", height: "80%", alignSelf: "center"}}
 			></div>
-			<div className="temp-adj-limits2">
-				<span style={{ display: "flex", flexDirection: "row" }}>
-					<p style={{ width: 110 }}>
-						at least <span style={{ fontWeight: 600 }}>{props.data.getTh1()}</span> sec later{" "}
+			<div className="temp-adj-limits2" style={{opacity: opacity}} >
+				<span style={{ display: "flex", flexDirection: "row"}}>
+					<p style={{ width: 110,  }}>
+						at least <span style={{ fontWeight: 600}}>{props.data.getTh1()}</span> sec later{" "}
 					</p>
 					<AdjustableTime
 						key={"more than"}
@@ -81,7 +83,7 @@ function TimeDistanceAxiom(props) {
 				</span>
 			</div>
 			<div className="rem-btn-td2">
-				{!props.whyQueryMode && hovered && numnum.length === 0 && (
+				{!props.whyQueryMode && hovered && !numnum && (
 					<button
 						className="remove-axiom-btn-td"
 						onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}

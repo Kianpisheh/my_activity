@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const SvgHowTo = (props) => (
+const SvgWhyNotHowTo = (props) => (
  <svg xmlns="http://www.w3.org/2000/svg" width="39" height="41" fill="none" viewBox="0 0 39 41" {...props}>
   <rect width="12" height="12" y="29" fill="#B4B2B2" rx="2"/>
   <rect width="13" height="13" x="26" y="19" fill="#4D8E7F" rx="2"/>
@@ -9,4 +9,4 @@ const SvgHowTo = (props) => (
 </svg>
 );
 
-export default SvgHowTo;
+export default SvgWhyNotHowTo;

@@ -56,18 +56,18 @@ function getQuestions(sysStatus, data) {
 
     } else if (sysStatus === SystemMode.NOTHING) {
         const targetActivity =  data["target_activity"];
-    } else if (sysStatus === SystemMode.UNSATISFIED_AXIOM) {
-        const q1 = <span className="question-content">Why this condition is not satisfied for the {targetActivity} activity?</span>;
+    } else if (sysStatus === SystemMode.WHY_NOT_ASKED) {
+        const q1 = <span className="question-content">Why is this condition not satisfied for the {targetActivity} activity?</span>;
         const q2 = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
         questions = [q1, q2];
-    } else if (sysStatus === SystemMode.SATISFIED_AXIOM) {
-        const q1 = <span className="question-content">Why this condition is satisfied for the {targetActivity} activity?</span>;
+    } else if (sysStatus === SystemMode.WHY_ASKED) {
+        const q1 = <span className="question-content">Why is this condition satisfied for the {targetActivity} activity?</span>;
         const q2 = <span className="question-content">How to modify this condition so it is not satisfied for the {targetActivity} activity?</span>
         questions = [q1, q2];
-    } else if (sysStatus === SystemMode.AXIOM_HOW_TO) {
+    } else if (sysStatus === SystemMode.WHY_NOT_WHAT_ASKED) {
         const q = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
         questions = [q];
-    } else if (sysStatus === SystemMode.AXIOM_HOW_NOT_TO) {
+    } else if (sysStatus === SystemMode.WHY_WHAT_ASKED) {
         const q = <span className="question-content">How to make the system to not recognize {thisThese} {sample} as {targetActivity}?</span>;
         questions = [q];
     }
@@ -83,13 +83,13 @@ function getQuestionType(question) {
     } else if (qq.includes("not recognized as")) {
         return QueryQuestion.WHY_NOT;
     } else if (qq.includes("How to") && qq.includes(" not ")) {
-        return QueryQuestion.HOW_NOT_TO;
+        return QueryQuestion.WHY_HOW_TO;
     } else if (qq.includes("How to") && !qq.includes(" not ")) {
-        return QueryQuestion.HOW_TO;
+        return QueryQuestion.WHY_NOT_HOW_TO;
     } else if (qq.includes("condition") && !qq.includes(" not ")) {
-        return QueryQuestion.WHY_AXIOM;
+        return QueryQuestion.WHY_WHAT;
     } else if (qq.includes("condition") && qq.includes(" not ")) {
-        return QueryQuestion.WHY_NOT_AXIOM;
+        return QueryQuestion.WHY_NOT_WHAT;
     }
 }
 
@@ -98,24 +98,24 @@ function questionIcon(questionType) {
         return "Why";
     } else if (questionType === QueryQuestion.WHY_NOT) {
         return "WhyNot";
-    } else if (questionType === QueryQuestion.HOW_TO) {
-        return "HowTo"
-    } else if (questionType === QueryQuestion.HOW_NOT_TO) {
-        return "HowNotTo"
-    } else if (questionType === QueryQuestion.WHY_AXIOM) {
-        return "WhyAxiom"
-    } else if (questionType === QueryQuestion.WHY_NOT_AXIOM) {
-        return "WhyNotAxiom"
+    } else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
+        return "WhyNotHowTo"
+    } else if (questionType === QueryQuestion.WHY_HOW_TO) {
+        return "WhyHowTo"
+    } else if (questionType === QueryQuestion.WHY_WHAT) {
+        return "WhyWhat"
+    } else if (questionType === QueryQuestion.WHY_NOT_WHAT) {
+        return "WhyNotWhat"
     }
 }
 
 export class QueryQuestion {
     static WHY = "why";
     static WHY_NOT = "why not";
-    static HOW_TO =  "how to";
-    static HOW_NOT_TO = "how not to";
-    static WHY_NOT_AXIOM = "why not axiom";
-    static WHY_AXIOM = "why axiom";
+    static WHY_HOW_TO =  "why how to";
+    static WHY_NOT_HOW_TO = "why not how to";
+    static WHY_NOT_WHAT = "why not what";
+    static WHY_WHAT = "why what";
 }
 
 

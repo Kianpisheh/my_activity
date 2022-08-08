@@ -61,10 +61,10 @@ import SvgTimeDistance3 from "./TimeDistance3";
 import SvgTrashcan from "./Trashcan";
 import SvgWhy from "./Why";
 import SvgWhyNot from "./WhyNot";
-import SvgHowTo from "./HowTo";
-import SvgHowNotTo from "./HowNotTo";
-import SvgWhyAxiom from "./WhyAxiom";
-import SvgWhyNotAxiom from "./WhyNotAxiom";
+import SvgWhyHowTo from "./WhyHowTo";
+import SvgWhyNotHowTo from "./WhyNotHowTo";
+import SvgWhyWhat from "./WhyWhat";
+import SvgWhyNotWhat from "./WhyNotWhat";
 
 class Icons {
 	static icons = {
@@ -142,10 +142,10 @@ class Icons {
         Trashcan: SvgTrashcan,
         Why: SvgWhy,
         WhyNot: SvgWhyNot,
-        WhyAxiom: SvgWhyAxiom,
-        WhyNotAxiom: SvgWhyNotAxiom,
-        HowTo: SvgHowTo,
-        HowNotTo: SvgHowNotTo,
+        WhyWhat: SvgWhyWhat,
+        WhyNotWhat: SvgWhyNotWhat,
+        WhyHowTo: SvgWhyHowTo,
+        WhyNotHowTo: SvgWhyNotHowTo,
 	};
 
 	static colors = {

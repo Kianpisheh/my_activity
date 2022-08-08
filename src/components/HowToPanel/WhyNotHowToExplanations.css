@@ -6,6 +6,25 @@
 	width: 100%;
 }
 
+.temp-adj-axiom-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 80%;
+	height: 80px;
+	background-color: var(--light-beige);
+	border-radius: 3px;
+}
+
+.suggestion-subtitle {
+	width: 80%;
+	display: flex;
+	font-size: 13px;
+	color: #555555;
+	font-weight: 400;
+	padding-bottom: 4px;
+}
+
 /* TemporalAdjustmentAxiom */
 .temp-adj-axiom-container {
 	display: flex;

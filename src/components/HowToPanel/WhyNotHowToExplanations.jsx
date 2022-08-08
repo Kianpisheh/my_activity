@@ -1,4 +1,4 @@
-import "./WhyNotHowToExplanations.css";
+    import "./WhyNotHowToExplanations.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
 
@@ -59,21 +59,24 @@ export function InteractionRemovalAxiom(props) {
 	const Icon = Icons.getIcon(pascalCase(events[0]), true);
 
 	return (
-		<div
-			className="temp-adj-axiom-container"
-			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
-			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-			style={{ position: "relative" }}
-		>
-			<div className="icon-container2">
-				<svg width={25} height={25}>
-					<Icon fill="#BBBBBB" style={{ width: 25, height: 25 }} />
-					<svg width={25} height={25}>
-						<line x1={0} x2={25} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
-					</svg>
-				</svg>
-			</div>
-		</div>
+        <div>
+            <span className="suggestion-subtitle">Removing the interaction condition</span>
+            <div
+                className="temp-adj-axiom-container"
+                onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+                onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+                style={{ position: "relative" }}
+            >
+                <div className="icon-container2">
+                    <svg width={25} height={25}>
+                        <Icon fill="#BBBBBB" style={{ width: 25, height: 25 }} />
+                        <svg width={25} height={25}>
+                            <line x1={0} x2={25} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
+                        </svg>
+                    </svg>
+                </div>
+            </div>
+        </div>
 	);
 }
 
@@ -94,7 +97,15 @@ export function TemporalAdjustmentAxiom(props) {
 		sepColor = "#BBBBBB";
 	}
 
+    let changing = "Shrinking";
+    if ((axiom.getTh1() > th1) || (axiom.getTh2() < th2)) {
+        changing = "Expanding";
+    }
+
 	return (
+        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+        {props.timeRemoval &&<span className="suggestion-subtitle">Removing the time distance condition</span>}
+        {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
@@ -130,6 +141,7 @@ export function TemporalAdjustmentAxiom(props) {
 				</div>
 			)}
 		</div>
+        </div>
 	);
 }
 
@@ -169,7 +181,15 @@ export function DurationAdjustmentAxiom(props) {
 		color = "#999999";
 	}
 
+    let changing = "Shrinking";
+    if ((axiom.getTh1() > th1) || (axiom.getTh2() < th2)) {
+        changing = "Expanding";
+    }
+
 	return (
+        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+        {props.timeRemoval &&<span className="suggestion-subtitle">Removing the duration condition</span>}
+        {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
@@ -202,5 +222,6 @@ export function DurationAdjustmentAxiom(props) {
 				</div>
 			)}
 		</div>
+        </div>
 	);
 }

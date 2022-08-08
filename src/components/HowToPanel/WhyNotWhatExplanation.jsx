@@ -158,11 +158,11 @@ export function DurationAxiomStatText(props) {
 	} else {
 		explanation = (
 			<div className="text-explanation">
-				<span style={{ color: "#5F5656" }}>In the the selected {samples} the interaction with the </span>
+				<span style={{ color: "#5F5656" }}>In the the selected {samples}, the interaction with the </span>
 				<span style={{ color: "var(--explanation" }}>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> takes</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
-				{multiple && <span style={{ color: "var(--explanation", fontWeight: 600 }}>{minDuration1}</span>}
+				{multiple && <span style={{ color: "var(--explanation" }}>{Math.round(10* minDuration1)/10}</span>}
 				{multiple && <span style={{ color: "#5F5656" }}> and</span>}
 				<span style={{ color: "var(--explanation" }}> {Math.round(10* maxDuration1)/10} </span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
@@ -194,9 +194,9 @@ export function TimeDistanceAxiomStatText(props) {
 				<span style={{ color: "#5F5656" }}>
 					The selected {samples} {doesDo} not include interactions with the{" "}
 				</span>
-				{isMissing1 && <span>{events[0]}</span>}
+				{isMissing1 && <span style={{ color: "var(--explanation"}}>{events[0]}</span>}
 				{!isMissing1 && !isMissing2 && <span style={{ color: "#5F5656" }}>and </span>}
-				{isMissing2 && <span>{events[1]}</span>}
+				{isMissing2 && <span style={{ color: "var(--explanation"}}>{events[1]}</span>}
 				<span style={{ color: "#5F5656" }}>.</span>
 			</div>
 		);
@@ -204,18 +204,18 @@ export function TimeDistanceAxiomStatText(props) {
 		// both interactions exist in the selected samples
 		explanation = (
 			<div className="text-explanation">
-				<span style={{ color: "#5F5656" }}>In the the selected {samples} the interaction with the </span>
-				<span>{events[0]}</span>
+				<span style={{ color: "#5F5656" }}>In the the selected {samples}, the interaction with the </span>
+				<span style={{ color: "var(--explanation"}}>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> occurs</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
-				{multiple && <span style={{ color: "var(--explanation", fontWeight: 600 }}>{Math.round(10*minTimeDistance)/10}</span>}
+				{multiple && <span style={{ color: "var(--explanation"}}>{Math.round(10*minTimeDistance)/10}</span>}
 				{multiple && <span style={{ color: "#5F5656" }}> and</span>}
-				<span style={{ color: "var(--explanation", fontWeight: 600 }}> {Math.round(10*maxTimeDistance)/10}</span>
+				<span style={{ color: "var(--explanation"}}> {Math.round(10*maxTimeDistance)/10}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					{" "}
-					after the interaction with the{" "}
+					sec after the interaction with the{" "}
 				</span>
-				<span>{events[1]}</span>
+				<span style={{ color: "var(--explanation"}}>{events[1]}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					.
 				</span>
@@ -292,6 +292,10 @@ export function DurationStat(props) {
 				<span style={{ fontSize: 13, color: "#5F5656", fontWeight: 600 }}>
 					{" " + Math.round(mind * 10) / 10 + " "}
 				</span>
+                {multiple && <span style={{ fontSize: 13, color: "#5F5656" }}> and</span>}
+                {multiple && <span style={{ fontSize: 13, color: "#5F5656", fontWeight: 600 }}>
+					{" " + Math.round(maxd * 10) / 10 + " "}
+				</span>}
 				<span style={{ fontSize: 13, color: "#5F5656" }}> sec</span>
 			</div>
 		</div>

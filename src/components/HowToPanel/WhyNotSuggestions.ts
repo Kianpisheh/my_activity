@@ -6,7 +6,6 @@ import AxiomTypes from "../../model/AxiomTypes";
 import HowToAxiom from "../../model/HowToAxiom";
 
 import isEqual from "lodash.isequal";
-import { getAxiomStats } from "./WhySuggestions";
 
 export function getWhyNotHowToSuggestions(
 	axiom: AxiomData,
@@ -93,7 +92,10 @@ export function getWhyNotHowToSuggestions(
 		}
 		// new FPs
 		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
-		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
+		let oldTNFPInstances = [];
+		for (let k = 0; k < oldTNFPs.length; k++) {
+			oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
+		}
 		let newFPs: number[] = [];
 		for (let i = 0; i < oldTNFPInstances.length; i++) {
 			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
@@ -232,7 +234,10 @@ export function getWhyNotHowToSuggestions(
 
 		// new FPs
 		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
-		let oldTNFPInstances = actInstances.filter((val, idx) => oldTNFPs.includes(idx));
+		let oldTNFPInstances = [];
+		for (let k = 0; k < oldTNFPs.length; k++) {
+			oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
+		}
 		let newFPs: number[] = [];
 		for (let i = 0; i < oldTNFPInstances.length; i++) {
 			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {

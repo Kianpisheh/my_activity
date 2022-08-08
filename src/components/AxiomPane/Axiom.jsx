@@ -7,11 +7,9 @@ import DurationAxiom from "./DurationAxiom";
 import InteractionORAxiom from "./InteractionORAxiom";
 
 import AxiomData from "../../model/AxiomData";
-import WhyWhatQueryController from "../../Controllers/WhyWhatQueryController";
 
 import isEqual from "lodash.isequal";
 import { CircleNum, CircleQMark } from "../ResultsPanel/utils";
-import WhyHowToQueryController from "../../Controllers/WhyHowToQueryController";
 
 function Axiom(props) {
 	let axiomComponent = null;
@@ -102,7 +100,7 @@ function Axiom(props) {
 export default Axiom;
 
 export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover, onQuestionMenu) {
-	let numnum = [];
+	let numnum = null;
 	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
 		const ax = AxiomData.axiomFromString(axiomString);
 		if (isEqual(ax, axiom)) {

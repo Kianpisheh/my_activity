@@ -20,6 +20,12 @@
 	align-items: center;
 }
 
+.why-explanation-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 #exp-divider {
 	height: 1px;
 	width: 85%;

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const SvgWhyAxiom = (props) => (
+const SvgWhyWhat = (props) => (
  <svg xmlns="http://www.w3.org/2000/svg" width="55" height="47" fill="none" viewBox="0 0 55 47" {...props}>
   <mask id="a" fill="#fff">
     <rect width="17.23" height="17.23" x="9.996" y="29.595" rx="2"/>
@@ -20,4 +20,4 @@ const SvgWhyAxiom = (props) => (
 
 );
 
-export default SvgWhyAxiom;
+export default SvgWhyWhat;
