@@ -6,6 +6,7 @@ import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
 import WhyWhatExplanation from "./WhyWhatExplanation";
 import WhyExplanation from "./WhyExplanation";
 import WhyNotExplanation from "./WhyNotExplanation";
+import EventStatExplanation from "./EventStatExplanation";
 
 import SystemMode from "../../model/SystemMode";
 
@@ -36,6 +37,10 @@ function HowToPanel2(props) {
 		whyExplanation.push(<WhyExplanation numInstances={numInstances} systemMode={systemMode} activity={activity}></WhyExplanation>);
     }
 
+    let x = 0;
+    if (props.eventStats && props.eventStats.length) {
+        x = <EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
+    }
 	let whatExplanation = [];
 
 	if (whyNotWhat) {
@@ -102,6 +107,7 @@ function HowToPanel2(props) {
 			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
 				<div className="why-explanation-container">{[...whyExplanation]}</div>
 			)}
+            {x !== 0 && x}
 		</div>
 	);
 }

@@ -1,0 +1,21 @@
+.stats-container {
+	display: flex;
+	flex-direction: column;
+	color: var(--list-item-text);
+}
+
+.single-stat-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.stat-element {
+	font-size: 18px;
+	color: var(--explanation);
+}
+
+.stats {
+	display: flex;
+	flex-direction: row;
+	column-gap: 15px;
+}

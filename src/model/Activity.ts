@@ -1,3 +1,4 @@
+import ActivityInstance from "./ActivityInstance";
 import AxiomData from "./AxiomData";
 import AxiomTypes from "./AxiomTypes";
 import Constraint from "./Constraint";
@@ -10,12 +11,11 @@ interface IActivityObj {
 }
 
 class Activity {
-
 	name: string;
 	events: string[];
 	constraints: Constraint[];
 	id: number;
-	eventORList: string[][] // [[e1,e4]. [e2, e5]] list of list of strings
+	eventORList: string[][]; // [[e1,e4]. [e2, e5]] list of list of strings
 
 	constructor(activityObj: IActivityObj) {
 		this.name = activityObj["name"];
@@ -36,7 +36,6 @@ class Activity {
 	}
 
 	notInEventORList(events: string[]): boolean {
-
 		for (let i = 0; i < this.eventORList.length; i++) {
 			if (this.arraysAreEqual(this.eventORList[i], events)) {
 				return false;
@@ -45,7 +44,6 @@ class Activity {
 
 		return true;
 	}
-
 
 	getID() {
 		return this.id;
@@ -71,7 +69,7 @@ class Activity {
 		let axioms: AxiomData[] = [];
 
 		let interactionOREvents = this.eventORList.flat();
-		let singleEventInteraction: string[] = []
+		let singleEventInteraction: string[] = [];
 		this.events.forEach((ev) => {
 			if (!interactionOREvents.includes(ev)) {
 				singleEventInteraction.push(ev);
@@ -83,19 +81,22 @@ class Activity {
 			new AxiomData({
 				events: singleEventInteraction,
 				type: AxiomTypes.TYPE_INTERACTION,
-				th1: -1, th2: -1
+				th1: -1,
+				th2: -1,
 			})
 		);
 
 		// the interaction_OR axioms
-		this.eventORList.forEach(events => {
-			axioms.push(new AxiomData({
-				events: events,
-				type: AxiomTypes.TYPE_OR_INTERACTION,
-				th1: -1,
-				th2: -1,
-			}))
-		})
+		this.eventORList.forEach((events) => {
+			axioms.push(
+				new AxiomData({
+					events: events,
+					type: AxiomTypes.TYPE_OR_INTERACTION,
+					th1: -1,
+					th2: -1,
+				})
+			);
+		});
 
 		// temporal axioms
 		this.constraints.forEach((constraint) => {
@@ -124,16 +125,16 @@ class Activity {
 		let newConstraints: Constraint[] = [];
 		let newEventORList: string[][] = [];
 
-		new_axioms.forEach(axiom => {
+		new_axioms.forEach((axiom) => {
 			let events = axiom["events"];
 			newEvents = newEvents.concat(events);
 			if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
-				let constraint = { type: axiom["type"], th1: axiom["th1"], th2: axiom["th2"], events: axiom["events"] }
-				newConstraints.push(constraint)
+				let constraint = { type: axiom["type"], th1: axiom["th1"], th2: axiom["th2"], events: axiom["events"] };
+				newConstraints.push(constraint);
 			} else if (axiom["type"] === AxiomTypes.TYPE_OR_INTERACTION) {
 				newEventORList.push(axiom["events"]);
 			}
-		})
+		});
 		let newEventsSet = new Set(newEvents);
 		this.events = Array.from(newEventsSet);
 		this.constraints = [...newConstraints];
@@ -141,10 +142,10 @@ class Activity {
 	}
 
 	static getUniqueID(activities: Activity[]) {
-		let idsList: number[] = []
-		activities.forEach(activtiy => {
+		let idsList: number[] = [];
+		activities.forEach((activtiy) => {
 			idsList.push(activtiy["id"]);
-		})
+		});
 		let ids = new Int32Array(idsList);
 		ids = ids.sort();
 		if (!ids || !ids.length) {
@@ -157,11 +158,14 @@ class Activity {
 		let newName: string = candidateName;
 		let maxIdx: number = 0;
 		let duplicate: boolean = false;
-		activities.forEach(activity => {
+		activities.forEach((activity) => {
 			let activityName: string = activity.getName();
-			if (candidateName === activityName || candidateName === activityName.substring(0, activityName.length - 3)) {
+			if (
+				candidateName === activityName ||
+				candidateName === activityName.substring(0, activityName.length - 3)
+			) {
 				duplicate = true;
-				let nameIdx = parseInt(activityName.charAt(activityName.length - 1))
+				let nameIdx = parseInt(activityName.charAt(activityName.length - 1));
 				if (!isNaN(nameIdx)) {
 					if (nameIdx > maxIdx) {
 						maxIdx = nameIdx;
@@ -178,21 +182,30 @@ class Activity {
 
 	arraysAreEqual(arr1: string[], arr2: string[]) {
 		if (arr1.length !== arr2.length) {
-			return false
+			return false;
 		}
 		let arr2Copy = [...arr2];
 
-
-		arr1.forEach(value => {
+		arr1.forEach((value) => {
 			if (arr2Copy.includes(value)) {
-				arr2Copy = arr2Copy.filter(value2 => value2 !== value)
+				arr2Copy = arr2Copy.filter((value2) => value2 !== value);
 			}
-		})
+		});
 
 		return arr2Copy.length === 0;
 	}
+
+	static getActivityList(instances: ActivityInstance[]) {
+		let acts: string[] = [];
+
+		for (const instance of instances) {
+			if (!acts.includes(instance.getType())) {
+				acts.push(instance.getType());
+			}
+		}
+
+		return acts;
+	}
 }
-
-
 
 export default Activity;

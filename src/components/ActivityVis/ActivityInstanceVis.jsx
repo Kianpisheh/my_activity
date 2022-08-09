@@ -191,13 +191,13 @@ function ActivityInstanceVis(props) {
                     }
                     }
                 >
-                    <RegionSelect
+                    {/* <RegionSelect
                         maxRegions={1}
                         regions={regions}
                         constraint
                         onChange={(regions) => setRegions(regions)}
                         style={{ height: "100%" }}
-                    >
+                    > */}
                         <EventIconThumb
                             key={1}
                             idx={0}
@@ -211,8 +211,10 @@ function ActivityInstanceVis(props) {
                             explanationIndividuals={overlapIdx}
                             iconX={iconX}
                             iconY={iconY}
+                            onInstanceEventSelection={props.onInstanceEventSelection}
+                            selectedInstanceEvents={props.selectedInstanceEvents}
                         ></EventIconThumb>
-                    </RegionSelect>
+                    {/* </RegionSelect> */}
                 </div>
                 {selectionBox && nonScaledEnclosedThumbX.length && (
                     <div

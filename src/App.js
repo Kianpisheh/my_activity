@@ -33,6 +33,8 @@ import WhyWhatQueryController from "./Controllers/WhyWhatQueryController";
 import WhyHowToQueryController from "./Controllers/WhyHowToQueryController";
 import ResultsPanel from "./components/ResultsPanel/ResultsPanel";
 
+import EventStat from "./model/EventStat"
+
 import handleInstanceSelection from "./components/ResultsPanel/handler";
 
 
@@ -59,6 +61,7 @@ function App() {
 	const [qmenuPos, setQmenuPos] = useState([-1, -1]);
 	const [systemMode, setSystemMode] = useState("");
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
+    const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -236,6 +239,21 @@ function App() {
 		});
 	}
 
+    function handleInstanceEventSelection(event, idx) {
+       
+        const selectedEvents = Object.keys(selectedInstanceEvents);
+
+        if (selectedEvents.includes(event)) {
+            let tmp = {...selectedInstanceEvents};
+            delete tmp[event];
+            setSelectedInstanceEvents(tmp)
+        } else if (selectedEvents.length < 2) {
+            let temp = {...selectedInstanceEvents};
+            temp[event] = idx;
+            setSelectedInstanceEvents(temp);
+        }
+    }
+
 	// load activities
 	useEffect(() => {
 		let activitiesPromise = retrieveActivities("http://localhost:8082/activity");
@@ -280,6 +298,10 @@ function App() {
 	const leftPaneWidth = 250;
 
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
+    let eventStats = [];
+    if (Object.keys(selectedInstanceEvents).length) {
+        eventStats = EventStat.getEventInstanceStat(activityInstances, Object.keys(selectedInstanceEvents));
+    }
 
 	return (
 		<div
@@ -333,6 +355,8 @@ function App() {
 					currentActivityIdx={currentActivtyIdx}
 					currentActInstanceIdx={currentActInstanceIdx}
 					merge={[true, true]}
+                    onInstanceEventSelection= {(ev, idx) => handleInstanceEventSelection(ev, idx)}
+                    selectedInstanceEvents={selectedInstanceEvents}
 				></ActivityInstanceVis>
 			</div>
 			<div id="activities-pane">
@@ -390,6 +414,7 @@ function App() {
 					selectedInstancesIdx={selectedInstancesIdx}
 					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
                     systemMode={systemMode}
+                    eventStats={eventStats}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">

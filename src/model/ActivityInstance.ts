@@ -201,6 +201,22 @@ class ActivityInstance {
 		return eventList;
 	}
 
+	getDuration(event: string) {
+		let durations = [];
+		for (const ev of this.events) {
+			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
+				durations.push(ev.endTime - ev.startTime);
+			}
+		}
+		const sum = durations.reduce((a, b) => a + b, 0);
+
+		return sum / durations.length || 0;
+	}
+
+	getEventNum(evq: string) {
+		return this.getEvent(evq).length;
+	}
+
 	isSatisfied(axioms: AxiomData[]) {
 		let numSatisfied = 0;
 		for (const ax of axioms) {
@@ -267,10 +283,14 @@ class ActivityInstance {
 	}
 
 	pascalCase2(str: string): string {
-		return str
-			.split("_")
-			.map((strPart) => strPart.charAt(0).toUpperCase() + strPart.slice(1))
-			.join("");
+		if (str) {
+			return str
+				.split("_")
+				.map((strPart) => strPart.charAt(0).toUpperCase() + strPart.slice(1))
+				.join("");
+		} else {
+			return "";
+		}
 	}
 }
 
