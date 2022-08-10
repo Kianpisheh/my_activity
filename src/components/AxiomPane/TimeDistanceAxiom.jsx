@@ -28,10 +28,9 @@ function TimeDistanceAxiom(props) {
 		props.unsatisfiedAxioms,
 		props.data,
 		props.onWhyNotWhatQuery,
-		props.activityInstances,
 		props.onWhyNotNumHover,
-        props.onQuestionMenu,
-        props.queryTrigger
+        props.queryTrigger,
+        props.qmenuPos
 	);
 
     let opacity = numnum ? 0.3 : 1;

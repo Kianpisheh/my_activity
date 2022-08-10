@@ -301,7 +301,7 @@ function App() {
 	// no instance is selected
 	if (
 		(selectedInstancesIdx["FN"] && selectedInstancesIdx["FN"].length === 0) ||
-		(selectedInstancesIdx["FP"] && selectedInstancesIdx["FP"] === 0)
+		(selectedInstancesIdx["FP"] && selectedInstancesIdx["FP"].length === 0)
 	) {
 		if (queryTrigger !== "") {
 			setQueryTrigger("");
@@ -310,6 +310,7 @@ function App() {
             setWhyHowToSuggestions([]);
             setWhyNotHowToSuggestions([]);
             setUnsatisfiedAxioms({});
+			setWhyQueryMode(false);
 		}
 	}
 
@@ -410,6 +411,7 @@ function App() {
 						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 						whyQueryMode={whyQueryMode}
                         queryTrigger={queryTrigger}
+                        qmenuPos={qmenuPos}
 					></ActivityAxiomPane>
 				)}
 			</div>

@@ -108,6 +108,7 @@ function ActivityAxiomPane(props) {
                             ruleitems={props.ruleitems}
                             onQuestionMenu={props.onQuestionMenu}
                             queryTrigger={props.queryTrigger}
+                            qmenuPos={props.qmenuPos}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
@@ -158,6 +159,7 @@ function ActivityAxiomPane(props) {
                                 onWhyHowToQuery={props.onWhyHowToQuery}
                                 onQuestionMenu={props.onQuestionMenu}
                                 queryTrigger={props.queryTrigger}
+                                qmenuPos={props.qmenuPos}
 							></Axiom>
 						))}
 					</div>{" "}

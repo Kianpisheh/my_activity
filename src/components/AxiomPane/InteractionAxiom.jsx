@@ -86,7 +86,11 @@ function InteractionAxiom(props) {
                     onClick={(ev) => { 
                         ev.stopPropagation();
                         let unsatisfiedAxiom = new AxiomData({type:AxiomTypes.TYPE_INTERACTION, th1:-1, th2:-1, events: [events[i]]})
-                        props.onWhyNotWhatQuery(ev.pageX, ev.pageY, unsatisfiedAxiom, QueryTrigger.WHY_NOT_WHAT);
+                        if (props.qmenuPos[0] > 0) {
+                            props.onWhyNotWhatQuery(-1,-1, unsatisfiedAxiom, QueryTrigger.WHY_NOT);
+                        } else {
+                            props.onWhyNotWhatQuery(ev.pageX, ev.pageY, unsatisfiedAxiom, QueryTrigger.WHY_NOT_WHAT);
+                        }
                         }
                     }>
 					    {numnum[events[i]] && CircleNum(numnum[events[i]].length)}
@@ -135,6 +139,7 @@ function InteractionAxiom(props) {
 					instances={props.activityInstances}
 					axiom={props.data}
                     selectedIdx={props.selectedInstancesIdx["FP"]}
+                    qmenuPos={props.qmenuPos}
 				></QMark>
 			)}
 				</div>
