@@ -4,6 +4,7 @@ import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ResultsPanel/utils";
+import QueryTrigger from "../../model/QueryTrigger";
 
 function WhyNotWhatExplanation(props) {
 	const { stats } = props;
@@ -22,7 +23,9 @@ function WhyNotWhatExplanation(props) {
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
 		axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
-	} else {
+	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
+        return axiomStatText = <InteractionAxiomWhyNotWhatText stats={stats} axiom={axiom}></InteractionAxiomWhyNotWhatText>;
+    } else {
 		return;
 	}
 
@@ -33,7 +36,7 @@ function WhyNotWhatExplanation(props) {
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
-					props.onWhyNotHowTo(ev.pageX, ev.pageY);
+					props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
 				}}
 			>
 				{CircleNum("?")}
@@ -133,11 +136,25 @@ export function TimeDistanceAxiomStat(props) {
 	);
 }
 
+export function InteractionAxiomWhyNotWhatText(props) {
+    const { axiom, numInstances } = props.stats;
+	const events = axiom.getEvents();
+    const samples = numInstances > 1 ? "samples" : "sample";
+	const doesDo = numInstances > 1 ? "do" : "does";
+
+    return <div className="text-explanation">
+        <span style={{ color: "#5F5656" }}>
+					The selected {samples} {doesDo} not include interactions with the{" "}
+		</span>
+		<span style={{ color: "var(--explanation" }}>{events[0]}</span>
+        <span style={{ color: "#5F5656" }}>.</span>
+    </div>
+}
+
 export function DurationAxiomStatText(props) {
 	const { stats } = props;
 	const { axiom, numInstances, minDuration1, maxDuration1 } = stats;
 	const events = axiom.getEvents();
-	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 	const multiple = minDuration1 !== maxDuration1 ? true : false;
 	const samples = numInstances > 1 ? "samples" : "sample";
 	const doesDo = numInstances > 1 ? "do" : "does";
@@ -151,7 +168,7 @@ export function DurationAxiomStatText(props) {
 				<span style={{ color: "#5F5656" }}>
 					The selected {samples} {doesDo} not include interactions with the{" "}
 				</span>
-				{isMissing1 && <Icon1 fill={"#3A2A0D"} style={{ width: 25, height: 25 }}></Icon1>}
+				{<span style={{ color: "var(--explanation"}}>{events[0]}</span>}
 				<span style={{ color: "#5F5656" }}>.</span>
 			</div>
 		);

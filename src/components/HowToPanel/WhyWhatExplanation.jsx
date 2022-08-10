@@ -1,9 +1,11 @@
 import AxiomTypes from "../../model/AxiomTypes";
+import QueryTrigger from "../../model/QueryTrigger";
 import { CircleNum } from "../ResultsPanel/utils";
 import { DurationAxiomStat, TimeDistanceAxiomStat } from "./WhyNotWhatExplanation";
 
 import { TimeDistanceAxiomStatText } from "./WhyNotWhatExplanation";
 import { DurationAxiomStatText } from "./WhyNotWhatExplanation";
+import {InteractionAxiomWhyWhatText} from "./WhyNotWhatExplanation"
 
 function WhyWhatExplanation(props) {
 
@@ -23,7 +25,9 @@ function WhyWhatExplanation(props) {
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
         axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
-	} else {
+	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
+        //return axiomStatText = <InteractionAxiomWhyWhatText></InteractionAxiomWhyWhatText>;
+    } else {
 		return;
 	}
 
@@ -34,7 +38,7 @@ function WhyWhatExplanation(props) {
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
-					props.onWhyHowTo(ev.pageX, ev.pageY);
+					props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
 				}}
 			>
 				{CircleNum("?")}

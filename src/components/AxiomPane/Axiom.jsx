@@ -7,6 +7,7 @@ import DurationAxiom from "./DurationAxiom";
 import InteractionORAxiom from "./InteractionORAxiom";
 
 import AxiomData from "../../model/AxiomData";
+import QueryTrigger from "../../model/QueryTrigger";
 
 import isEqual from "lodash.isequal";
 import { CircleNum, CircleQMark } from "../ResultsPanel/utils";
@@ -99,7 +100,7 @@ function Axiom(props) {
 
 export default Axiom;
 
-export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover, onQuestionMenu) {
+export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activityInstances, onWhyNotNumHover) {
 	let numnum = null;
 	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
 		const ax = AxiomData.axiomFromString(axiomString);
@@ -109,7 +110,7 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, activi
 					id="why-not-num-container"
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
-					onClick={(ev) => onWhyNotWhatQuery(ev.pageX, ev.pageY, ax)}
+					onClick={(ev) => onWhyNotWhatQuery(ev.pageX, ev.pageY, ax, QueryTrigger.WHY_NOT_WHAT)}
 				>
 					{CircleNum(selFNIds.length)}
 				</div>
@@ -137,7 +138,7 @@ export function QMark(props) {
 					// );
 					// onWhyHowToQuery(suggestions);
 				}
-				onWhyWhatQuery(ev.pageX, ev.pageY, axiom);
+				onWhyWhatQuery(ev.pageX, ev.pageY, axiom, QueryTrigger.WHY_WHAT);
 			}}
 		>
 			{CircleQMark()}

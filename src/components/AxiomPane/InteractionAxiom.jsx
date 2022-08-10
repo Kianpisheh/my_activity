@@ -7,8 +7,8 @@ import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 
-import WhyNotHowToQueryController from "../../Controllers/WhyNotHowToQueryController";
 import AxiomData from "../../model/AxiomData";
+import QueryTrigger from "../../model/QueryTrigger";
 import { QMark } from "./Axiom";
 
 function InteractionAxiom(props) {
@@ -29,13 +29,11 @@ function InteractionAxiom(props) {
 	}
 
 	// check if each interaction is an unsatisfied axiom based on the user query
-	let unsatisfiedAxiom = null;
     let numnum = {}; // event -> num
 	for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
 		const axType = axString.split(":")[0];
 		if (axType === AxiomTypes.TYPE_INTERACTION) {
 			const event = axString.split(":")[1];
-            unsatisfiedAxiom = new AxiomData({type:axType, th1:-1, th2:-1, events: [event]})
 			numnum[event] = indeces;
 		}
 	}
@@ -81,13 +79,18 @@ function InteractionAxiom(props) {
 						X
 					</button>
 				)}
-				<div
+				{numnum[events[i]] && <div
 					id="why-not-num-container"
 					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
 					onMouseLeave={() => props.onWhyNotNumHover([])}
-                    onClick={(ev) => { ev.stopPropagation(); props.onQuestionMenu(ev.pageX, ev.pageY, unsatisfiedAxiom);}}>
+                    onClick={(ev) => { 
+                        ev.stopPropagation();
+                        let unsatisfiedAxiom = new AxiomData({type:AxiomTypes.TYPE_INTERACTION, th1:-1, th2:-1, events: [events[i]]})
+                        props.onWhyNotWhatQuery(ev.pageX, ev.pageY, unsatisfiedAxiom, QueryTrigger.WHY_NOT_WHAT);
+                        }
+                    }>
 					    {numnum[events[i]] && CircleNum(numnum[events[i]].length)}
-				</div>
+				</div>}
 			</div>
 		);
 	}

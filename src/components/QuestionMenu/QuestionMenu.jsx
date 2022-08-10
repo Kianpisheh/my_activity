@@ -2,12 +2,12 @@ import "./QuestionMenu.css";
 
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
-import SystemMode from "../../model/SystemMode";
+import QueryTrigger from "../../model/QueryTrigger";
 
 function QuestionMenu(props) {
 
-    const {systemMode, selectedIdx, currentActivity} = props;
-    const Q = getQuestions(systemMode, {selectedIdx, currentActivity});
+    const {queryTrigger, selectedIdx, currentActivity} = props;
+    const Q = getQuestions(queryTrigger, {selectedIdx, currentActivity});
 
     return <div className="question-menu-container">
         <div className="question-list-container">
@@ -29,7 +29,7 @@ function QuestionMenu(props) {
 
 }
 
-function getQuestions(sysStatus, data) {
+function getQuestions(queryTrigger, data) {
     let questions = [];
 
     const selectedIdx = data?.["selectedIdx"];
@@ -44,30 +44,30 @@ function getQuestions(sysStatus, data) {
     const sample = multiple ? "samples" : "sample";
     const thisThese = multiple ? "these" : "this";
 
-    if (sysStatus === SystemMode.FN_SELECTED) {
+    if (queryTrigger === QueryTrigger.WHY_NOT) {
         const q1 = <span className="question-content">Why {isAre} the selected {sample} not recognized as {targetActivity}?</span>;
         const q2 = <span className="question-content">How to make the system to recognize {thisThese} {sample} as {targetActivity}?</span>;
         questions = [q1, q2];
 
-    } else if (sysStatus === SystemMode.FP_SELECTED) { 
+    } else if (queryTrigger === QueryTrigger.WHY) { 
         const q1 = <span className="question-content">Why {isAre} the selected {sample} recognized as {targetActivity}?</span>;
         const q2 = <span className="question-content">How to make the system to not recognize {thisThese} {sample} as {targetActivity}?</span>;
         questions = [q1, q2];
 
-    } else if (sysStatus === SystemMode.NOTHING) {
+    } else if (queryTrigger === "") {
         const targetActivity =  data["target_activity"];
-    } else if (sysStatus === SystemMode.WHY_NOT_ASKED) {
+    } else if (queryTrigger === QueryTrigger.WHY_NOT_WHAT) {
         const q1 = <span className="question-content">Why is this condition not satisfied for the {targetActivity} activity?</span>;
         const q2 = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
         questions = [q1, q2];
-    } else if (sysStatus === SystemMode.WHY_ASKED) {
+    } else if (queryTrigger === QueryTrigger.WHY_WHAT) {
         const q1 = <span className="question-content">Why is this condition satisfied for the {targetActivity} activity?</span>;
         const q2 = <span className="question-content">How to modify this condition so it is not satisfied for the {targetActivity} activity?</span>
         questions = [q1, q2];
-    } else if (sysStatus === SystemMode.WHY_NOT_WHAT_ASKED) {
+    } else if (queryTrigger === QueryTrigger.WHY_NOT_HOW_TO) {
         const q = <span className="question-content">How to modify this condition so it is satisfied for the {targetActivity} activity?</span>
         questions = [q];
-    } else if (sysStatus === SystemMode.WHY_WHAT_ASKED) {
+    } else if (queryTrigger === QueryTrigger.WHY_HOW_TO) {
         const q = <span className="question-content">How to make the system to not recognize {thisThese} {sample} as {targetActivity}?</span>;
         questions = [q];
     }
