@@ -52,6 +52,7 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
+                qmenuPos={props.qmenuPos}
 			></WhyNotWhatExplanation>
 		);
 	} else if (whyWhat) {
@@ -63,6 +64,7 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
+                qmenuPos={props.qmenuPos}
 			></WhyWhatExplanation>
 		);
 	}

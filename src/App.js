@@ -442,6 +442,7 @@ function App() {
 					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 					eventStats={eventStats}
 					queryTrigger={queryTrigger}
+                    qmenuPos={qmenuPos}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">

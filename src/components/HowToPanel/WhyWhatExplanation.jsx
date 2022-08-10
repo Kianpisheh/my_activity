@@ -38,7 +38,11 @@ function WhyWhatExplanation(props) {
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
-					props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
+                    if (props.qmenuPos[0] > 0) {
+					    props.onWhyHowTo(-1, -1, QueryTrigger.WHY_What);
+                    } else {
+					    props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
+                    }
 				}}
 			>
 				{CircleNum("?")}
