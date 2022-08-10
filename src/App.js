@@ -52,7 +52,6 @@ function App() {
 	const [newTPs, setNewTPs] = useState([]);
 	const [newFPs, setNewFPs] = useState([]);
 	const [queryMode, setQueryMode] = useState(false);
-	const [explanation, setExplanations] = useState(null);
 	const [whyNotWhat, setWhyNotWhat] = useState(null);
 	const [whyWhat, setWhyWhat] = useState(null);
 	const [selectedInstancesIdx, setSelectedInstancesIdx] = useState({});
@@ -191,11 +190,9 @@ function App() {
 			setCurrentActivityIdx(new_activities.length - 1);
 			updateDatabase(activityName, "remove");
 		}
-		setExplanations(null);
 	}
 
 	function handleActInstanceChange(id, instancess) {
-		setExplanations(null);
 		//classify the selected activity instance
 		let instances = [];
 		for (let i = 0; i < activityInstances.length; i++) {
@@ -242,7 +239,7 @@ function App() {
 			let tmp = { ...selectedInstanceEvents };
 			delete tmp[event];
 			setSelectedInstanceEvents(tmp);
-		} else if (selectedEvents.length < 2) {
+		} else {
 			let temp = { ...selectedInstanceEvents };
 			temp[event] = idx;
 			setSelectedInstanceEvents(temp);
@@ -371,7 +368,6 @@ function App() {
 					config={config}
 					activity={activityInstances[currentActInstanceIdx]}
 					predictedActivities={predictedActivities}
-					explanation={explanation}
 					onScaleChange={handleScaleChange}
 					currentActivityIdx={currentActivtyIdx}
 					currentActInstanceIdx={currentActInstanceIdx}
@@ -443,6 +439,8 @@ function App() {
 					eventStats={eventStats}
 					queryTrigger={queryTrigger}
                     qmenuPos={qmenuPos}
+                    unsatisfiedAxioms={unsatisfiedAxioms}
+                    whyQueryMode={whyQueryMode}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">

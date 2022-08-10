@@ -64,6 +64,7 @@ body,
 
 #how-to-panel {
 	border-top: 1px solid var(--borders);
+	height: 100%;
 }
 
 .classification-status-div {

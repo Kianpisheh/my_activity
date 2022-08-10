@@ -8,7 +8,7 @@ import WhyExplanation from "./WhyExplanation";
 import WhyNotExplanation from "./WhyNotExplanation";
 import EventStatExplanation from "./EventStatExplanation";
 
-import SystemMode from "../../model/SystemMode";
+import QueryTrigger from "../../model/QueryTrigger";
 
 function HowToPanel2(props) {
 	const {
@@ -16,30 +16,32 @@ function HowToPanel2(props) {
 		whyNotWhat,
 		whyNotHowTosuggestions,
 		whyHowTosuggestions,
-		systemMode,
 		selectedInstancesIdx,
 		instances,
-        activity
+        activity,
+        queryTrigger,
+        unsatisfiedAxioms,
+        whyQueryMode
 	} = props;
 
 	let whyExplanation = [];
-	if (systemMode === SystemMode.UNSATISFIED_AXIOM) {
+	if (Object.keys(unsatisfiedAxioms).length !== 0) {
 		const selectedInstances = instances.filter((instance, idx) =>
 			Object.values(selectedInstancesIdx)[0].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
-		whyExplanation.push(<WhyNotExplanation numInstances={numInstances} systemMode={systemMode} activity={activity}></WhyNotExplanation>);
-	} else if (systemMode === SystemMode.WHY_ASKED) {
+		whyExplanation.push(<WhyNotExplanation numInstances={numInstances} activity={activity}></WhyNotExplanation>);
+	} else if (queryTrigger === QueryTrigger.WHY && whyQueryMode) {
         const selectedInstances = instances.filter((instance, idx) =>
 			Object.values(selectedInstancesIdx)[0].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
-		whyExplanation.push(<WhyExplanation numInstances={numInstances} systemMode={systemMode} activity={activity}></WhyExplanation>);
+		whyExplanation.push(<WhyExplanation numInstances={numInstances} activity={activity}></WhyExplanation>);
     }
 
-    let x = 0;
+    let eventInstanceExplanation = null;
     if (props.eventStats && props.eventStats.length) {
-        x = <EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
+        eventInstanceExplanation = <EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
     }
 	let whatExplanation = [];
 
@@ -109,7 +111,7 @@ function HowToPanel2(props) {
 			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
 				<div className="why-explanation-container">{[...whyExplanation]}</div>
 			)}
-            {x !== 0 && x}
+            <div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);
 }

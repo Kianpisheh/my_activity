@@ -4,6 +4,7 @@
 	align-items: center;
 	padding-top: 15px;
 	height: 100%;
+	overflow: auto;
 }
 
 .axiom-explanations-container {
@@ -24,6 +25,15 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.event-instance-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	overflow: auto;
+	height: 100%;
 }
 
 #exp-divider {

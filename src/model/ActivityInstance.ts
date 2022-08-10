@@ -201,7 +201,7 @@ class ActivityInstance {
 		return eventList;
 	}
 
-	getDuration(event: string) {
+	getAvgDuration(event: string) {
 		let durations = [];
 		for (const ev of this.events) {
 			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
@@ -213,8 +213,63 @@ class ActivityInstance {
 		return sum / durations.length || 0;
 	}
 
-	getEventNum(evq: string) {
-		return this.getEvent(evq).length;
+	getDurationRange(event: string) {
+		let durations = [];
+		for (const ev of this.events) {
+			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
+				durations.push(ev.endTime - ev.startTime);
+			}
+		}
+
+		return [Math.min(...durations), Math.max(...durations)];
+	}
+
+	getAvgTimeDistance(events: string[]) {
+		const eventInstances1 = this.getEvent(events[0]);
+		const eventInstances2 = this.getEvent(events[1]);
+
+		let timeDistances = [];
+		for (const eventInstance1 of eventInstances1) {
+			for (const eventInstance2 of eventInstances2) {
+				const timeDistance = (eventInstance2.startTime = eventInstance1.endTime);
+				if (timeDistance > 0) {
+					timeDistances.push(timeDistance);
+				}
+			}
+		}
+
+		const timeDistanceSum = timeDistances.reduce((a, b) => a + b, 0);
+		return timeDistanceSum / timeDistances.length || 0;
+	}
+
+	getTimeDistanceRange(events: string[]) {
+		const eventInstances1 = this.getEvent(events[0]);
+		const eventInstances2 = this.getEvent(events[1]);
+
+		let timeDistances = [];
+		for (const eventInstance1 of eventInstances1) {
+			for (const eventInstance2 of eventInstances2) {
+				const timeDistance = eventInstance2.startTime - eventInstance1.endTime;
+				if (timeDistance > 0) {
+					timeDistances.push(timeDistance);
+				}
+			}
+		}
+
+		return [Math.min(...timeDistances), Math.max(...timeDistances)];
+	}
+
+	hasOccurred(evs: string[]) {
+		if (evs.length === 0) {
+			return false;
+		}
+		let coverage = 0;
+		for (const ev of evs) {
+			if (this.getEvent(ev).length) {
+				coverage += 1;
+			}
+		}
+		return coverage === evs.length;
 	}
 
 	isSatisfied(axioms: AxiomData[]) {

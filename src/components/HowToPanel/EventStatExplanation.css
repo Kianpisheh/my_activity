@@ -1,21 +1,35 @@
 .stats-container {
 	display: flex;
 	flex-direction: column;
+	width: 90%;
 	color: var(--list-item-text);
+	padding-top: 20px;
+	align-items: center;
+	row-gap: 15px;
+	height: 100%;
+	overflow: auto;
 }
 
 .single-stat-container {
 	display: flex;
 	flex-direction: column;
+	padding: 20px;
+	background-color: var(--light-beige);
+	width: 85%;
+	border-radius: 5px;
 }
 
-.stat-element {
-	font-size: 18px;
+.stat-exp-element-text {
+	font-size: 28px;
 	color: var(--explanation);
+}
+
+.stat-exp-reg-text {
+	font-size: 13px;
 }
 
 .stats {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	column-gap: 15px;
 }

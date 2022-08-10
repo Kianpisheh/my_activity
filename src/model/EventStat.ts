@@ -4,21 +4,22 @@ class EventStat {
 	instanceType: string;
 	instanceName: string;
 	events: string[];
-	numOccurrance1: number;
-	numOccurrance2: number;
-	avgDuration1: number;
-	avgDuration2: number;
-	avgTimeDistance: number;
+	hasEvents: boolean;
+	durationRange: number[];
+	timeDistanceRange: number[];
+	immediateTimeDistance: number;
 
 	constructor(activityInstance: ActivityInstance, events: string[]) {
 		this.instanceType = activityInstance.getType();
 		this.instanceName = activityInstance.getName();
 		this.events = events;
-		this.avgDuration1 = activityInstance.getDuration(events[0]);
-		this.avgDuration2 = activityInstance.getDuration(events[1]);
-		this.numOccurrance1 = activityInstance.getEventNum(events[0]);
-		this.numOccurrance2 = activityInstance.getEventNum(events[1]);
-		this.avgTimeDistance = 0;
+		this.hasEvents = activityInstance.hasOccurred(this.events);
+		if (this.hasEvents && events.length === 1) {
+			this.durationRange = activityInstance.getDurationRange(this.events[0]);
+		}
+		if (this.hasEvents && events.length === 2) {
+			this.timeDistanceRange = activityInstance.getTimeDistanceRange(this.events);
+		}
 	}
 
 	static getEventInstanceStat(activityInstances: ActivityInstance[], events: string[]) {
@@ -30,70 +31,58 @@ class EventStat {
 		return stats;
 	}
 
-	static getAvgDuration(stats: EventStat[], activity: string) {
-		let avgDurations1 = [];
-		let avgDurations2 = [];
+	static getStatsTimeDistanceRange(stats: EventStat[], activity: string) {
+		let minTimeDistances = [];
+		let maxTimeDistances = [];
 		for (const stat of stats) {
-			if (activity && stat.instanceType !== activity) {
-				continue;
-			}
-			if (stat.avgDuration1 !== 0) {
-				avgDurations1.push(stat.avgDuration1);
-			}
-		}
-		for (const stat of stats) {
-			if (activity && stat.instanceType !== activity) {
-				continue;
-			}
-			if (stat.avgDuration2 !== 0) {
-				avgDurations2.push(stat.avgDuration2);
+			if (stat.instanceType === activity) {
+				if (stat.timeDistanceRange && stat.timeDistanceRange[0]) {
+					minTimeDistances.push(stat.timeDistanceRange[0]);
+				}
+				if (stat.timeDistanceRange && stat.timeDistanceRange[1]) {
+					maxTimeDistances.push(stat.timeDistanceRange[1]);
+				}
 			}
 		}
 
-		let totalAvgDuration1 = avgDurations1.reduce((a, b) => a + b, 0);
-		totalAvgDuration1 = totalAvgDuration1 / avgDurations1.length || 0;
-		let totalAvgDuration2 = avgDurations2.reduce((a, b) => a + b, 0);
-		totalAvgDuration2 = totalAvgDuration2 / avgDurations2.length || 0;
+		if (minTimeDistances.length === 0 && maxTimeDistances.length === 0) {
+			return [];
+		}
+		return [Math.min(...minTimeDistances), Math.max(...maxTimeDistances)];
+	}
 
-		return [totalAvgDuration1, totalAvgDuration2];
+	static getStatsDurationRange(stats: EventStat[], activity: string) {
+		let minDurationRanges = [];
+		let maxDurationRanges = [];
+		for (const stat of stats) {
+			if (stat.instanceType === activity) {
+				if (stat.durationRange && stat.durationRange[0]) {
+					minDurationRanges.push(stat.durationRange[0]);
+				}
+				if (stat.durationRange && stat.durationRange?.[1]) {
+					maxDurationRanges.push(stat.durationRange[1]);
+				}
+			}
+		}
+
+		if (minDurationRanges.length === 0 && maxDurationRanges.length === 0) {
+			return [];
+		}
+		return [Math.min(...minDurationRanges), Math.max(...maxDurationRanges)];
 	}
 
 	static getCoverageNums(stats: EventStat[], activity: string) {
-		let coverage = [0, 0];
+		let coverage = 0;
 		for (const stat of stats) {
 			if (activity && stat.instanceType !== activity) {
 				continue;
 			}
-			if (stat.numOccurrance1 !== 0) {
-				coverage[0] += 1;
-			}
-			if (stat.numOccurrance2 !== 0) {
-				coverage[1] += 1;
+			if (stat.hasEvents) {
+				coverage += 1;
 			}
 		}
 
 		return coverage;
-	}
-
-	static getAvgNumOccurrances(stats: EventStat[], activity: string) {
-		let avgNum = [0, 0];
-		let num1 = 0;
-		let num2 = 0;
-		for (const stat of stats) {
-			if (activity && stat.instanceType !== activity) {
-				continue;
-			}
-			if (stat.numOccurrance1 !== 0) {
-				avgNum[0] += stat.numOccurrance1;
-				num1 += 1;
-			}
-			if (stat.numOccurrance2 !== 0) {
-				avgNum[1] += stat.numOccurrance2;
-				num2 += 1;
-			}
-		}
-
-		return [avgNum[0] / num1 || 0, avgNum[1] / num2 || 0];
 	}
 }
 
