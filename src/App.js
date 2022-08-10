@@ -33,11 +33,10 @@ import WhyWhatQueryController from "./Controllers/WhyWhatQueryController";
 import WhyHowToQueryController from "./Controllers/WhyHowToQueryController";
 import ResultsPanel from "./components/ResultsPanel/ResultsPanel";
 
-import EventStat from "./model/EventStat"
+import EventStat from "./model/EventStat";
 
 import handleInstanceSelection from "./components/ResultsPanel/handler";
 import QueryTrigger from "./model/QueryTrigger";
-
 
 function App() {
 	const [activities, setActivities] = useState([]);
@@ -61,8 +60,8 @@ function App() {
 	const [whyQueryMode, setWhyQueryMode] = useState(false);
 	const [qmenuPos, setQmenuPos] = useState([-1, -1]);
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
-    const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
-    const [queryTrigger, setQueryTrigger] = useState("");
+	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
+	const [queryTrigger, setQueryTrigger] = useState("");
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -107,24 +106,26 @@ function App() {
 				classificationRes
 			);
 			setUnsatisfiedAxioms(unsatisfiedAxioms);
-            setQmenuPos([-1, -1])
+			setQmenuPos([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY) {
 			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
 			setWhyQueryMode(qMode);
-            setQmenuPos([-1, -1])
+			setQmenuPos([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_NOT_WHAT) {
-            const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx))
+			const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx));
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, FNInstances);
 			setWhyNotWhat(whatExp);
 			setWhyWhat(null);
-            setQmenuPos([-1, -1]);
+			setQmenuPos([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_WHAT) {
-            const FPInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx?.["FP"]?.includes(idx));
-            const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(queriedAxiom, FPInstances);
-            setWhyWhat(whyWhatExp);
-            setWhyNotWhat(null);
-            setQmenuPos([-1, -1]);
-        } else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
+			const FPInstances = activityInstances.filter((instance, idx) =>
+				selectedInstancesIdx?.["FP"]?.includes(idx)
+			);
+			const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(queriedAxiom, FPInstances);
+			setWhyWhat(whyWhatExp);
+			setWhyNotWhat(null);
+			setQmenuPos([-1, -1]);
+		} else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
 				currentActivity,
@@ -132,22 +133,22 @@ function App() {
 				activityInstances,
 				selectedInstancesIdx["FN"]
 			);
-            setWhyNotHowToSuggestions(whyNotHowToSuggestions);
+			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
-            setQmenuPos([-1, -1]);
+			setQmenuPos([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_HOW_TO) {
-            const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
-						queriedAxiom,
-						currentActivity,
-						classificationRes,
-						activityInstances,
-						selectedInstancesIdx["FP"],
-						ruleitems
+			const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
+				queriedAxiom,
+				currentActivity,
+				classificationRes,
+				activityInstances,
+				selectedInstancesIdx["FP"],
+				ruleitems
 			);
-            setWhyHowToSuggestions(whyHowToSuggestions);
+			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
-            setQmenuPos([-1, -1]);
-        }
+			setQmenuPos([-1, -1]);
+		}
 	}
 
 	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
@@ -234,20 +235,19 @@ function App() {
 		});
 	}
 
-    function handleInstanceEventSelection(event, idx) {
-       
-        const selectedEvents = Object.keys(selectedInstanceEvents);
+	function handleInstanceEventSelection(event, idx) {
+		const selectedEvents = Object.keys(selectedInstanceEvents);
 
-        if (selectedEvents.includes(event)) {
-            let tmp = {...selectedInstanceEvents};
-            delete tmp[event];
-            setSelectedInstanceEvents(tmp)
-        } else if (selectedEvents.length < 2) {
-            let temp = {...selectedInstanceEvents};
-            temp[event] = idx;
-            setSelectedInstanceEvents(temp);
-        }
-    }
+		if (selectedEvents.includes(event)) {
+			let tmp = { ...selectedInstanceEvents };
+			delete tmp[event];
+			setSelectedInstanceEvents(tmp);
+		} else if (selectedEvents.length < 2) {
+			let temp = { ...selectedInstanceEvents };
+			temp[event] = idx;
+			setSelectedInstanceEvents(temp);
+		}
+	}
 
 	// load activities
 	useEffect(() => {
@@ -293,10 +293,25 @@ function App() {
 	const leftPaneWidth = 250;
 
 	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
-    let eventStats = [];
-    if (Object.keys(selectedInstanceEvents).length) {
-        eventStats = EventStat.getEventInstanceStat(activityInstances, Object.keys(selectedInstanceEvents));
-    }
+	let eventStats = [];
+	if (Object.keys(selectedInstanceEvents).length) {
+		eventStats = EventStat.getEventInstanceStat(activityInstances, Object.keys(selectedInstanceEvents));
+	}
+
+	// no instance is selected
+	if (
+		(selectedInstancesIdx["FN"] && selectedInstancesIdx["FN"].length === 0) ||
+		(selectedInstancesIdx["FP"] && selectedInstancesIdx["FP"] === 0)
+	) {
+		if (queryTrigger !== "") {
+			setQueryTrigger("");
+            setWhyWhat(null);
+            setWhyNotWhat(null);
+            setWhyHowToSuggestions([]);
+            setWhyNotHowToSuggestions([]);
+            setUnsatisfiedAxioms({});
+		}
+	}
 
 	return (
 		<div
@@ -304,39 +319,40 @@ function App() {
 			onContextMenu={(ev) => {
 				ev.preventDefault();
 				if (qmenuPos[0] < 0) {
-                    let queryTrigger = "";
-                    if (selectedInstancesIdx["FN"] && (selectedInstancesIdx["FN"].length > 0)) {
-                        queryTrigger = QueryTrigger.WHY_NOT;
-                        setQmenuPos([ev.pageX - 300, ev.pageY]);
-                        setQueryTrigger(queryTrigger);
-                    } else if (selectedInstancesIdx["FP"] && (selectedInstancesIdx["FP"].length > 0)) {
-                        queryTrigger = QueryTrigger.WHY;
-                        setQmenuPos([ev.pageX - 300, ev.pageY]);
-                        setQueryTrigger(queryTrigger); 
-                    }
+					let queryTrigger = "";
+					if (selectedInstancesIdx["FN"] && selectedInstancesIdx["FN"].length > 0) {
+						queryTrigger = QueryTrigger.WHY_NOT;
+						setQmenuPos([ev.pageX - 300, ev.pageY]);
+						setQueryTrigger(queryTrigger);
+					} else if (selectedInstancesIdx["FP"] && selectedInstancesIdx["FP"].length > 0) {
+						queryTrigger = QueryTrigger.WHY;
+						setQmenuPos([ev.pageX - 300, ev.pageY]);
+						setQueryTrigger(queryTrigger);
+					}
 				}
 			}}
 			onClick={(ev) => {
-                if (ev.ctrlKey) {
-                    setWhyNotHowToSuggestions([]);
-                    setWhyHowToSuggestions([]);
-                    setQueryMode(false);
-                    setQmenuPos([-1, -1]);
-                    setWhyNotWhat(null);
-                    setQueryTrigger("");
-                    setWhyWhat(null);
-                    setWhyQueryMode(false);
-                    setSelectedInstancesIdx({})
-                }
-            }}     
-		    >
+				if (ev.ctrlKey) {
+					setWhyNotHowToSuggestions([]);
+					setWhyHowToSuggestions([]);
+					setQueryMode(false);
+					setQmenuPos([-1, -1]);
+					setWhyNotWhat(null);
+					setQueryTrigger("");
+					setWhyWhat(null);
+					setWhyQueryMode(false);
+					setSelectedInstancesIdx({});
+                    setUnsatisfiedAxioms({});
+				}
+			}}
+		>
 			{qmenuPos?.[0] > 0 && (
 				<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
 					<QuestionMenu
 						selectedIdx={selectedInstancesIdx}
 						currentActivity={currentActivity}
 						onQuery={handleQuery}
-                        queryTrigger={queryTrigger}
+						queryTrigger={queryTrigger}
 					></QuestionMenu>
 				</div>
 			)}
@@ -359,8 +375,8 @@ function App() {
 					currentActivityIdx={currentActivtyIdx}
 					currentActInstanceIdx={currentActInstanceIdx}
 					merge={[true, true]}
-                    onInstanceEventSelection= {(ev, idx) => handleInstanceEventSelection(ev, idx)}
-                    selectedInstanceEvents={selectedInstanceEvents}
+					onInstanceEventSelection={(ev, idx) => handleInstanceEventSelection(ev, idx)}
+					selectedInstanceEvents={selectedInstanceEvents}
 				></ActivityInstanceVis>
 			</div>
 			<div id="activities-pane">
@@ -381,18 +397,19 @@ function App() {
 						onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
 							setQueriedAxiom(ax);
 							setQmenuPos([x, y]);
-                            setQueryTrigger(queryTrigger);
+							setQueryTrigger(queryTrigger);
 						}}
-                        onWhyWhatQuery={(x, y, ax, queryTrigger) => {
+						onWhyWhatQuery={(x, y, ax, queryTrigger) => {
 							setQueriedAxiom(ax);
 							setQmenuPos([x, y]);
-                            setQueryTrigger(queryTrigger);
+							setQueryTrigger(queryTrigger);
 						}}
 						activityInstances={activityInstances}
 						selectedInstancesIdx={selectedInstancesIdx}
 						classificationResult={classificationRes}
 						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 						whyQueryMode={whyQueryMode}
+                        queryTrigger={queryTrigger}
 					></ActivityAxiomPane>
 				)}
 			</div>
@@ -409,24 +426,24 @@ function App() {
 					whyNotWhat={whyNotWhat}
 					whyWhat={whyWhat}
 					onWhyNotHowTo={(x, y, queryTrigger) => {
-                        setQmenuPos([x, y]);
-                        setQueryTrigger(queryTrigger);
+						setQmenuPos([x, y]);
+						setQueryTrigger(queryTrigger);
 					}}
 					onWhyHowTo={(x, y, queryTrigger) => {
-                        setQmenuPos([x, y]);
-                        setQueryTrigger(queryTrigger);
+						setQmenuPos([x, y]);
+						setQueryTrigger(queryTrigger);
 					}}
 					classificationResult={classificationRes}
 					activity={currentActivity}
 					instances={activityInstances}
 					selectedInstancesIdx={selectedInstancesIdx}
 					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
-                    eventStats={eventStats}
-                    queryTrigger={queryTrigger}
+					eventStats={eventStats}
+					queryTrigger={queryTrigger}
 				></HowToPanel2>
 			</div>
 			<div id="explanations">
-                <ResultsPanel
+				<ResultsPanel
 					parentWidth={leftPaneWidth}
 					onInstanceClick={handleInstanceClick}
 					classificationResult={classificationRes}

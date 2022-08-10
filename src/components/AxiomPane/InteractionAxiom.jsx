@@ -79,7 +79,7 @@ function InteractionAxiom(props) {
 						X
 					</button>
 				)}
-				{numnum[events[i]] && <div
+				{numnum[events[i]] && (props.queryTrigger !== "") && <div
 					id="why-not-num-container"
 					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
 					onMouseLeave={() => props.onWhyNotNumHover([])}
@@ -125,7 +125,7 @@ function InteractionAxiom(props) {
 						</button>
 					)}
                     {props.whyQueryMode && (
-				<QMark
+				(props.queryTrigger !== "") && <QMark
                     ruleitems={props.ruleitems}
                     activity={props.activity}
                     classificationResult={props.classificationResult}

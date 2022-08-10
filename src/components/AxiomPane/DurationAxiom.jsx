@@ -24,7 +24,8 @@ function DurationAxiom(props) {
 		props.onWhyNotWhatQuery,
 		props.activityInstances,
 		props.onWhyNotNumHover,
-        props.onQuestionMenu
+        props.onQuestionMenu,
+        props.queryTrigger
 	);
 
     let opacity = numnum ? 0.3 : 1;
@@ -80,8 +81,8 @@ function DurationAxiom(props) {
                 </button>
                 )}
 			</div>
-            {!props.whyQueryMode && numnum}
-            {props.whyQueryMode && (
+            {!props.whyQueryMode && (props.queryTrigger !== "") && numnum}
+            {props.whyQueryMode && (props.queryTrigger !== "") && (
 				<QMark
 					onWhyWhatQuery={props.onWhyWhatQuery}
 					instances={props.activityInstances}
