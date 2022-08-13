@@ -310,6 +310,7 @@ class ActivityInstance {
 					}
 				}
 			}
+
 			// duration axiom
 			if (axType === AxiomTypes.TYPE_DURATION) {
 				if (this.hasEvent(event1)) {

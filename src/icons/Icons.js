@@ -65,6 +65,21 @@ import SvgWhyHowTo from "./WhyHowTo";
 import SvgWhyNotHowTo from "./WhyNotHowTo";
 import SvgWhyWhat from "./WhyWhat";
 import SvgWhyNotWhat from "./WhyNotWhat";
+import SvgWatercan from "./Watercan";
+import SvgTVShelf from "./TVShelf";
+import SvgCloset from "./Closet";
+import SvgKitchenCloset from "./KitchenCloset";
+import SvgTable from "./Table";
+import SvgCheese from "./Cheese";
+import SvgDishwasher from "./Dishwasher";
+import SvgMilk from "./Milk";
+import SvgChair from "./Chair";
+import SvgBread from "./Bread";
+import SvgSalami from "./Salami";
+import SvgSugar from "./Sugar";
+import SvgDrawerTop from "./DrawerTop"
+import SvgDrawerMiddle from "./DrawerMiddle"
+import SvgDrawerLower from "./DrawerLower"
 
 class Icons {
 	static icons = {
@@ -146,6 +161,22 @@ class Icons {
         WhyNotWhat: SvgWhyNotWhat,
         WhyHowTo: SvgWhyHowTo,
         WhyNotHowTo: SvgWhyNotHowTo,
+        Watercan: SvgWatercan,
+        TVShelf: SvgTVShelf,
+        Closet: SvgCloset,
+        KitchenCloset: SvgKitchenCloset,
+        Table: SvgTable,
+        TapHot: SvgTap,
+        Cheese: SvgCheese,
+        Chair: SvgChair,
+        Salami: SvgSalami,
+        Dishwasher: SvgDishwasher,
+        Sugar: SvgSugar,
+        Milk: SvgMilk,
+        Bread: SvgBread,
+        DrawerLower: SvgDrawerLower,
+        DrawerTop: SvgDrawerTop,
+        DrawerMiddle: SvgDrawerMiddle,
 	};
 
 	static colors = {
@@ -173,7 +204,6 @@ class Icons {
 		SaladBow: "#FF00FF",
 		Container: "##3CB371",
 		Door: "#DB7093",
-		Drawer: "#9ACD32",
 		FruitJuice: "#008080",
 		Glass: "#556B2F",
 		Bottle: "#BDB76B",
@@ -216,7 +246,23 @@ class Icons {
 		TimeDistance2: "#1391D8",
 		TimeDistance3: "#1391D8",
 		Trashcan: "#1391D8",
-
+        Watercan: "#36AA56",
+        TVShelf: "#433C29",
+        Closet: "#17473C",
+        KitchenCloset: "#000000",
+        Table: "#D64B00",
+        TapHot: "#F01010",
+        Dishwasher: "#22A4D8",
+        Salami: "#C62F0D",
+        Cheese: "#E4DB15",
+        Milk: "#25D4E8",
+        Chair: "#A7531C",
+        Sugar: "#B68EDF",
+        Bread: "#B9845B",
+        Drawer: "#CD862A",
+        DrawerLower: "#5B2E0B",
+        DrawerTop: "#5B2E0B",
+        DrawerMiddle: "#5B2E0B",
 	};
 
 	static getIcons() {
