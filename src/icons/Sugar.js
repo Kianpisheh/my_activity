@@ -3,8 +3,7 @@ import * as React from "react";
 const SvgSugar = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={370.952}
-    height={370.952}
+    viewBox="0 0 370.952 370.952"
     style={{
       enableBackground: "new 0 0 370.952 370.952",
     }}

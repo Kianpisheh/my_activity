@@ -80,6 +80,7 @@ import SvgSugar from "./Sugar";
 import SvgDrawerTop from "./DrawerTop"
 import SvgDrawerMiddle from "./DrawerMiddle"
 import SvgDrawerLower from "./DrawerLower"
+import SvgDoor from "./Door";
 
 class Icons {
 	static icons = {
@@ -177,6 +178,8 @@ class Icons {
         DrawerLower: SvgDrawerLower,
         DrawerTop: SvgDrawerTop,
         DrawerMiddle: SvgDrawerMiddle,
+        Door1: SvgDoor,
+        Door2: SvgDoor
 	};
 
 	static colors = {
@@ -263,6 +266,8 @@ class Icons {
         DrawerLower: "#5B2E0B",
         DrawerTop: "#5B2E0B",
         DrawerMiddle: "#5B2E0B",
+        Door1: "#949493",
+        Door2: "#686868"
 	};
 
 	static getIcons() {

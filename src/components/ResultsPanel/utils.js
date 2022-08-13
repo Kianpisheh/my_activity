@@ -1,6 +1,5 @@
 function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx) {
 	let color = "#CE3131";
-    let fpColor = "#CE3131";
 	let opacity = 1;
 	let res = [];
 	if (type === "TPFN") {
@@ -10,6 +9,8 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 	}
 
 	return (
+        <div>
+        <span style={{fontSize: 13, color: "var(--list-item-text)"}}>{data["activityName"]}</span>
 		<div className="results-rects-container">
 			{res.map((r, idx) => {
 				let resType = "FP";
@@ -97,6 +98,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 				);
 			})}
 		</div>
+        </div>
 	);
 }
 
@@ -161,52 +163,3 @@ export function subtractIntervals(ts1, te1, ts2, te2) {
 
 export { createResRects, triangle, CircleNum };
 
-// // FP status
-// let allRectsList = [targetActivityRects];
-// let allSvgHeightFP = [svgHeight];
-
-// let targetChangeSvg = (
-//     <svg
-//         className="change-svg"
-//         key={"change_t"}
-//         width={svgChangeWidth}
-//         height={allSvgHeightFP[0]}
-//     >
-//         <text x="-1" y="35" fontSize={12}>
-//             {targetChange}
-//         </text>
-//         {triangle(targetChangeColor, rotation)}
-//     </svg>
-// );
-// let allFPChangeList = [targetChangeSvg];
-// let kk = 0;
-// for (const [activity, fpCng] of Object.entries(fpChange)) {
-//     let changeSvg = (
-//         <svg
-//             className="change-svg"
-//             key={"change_" + kk}
-//             width={svgChangeWidth}
-//             height={allSvgHeightFP[kk + 1]}
-//         >
-//             <text x="2" y="37" fontSize={12}>
-//                 {fpCng}
-//             </text>
-//             {triangle(
-//                 fpCng > 0 ? "#CE3131" : "#4D8E7F",
-//                 fpCng > 0 ? "rotate(0, 6, 6)" : "rotate(180, 6, 6)"
-//             )}
-//         </svg>
-//     );
-//     allFPChangeList.push(changeSvg);
-//     kk += 1;
-// }
-
-// // create the target activity change
-// let targetChangeColor = "#CE3131";
-// let rotation = "rotate(180, 6, 6)";
-// if (targetChange > 0) {
-//     targetChangeColor = "#4D8E7F";
-//     rotation = "rotate(0, 6, 6)";
-// } else if (targetChange === 0) {
-//     targetChangeColor = "#f9f7f1";
-// }

@@ -265,48 +265,54 @@ export function findTimeOverlap(startTimes: number[], endTimes: number[], timest
 export function getClassificationResult(
 	activityInstances: ActivityInstance[],
 	predictedActivities: string[][],
-	currentActivity: Activity
+	activities: Activity[]
 ) {
-	if (!predictedActivities.length || !currentActivity) {
-		return {};
-	}
+	let results: { [act: string]: any } = {};
+	for (const activity of activities) {
+		if (!predictedActivities.length || !activity) {
+			return {};
+		}
 
-	let FP: number[] = [];
-	let FN: number[] = [];
-	let TP: number[] = [];
-	let TN: number[] = [];
-	let N: number = 0;
+		let FP: number[] = [];
+		let FN: number[] = [];
+		let TP: number[] = [];
+		let TN: number[] = [];
+		let N: number = 0;
 
-	let At = currentActivity.getName();
-	for (let i = 0; i < activityInstances.length; i++) {
-		let Ai = activityInstances[i].getType();
-		let Ap = predictedActivities[i]?.[0];
+		let At = activity.getName();
+		for (let i = 0; i < activityInstances.length; i++) {
+			let Ai = activityInstances[i].getType();
+			let Ap = predictedActivities[i]?.[0];
 
-		if (Ai === At) {
-			N += 1;
-			if (Ap === Ai) {
-				TP.push(i);
+			if (Ai === At) {
+				N += 1;
+				if (Ap === Ai) {
+					TP.push(i);
+				} else {
+					FN.push(i);
+				}
 			} else {
-				FN.push(i);
-			}
-		} else {
-			if (Ap === At) {
-				FP.push(i);
-			} else {
-				TN.push(i);
+				if (Ap === At) {
+					FP.push(i);
+				} else {
+					TN.push(i);
+				}
 			}
 		}
+
+		let allFPs: { [idx: string]: number[] } = {}; // {drinking: [1, 4, 6]}
+		allFPs["all"] = [...FP];
+		for (let i = 0; i < FP.length; i++) {
+			let idx: number = FP[i];
+			if (activityInstances[idx].getType() in allFPs) {
+				allFPs[activityInstances[idx].getType()].push(idx);
+			} else {
+				allFPs[activityInstances[idx].getType()] = [idx];
+			}
+		}
+
+		results[activity.getName()] = { TP: TP, FN: FN, TN: TN, N: N, FP: allFPs };
 	}
 
-	let allFPs: { [idx: string]: number[] } = {}; // {drinking: [1, 4, 6]}
-	allFPs["all"] = [...FP];
-	for (let i = 0; i < FP.length; i++) {
-		let idx: number = FP[i];
-		if (activityInstances[idx].getType() in allFPs) {
-			allFPs[activityInstances[idx].getType()].push(idx);
-		} else {
-			allFPs[activityInstances[idx].getType()] = [idx];
-		}
-	}
-	return { TP: TP, FN: FN, TN: TN, N: N, FP: allFPs };
+	return results;
 }

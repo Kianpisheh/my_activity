@@ -192,16 +192,38 @@ function App() {
 		}
 	}
 
-	function handleActInstanceChange(id, instancess) {
+	function handleActInstanceChange(id) {
 		//classify the selected activity instance
 		let instances = [];
 		for (let i = 0; i < activityInstances.length; i++) {
 			instances.push(activityInstances[i].getName());
 		}
-		classifyInstance(instances).then((data) => {
-			setPredictedActivities(data.data);
-			setCurrentActInstanceIdx(id);
-		});
+
+        let pred_acts = [];
+        for (const instance of activityInstances) {
+            let classified = false;
+            for (const act of activities) {
+                if (instance.isSatisfied(act.getAxioms())) {
+                    if (!classified) {
+                        pred_acts.push([act.getName()]);
+                    } else {
+                        pred_acts[pred_acts.length-1] = pred_acts[pred_acts.length-1].concat([act.getName()])
+                    }
+                    classified = true;
+                }
+            }
+            if (!classified) {
+                pred_acts.push(["Unknown"]);
+            }
+        }
+
+        setPredictedActivities(pred_acts);
+        setCurrentActInstanceIdx(id);
+
+		// classifyInstance(instances).then((data) => {
+		// 	setPredictedActivities(data.data);
+		// 	setCurrentActInstanceIdx(id);
+		// });
 	}
 
 	function handleScaleChange(action, graphIdx) {
@@ -289,7 +311,7 @@ function App() {
 
 	const leftPaneWidth = 250;
 
-	let classificationRes = getClassificationResult(activityInstances, predictedActivities, currentActivity);
+	let classificationRes = getClassificationResult(activityInstances, predictedActivities, activities);
 	let eventStats = [];
 	if (Object.keys(selectedInstanceEvents).length) {
 		eventStats = EventStat.getEventInstanceStat(activityInstances, Object.keys(selectedInstanceEvents));
@@ -403,7 +425,7 @@ function App() {
 						}}
 						activityInstances={activityInstances}
 						selectedInstancesIdx={selectedInstancesIdx}
-						classificationResult={classificationRes}
+						classificationResult={classificationRes[currentActivity?.getName()]}
 						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 						whyQueryMode={whyQueryMode}
                         queryTrigger={queryTrigger}
@@ -431,7 +453,7 @@ function App() {
 						setQmenuPos([x, y]);
 						setQueryTrigger(queryTrigger);
 					}}
-					classificationResult={classificationRes}
+					classificationResult={classificationRes[currentActivity?.getName() ?? {}]}
 					activity={currentActivity}
 					instances={activityInstances}
 					selectedInstancesIdx={selectedInstancesIdx}
