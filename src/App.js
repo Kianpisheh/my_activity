@@ -270,7 +270,7 @@ function App() {
 
 	// load activities
 	useEffect(() => {
-		let activitiesPromise = retrieveActivities("http://localhost:8082/activity");
+		let activitiesPromise = retrieveActivities("http://localhost:8080/activity");
 		handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;

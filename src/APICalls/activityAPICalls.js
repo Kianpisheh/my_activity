@@ -10,7 +10,7 @@ export async function retrieveActivities(url) {
 }
 
 export async function retrieveInstances() {
-    const url = "http://localhost:8082/instance/instances";
+    const url = "http://localhost:8080/instance/instances";
     return axios.get(url, {
         headers: {
             Accept: "application/json",
@@ -20,21 +20,21 @@ export async function retrieveInstances() {
 }
 
 export async function explain(activityInstance, targetActivity, queryType) {
-    const url = "http://localhost:8082/explainer/explain";
+    const url = "http://localhost:8080/explainer/explain";
     return axios.post(url, { "instance": activityInstance, "activity": targetActivity, "type": queryType })
 }
 
 export async function updateDatabase(activity, task) {
-    const url = "http://localhost:8082/activity/" + task;
+    const url = "http://localhost:8080/activity/" + task;
     return axios.post(url, activity);
 }
 
 export async function classifyInstance(activityInstance) {
-    const url = "http://localhost:8082/instance/classify";
+    const url = "http://localhost:8080/instance/classify";
     return axios.post(url, activityInstance);
 }
 
 export async function getRuleitems() {
-    const url = "http://localhost:8082/ruleitems/get_ruleitems";
+    const url = "http://localhost:8080/ruleitems/get_ruleitems";
     return axios.get(url);
 }

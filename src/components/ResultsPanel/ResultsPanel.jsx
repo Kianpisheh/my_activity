@@ -9,7 +9,7 @@ function ResultsPanel(props) {
 		return;
 	}
 
-    let allClassesResults = []
+	let allClassesResults = [];
 	for (const [activity, classificationResult] of Object.entries(props.classificationResult)) {
 		const { FP, FN, TP, N, TN } = classificationResult;
 
@@ -18,7 +18,7 @@ function ResultsPanel(props) {
 		}
 
 		let results = [];
-		const rectSize = 17;
+		const rectSize = 15;
 		results.push(
 			createResRects(
 				{
@@ -57,10 +57,9 @@ function ResultsPanel(props) {
 						highlightedInstancesIdx
 					)
 				);
-                
 			}
 		}
-        allClassesResults[activity] = results;
+		allClassesResults[activity] = results;
 	}
 
 	return (
@@ -70,11 +69,16 @@ function ResultsPanel(props) {
 					Recognition result
 				</span>
 			</div>
-            {Object.keys(allClassesResults).map(activity => {
-            return <div key={"res_div2"} className="result-act-all-classes">
-                {[...allClassesResults[activity]]}
-            </div>
-            })}
+			{Object.keys(allClassesResults).map((activity, idx) => {
+				return (
+					<div className="class-results-container">
+						<span style={{paddingLeft: 15, fontSize: 14, paddingBottom: 10, color: "var(--list-item-text)"}}>{activity}</span>
+						<div key={"res_div2_" + idx} className="result-act-all-classes">
+							{[...allClassesResults[activity]]}
+						</div>
+					</div>
+				);
+			})}
 			<div id="result-legends-container">
 				<div>
 					<svg height={18} width={210}>
