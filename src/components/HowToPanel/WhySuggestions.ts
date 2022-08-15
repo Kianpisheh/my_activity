@@ -76,7 +76,6 @@ export function getAxiomStats(instances: ActivityInstance[], axiom: AxiomData) {
 		i += 1;
 	}
 	stats = axiomStat;
-
 	return stats;
 }
 
@@ -88,7 +87,7 @@ function getFP0TimeContractionSuggestion(
 	classificationResult: { [resType: string]: any },
 	actInstances: ActivityInstance[]
 ) {
-	const TPs = classificationResult["TP"];
+	const TPs = classificationResult?.[currentActivity.getName()]["TP"];
 	// 1. find temporal statistics of the axiom if applicable (Why)
 	const FPInstances = actInstances.filter((val, i) => selectedFPs.includes(i));
 	const FPAxiomStat = getAxiomStats(FPInstances, axiom);
@@ -138,7 +137,9 @@ function getFP0TimeContractionSuggestion(
 		}
 
 		// new TPs
-		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
+			classificationResult?.[currentActivity.getName()]["TP"]
+		);
 		let oldFNTPInstances = [];
 		for (let k = 0; k < oldTPFNs.length; k++) {
 			oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
@@ -150,7 +151,9 @@ function getFP0TimeContractionSuggestion(
 			}
 		}
 		// new FPs
-		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
+			classificationResult?.[currentActivity.getName()]["FP"]["all"]
+		);
 		let oldTNFPInstances = [];
 		for (let k = 0; k < oldTNFPs.length; k++) {
 			oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
@@ -178,7 +181,7 @@ function getFNSameTimeContractionSuggestion(
 	classificationResult: { [resType: string]: any },
 	actInstances: ActivityInstance[]
 ) {
-	const TPs = classificationResult["TP"];
+	const TPs = classificationResult?.[currentActivity.getName()]["TP"];
 	// 1. find temporal statistics of the axiom if applicable (Why)
 	const FPInstances = actInstances.filter((val, i) => selectedFPs.includes(i));
 	const FPAxiomStat = getAxiomStats(FPInstances, axiom);
@@ -247,7 +250,9 @@ function getFNSameTimeContractionSuggestion(
 			}
 
 			// new TPs
-			const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+			const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
+				classificationResult?.[currentActivity.getName()]["TP"]
+			);
 			let oldFNTPInstances = [];
 			for (let k = 0; k < oldTPFNs.length; k++) {
 				oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
@@ -259,7 +264,9 @@ function getFNSameTimeContractionSuggestion(
 				}
 			}
 			// new FPs
-			const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+			const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
+				classificationResult?.[currentActivity.getName()]["FP"]["all"]
+			);
 			let oldTNFPInstances = [];
 			for (let k = 0; k < oldTNFPs.length; k++) {
 				oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
@@ -353,7 +360,9 @@ function getInteractionAdditionAxiomSuggestions(
 		newAxiomSet.push(newAxiom);
 
 		// new TPs
-		const oldTPFNs = classificationResult["FN"].concat(classificationResult["TP"]);
+		const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
+			classificationResult?.[currentActivity.getName()]["TP"]
+		);
 		let oldFNTPInstances = [];
 		for (let k = 0; k < oldTPFNs.length; k++) {
 			oldFNTPInstances.push(instances[oldTPFNs[k]]);
@@ -365,7 +374,9 @@ function getInteractionAdditionAxiomSuggestions(
 			}
 		}
 		// new FPs
-		const oldTNFPs = classificationResult["TN"].concat(classificationResult["FP"]["all"]);
+		const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
+			classificationResult?.[currentActivity.getName()]["FP"]["all"]
+		);
 		let oldTNFPInstances = instances.filter((val, idx) => oldTNFPs.includes(idx));
 		let newFPs: number[] = [];
 		for (let i = 0; i < oldTNFPInstances.length; i++) {

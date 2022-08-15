@@ -15,7 +15,7 @@ function ActivtityInstancePane(props) {
                         // get activity class color
                         let color = "";
                         if (props.predictedActivities && props.predictedActivities[idx]) {
-                            let actP = props.predictedActivities[idx][0];
+                            let actP = props.predictedActivities[idx];
                             props.activities.forEach((activity, k) => {
                                 if (activity.getName() === actP) {
                                     color = ActivityListColors.getColor(k)

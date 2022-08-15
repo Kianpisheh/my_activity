@@ -156,7 +156,7 @@ export function QMark(props) {
 					// );
 					// onWhyHowToQuery(suggestions);
 				}
-                if (qmenuPos[0] > 0) {
+                if (qmenuPos?.[0] > 0) {
 				    onWhyWhatQuery(-1, -1, axiom, QueryTrigger.WHY);
                 } else {
 				    onWhyWhatQuery(ev.pageX, ev.pageY, axiom, QueryTrigger.WHY_WHAT);

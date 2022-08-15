@@ -3,9 +3,10 @@ import {
 	retrieveActivities,
 	retrieveInstances,
 	updateDatabase,
-	classifyInstance,
 	getRuleitems,
 } from "./APICalls/activityAPICalls";
+
+import {classifyInstances} from "./Classification";
 
 import { getClassificationResult } from "./Utils/utils";
 
@@ -27,7 +28,6 @@ import QuestionMenu, { QueryQuestion } from "./components/QuestionMenu/QuestionM
 import WhyNotHowToQueryController from "./Controllers/WhyNotHowToQueryController";
 import WhyNotQueryController from "./Controllers/WhyNotQueryController";
 import WhyFPQueryController from "./Controllers/WhyFPQueryController";
-import SystemMode from "./model/SystemMode";
 import WhyNotWhatQueryController from "./Controllers/WhyNotWhatQueryController";
 import WhyWhatQueryController from "./Controllers/WhyWhatQueryController";
 import WhyHowToQueryController from "./Controllers/WhyHowToQueryController";
@@ -199,25 +199,9 @@ function App() {
 			instances.push(activityInstances[i].getName());
 		}
 
-        let pred_acts = [];
-        for (const instance of activityInstances) {
-            let classified = false;
-            for (const act of activities) {
-                if (instance.isSatisfied(act.getAxioms())) {
-                    if (!classified) {
-                        pred_acts.push([act.getName()]);
-                    } else {
-                        pred_acts[pred_acts.length-1] = pred_acts[pred_acts.length-1].concat([act.getName()])
-                    }
-                    classified = true;
-                }
-            }
-            if (!classified) {
-                pred_acts.push(["Unknown"]);
-            }
-        }
+        let PredActs = classifyInstances(activityInstances, activities)
 
-        setPredictedActivities(pred_acts);
+        setPredictedActivities(PredActs);
         setCurrentActInstanceIdx(id);
 
 		// classifyInstance(instances).then((data) => {

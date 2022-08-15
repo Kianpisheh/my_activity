@@ -264,7 +264,7 @@ export function findTimeOverlap(startTimes: number[], endTimes: number[], timest
 
 export function getClassificationResult(
 	activityInstances: ActivityInstance[],
-	predictedActivities: string[][],
+	predictedActivities: string[],
 	activities: Activity[]
 ) {
 	let results: { [act: string]: any } = {};
@@ -282,7 +282,7 @@ export function getClassificationResult(
 		let At = activity.getName();
 		for (let i = 0; i < activityInstances.length; i++) {
 			let Ai = activityInstances[i].getType();
-			let Ap = predictedActivities[i]?.[0];
+			let Ap = predictedActivities[i];
 
 			if (Ai === At) {
 				N += 1;

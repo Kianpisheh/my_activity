@@ -45,6 +45,10 @@ class Activity {
 		return true;
 	}
 
+	getAxiomNum() {
+		return this.events.length + this.constraints.length;
+	}
+
 	getID() {
 		return this.id;
 	}
