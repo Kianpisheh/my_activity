@@ -10,7 +10,8 @@ class WhyNotHowToQueryController {
 		activity: Activity,
 		classificationResult: { [type: string]: any },
 		instances: ActivityInstance[],
-		selectedInstancesIdx: number[]
+		selectedInstancesIdx: number[],
+		activities: Activity[]
 	) {
 		let i = 0;
 		let suggestions: HowToAxiom[] = [];
@@ -20,7 +21,8 @@ class WhyNotHowToQueryController {
 			activity,
 			selectedInstancesIdx,
 			classificationResult,
-			instances
+			instances,
+			activities
 		);
 		return suggestions;
 	}

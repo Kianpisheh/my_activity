@@ -42,18 +42,10 @@ export function updateClassificationResults(
 	classificationResult: { [resType: string]: any },
 	currentActivity: Activity,
 	axiom: AxiomData,
-	newAxiom: AxiomData,
+	newAxiomSet: AxiomData[],
 	actInstances: ActivityInstance[],
 	activities: Activity[]
 ) {
-	// new axiom has replaced the old one
-	let newAxiomSet = [...currentActivity.getAxioms()];
-	for (let j = 0; j < newAxiomSet.length; j++) {
-		if (isEqual(newAxiomSet[j], axiom)) {
-			newAxiomSet[j] = newAxiom;
-		}
-	}
-
 	// new TPs
 	const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
 		classificationResult?.[currentActivity.getName()]["TP"]

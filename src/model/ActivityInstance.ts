@@ -171,7 +171,7 @@ class ActivityInstance {
 			let eventInstances: ActivityInstanceEvent[] = this.getEvent(constraint.events[0]);
 			for (const evInstance of eventInstances) {
 				const evDuration = evInstance.getDuration();
-				if (evDuration < th2 && evDuration > th1) {
+				if (evDuration <= th2 && evDuration >= th1) {
 					return true;
 				}
 			}
@@ -181,7 +181,7 @@ class ActivityInstance {
 			for (let i = 0; i < eventInstances1.length; i++) {
 				for (let j = 0; j < eventInstances2.length; j++) {
 					const timeDsitance = eventInstances2[j].getStartTime() - eventInstances1[i].getEndTime();
-					if (timeDsitance < th2 && timeDsitance > th1) {
+					if (timeDsitance <= th2 && timeDsitance >= th1) {
 						return true;
 					}
 				}

@@ -12,8 +12,6 @@ import { updateClassificationResults } from "../../Classification";
 
 import sortBy from "lodash/sortBy";
 
-import cloneDeep from "lodash/cloneDeep";
-
 export function getWhyHowToSuggestions(
 	selectedFPs: number[],
 	axiom: AxiomData,
@@ -57,7 +55,8 @@ export function getWhyHowToSuggestions(
 			classificationResult,
 			currentActivity,
 			instances,
-			selectedFPs
+			selectedFPs,
+			[...activities]
 		);
 		suggestions = suggestion3;
 	}
@@ -147,38 +146,10 @@ function getFP0TimeContractionSuggestion(
 			classificationResult,
 			currentActivity,
 			axiom,
-			newAxiom,
+			newAxiomSet,
 			actInstances,
 			[...activities]
 		);
-		// // new TPs
-		// const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
-		// 	classificationResult?.[currentActivity.getName()]["TP"]
-		// );
-		// let oldFNTPInstances = [];
-		// for (let k = 0; k < oldTPFNs.length; k++) {
-		// 	oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
-		// }
-		// let newTPs: number[] = [];
-		// for (let i = 0; i < oldFNTPInstances.length; i++) {
-		// 	if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
-		// 		newTPs.push(oldTPFNs[i]);
-		// 	}
-		// }
-		// // new FPs
-		// const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
-		// 	classificationResult?.[currentActivity.getName()]["FP"]["all"]
-		// );
-		// let oldTNFPInstances = [];
-		// for (let k = 0; k < oldTNFPs.length; k++) {
-		// 	oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
-		// }
-		// let newFPs: number[] = [];
-		// for (let i = 0; i < oldTNFPInstances.length; i++) {
-		// 	if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
-		// 		newFPs.push(oldTNFPs[i]);
-		// 	}
-		// }
 
 		suggestions.push(
 			new HowToAxiom(
@@ -265,50 +236,27 @@ function getFNSameTimeContractionSuggestion(
 				th2: interval[1],
 			});
 
+			// new axiom has replaced the old one
+			let newAxiomSet = [...currentActivity.getAxioms()];
+			for (let j = 0; j < newAxiomSet.length; j++) {
+				if (isEqual(newAxiomSet[j], axiom)) {
+					if (newAxiom) {
+						newAxiomSet[j] = newAxiom;
+					} else {
+						newAxiomSet.splice(j, 1);
+						break;
+					}
+				}
+			}
+
 			const whatIfRes = updateClassificationResults(
 				classificationResult,
 				currentActivity,
 				axiom,
-				newAxiom,
+				newAxiomSet,
 				actInstances,
 				[...activities]
 			);
-			// // new axiom has replaced the old one
-			// let newAxiomSet = [...currentActivity.getAxioms()];
-			// for (let j = 0; j < newAxiomSet.length; j++) {
-			// 	if (isEqual(newAxiomSet[j], axiom)) {
-			// 		newAxiomSet[j] = newAxiom;
-			// 	}
-			// }
-
-			// // new TPs
-			// const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
-			// 	classificationResult?.[currentActivity.getName()]["TP"]
-			// );
-			// let oldFNTPInstances = [];
-			// for (let k = 0; k < oldTPFNs.length; k++) {
-			// 	oldFNTPInstances.push(actInstances[oldTPFNs[k]]);
-			// }
-			// let newTPs: number[] = [];
-			// for (let i = 0; i < oldFNTPInstances.length; i++) {
-			// 	if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
-			// 		newTPs.push(oldTPFNs[i]);
-			// 	}
-			// }
-			// // new FPs
-			// const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
-			// 	classificationResult?.[currentActivity.getName()]["FP"]["all"]
-			// );
-			// let oldTNFPInstances = [];
-			// for (let k = 0; k < oldTNFPs.length; k++) {
-			// 	oldTNFPInstances.push(actInstances[oldTNFPs[k]]);
-			// }
-			// let newFPs: number[] = [];
-			// for (let i = 0; i < oldTNFPInstances.length; i++) {
-			// 	if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
-			// 		newFPs.push(oldTNFPs[i]);
-			// 	}
-			// }
 
 			suggestions.push(
 				new HowToAxiom(
@@ -351,7 +299,8 @@ function getInteractionAdditionAxiomSuggestions(
 	classificationResult: { [type: string]: any },
 	currentActivity: Activity,
 	instances: ActivityInstance[],
-	selectedFPs: number[]
+	selectedFPs: number[],
+	activities: Activity[]
 ) {
 	const SUPP_TH = 0.85;
 	const CONF_TH = 0.9;
@@ -401,33 +350,26 @@ function getInteractionAdditionAxiomSuggestions(
 		let newAxiom = new AxiomData({ type: AxiomTypes.TYPE_INTERACTION, events: newItems, th1: -1, th2: -1 });
 		newAxiomSet.push(newAxiom);
 
-		// new TPs
-		const oldTPFNs = classificationResult?.[currentActivity.getName()]["FN"].concat(
-			classificationResult?.[currentActivity.getName()]["TP"]
+		const whatIfRes = updateClassificationResults(
+			classificationResult,
+			currentActivity,
+			axiom,
+			newAxiomSet,
+			instances,
+			[...activities]
 		);
-		let oldFNTPInstances = [];
-		for (let k = 0; k < oldTPFNs.length; k++) {
-			oldFNTPInstances.push(instances[oldTPFNs[k]]);
-		}
-		let newTPs: number[] = [];
-		for (let i = 0; i < oldFNTPInstances.length; i++) {
-			if (oldFNTPInstances[i].isSatisfied(newAxiomSet)) {
-				newTPs.push(oldTPFNs[i]);
-			}
-		}
-		// new FPs
-		const oldTNFPs = classificationResult?.[currentActivity.getName()]["TN"].concat(
-			classificationResult?.[currentActivity.getName()]["FP"]["all"]
-		);
-		let oldTNFPInstances = instances.filter((val, idx) => oldTNFPs.includes(idx));
-		let newFPs: number[] = [];
-		for (let i = 0; i < oldTNFPInstances.length; i++) {
-			if (oldTNFPInstances[i].isSatisfied(newAxiomSet)) {
-				newFPs.push(oldTNFPs[i]);
-			}
-		}
 
-		suggestions.push(new HowToAxiom("interaction_addition", newAxiom, 0, null, "FP_MIN", [...newTPs], [...newFPs]));
+		suggestions.push(
+			new HowToAxiom(
+				"interaction_addition",
+				newAxiom,
+				0,
+				null,
+				"FP_MIN",
+				whatIfRes["newTPs"],
+				whatIfRes["newFPs"]
+			)
+		);
 	}
 
 	return suggestions;

@@ -128,7 +128,8 @@ function App() {
 				currentActivity,
 				classificationRes,
 				activityInstances,
-				selectedInstancesIdx["FN"]
+				selectedInstancesIdx["FN"],
+                activities
 			);
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
