@@ -2,6 +2,10 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 	let color = "#CE3131";
 	let opacity = 1;
 	let res = [];
+
+    data["newFPs"] ??= [];
+    data["newTPs"] ??= [];
+
 	if (type === "TPFN") {
 		res = data["TP"].concat(data["FN"]);
 	} else {
@@ -22,22 +26,22 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 				}
 
 				// removed false positives
-				if (data["FP"] && data["FP"].includes(r) && !data["newFPs"].includes(r) && data["queryMode"]) {
+				if (data && data["FP"] && data["FP"].includes(r) && !data["newFPs"].includes(r) && data["queryMode"]) {
 					color = "url(#gradient4)";
 				}
 
 				// new false positives
-				if (data["FP"] && data["newFPs"].includes(r) && !data["FP"].includes(r) && data["queryMode"]) {
+				if (data && data["FP"] && data["newFPs"].includes(r) && !data["FP"].includes(r) && data["queryMode"]) {
 					color = "url(#gradient3)";
 				}
 
 				// new true positives
-				if (data["TP"] && data["newTPs"].includes(r) && !data["TP"].includes(r) && data["queryMode"]) {
+				if (data && data["TP"] && data["newTPs"].includes(r) && !data["TP"].includes(r) && data["queryMode"]) {
 					color = "url(#gradient)";
 				}
 
 				// removed true positives (i.e., new FNs)
-				if (data["TP"] && !data["newTPs"].includes(r) && data["TP"].includes(r) && data["queryMode"]) {
+				if (data && data["TP"] && !data["newTPs"].includes(r) && data["TP"].includes(r) && data["queryMode"]) {
 					color = "url(#gradient2)";
 				}
 

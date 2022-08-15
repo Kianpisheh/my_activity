@@ -24,9 +24,9 @@ function ResultsPanel(props) {
 				{
 					TP: TP,
 					FN: FN,
-					newFPs: newFPs,
+					newFPs: newFPs[activity],
 					newFPsLabel: newFPsLabel,
-					newTPs: newTPs,
+					newTPs: newTPs[activity],
 					queryMode: props.queryMode,
 				},
 				"TPFN",
@@ -46,7 +46,7 @@ function ResultsPanel(props) {
 					createResRects(
 						{
 							FP: fp,
-							newFPs: newFPs,
+							newFPs: newFPs[activity],
 							newFPsLabel: newFPsLabel,
 							queryMode: props.queryMode,
 						},

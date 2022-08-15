@@ -10,7 +10,6 @@ function handleInstanceSelection(idx: number, type: string, selectedInstances: {
 			delete new_selectedIdx[tp];
 		}
 	}
-
 	if (!new_selectedIdx[type]) {
 		new_selectedIdx[type] = [];
 	}

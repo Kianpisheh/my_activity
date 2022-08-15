@@ -6,9 +6,7 @@ import {
 	getRuleitems,
 } from "./APICalls/activityAPICalls";
 
-import {classifyInstances} from "./Classification";
-
-import { getClassificationResult } from "./Utils/utils";
+import {classifyInstances, getClassificationResult} from "./Classification";
 
 import "./App.css";
 
@@ -49,8 +47,8 @@ function App() {
 	const [whyNotHowToSuggestions, setWhyNotHowToSuggestions] = useState([]);
 	const [unsatisfiedAxioms, setUnsatisfiedAxioms] = useState({});
 	const [scale, setScale] = useState([25, 25]);
-	const [newTPs, setNewTPs] = useState([]);
-	const [newFPs, setNewFPs] = useState([]);
+	const [newTPs, setNewTPs] = useState({});
+	const [newFPs, setNewFPs] = useState({});
 	const [queryMode, setQueryMode] = useState(false);
 	const [whyNotWhat, setWhyNotWhat] = useState(null);
 	const [whyWhat, setWhyWhat] = useState(null);
@@ -142,7 +140,8 @@ function App() {
 				classificationRes,
 				activityInstances,
 				selectedInstancesIdx["FP"],
-				ruleitems
+				ruleitems,
+                activities
 			);
 			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
@@ -460,12 +459,11 @@ function App() {
 					queryMode={queryMode}
 					onInstanceSelection={(idx, type, activity) => {
                         let selInstancesIdx = [];
-                        if (currentActivity.getName() !== activity) {
+                        if (currentActivity && currentActivity.getName() !== activity) {
                             for (let i=0; i < activities.length; i ++) {
                                 if (activities[i].getName() === activity) {
                                     setCurrentActivityIdx(i);
                                     setSelectedInstancesIdx({type:[idx]});
-                                    break;
                                 }
                             }
 
