@@ -458,10 +458,22 @@ function App() {
 					newTPs={newTPs}
 					newFPs={newFPs}
 					queryMode={queryMode}
-					onInstanceSelection={(idx, type) => {
-						const selInstancesIdx = handleInstanceSelection(idx, type, selectedInstancesIdx);
+					onInstanceSelection={(idx, type, activity) => {
+                        let selInstancesIdx = [];
+                        if (currentActivity.getName() !== activity) {
+                            for (let i=0; i < activities.length; i ++) {
+                                if (activities[i].getName() === activity) {
+                                    setCurrentActivityIdx(i);
+                                    setSelectedInstancesIdx({type:[idx]});
+                                    break;
+                                }
+                            }
+
+                        } else {
+						    selInstancesIdx = handleInstanceSelection(idx, type, selectedInstancesIdx, activity);
+                            setSelectedInstancesIdx(selInstancesIdx);
+                        }
 						handleActInstanceChange(idx);
-						setSelectedInstancesIdx(selInstancesIdx);
 					}}
 					highlightedInstancesIdx={highlightedInstancesIdx}
 				></ResultsPanel>

@@ -33,7 +33,8 @@ function ResultsPanel(props) {
 				rectSize,
 				props.onInstanceSelection,
 				selectedInstancesIdx,
-				highlightedInstancesIdx
+				highlightedInstancesIdx,
+                activity
 			)
 		);
 		if (FP) {
@@ -48,13 +49,13 @@ function ResultsPanel(props) {
 							newFPs: newFPs,
 							newFPsLabel: newFPsLabel,
 							queryMode: props.queryMode,
-							activityName: activityName,
 						},
 						"FP",
 						rectSize,
 						props.onInstanceSelection,
 						selectedInstancesIdx,
-						highlightedInstancesIdx
+						highlightedInstancesIdx,
+                        activity
 					)
 				);
 			}

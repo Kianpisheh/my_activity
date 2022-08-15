@@ -1,4 +1,4 @@
-function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx) {
+function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx, activity) {
 	let color = "#CE3131";
 	let opacity = 1;
 	let res = [];
@@ -92,7 +92,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 							rx={3}
 							x={2}
 							y={2}
-							onClick={() => onRectSelection(r, resType)}
+							onClick={() => onRectSelection(r, resType, activity)}
 						></rect>
 					</svg>
 				);
