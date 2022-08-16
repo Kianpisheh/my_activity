@@ -2,7 +2,6 @@ import Activity from "./model/Activity";
 import ActivityInstance from "./model/ActivityInstance";
 import AxiomData from "./model/AxiomData";
 
-import isEqual from "lodash.isequal";
 import cloneDeep from "lodash/cloneDeep";
 
 export function classifyInstances(activityInstances: ActivityInstance[], activities: Activity[]) {

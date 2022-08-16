@@ -1,4 +1,4 @@
-    import "./WhyNotHowToExplanations.css";
+import "./WhyNotHowToExplanations.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
 

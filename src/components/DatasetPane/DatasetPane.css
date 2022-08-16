@@ -1,0 +1,20 @@
+#dataset-pane-container {
+	display: flex;
+	flex-direction: column;
+	height: 50%;
+}
+
+#dataset-list-item {
+	font-size: 13px;
+}
+
+#dataset-list-title {
+	padding-top: 10px;
+}
+
+#list-container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 5px;
+	padding-top: 10px;
+}

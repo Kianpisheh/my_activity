@@ -1,5 +1,3 @@
-import Activity from "../model/Activity";
-import ActivityInstance from "../model/ActivityInstance";
 import IEvent from "../model/ActivityInstanceEvent";
 
 interface ITime {

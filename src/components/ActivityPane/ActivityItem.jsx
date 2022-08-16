@@ -30,11 +30,6 @@ function ActivtiyItem(props) {
                 style={style}
                 onContextMenu={(event) => {
                     event.preventDefault();
-                    props.onAction(
-                        props.activity.getID(),
-                        event.pageX,
-                        event.pageY
-                    );
                 }}
             >
                 <text className="list-item">{props.activity.name}</text>

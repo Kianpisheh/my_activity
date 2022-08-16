@@ -1,22 +1,13 @@
 import axios from "axios";
 
-export async function retrieveActivities(url) {
-    return axios.get(url, {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-        },
-    });
+export async function retrieveActivities(dataset) {
+    const url = "http://localhost:8080/activity";
+    return axios.post(url, {"dataset": dataset});
 }
 
-export async function retrieveInstances() {
+export async function retrieveInstances(dataset) {
     const url = "http://localhost:8080/instance/instances";
-    return axios.get(url, {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-        },
-    });
+    return axios.post(url, {"dataset": dataset});
 }
 
 export async function explain(activityInstance, targetActivity, queryType) {
@@ -24,9 +15,9 @@ export async function explain(activityInstance, targetActivity, queryType) {
     return axios.post(url, { "instance": activityInstance, "activity": targetActivity, "type": queryType })
 }
 
-export async function updateDatabase(activity, task) {
+export async function updateDatabase(activity, task, dataset) {
     const url = "http://localhost:8080/activity/" + task;
-    return axios.post(url, activity);
+    return axios.post(url, {"activity": activity,"dataset": dataset});
 }
 
 export async function classifyInstance(activityInstance) {

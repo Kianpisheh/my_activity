@@ -59,6 +59,9 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
+    const DATASETS = ["CASAS8", "Opportunity"];
+    const [dataset, setDataset] = useState(DATASETS[1]);
+
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -152,7 +155,7 @@ function App() {
 
 	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
 		if (message !== AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
-			updateDatabase(currentActivity, "update").then(() => {
+			updateDatabase(currentActivity, "update", dataset).then(() => {
 				let instances = [];
 				for (let i = 0; i < activityInstances.length; i++) {
 					instances.push(activityInstances[i].getName());
@@ -179,7 +182,7 @@ function App() {
 			);
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
-			updateDatabase(new_activities[new_activities.length - 1], "update");
+			updateDatabase(new_activities[new_activities.length - 1], "update", dataset);
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let new_activities = [...activities];
 			const activityName = activities[activityID].getName();
@@ -188,7 +191,7 @@ function App() {
 			});
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
-			updateDatabase(activityName, "remove");
+			updateDatabase(activities[activityID], "remove", dataset);
 		}
 	}
 
@@ -203,11 +206,6 @@ function App() {
 
         setPredictedActivities(PredActs);
         setCurrentActInstanceIdx(id);
-
-		// classifyInstance(instances).then((data) => {
-		// 	setPredictedActivities(data.data);
-		// 	setCurrentActInstanceIdx(id);
-		// });
 	}
 
 	function handleScaleChange(action, graphIdx) {
@@ -254,7 +252,13 @@ function App() {
 
 	// load activities
 	useEffect(() => {
-		let activitiesPromise = retrieveActivities("http://localhost:8080/activity");
+		readDataFromDB(dataset);
+	}, []);
+
+
+    function readDataFromDB(dataset) {
+    setDataset(dataset);
+    let activitiesPromise = retrieveActivities(dataset);
 		handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;
@@ -263,7 +267,7 @@ function App() {
 				activityItems.push(new Activity(activity));
 			});
 			setActivities(activityItems);
-			let instancesPromise = retrieveInstances();
+			let instancesPromise = retrieveInstances(dataset);
 			instancesPromise.then((data) => {
 				let instances = data.data;
 				let instanceItems = [];
@@ -273,7 +277,7 @@ function App() {
 				setActivityInstances(instanceItems);
 			});
 		});
-	}, []);
+    }
 
 	const config = {
 		ic_w: 27,
@@ -387,6 +391,13 @@ function App() {
 					activities={activities}
 					onActivitiyListChange={handleActivityListChange}
 					currentActivityIdx={currentActivtyIdx}
+                    datasets={DATASETS}
+                    onDatasetChange={(d) => {
+                        if (d !== dataset) {
+                            readDataFromDB(d);
+                        }
+                    }}
+                    currentDataset={dataset}
 				></ActivityPane>
 			</div>
 			<div id="axiom-pane">
