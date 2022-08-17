@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	retrieveActivities,
 	retrieveInstances,
 	updateDatabase,
 	getRuleitems,
+	checkPassword,
 } from "./APICalls/activityAPICalls";
 
-import {classifyInstances, getClassificationResult} from "./Classification";
+import { classifyInstances, getClassificationResult } from "./Classification";
 
 import "./App.css";
 
@@ -19,6 +20,7 @@ import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
 import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
+import Login from "./components/Login";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
@@ -59,9 +61,11 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-    const DATASETS = ["CASAS8", "Opportunity"];
-    const [dataset, setDataset] = useState(DATASETS[1]);
-
+	const DATASETS = ["CASAS8", "Opportunity"];
+	const [dataset, setDataset] = useState(DATASETS[1]);
+	const [enteredUser, setEnteredUser] = useState("");
+	const [enteredPass, setEnteredPass] = useState("");
+	const [loggedin, setLoggedin] = useState(false);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -132,7 +136,7 @@ function App() {
 				classificationRes,
 				activityInstances,
 				selectedInstancesIdx["FN"],
-                activities
+				activities
 			);
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
@@ -145,7 +149,7 @@ function App() {
 				activityInstances,
 				selectedInstancesIdx["FP"],
 				ruleitems,
-                activities
+				activities
 			);
 			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
@@ -202,10 +206,10 @@ function App() {
 			instances.push(activityInstances[i].getName());
 		}
 
-        let PredActs = classifyInstances(activityInstances, activities)
+		let PredActs = classifyInstances(activityInstances, activities);
 
-        setPredictedActivities(PredActs);
-        setCurrentActInstanceIdx(id);
+		setPredictedActivities(PredActs);
+		setCurrentActInstanceIdx(id);
 	}
 
 	function handleScaleChange(action, graphIdx) {
@@ -255,10 +259,9 @@ function App() {
 		readDataFromDB(dataset);
 	}, []);
 
-
-    function readDataFromDB(dataset) {
-    setDataset(dataset);
-    let activitiesPromise = retrieveActivities(dataset);
+	function readDataFromDB(dataset) {
+		setDataset(dataset);
+		let activitiesPromise = retrieveActivities(dataset);
 		handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;
@@ -277,7 +280,7 @@ function App() {
 				setActivityInstances(instanceItems);
 			});
 		});
-    }
+	}
 
 	const config = {
 		ic_w: 27,
@@ -312,13 +315,24 @@ function App() {
 	) {
 		if (queryTrigger !== "") {
 			setQueryTrigger("");
-            setWhyWhat(null);
-            setWhyNotWhat(null);
-            setWhyHowToSuggestions([]);
-            setWhyNotHowToSuggestions([]);
-            setUnsatisfiedAxioms({});
+			setWhyWhat(null);
+			setWhyNotWhat(null);
+			setWhyHowToSuggestions([]);
+			setWhyNotHowToSuggestions([]);
+			setUnsatisfiedAxioms({});
 			setWhyQueryMode(false);
 		}
+	}
+
+	function handleSubmit(ev) {
+		ev.preventDefault();
+		setLoggedin(true);
+		// ask server for the pass
+		// checkPassword(enteredUser, enteredPass).then((res) => {
+		// 	if (res.data) {
+		// 		setLoggedin(true);
+		// 	}
+		// });
 	}
 
 	return (
@@ -350,144 +364,164 @@ function App() {
 					setWhyWhat(null);
 					setWhyQueryMode(false);
 					setSelectedInstancesIdx({});
-                    setUnsatisfiedAxioms({});
+					setUnsatisfiedAxioms({});
 				}
 			}}
 		>
-			{qmenuPos?.[0] > 0 && (
-				<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
-					<QuestionMenu
-						selectedIdx={selectedInstancesIdx}
-						currentActivity={currentActivity}
-						onQuery={handleQuery}
-						queryTrigger={queryTrigger}
-					></QuestionMenu>
+			{!loggedin && (
+				<div id="login">
+					<Login
+						enteredPass={enteredPass}
+						enteredUser={enteredUser}
+						onPassChange={(value) => setEnteredPass(value)}
+						onUserChange={(value) => setEnteredUser(value)}
+						onSubmit={(event) => handleSubmit(event)}
+					></Login>
 				</div>
 			)}
-			<div id="act-instances-pane">
-				<ActivityInstancePane
-					activtiyInstances={activityInstances}
-					onSelectedItemChange={handleActInstanceChange}
-					currentActInstanceIdx={currentActInstanceIdx}
-					activities={activities}
-					predictedActivities={predictedActivities}
-				></ActivityInstancePane>
-			</div>
-			<div id="act-instance-vis">
-				<ActivityInstanceVis
-					config={config}
-					activity={activityInstances[currentActInstanceIdx]}
-					predictedActivities={predictedActivities}
-					onScaleChange={handleScaleChange}
-					currentActivityIdx={currentActivtyIdx}
-					currentActInstanceIdx={currentActInstanceIdx}
-					merge={[true, true]}
-					onInstanceEventSelection={(ev, idx) => handleInstanceEventSelection(ev, idx)}
-					selectedInstanceEvents={selectedInstanceEvents}
-				></ActivityInstanceVis>
-			</div>
-			<div id="activities-pane">
-				<ActivityPane
-					activities={activities}
-					onActivitiyListChange={handleActivityListChange}
-					currentActivityIdx={currentActivtyIdx}
-                    datasets={DATASETS}
-                    onDatasetChange={(d) => {
-                        if (d !== dataset) {
-                            readDataFromDB(d);
-                        }
-                    }}
-                    currentDataset={dataset}
-				></ActivityPane>
-			</div>
-			<div id="axiom-pane">
-				{currentActivity && (
-					<ActivityAxiomPane
-						activity={currentActivity}
-						sendMessage={onAxiomPaneMessage}
-						config={config}
-						unsatisfiedAxioms={unsatisfiedAxioms}
-						ruleitems={ruleitems}
-						onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
-							setQueriedAxiom(ax);
-							setQmenuPos([x, y]);
-							setQueryTrigger(queryTrigger);
-						}}
-						onWhyWhatQuery={(x, y, ax, queryTrigger) => {
-							setQueriedAxiom(ax);
-							setQmenuPos([x, y]);
-							setQueryTrigger(queryTrigger);
-						}}
-						activityInstances={activityInstances}
-						selectedInstancesIdx={selectedInstancesIdx}
-						classificationResult={classificationRes[currentActivity?.getName()]}
-						onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
-						whyQueryMode={whyQueryMode}
-                        queryTrigger={queryTrigger}
-                        qmenuPos={qmenuPos}
-					></ActivityAxiomPane>
-				)}
-			</div>
-			<div id="how-to-panel">
-				<HowToPanel2
-					whyHowTosuggestions={whyHowToSuggestions}
-					whyNotHowTosuggestions={whyNotHowToSuggestions}
-					width={"100%"}
-					onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
-						setNewTPs(newTPs);
-						setNewFPs(newFPs);
-						setQueryMode(queryMode);
-					}}
-					whyNotWhat={whyNotWhat}
-					whyWhat={whyWhat}
-					onWhyNotHowTo={(x, y, queryTrigger) => {
-						setQmenuPos([x, y]);
-						setQueryTrigger(queryTrigger);
-					}}
-					onWhyHowTo={(x, y, queryTrigger) => {
-						setQmenuPos([x, y]);
-						setQueryTrigger(queryTrigger);
-					}}
-					classificationResult={classificationRes[currentActivity?.getName() ?? {}]}
-					activity={currentActivity}
-					instances={activityInstances}
-					selectedInstancesIdx={selectedInstancesIdx}
-					onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
-					eventStats={eventStats}
-					queryTrigger={queryTrigger}
-                    qmenuPos={qmenuPos}
-                    unsatisfiedAxioms={unsatisfiedAxioms}
-                    whyQueryMode={whyQueryMode}
-				></HowToPanel2>
-			</div>
-			<div id="explanations">
-				<ResultsPanel
-					parentWidth={leftPaneWidth}
-					onInstanceClick={handleInstanceClick}
-					classificationResult={classificationRes}
-					selectedInstancesIdx={selectedInstancesIdx}
-					newTPs={newTPs}
-					newFPs={newFPs}
-					queryMode={queryMode}
-					onInstanceSelection={(idx, type, activity) => {
-                        let selInstancesIdx = [];
-                        if (currentActivity && currentActivity.getName() !== activity) {
-                            for (let i=0; i < activities.length; i ++) {
-                                if (activities[i].getName() === activity) {
-                                    setCurrentActivityIdx(i);
-                                    setSelectedInstancesIdx({type:[idx]});
-                                }
-                            }
-
-                        } else {
-						    selInstancesIdx = handleInstanceSelection(idx, type, selectedInstancesIdx, activity);
-                            setSelectedInstancesIdx(selInstancesIdx);
-                        }
-						handleActInstanceChange(idx);
-					}}
-					highlightedInstancesIdx={highlightedInstancesIdx}
-				></ResultsPanel>
-			</div>
+			{loggedin && (
+				<React.Fragment>
+					{" "}
+					{qmenuPos?.[0] > 0 && (
+						<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
+							<QuestionMenu
+								selectedIdx={selectedInstancesIdx}
+								currentActivity={currentActivity}
+								onQuery={handleQuery}
+								queryTrigger={queryTrigger}
+							></QuestionMenu>
+						</div>
+					)}
+					<div id="act-instances-pane">
+						<ActivityInstancePane
+							activtiyInstances={activityInstances}
+							onSelectedItemChange={handleActInstanceChange}
+							currentActInstanceIdx={currentActInstanceIdx}
+							activities={activities}
+							predictedActivities={predictedActivities}
+						></ActivityInstancePane>
+					</div>
+					<div id="act-instance-vis">
+						<ActivityInstanceVis
+							config={config}
+							activity={activityInstances[currentActInstanceIdx]}
+							predictedActivities={predictedActivities}
+							onScaleChange={handleScaleChange}
+							currentActivityIdx={currentActivtyIdx}
+							currentActInstanceIdx={currentActInstanceIdx}
+							merge={[true, true]}
+							onInstanceEventSelection={(ev, idx) => handleInstanceEventSelection(ev, idx)}
+							selectedInstanceEvents={selectedInstanceEvents}
+						></ActivityInstanceVis>
+					</div>
+					<div id="activities-pane">
+						<ActivityPane
+							activities={activities}
+							onActivitiyListChange={handleActivityListChange}
+							currentActivityIdx={currentActivtyIdx}
+							datasets={DATASETS}
+							onDatasetChange={(d) => {
+								if (d !== dataset) {
+									readDataFromDB(d);
+								}
+							}}
+							currentDataset={dataset}
+						></ActivityPane>
+					</div>
+					<div id="axiom-pane">
+						{currentActivity && (
+							<ActivityAxiomPane
+								activity={currentActivity}
+								sendMessage={onAxiomPaneMessage}
+								config={config}
+								unsatisfiedAxioms={unsatisfiedAxioms}
+								ruleitems={ruleitems}
+								onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
+									setQueriedAxiom(ax);
+									setQmenuPos([x, y]);
+									setQueryTrigger(queryTrigger);
+								}}
+								onWhyWhatQuery={(x, y, ax, queryTrigger) => {
+									setQueriedAxiom(ax);
+									setQmenuPos([x, y]);
+									setQueryTrigger(queryTrigger);
+								}}
+								activityInstances={activityInstances}
+								selectedInstancesIdx={selectedInstancesIdx}
+								classificationResult={classificationRes[currentActivity?.getName()]}
+								onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+								whyQueryMode={whyQueryMode}
+								queryTrigger={queryTrigger}
+								qmenuPos={qmenuPos}
+							></ActivityAxiomPane>
+						)}
+					</div>
+					<div id="how-to-panel">
+						<HowToPanel2
+							whyHowTosuggestions={whyHowToSuggestions}
+							whyNotHowTosuggestions={whyNotHowToSuggestions}
+							width={"100%"}
+							onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
+								setNewTPs(newTPs);
+								setNewFPs(newFPs);
+								setQueryMode(queryMode);
+							}}
+							whyNotWhat={whyNotWhat}
+							whyWhat={whyWhat}
+							onWhyNotHowTo={(x, y, queryTrigger) => {
+								setQmenuPos([x, y]);
+								setQueryTrigger(queryTrigger);
+							}}
+							onWhyHowTo={(x, y, queryTrigger) => {
+								setQmenuPos([x, y]);
+								setQueryTrigger(queryTrigger);
+							}}
+							classificationResult={classificationRes[currentActivity?.getName() ?? {}]}
+							activity={currentActivity}
+							instances={activityInstances}
+							selectedInstancesIdx={selectedInstancesIdx}
+							onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+							eventStats={eventStats}
+							queryTrigger={queryTrigger}
+							qmenuPos={qmenuPos}
+							unsatisfiedAxioms={unsatisfiedAxioms}
+							whyQueryMode={whyQueryMode}
+						></HowToPanel2>
+					</div>
+					<div id="explanations">
+						<ResultsPanel
+							parentWidth={leftPaneWidth}
+							onInstanceClick={handleInstanceClick}
+							classificationResult={classificationRes}
+							selectedInstancesIdx={selectedInstancesIdx}
+							newTPs={newTPs}
+							newFPs={newFPs}
+							queryMode={queryMode}
+							onInstanceSelection={(idx, type, activity) => {
+								let selInstancesIdx = [];
+								if (currentActivity && currentActivity.getName() !== activity) {
+									for (let i = 0; i < activities.length; i++) {
+										if (activities[i].getName() === activity) {
+											setCurrentActivityIdx(i);
+											setSelectedInstancesIdx({ type: [idx] });
+										}
+									}
+								} else {
+									selInstancesIdx = handleInstanceSelection(
+										idx,
+										type,
+										selectedInstancesIdx,
+										activity
+									);
+									setSelectedInstancesIdx(selInstancesIdx);
+								}
+								handleActInstanceChange(idx);
+							}}
+							highlightedInstancesIdx={highlightedInstancesIdx}
+						></ResultsPanel>
+					</div>
+				</React.Fragment>
+			)}
 		</div>
 	);
 }
