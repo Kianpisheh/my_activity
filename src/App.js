@@ -229,11 +229,11 @@ function App() {
 
 	//--------------Retrieving ruleitems--------------//
 	function handleRuleitemRequest(idx) {
-		let prom = getRuleitems();
-		prom.then((data) => {
-			let ruleItems = Ruleitem.getitems(data.data);
-			setRuleitems(ruleItems);
-		});
+		// let prom = getRuleitems();
+		// prom.then((data) => {
+		// 	let ruleItems = Ruleitem.getitems(data.data);
+		// 	setRuleitems(ruleItems);
+		// });
 	}
 
 	function handleInstanceEventSelection(event, idx) {
