@@ -66,6 +66,7 @@ function App() {
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
 	const [loggedin, setLoggedin] = useState(false);
+	const [classificationRes, setClassificationRes] = useState({});
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -200,14 +201,9 @@ function App() {
 	}
 
 	function handleActInstanceChange(id) {
-		//classify the selected activity instance
-		let instances = [];
-		for (let i = 0; i < activityInstances.length; i++) {
-			instances.push(activityInstances[i].getName());
-		}
-
 		let PredActs = classifyInstances(activityInstances, activities);
-
+		let res = getClassificationResult(activityInstances, predictedActivities, activities);
+		setClassificationRes(res);
 		setPredictedActivities(PredActs);
 		setCurrentActInstanceIdx(id);
 	}
@@ -256,8 +252,10 @@ function App() {
 
 	// load activities
 	useEffect(() => {
-		readDataFromDB(dataset);
-	}, []);
+		if (loggedin) {
+			readDataFromDB(dataset);
+		}
+	}, [loggedin]);
 
 	function readDataFromDB(dataset) {
 		setDataset(dataset);
@@ -270,6 +268,9 @@ function App() {
 				activityItems.push(new Activity(activity));
 			});
 			setActivities(activityItems);
+			if (activityItems.length) {
+				setCurrentActivityIdx(0);
+			}
 			let instancesPromise = retrieveInstances(dataset);
 			instancesPromise.then((data) => {
 				let instances = data.data;
@@ -278,6 +279,13 @@ function App() {
 					instanceItems.push(new ActivityInstance(instance));
 				});
 				setActivityInstances(instanceItems);
+				if (instanceItems.length) {
+					let PredActs = classifyInstances(activityInstances, activities);
+					setPredictedActivities(PredActs);
+					setCurrentActInstanceIdx(0);
+					let res = getClassificationResult(activityInstances, predictedActivities, activities);
+					setClassificationRes(res);
+				}
 			});
 		});
 	}
@@ -302,7 +310,6 @@ function App() {
 
 	const leftPaneWidth = 250;
 
-	let classificationRes = getClassificationResult(activityInstances, predictedActivities, activities);
 	let eventStats = [];
 	if (Object.keys(selectedInstanceEvents).length) {
 		eventStats = EventStat.getEventInstanceStat(activityInstances, Object.keys(selectedInstanceEvents));

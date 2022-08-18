@@ -62,7 +62,12 @@ function ActivityInstanceVis(props) {
     }
 
     // create an example for event-locations
-    let events = activity.getEvents();
+    let events = activity?.getEvents();
+
+    if (!events || events.length === 0) {
+        return null;
+    }
+
     events.forEach(ev => {
         if (ev.startTime - events[0].startTime < 50) {
             ev.location = "kitchen";
