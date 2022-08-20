@@ -83,6 +83,13 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 						fi = "drop-shadow(0px 0px 5px rgb(255 0 0 / 0.9))";
 					}
 
+					if (data["AllFPs"] && data["FN"]) {
+						const fnIdx = data["FN"][idx - data["TP"].length];
+						if (data["AllFPs"].includes(fnIdx)) {
+							color = "#E9A37C";
+						}
+					}
+
 					return (
 						<svg key={idx + "_rect-container"} width={rectSize + 4} height={rectSize + 4} filter={fi}>
 							<defs>

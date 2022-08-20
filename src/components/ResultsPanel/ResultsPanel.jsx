@@ -9,6 +9,10 @@ function ResultsPanel(props) {
 		return;
 	}
 
+    let allFPs = []
+    for (const act of Object.keys(props.classificationResult)) {
+        allFPs.push(...props.classificationResult[act]["FP"]["all"]);
+    }
 	let allClassesResults = [];
 	for (const [activity, classificationResult] of Object.entries(props.classificationResult)) {
 		const { FP, FN, TP, N, TN } = classificationResult;
@@ -24,6 +28,7 @@ function ResultsPanel(props) {
 				{
 					TP: TP,
 					FN: FN,
+                    AllFPs: allFPs,
 					newFPs: newFPs[activity],
 					newFPsLabel: newFPsLabel,
 					newTPs: newTPs[activity],
@@ -103,6 +108,14 @@ function ResultsPanel(props) {
 						<rect y={3} width={15} height={7} fill={"#B4B2B2"} rx={2}></rect>
 						<text x={25} y={10} style={{ fontSize: 11 }}>
 							Not recognized activity samples
+						</text>
+					</svg>
+				</div>
+                <div>
+					<svg height={18} width={210}>
+						<rect y={3} width={15} height={7} fill={"#E9A37C"} rx={2}></rect>
+						<text x={25} y={10} style={{ fontSize: 11 }}>
+							Classified as another activity
 						</text>
 					</svg>
 				</div>
