@@ -34,7 +34,7 @@ function ResultsPanel(props) {
 				props.onInstanceSelection,
 				selectedInstancesIdx,
 				highlightedInstancesIdx,
-                activity
+                ""
 			)
 		);
 		if (FP) {
@@ -55,7 +55,7 @@ function ResultsPanel(props) {
 						props.onInstanceSelection,
 						selectedInstancesIdx,
 						highlightedInstancesIdx,
-                        activity
+                        activityName
 					)
 				);
 			}
