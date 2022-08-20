@@ -206,6 +206,7 @@ function App() {
 		setClassificationRes(res);
 		setPredictedActivities(PredActs);
 		setCurrentActInstanceIdx(id);
+		setSelectedInstanceEvents({});
 	}
 
 	function handleScaleChange(action, graphIdx) {
