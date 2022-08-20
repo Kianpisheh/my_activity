@@ -6,6 +6,9 @@ import AxiomTypes from "../../model/AxiomTypes";
 import { CircleNum } from "../ResultsPanel/utils";
 import QueryTrigger from "../../model/QueryTrigger";
 
+import EventStat from "../../model/EventStat";
+import RangeVis from "./RangeVis";
+
 function WhyNotWhatExplanation(props) {
 	const { stats } = props;
 	if (!stats) {
@@ -24,8 +27,10 @@ function WhyNotWhatExplanation(props) {
 		axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-        return axiomStatText = <InteractionAxiomWhyNotWhatText stats={stats} axiom={axiom}></InteractionAxiomWhyNotWhatText>;
-    } else {
+		return (axiomStatText = (
+			<InteractionAxiomWhyNotWhatText stats={stats} axiom={axiom}></InteractionAxiomWhyNotWhatText>
+		));
+	} else {
 		return;
 	}
 
@@ -36,11 +41,11 @@ function WhyNotWhatExplanation(props) {
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
-                    if (props.qmenuPos[0] > 0) {
-					    props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
-                    } else {
-					    props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
-                    }
+					if (props.qmenuPos[0] > 0) {
+						props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+					} else {
+						props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+					}
 				}}
 			>
 				{CircleNum("?")}
@@ -141,18 +146,20 @@ export function TimeDistanceAxiomStat(props) {
 }
 
 export function InteractionAxiomWhyNotWhatText(props) {
-    const { axiom, numInstances } = props.stats;
+	const { axiom, numInstances } = props.stats;
 	const events = axiom.getEvents();
-    const samples = numInstances > 1 ? "samples" : "sample";
+	const samples = numInstances > 1 ? "samples" : "sample";
 	const doesDo = numInstances > 1 ? "do" : "does";
 
-    return <div className="text-explanation">
-        <span style={{ color: "#5F5656" }}>
-					The selected {samples} {doesDo} not include interactions with the{" "}
-		</span>
-		<span style={{ color: "var(--explanation" }}>{events[0]}</span>
-        <span style={{ color: "#5F5656" }}>.</span>
-    </div>
+	return (
+		<div className="text-explanation">
+			<span style={{ color: "#5F5656" }}>
+				The selected {samples} {doesDo} not include interactions with the{" "}
+			</span>
+			<span style={{ color: "var(--explanation" }}>{events[0]}</span>
+			<span style={{ color: "#5F5656" }}>.</span>
+		</div>
+	);
 }
 
 export function DurationAxiomStatText(props) {
@@ -172,7 +179,7 @@ export function DurationAxiomStatText(props) {
 				<span style={{ color: "#5F5656" }}>
 					The selected {samples} {doesDo} not include interactions with the{" "}
 				</span>
-				{<span style={{ color: "var(--explanation"}}>{events[0]}</span>}
+				{<span style={{ color: "var(--explanation" }}>{events[0]}</span>}
 				<span style={{ color: "#5F5656" }}>.</span>
 			</div>
 		);
@@ -183,11 +190,11 @@ export function DurationAxiomStatText(props) {
 				<span style={{ color: "var(--explanation" }}>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> takes</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
-				{multiple && <span style={{ color: "var(--explanation" }}>{Math.round(10* minDuration1)/10}</span>}
+				{multiple && <span style={{ color: "var(--explanation" }}>{Math.round(10 * minDuration1) / 10}</span>}
 				{multiple && <span style={{ color: "#5F5656" }}> and</span>}
-				<span style={{ color: "var(--explanation" }}> {Math.round(10* maxDuration1)/10} </span>
+				<span style={{ color: "var(--explanation" }}> {Math.round(10 * maxDuration1) / 10} </span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
-					 sec.
+					sec.
 				</span>
 			</div>
 		);
@@ -215,9 +222,9 @@ export function TimeDistanceAxiomStatText(props) {
 				<span style={{ color: "#5F5656" }}>
 					The selected {samples} {doesDo} not include interactions with the{" "}
 				</span>
-				{isMissing1 && <span style={{ color: "var(--explanation"}}>{events[0]}</span>}
+				{isMissing1 && <span style={{ color: "var(--explanation" }}>{events[0]}</span>}
 				{!isMissing1 && !isMissing2 && <span style={{ color: "#5F5656" }}>and </span>}
-				{isMissing2 && <span style={{ color: "var(--explanation"}}>{events[1]}</span>}
+				{isMissing2 && <span style={{ color: "var(--explanation" }}>{events[1]}</span>}
 				<span style={{ color: "#5F5656" }}>.</span>
 			</div>
 		);
@@ -226,17 +233,19 @@ export function TimeDistanceAxiomStatText(props) {
 		explanation = (
 			<div className="text-explanation">
 				<span style={{ color: "#5F5656" }}>In the the selected {samples}, the interaction with the </span>
-				<span style={{ color: "var(--explanation"}}>{events[0]}</span>
+				<span style={{ color: "var(--explanation" }}>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> occurs</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
-				{multiple && <span style={{ color: "var(--explanation"}}>{Math.round(10*minTimeDistance)/10}</span>}
+				{multiple && (
+					<span style={{ color: "var(--explanation" }}>{Math.round(10 * minTimeDistance) / 10}</span>
+				)}
 				{multiple && <span style={{ color: "#5F5656" }}> and</span>}
-				<span style={{ color: "var(--explanation"}}> {Math.round(10*maxTimeDistance)/10}</span>
+				<span style={{ color: "var(--explanation" }}> {Math.round(10 * maxTimeDistance) / 10}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					{" "}
 					sec after the interaction with the{" "}
 				</span>
-				<span style={{ color: "var(--explanation"}}>{events[1]}</span>
+				<span style={{ color: "var(--explanation" }}>{events[1]}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					.
 				</span>
@@ -313,12 +322,65 @@ export function DurationStat(props) {
 				<span style={{ fontSize: 13, color: "#5F5656", fontWeight: 600 }}>
 					{" " + Math.round(mind * 10) / 10 + " "}
 				</span>
-                {multiple && <span style={{ fontSize: 13, color: "#5F5656" }}> and</span>}
-                {multiple && <span style={{ fontSize: 13, color: "#5F5656", fontWeight: 600 }}>
-					{" " + Math.round(maxd * 10) / 10 + " "}
-				</span>}
+				{multiple && <span style={{ fontSize: 13, color: "#5F5656" }}> and</span>}
+				{multiple && (
+					<span style={{ fontSize: 13, color: "#5F5656", fontWeight: 600 }}>
+						{" " + Math.round(maxd * 10) / 10 + " "}
+					</span>
+				)}
 				<span style={{ fontSize: 13, color: "#5F5656" }}> sec</span>
 			</div>
+		</div>
+	);
+}
+
+export function InteractionAxiomStat(props) {
+	const { instances, axiom } = props;
+	const events = axiom.getEvents();
+
+	return (
+		<div
+			className="interaction-axiom-stat-container"
+			style={{
+				display: "flex",
+				flexDirection: "column",
+				rowGap: 20,
+				background: "var(--light-beige)",
+				padding: 20,
+                borderRadius: 5
+			}}
+		>
+			{events.map((ev) => {
+				let eventStats = [];
+				for (const instance of instances) {
+					eventStats.push(new EventStat(instance, [ev]));
+				}
+				let durations = EventStat.getStatsDurations(eventStats, "");
+
+				const Icon = Icons.getIcon(pascalCase(ev));
+				return (
+					<div key={ev + "stat"} className="interaction-stat" style={{ display: "flex", columnGap: 10 }}>
+						<div key={"stat-icon" + ev} className="stat-icon">
+							<svg key={"stat-svg-" + ev} width={95} height={22}>
+								<Icon
+									key={"stat-icon-" + ev}
+									x={0}
+									y={0}
+									width={22}
+									height={22}
+									fill={Icons.getColor(pascalCase(ev))}
+								></Icon>
+								<text x={37} y={18} fontSize={12}>
+									Duration(s)
+								</text>
+							</svg>
+						</div>
+						<div key={"stat-range" + ev} className="stat-range-vis">
+							<RangeVis numbers={durations}></RangeVis>
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 }

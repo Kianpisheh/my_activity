@@ -91,8 +91,10 @@ class EventStat {
 	static getStatsDurations(stats: EventStat[], activity: string) {
 		let durations = [];
 		for (const stat of stats) {
-			if (activity && stat.instanceType !== activity) {
-				continue;
+			if (activity !== "") {
+				if (activity && stat.instanceType !== activity) {
+					continue;
+				}
 			}
 			durations.push(...stat.getDurations());
 		}
@@ -115,8 +117,10 @@ class EventStat {
 	static getCoverageNums(stats: EventStat[], activity: string) {
 		let coverage = 0;
 		for (const stat of stats) {
-			if (activity && stat.instanceType !== activity) {
-				continue;
+			if (activity !== "") {
+				if (activity && stat.instanceType !== activity) {
+					continue;
+				}
 			}
 			if (stat.hasEvents) {
 				coverage += 1;

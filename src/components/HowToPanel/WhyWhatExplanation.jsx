@@ -1,11 +1,10 @@
 import AxiomTypes from "../../model/AxiomTypes";
 import QueryTrigger from "../../model/QueryTrigger";
 import { CircleNum } from "../ResultsPanel/utils";
-import { DurationAxiomStat, TimeDistanceAxiomStat } from "./WhyNotWhatExplanation";
+import { DurationAxiomStat, TimeDistanceAxiomStat, InteractionAxiomStat } from "./WhyNotWhatExplanation";
 
 import { TimeDistanceAxiomStatText } from "./WhyNotWhatExplanation";
 import { DurationAxiomStatText } from "./WhyNotWhatExplanation";
-import {InteractionAxiomWhyWhatText} from "./WhyNotWhatExplanation"
 
 function WhyWhatExplanation(props) {
 
@@ -26,7 +25,8 @@ function WhyWhatExplanation(props) {
         axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-        //return axiomStatText = <InteractionAxiomWhyWhatText></InteractionAxiomWhyWhatText>;
+        let selectedInstances = instances.filter((instance,idx) => Object.values(selectedInstancesIdx)[0].includes(idx));
+        axiomStatComp = <InteractionAxiomStat instances={selectedInstances} axiom={axiom}></InteractionAxiomStat>
     } else {
 		return;
 	}
