@@ -160,7 +160,7 @@ function App() {
 
 	function updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx) {
 		if (message !== AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
-			updateDatabase(currentActivity, "update", dataset).then(() => {
+			updateDatabase(currentActivity, "update", dataset, enteredUser).then(() => {
 				let instances = [];
 				for (let i = 0; i < activityInstances.length; i++) {
 					instances.push(activityInstances[i].getName());
@@ -259,7 +259,7 @@ function App() {
 
 	function readDataFromDB(dataset) {
 		setDataset(dataset);
-		let activitiesPromise = retrieveActivities(dataset);
+		let activitiesPromise = retrieveActivities(dataset, enteredUser);
 		handleRuleitemRequest();
 		activitiesPromise.then((data) => {
 			let activities = data.data;
@@ -335,11 +335,11 @@ function App() {
 		ev.preventDefault();
 		setLoggedin(true);
 		// ask server for the pass
-		// checkPassword(enteredUser, enteredPass).then((res) => {
-		// 	if (res.data) {
-		// 		setLoggedin(true);
-		// 	}
-		// });
+		checkPassword(enteredUser, enteredPass).then((res) => {
+			if (res.data) {
+				setLoggedin(true);
+			}
+		});
 	}
 
 	return (

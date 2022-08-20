@@ -8,18 +8,35 @@ class EventStat {
 	durationRange: number[];
 	timeDistanceRange: number[];
 	immediateTimeDistance: number;
+	timeDistances: number[];
+	durations: number[];
 
 	constructor(activityInstance: ActivityInstance, events: string[]) {
 		this.instanceType = activityInstance.getType();
 		this.instanceName = activityInstance.getName();
 		this.events = events;
+		this.durations = [];
+		this.timeDistances = [];
+		this.durationRange = [];
+		this.timeDistanceRange = [];
+
 		this.hasEvents = activityInstance.hasOccurred(this.events);
 		if (this.hasEvents && events.length === 1) {
-			this.durationRange = activityInstance.getDurationRange(this.events[0]);
+			this.durations = activityInstance.getDurations(this.events[0]);
+			this.durationRange = [Math.min(...this.durations), Math.max(...this.durations)];
 		}
 		if (this.hasEvents && events.length === 2) {
-			this.timeDistanceRange = activityInstance.getTimeDistanceRange(this.events);
+			this.timeDistances = activityInstance.getTimeDistances(this.events);
+			this.timeDistanceRange = [Math.min(...this.timeDistances), Math.max(...this.timeDistances)];
 		}
+	}
+
+	getTimeDistances() {
+		return this.timeDistances;
+	}
+
+	getDurations() {
+		return this.durations;
 	}
 
 	static getEventInstanceStat(activityInstances: ActivityInstance[], events: string[]) {
@@ -69,6 +86,30 @@ class EventStat {
 			return [];
 		}
 		return [Math.min(...minDurationRanges), Math.max(...maxDurationRanges)];
+	}
+
+	static getStatsDurations(stats: EventStat[], activity: string) {
+		let durations = [];
+		for (const stat of stats) {
+			if (activity && stat.instanceType !== activity) {
+				continue;
+			}
+			durations.push(...stat.getDurations());
+		}
+
+		return durations;
+	}
+
+	static getStatsTimeDistances(stats: EventStat[], activity: string) {
+		let timeDistances = [];
+		for (const stat of stats) {
+			if (activity && stat.instanceType !== activity) {
+				continue;
+			}
+			timeDistances.push(...stat.getTimeDistances());
+		}
+
+		return timeDistances;
 	}
 
 	static getCoverageNums(stats: EventStat[], activity: string) {

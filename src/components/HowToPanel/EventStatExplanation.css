@@ -13,7 +13,10 @@
 .single-stat-container {
 	display: flex;
 	flex-direction: column;
-	padding: 20px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	background-color: var(--light-beige);
 	width: 85%;
 	border-radius: 5px;
@@ -26,6 +29,18 @@
 
 .stat-exp-reg-text {
 	font-size: 13px;
+}
+
+.range-container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.range-vis {
+	display: flex;
+	align-self: flex-end;
+	justify-self: flex-end;
 }
 
 .stats {

@@ -224,6 +224,34 @@ class ActivityInstance {
 		return [Math.min(...durations), Math.max(...durations)];
 	}
 
+	getDurations(event: string) {
+		let durations = [];
+		for (const ev of this.events) {
+			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
+				durations.push(ev.endTime - ev.startTime);
+			}
+		}
+
+		return durations;
+	}
+
+	getTimeDistances(events: string[]) {
+		const eventInstances1 = this.getEvent(events[0]);
+		const eventInstances2 = this.getEvent(events[1]);
+
+		let timeDistances = [];
+		for (const eventInstance1 of eventInstances1) {
+			for (const eventInstance2 of eventInstances2) {
+				const timeDistance = eventInstance2.startTime - eventInstance1.endTime;
+				if (timeDistance > 0) {
+					timeDistances.push(timeDistance);
+				}
+			}
+		}
+
+		return timeDistances;
+	}
+
 	getAvgTimeDistance(events: string[]) {
 		const eventInstances1 = this.getEvent(events[0]);
 		const eventInstances2 = this.getEvent(events[1]);
