@@ -107,7 +107,7 @@ export function getClassificationResult(
 	let results: { [act: string]: any } = {};
 	for (const activity of activities) {
 		if (!predictedActivities.length || !activity) {
-			return {};
+			results[activity.getName()] = {};
 		}
 
 		let FP: number[] = [];

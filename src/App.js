@@ -202,7 +202,7 @@ function App() {
 
 	function handleActInstanceChange(id) {
 		let PredActs = classifyInstances(activityInstances, activities);
-		let res = getClassificationResult(activityInstances, predictedActivities, activities);
+		let res = getClassificationResult(activityInstances, PredActs, activities);
 		setClassificationRes(res);
 		setPredictedActivities(PredActs);
 		setCurrentActInstanceIdx(id);
@@ -280,10 +280,10 @@ function App() {
 				});
 				setActivityInstances(instanceItems);
 				if (instanceItems.length) {
-					let PredActs = classifyInstances(activityInstances, activities);
+					let PredActs = classifyInstances(instanceItems, activityItems);
 					setPredictedActivities(PredActs);
 					setCurrentActInstanceIdx(0);
-					let res = getClassificationResult(activityInstances, predictedActivities, activities);
+					let res = getClassificationResult(instanceItems, PredActs, activityItems);
 					setClassificationRes(res);
 				}
 			});
