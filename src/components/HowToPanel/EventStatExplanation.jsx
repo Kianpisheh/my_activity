@@ -29,7 +29,7 @@ function EventStatExplanation(props) {
 		for (const act of activities) {
 			timeDistanceRanges[act] = EventStat.getStatsTimeDistanceRange(stats, act);
 			coverages[act] = EventStat.getCoverageNums(stats, act);
-            timeDistances[act] = EventStat.getStatsDurations(stats, act);
+            timeDistances[act] = EventStat.getStatsTimeDistances(stats, act);
 		}
 	} else if (events.length > 2) {
 		for (const act of activities) {
