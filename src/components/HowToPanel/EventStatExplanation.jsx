@@ -13,6 +13,7 @@ function EventStatExplanation(props) {
 	}
 
 	let activities = Activity.getActivityList(instances);
+    const numActivity = Activity.getActivityNum(instances);
 	const events = stats?.[0]?.events;
 	let durationRanges = {};
 	let coverages = {};
@@ -54,7 +55,7 @@ function EventStatExplanation(props) {
 										<span style={{ fontSize: 12 }}>Occurrance:{"  "}</span>
 										<span style={{ fontSize: 25, color: "var(--explanation)" }}>
 											{" "}
-											{coverages[act]}
+											{coverages[act] + " / " + numActivity[act]}
 										</span>
 										<span style={{ fontSize: 12, marginLeft: "0.1em" }}> time(s)</span>
 									</span>

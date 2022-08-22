@@ -210,6 +210,19 @@ class Activity {
 
 		return acts;
 	}
+
+	static getActivityNum(instances: ActivityInstance[]) {
+		let actNum: { [act: string]: number } = {};
+		for (const instance of instances) {
+			if (instance.getType() in actNum) {
+				actNum[instance.getType()] += 1;
+			} else {
+				actNum[instance.getType()] = 1;
+			}
+		}
+
+		return actNum;
+	}
 }
 
 export default Activity;
