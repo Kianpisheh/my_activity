@@ -26,7 +26,6 @@ function QuestionMenu(props) {
             })}
         </div>
     </div>
-
 }
 
 function getQuestions(queryTrigger, data) {

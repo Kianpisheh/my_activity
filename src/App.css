@@ -69,10 +69,6 @@ body,
 	overflow: scroll;
 }
 
-#question-menu {
-	position: absolute;
-}
-
 #how-to-panel {
 	border-top: 1px solid var(--borders);
 	height: 100%;

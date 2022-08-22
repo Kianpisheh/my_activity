@@ -9,6 +9,7 @@ import WhyNotExplanation from "./WhyNotExplanation";
 import EventStatExplanation from "./EventStatExplanation";
 
 import QueryTrigger from "../../model/QueryTrigger";
+import QuestionMenu from "../QuestionMenu/QuestionMenu";
 
 function HowToPanel2(props) {
 	const {
@@ -18,10 +19,10 @@ function HowToPanel2(props) {
 		whyHowTosuggestions,
 		selectedInstancesIdx,
 		instances,
-        activity,
-        queryTrigger,
-        unsatisfiedAxioms,
-        whyQueryMode
+		activity,
+		queryTrigger,
+		unsatisfiedAxioms,
+		whyQueryMode,
 	} = props;
 
 	let whyExplanation = [];
@@ -32,17 +33,19 @@ function HowToPanel2(props) {
 		const numInstances = selectedInstances.length;
 		whyExplanation.push(<WhyNotExplanation numInstances={numInstances} activity={activity}></WhyNotExplanation>);
 	} else if (queryTrigger === QueryTrigger.WHY && whyQueryMode) {
-        const selectedInstances = instances.filter((instance, idx) =>
+		const selectedInstances = instances.filter((instance, idx) =>
 			Object.values(selectedInstancesIdx)[0].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
 		whyExplanation.push(<WhyExplanation numInstances={numInstances} activity={activity}></WhyExplanation>);
-    }
+	}
 
-    let eventInstanceExplanation = null;
-    if (props.eventStats && props.eventStats.length) {
-        eventInstanceExplanation = <EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
-    }
+	let eventInstanceExplanation = null;
+	if (props.eventStats && props.eventStats.length) {
+		eventInstanceExplanation = (
+			<EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
+		);
+	}
 	let whatExplanation = [];
 
 	if (whyNotWhat) {
@@ -54,7 +57,7 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                qmenuPos={props.qmenuPos}
+				qmenuPos={props.qmenuPos}
 			></WhyNotWhatExplanation>
 		);
 	} else if (whyWhat) {
@@ -66,7 +69,7 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                qmenuPos={props.qmenuPos}
+				qmenuPos={props.qmenuPos}
 			></WhyWhatExplanation>
 		);
 	}
@@ -94,6 +97,16 @@ function HowToPanel2(props) {
 			<div id="exp-title-section">
 				<span className="section-title">Explanations</span>
 			</div>
+			{props.queryTrigger !== "" && (
+				<div id="question-menu">
+					<QuestionMenu
+						selectedIdx={props.selectedIdx}
+						currentActivity={props.activity}
+						onQuery={props.onQuery}
+						queryTrigger={props.queryTrigger}
+					></QuestionMenu>
+				</div>
+			)}
 			{whatExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
@@ -111,7 +124,7 @@ function HowToPanel2(props) {
 			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
 				<div className="why-explanation-container">{[...whyExplanation]}</div>
 			)}
-            <div className="event-instance-container">{eventInstanceExplanation}</div>
+			<div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);
 }

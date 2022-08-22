@@ -389,17 +389,6 @@ function App() {
 			)}
 			{loggedin && (
 				<React.Fragment>
-					{" "}
-					{qmenuPos?.[0] > 0 && (
-						<div id="question-menu" style={{ left: qmenuPos[0] + 20, top: qmenuPos[1] }}>
-							<QuestionMenu
-								selectedIdx={selectedInstancesIdx}
-								currentActivity={currentActivity}
-								onQuery={handleQuery}
-								queryTrigger={queryTrigger}
-							></QuestionMenu>
-						</div>
-					)}
 					<div id="act-instances-pane">
 						<ActivityInstancePane
 							activtiyInstances={activityInstances}
@@ -494,6 +483,8 @@ function App() {
 							qmenuPos={qmenuPos}
 							unsatisfiedAxioms={unsatisfiedAxioms}
 							whyQueryMode={whyQueryMode}
+							selectedIdx={selectedInstancesIdx}
+							onQuery={handleQuery}
 						></HowToPanel2>
 					</div>
 					<div id="explanations">
@@ -506,12 +497,17 @@ function App() {
 							newFPs={newFPs}
 							queryMode={queryMode}
 							onInstanceSelection={(idx, type, activity) => {
-								let selInstancesIdx = [];
+								let selInstancesIdx = {};
 								if (currentActivity && currentActivity.getName() !== activity) {
 									for (let i = 0; i < activities.length; i++) {
 										if (activities[i].getName() === activity) {
 											setCurrentActivityIdx(i);
-											setSelectedInstancesIdx({ type: [idx] });
+											if (type === "FN") {
+												selInstancesIdx = { FN: [idx] };
+											} else {
+												selInstancesIdx = { FP: [idx] };
+											}
+											setSelectedInstancesIdx(selInstancesIdx);
 										}
 									}
 								} else {
@@ -522,6 +518,16 @@ function App() {
 										activity
 									);
 									setSelectedInstancesIdx(selInstancesIdx);
+								}
+
+								if (selInstancesIdx[Object.keys(selInstancesIdx)[0]].length !== 0) {
+									let queryTrigger = null;
+									if (selInstancesIdx["FN"] && selInstancesIdx["FN"].length > 0) {
+										queryTrigger = QueryTrigger.WHY_NOT;
+									} else if (selInstancesIdx["FP"] && selInstancesIdx["FP"].length > 0) {
+										queryTrigger = QueryTrigger.WHY;
+									}
+									setQueryTrigger(queryTrigger);
 								}
 								handleActInstanceChange(idx);
 							}}
