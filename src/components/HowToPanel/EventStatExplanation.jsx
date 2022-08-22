@@ -4,6 +4,7 @@ import Activity from "../../model/Activity";
 import EventStat from "../../model/EventStat";
 
 import RangeVis from "./RangeVis";
+import StatEvents from "./StatEvents";
 
 function EventStatExplanation(props) {
 	const { stats, instances } = props;
@@ -38,6 +39,7 @@ function EventStatExplanation(props) {
 
 	return (
 		<div className="stats-container">
+            <StatEvents events={stats[0].events}></StatEvents>
 			{Object.keys(coverages).map((act) => {
 				return (
 					act !== "" &&

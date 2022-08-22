@@ -72,7 +72,7 @@ function ActivityAxiomPane(props) {
 							height: "30px",
 						}}
 					>
-						<span className="sub-section-title">Interaction axioms</span>
+						<span className="sub-section-title" style={{width: 220}}>Interaction with objects and appliances</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
 							<button
 								className="add-int-btn"
@@ -123,7 +123,7 @@ function ActivityAxiomPane(props) {
 					</div>
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
-						<span className="sub-section-title">Temporal axioms</span>
+						<span className="sub-section-title" style={{width: 125}}>Temporal conditions</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
 							<button
 								className="add-int-btn"

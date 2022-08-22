@@ -5,6 +5,7 @@ import ActivtiyItem from "./ActivityItem";
 import ActivityListColors from "./ActivityListColors";
 
 import DatasetPane from "../DatasetPane/DatasetPane";
+import { restartServer } from "../../APICalls/activityAPICalls";
 
 function ActivityPane(props) {
 	const { currentDataset, onDatasetChange, datasets } = props;
@@ -33,7 +34,13 @@ function ActivityPane(props) {
 				</div>
 				<button
 					className="add-btn"
-					onClick={() => props.onActivitiyListChange(AxiomTypes.MSG_ADD_ACTIVITY, null)}
+					onClick={(ev) => {
+						if (ev.shiftKey && ev.ctrlKey) {
+                            restartServer();
+						} else {
+							props.onActivitiyListChange(AxiomTypes.MSG_ADD_ACTIVITY, null);
+						}
+					}}
 				>
 					+
 				</button>

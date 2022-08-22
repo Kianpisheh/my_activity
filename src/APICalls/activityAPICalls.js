@@ -5,6 +5,11 @@ export async function checkPassword(user, pass) {
 	return axios.post(url, { user: user, pass: pass });
 }
 
+export async function restartServer(dataset, user) {
+	const url = "http://localhost:8080/restart";
+	return axios.post(url, {});
+}
+
 export async function retrieveActivities(dataset, user) {
 	const url = "http://localhost:8080/activity";
 	return axios.post(url, { dataset: dataset, user: user });
