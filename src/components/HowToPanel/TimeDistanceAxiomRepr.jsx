@@ -1,56 +1,60 @@
-import "./TimeDistanceAxiomRepr.css"
+import "./TimeDistanceAxiomRepr.css";
 
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
 import { getWhyNotNum } from "../AxiomPane/Axiom";
 
 function TimeDistanceAxiomRepr(props) {
-    
-    const th1 = props.axiom.getTh1();
-    const th2 = props.axiom.getTh2();
-    const events = props.axiom.getEvents();
-    const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
+	const th1 = props.axiom.getTh1();
+	const th2 = props.axiom.getTh2();
+	const events = props.axiom.getEvents();
+	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 	const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
 
+	// dimentions
+	const w = 350;
+	const h = 50;
+	const icSize = 25;
+	const lineSize = 90;
+	const xIcon1 = w / 4 - lineSize / 2 - icSize - 10;
+	const xIcon2 = w / 4 + lineSize / 2 + 10;
+	const yIcon = icSize / 2;
 
-    // dimentions
-    const w = 350;
-    const h = 50;
-    const icSize = 25;
-    const lineSize = 90;
-    const xIcon1 = (w / 4 - lineSize / 2) - icSize - 10;
-    const xIcon2 = (w / 4 + lineSize / 2) + 10;
-    const yIcon = icSize / 2;
+    const br = props.selectedWhys === props.idx ? "solid" : "none";
 
-    // check if this is an unsatisfied axiom based on the user query
+	// check if this is an unsatisfied axiom based on the user query
 	const numnum = getWhyNotNum(
 		props.unsatisfiedAxioms,
 		props.axiom,
 		props.onWhyNotWhatQuery,
 		props.onWhyNotNumHover,
-        props.queryTrigger,
-        props.qmenuPos
+		props.queryTrigger,
+		props.qmenuPos
 	);
-
-    return <div className="time-distance-axiom-repr">
-        <svg width={w} height={h}>
-            <Icon1
-                x={xIcon1}
-                y={yIcon}
-                key={"time-dist-1-repr"}
-                width={icSize}
-                height={icSize}
-                fill={"#3A2A0D"}
-            ></Icon1>
-            <Icon2
-                x={xIcon2}
-                y={yIcon}
-                key={"time-dist-2-repr"}
-                width={icSize}
-                height={icSize}
-                fill={"#3A2A0D"}
-            ></Icon2>
-            <line
+	return (
+		<div
+			className="time-distance-axiom-repr"
+			style={{ cursor: "pointer", border: br }}
+			onClick={() => props.onWhySelection(props.idx)}
+		>
+			<svg width={w} height={h}>
+				<Icon1
+					x={xIcon1}
+					y={yIcon}
+					key={"time-dist-1-repr"}
+					width={icSize}
+					height={icSize}
+					fill={"#3A2A0D"}
+				></Icon1>
+				<Icon2
+					x={xIcon2}
+					y={yIcon}
+					key={"time-dist-2-repr"}
+					width={icSize}
+					height={icSize}
+					fill={"#3A2A0D"}
+				></Icon2>
+				<line
 					y1={icSize + 5}
 					x1={w / 4 - lineSize / 2}
 					x2={w / 4 + lineSize / 2}
@@ -71,22 +75,17 @@ function TimeDistanceAxiomRepr(props) {
 					stroke="#555555"
 					strokeWidth={1}
 				/>
-                <line
-					y1={0}
-					x1={5.5*w / 10}
-					x2={5.5*w / 10}
-					y2={h}
-					stroke="#555555"
-					strokeWidth={1}
-				></line>
-                <text x={w/2 + 40} y={h/2 - 12} fontSize={12}>more than {th1} sec</text>
-                <text x={w/2 + 40} y={h/2 + 12} fontSize={12}>less than {th2} sec</text>
-        </svg>
-        <div id="num-div">
-            {!props.whyQueryMode && numnum}
-        </div>
-    </div>    
+				<line y1={0} x1={(5.5 * w) / 10} x2={(5.5 * w) / 10} y2={h} stroke="#555555" strokeWidth={1}></line>
+				<text x={w / 2 + 40} y={h / 2 - 12} fontSize={12}>
+					more than {th1} sec
+				</text>
+				<text x={w / 2 + 40} y={h / 2 + 12} fontSize={12}>
+					less than {th2} sec
+				</text>
+			</svg>
+			<div id="num-div">{!props.whyQueryMode && numnum}</div>
+		</div>
+	);
 }
-
 
 export default TimeDistanceAxiomRepr;

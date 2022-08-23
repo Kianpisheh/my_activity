@@ -1,6 +1,8 @@
 import "./HowToPanel2.css";
 
 import WhyNotHowToExplanations from "./WhyNotHowToExplanations";
+import { useState } from "react";
+
 import WhyHowToExplanations from "./WhyHowToExplanations";
 import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
 import WhyWhatExplanation from "./WhyWhatExplanation";
@@ -12,6 +14,9 @@ import QueryTrigger from "../../model/QueryTrigger";
 import QuestionMenu from "../QuestionMenu/QuestionMenu";
 
 function HowToPanel2(props) {
+	const [selectedWhys, setSelectedWhy] = useState(null);
+	const [selectedHows, setSelectedHow] = useState(null);
+
 	const {
 		whyWhat,
 		whyNotWhat,
@@ -40,6 +45,14 @@ function HowToPanel2(props) {
 				numInstances={numInstances}
 				activity={activity}
 				unsatisfiedAxioms={unsatisfiedAxioms}
+				selectedWhys={selectedWhys}
+				onWhySelection={(axIdx) => {
+                    if (selectedWhys === axIdx) {
+                        setSelectedWhy(null);
+                    } else {
+                        setSelectedWhy(axIdx);
+                    }
+                }}
 			></WhyNotExplanation>
 		);
 	} else if (queryTrigger === QueryTrigger.WHY && whyQueryMode) {
@@ -47,7 +60,20 @@ function HowToPanel2(props) {
 			Object.values(selectedInstancesIdx)[0].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
-		whyExplanation.push(<WhyExplanation numInstances={numInstances} activity={activity}></WhyExplanation>);
+		whyExplanation.push(
+			<WhyExplanation
+				numInstances={numInstances}
+				activity={activity}
+				selectedWhys={selectedWhys}
+				onWhySelection={(axIdx) => {
+                    if (selectedWhys === axIdx) {
+                        setSelectedWhy(null);
+                    } else {
+                        setSelectedWhy(axIdx);
+                    }
+                }}
+			></WhyExplanation>
+		);
 	}
 
 	let eventInstanceExplanation = null;
@@ -91,6 +117,8 @@ function HowToPanel2(props) {
 			<WhyNotHowToExplanations
 				suggestions={whyNotHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
+				selectedHows={selectedHows}
+				onHowSelection={() => console.log("first")}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
@@ -98,6 +126,8 @@ function HowToPanel2(props) {
 			<WhyHowToExplanations
 				suggestions={whyHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
+				selectedHows={selectedHows}
+				onHowSelection={() => console.log("first")}
 			></WhyHowToExplanations>
 		);
 	}
@@ -117,6 +147,11 @@ function HowToPanel2(props) {
 					></QuestionMenu>
 				</div>
 			)}
+
+			{whyExplanation.length > 0 && (
+				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
+			)}
+			{whyExplanation.length > 0 && <div className="why-explanation-container">{[...whyExplanation]}</div>}
 			{whatExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
@@ -128,12 +163,6 @@ function HowToPanel2(props) {
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
 			<div className="how-to-explanations-container">{[...suggestions]}</div>
-			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
-				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
-			)}
-			{whyExplanation.length > 0 && whatExplanation.length === 0 && (
-				<div className="why-explanation-container">{[...whyExplanation]}</div>
-			)}
 			<div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);
