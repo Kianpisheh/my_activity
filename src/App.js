@@ -482,6 +482,11 @@ function App() {
 							queryTrigger={queryTrigger}
 							qmenuPos={qmenuPos}
 							unsatisfiedAxioms={unsatisfiedAxioms}
+							onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
+								setQueriedAxiom(ax);
+								setQmenuPos([x, y]);
+								setQueryTrigger(queryTrigger);
+							}}
 							whyQueryMode={whyQueryMode}
 							selectedIdx={selectedInstancesIdx}
 							onQuery={handleQuery}

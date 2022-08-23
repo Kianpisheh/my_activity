@@ -31,7 +31,17 @@ function HowToPanel2(props) {
 			Object.values(selectedInstancesIdx)[0].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
-		whyExplanation.push(<WhyNotExplanation numInstances={numInstances} activity={activity}></WhyNotExplanation>);
+		whyExplanation.push(
+			<WhyNotExplanation
+				qmenuPos={props.qmenuPos}
+				queryTrigger={props.queryTrigger}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyNotNumHover={props.onWhyNotNumHover}
+				numInstances={numInstances}
+				activity={activity}
+				unsatisfiedAxioms={unsatisfiedAxioms}
+			></WhyNotExplanation>
+		);
 	} else if (queryTrigger === QueryTrigger.WHY && whyQueryMode) {
 		const selectedInstances = instances.filter((instance, idx) =>
 			Object.values(selectedInstancesIdx)[0].includes(idx)

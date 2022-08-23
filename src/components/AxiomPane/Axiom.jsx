@@ -119,7 +119,7 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyN
 		if (isEqual(ax, axiom)) {
 			numnum = (
 				<div
-					id="why-not-num-container"
+                    style={{width: 15, height: 15, cursor: "pointer"}}
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
 					onClick={(ev) => {
