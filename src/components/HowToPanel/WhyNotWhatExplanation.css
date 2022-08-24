@@ -4,15 +4,15 @@
 	justify-content: center;
 	width: 100%;
 	height: 100%;
-	height: 90px;
-	background-color: var(--light-beige);
+	height: 70px;
+	align-items: center;
 }
 
 .stat-container {
 	display: grid;
 	grid-template-columns: 1fr 13px;
 	row-gap: 20px;
-	width: 80%;
+	width: 100%;
 	border-radius: 5px;
 }
 
@@ -23,10 +23,11 @@
 .td-stat-container2 {
 	display: flex;
 	column-gap: 10px;
-	width: 100%;
+	width: 75%;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 10px;
+	background-color: var(--light-beige);
 }
 
 .td-stat-data-container2 {
@@ -51,6 +52,7 @@
 #why-not-what-qmark {
 	display: flex;
 	height: 100%;
+	width: 0;
 	margin-top: -9px;
 	margin-right: -9px;
 	cursor: pointer;

@@ -1,6 +1,12 @@
+import "./TimeDistanceAxiomRepr.css"
+
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
 import { getWhyNotNum } from "../AxiomPane/Axiom";
+
+import isEqual from "lodash.isequal";
+
+import AxiomData from "../../model/AxiomData";
 
 function InteractionAxiomRepr(props) {
 	const events = props.axiom.getEvents();
@@ -25,11 +31,22 @@ function InteractionAxiomRepr(props) {
 		props.qmenuPos
 	);
 
+    let selFNIds = [];
+    for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
+		const ax = AxiomData.axiomFromString(axiomString);
+		if (isEqual(ax, props.axiom)) {
+            selFNIds = [...ids];
+            break;
+        }
+    }
+
 	return (
 		<div
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
 			onClick={() => props.onWhySelection(props.idx)}
+            onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotNumHover([])}
 		>
 			<svg width={w} height={h}>
 				<Icon1

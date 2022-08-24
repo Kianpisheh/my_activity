@@ -16,6 +16,7 @@ import QuestionMenu from "../QuestionMenu/QuestionMenu";
 function HowToPanel2(props) {
 	const [selectedWhys, setSelectedWhy] = useState(null);
 	const [selectedHows, setSelectedHow] = useState(null);
+	const [selectedwhyWhat, setSelectedwhyWhat] = useState(false);
 
 	const {
 		whyWhat,
@@ -94,6 +95,15 @@ function HowToPanel2(props) {
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
 				qmenuPos={props.qmenuPos}
+                onWhyWhatSelection={() => {
+                    if (selectedwhyWhat) {
+                        console.log("first")
+                        setSelectedwhyWhat(false);
+                    } else {
+                        console.log("first")
+                        setSelectedwhyWhat(true);
+                    }
+                }}
 			></WhyNotWhatExplanation>
 		);
 	} else if (whyWhat) {
@@ -106,6 +116,7 @@ function HowToPanel2(props) {
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
 				qmenuPos={props.qmenuPos}
+                selectedwhyWhat={selectedwhyWhat}
 			></WhyWhatExplanation>
 		);
 	}
@@ -151,18 +162,18 @@ function HowToPanel2(props) {
 			{whyExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
-			{whyExplanation.length > 0 && <div className="why-explanation-container">{[...whyExplanation]}</div>}
-			{whatExplanation.length > 0 && (
+			{whyExplanation.length > 0 && <div className="why-explanation-container" style={{marginBottom: 20}}>{[...whyExplanation]}</div>}
+			{selectedWhys !== null && whatExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
-			<div className="axiom-explanations-container">{[...whatExplanation]}</div>
-			{suggestions.length > 0 && whatExplanation.length > 0 && (
+			{selectedWhys !== null && <div className="axiom-explanations-container">{[...whatExplanation]}</div>}
+			{selectedWhys !== null && suggestions.length > 0 && whatExplanation.length > 0 && (
 				<hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />
 			)}
-			{suggestions.length > 0 && (
+			{selectedWhys !== null && suggestions.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
-			<div className="how-to-explanations-container">{[...suggestions]}</div>
+			{selectedWhys !== null && <div className="how-to-explanations-container">{[...suggestions]}</div>}
 			<div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);

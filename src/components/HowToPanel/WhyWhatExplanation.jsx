@@ -34,7 +34,9 @@ function WhyWhatExplanation(props) {
 	return (
 		<div className="stat-container">
 			<div className="text-explanation-container">{axiomStatText}</div>
-			<div className="stat-axiom-explanation-container">{axiomStatComp}</div>
+			<div className="stat-axiom-explanation-container" style={{cursor: "pointer"}}>
+                {axiomStatComp}
+            </div>
 			<div
 				id="why-not-what-qmark"
 				onClick={(ev) => {

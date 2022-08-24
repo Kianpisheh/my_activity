@@ -24,8 +24,8 @@ import Login from "./components/Login";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
-import QuestionMenu, { QueryQuestion } from "./components/QuestionMenu/QuestionMenu";
 import WhyNotHowToQueryController from "./Controllers/WhyNotHowToQueryController";
+import QueryQuestion from "./model/QueryQuestion";
 import WhyNotQueryController from "./Controllers/WhyNotQueryController";
 import WhyFPQueryController from "./Controllers/WhyFPQueryController";
 import WhyNotWhatQueryController from "./Controllers/WhyNotWhatQueryController";

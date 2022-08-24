@@ -21,11 +21,11 @@ function WhyNotWhatExplanation(props) {
 	let axiomStatComp = null;
 	let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
-		axiomStatText = <TimeDistanceAxiomStatText stats={stats}></TimeDistanceAxiomStatText>;
-		axiomStatComp = <TimeDistanceAxiomStat stats={stats} axiom={axiom}></TimeDistanceAxiomStat>;
+		axiomStatText = <TimeDistanceAxiomStatText stats={stats} ></TimeDistanceAxiomStatText>;
+		axiomStatComp = <TimeDistanceAxiomStat stats={stats} axiom={axiom} onWhyWhatSelection={props.onWhyWhatSelection}></TimeDistanceAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
 		axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
-		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
+		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom} onWhyWhatSelection={props.onWhyWhatSelection}></DurationAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
 		return (axiomStatText = (
 			<InteractionAxiomWhyNotWhatText stats={stats} axiom={axiom}></InteractionAxiomWhyNotWhatText>
@@ -61,7 +61,7 @@ export function DurationAxiomStat(props) {
 	const event = axiom.getEvents()?.[0];
 
 	return (
-		<div className="td-stat-container">
+		<div className="td-stat-container" style={{cursor: "pointer"}} onClick={() => {props.onWhyWhatSelection()}}>
 			<DurationStat
 				key={"duration1"}
 				event={event}
@@ -96,7 +96,7 @@ export function TimeDistanceAxiomStat(props) {
 	}
 
 	return (
-		<div id="outer-container">
+		<div id="outer-container" style={{cursor: "pointer"}} onClick={() => props.onWhyWhatSelection()}>
 			<div className="td-stat-container2" style={{ marginTop: !hasTimeDistance && 10 }}>
 				<div className="icon-container2">
 					{((!isMissing1 && !isMissing2) || isMissing1) && (
@@ -232,7 +232,7 @@ export function TimeDistanceAxiomStatText(props) {
 		// both interactions exist in the selected samples
 		explanation = (
 			<div className="text-explanation">
-				<span style={{ color: "#5F5656" }}>In the the selected {samples}, the interaction with the </span>
+				{/* <span style={{ color: "#5F5656" }}>In the the selected {samples}, the interaction with the </span>
 				<span style={{ color: "var(--explanation" }}>{events[0]}</span>
 				<span style={{ color: "#5F5656" }}> occurs</span>
 				{multiple && <span style={{ color: "#5F5656" }}> between</span>}
@@ -248,7 +248,7 @@ export function TimeDistanceAxiomStatText(props) {
 				<span style={{ color: "var(--explanation" }}>{events[1]}</span>
 				<span fill={"#3A2A0D"} style={{ color: "#5F5656" }}>
 					.
-				</span>
+				</span> */}
 			</div>
 		);
 	}
@@ -340,7 +340,7 @@ export function InteractionAxiomStat(props) {
 
 	return (
 		<div
-			className="interaction-axiom-stat-container"
+			className="interaction-axiom-stat-container" onClick={() => {props.onWhyWhatSelection()}}
 			style={{
 				display: "flex",
 				flexDirection: "column",
