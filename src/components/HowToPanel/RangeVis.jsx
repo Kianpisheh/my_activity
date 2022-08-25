@@ -4,7 +4,10 @@ function RangeVis(props) {
 	const minVal = Math.min(...numbers);
     
     // dimentions
-    const w = 180;
+    let w = 180;
+    if (props.w) {
+        w = props.w;
+    }
     const h = 30;
     
     // time annotations in seconds
@@ -16,7 +19,6 @@ function RangeVis(props) {
     }
 
 	return (
-		<div className="svg-range-container">
 			<svg width={w} height={h}>
 				<line x1={0} x2={w-30} y1={h/2} y2={h/2} stroke="#666666" strokeWidth={2} strokeLinecap="round"></line>
 				{numbers.map((value) => {
@@ -36,7 +38,6 @@ function RangeVis(props) {
                 })}
                 <text fontSize={11} color="#777777" x={w-15} y={3 + h/2}>sec</text>
 			</svg>
-		</div>
 	);
 }
 

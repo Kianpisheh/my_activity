@@ -1,18 +1,32 @@
-#outer-container {
+.axiom-stat-container {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	justify-content: center;
 	width: 100%;
-	height: 100%;
-	height: 70px;
+	background-color: var(--light-beige);
+	border-radius: 5px;
+}
+
+.stat-axiom-explanation-container {
+	display: flex;
+	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	width: 75%;
+}
+
+.stat-axiom-explanation-container:hover {
+	background-color: var(--hover-beige);
 }
 
 .stat-container {
-	display: grid;
-	grid-template-columns: 1fr 13px;
-	row-gap: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	width: 100%;
+	height: 100%;
 	border-radius: 5px;
 }
 
@@ -23,11 +37,16 @@
 .td-stat-container2 {
 	display: flex;
 	column-gap: 10px;
-	width: 75%;
+	width: 70%;
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 10px;
 	background-color: var(--light-beige);
+	border-radius: 5px;
+}
+
+.td-stat-container2:hover {
+	background-color: var(--hover-beige);
 }
 
 .td-stat-data-container2 {
@@ -52,7 +71,6 @@
 #why-not-what-qmark {
 	display: flex;
 	height: 100%;
-	width: 0;
 	margin-top: -9px;
 	margin-right: -9px;
 	cursor: pointer;
@@ -63,6 +81,5 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	background-color: var(--light-beige);
-	height: 90px;
+	height: 70px;
 }

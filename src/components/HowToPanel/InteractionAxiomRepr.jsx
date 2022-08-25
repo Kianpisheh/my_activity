@@ -7,6 +7,7 @@ import { getWhyNotNum } from "../AxiomPane/Axiom";
 import isEqual from "lodash.isequal";
 
 import AxiomData from "../../model/AxiomData";
+import QueryTrigger from "../../model/QueryTrigger";
 
 function InteractionAxiomRepr(props) {
 	const events = props.axiom.getEvents();
@@ -40,11 +41,24 @@ function InteractionAxiomRepr(props) {
         }
     }
 
+    function handleAxiomClick(ev) {
+		if (!props.whyQueryMode) {
+            if (props.qmenuPos[0] > 0) {
+                props.onWhyNotWhatQuery(-1, -1, props.axiom, QueryTrigger.WHY_NOT);
+            } else {
+                props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT)
+            }       
+		}
+	}
+
 	return (
 		<div
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-			onClick={() => props.onWhySelection(props.idx)}
+			onClick={(ev) => {
+				props.onWhySelection(props.idx);
+				handleAxiomClick(ev);
+			}}
             onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
 			onMouseLeave={() => props.onWhyNotNumHover([])}
 		>

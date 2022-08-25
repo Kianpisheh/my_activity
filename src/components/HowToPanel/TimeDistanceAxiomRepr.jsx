@@ -88,8 +88,9 @@ function TimeDistanceAxiomRepr(props) {
 					x1={w / 4 - lineSize / 2}
 					x2={w / 4 + lineSize / 2}
 					y2={icSize + 5}
-					stroke="#555555"
+					stroke="#777777"
 					strokeWidth={1}
+                    strokeDasharray={4}
 				></line>
 				<polygon
 					points={[
@@ -100,15 +101,15 @@ function TimeDistanceAxiomRepr(props) {
 						w / 4 + lineSize / 2 - 5,
 						icSize + 8,
 					]}
-					fill="#555555"
-					stroke="#555555"
+					fill="#777777"
+					stroke="#777777"
 					strokeWidth={1}
 				/>
-				<line y1={0} x1={(5.5 * w) / 10} x2={(5.5 * w) / 10} y2={h} stroke="#555555" strokeWidth={1}></line>
-				<text x={w / 2 + 40} y={h / 2 - 12} fontSize={12}>
+				<line y1={0} x1={(5.5 * w) / 10} x2={(5.5 * w) / 10} y2={h} stroke="#777777" strokeWidth={1}></line>
+				<text x={w / 2 + 40} y={h / 2 - 7} fontSize={12} fill="#555555">
 					more than {th1} sec
 				</text>
-				<text x={w / 2 + 40} y={h / 2 + 12} fontSize={12}>
+				<text x={w / 2 + 40} y={h / 2 + 12} fontSize={12} fill="#555555">
 					less than {th2} sec
 				</text>
 			</svg>

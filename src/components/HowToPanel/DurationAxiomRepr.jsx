@@ -7,6 +7,7 @@ import { getWhyNotNum } from "../AxiomPane/Axiom";
 import isEqual from "lodash.isequal";
 
 import AxiomData from "../../model/AxiomData";
+import QueryTrigger from "../../model/QueryTrigger";
 
 function DurationAxiomRepr(props) {
 	const th1 = props.axiom.getTh1();
@@ -44,11 +45,24 @@ function DurationAxiomRepr(props) {
         }
     }
 
+    function handleAxiomClick(ev) {
+		if (!props.whyQueryMode) {
+            if (props.qmenuPos[0] > 0) {
+                props.onWhyNotWhatQuery(-1, -1, props.axiom, QueryTrigger.WHY_NOT);
+            } else {
+                props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT)
+            }       
+		}
+	}
+
 	return (
 		<div
 			className="duration-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-			onClick={() => props.onWhySelection(props.idx)}
+			onClick={(ev) => {
+				props.onWhySelection(props.idx);
+				handleAxiomClick(ev);
+			}}
             onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
 			onMouseLeave={() => props.onWhyNotNumHover([])}
 		>
@@ -67,6 +81,7 @@ function DurationAxiomRepr(props) {
 					x2={w / 6 + lineSize / 2}
 					y2={icSize + 5}
 					stroke="#555555"
+                    strokeDasharray={4}
 					strokeWidth={1}
 				></line>
 				<polygon

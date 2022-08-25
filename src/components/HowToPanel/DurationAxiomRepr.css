@@ -9,6 +9,10 @@
 	width: 75%;
 }
 
+.duration-axiom-repr:hover {
+	background: var(--hover-beige);
+}
+
 #num-div {
 	display: flex;
 	justify-self: flex-start;

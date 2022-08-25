@@ -97,10 +97,8 @@ function HowToPanel2(props) {
 				qmenuPos={props.qmenuPos}
                 onWhyWhatSelection={() => {
                     if (selectedwhyWhat) {
-                        console.log("first")
                         setSelectedwhyWhat(false);
                     } else {
-                        console.log("first")
                         setSelectedwhyWhat(true);
                     }
                 }}
