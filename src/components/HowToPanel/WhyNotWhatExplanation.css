@@ -8,6 +8,10 @@
 	border-radius: 5px;
 }
 
+.axiom-stat-container:hover {
+	background-color: var(--hover-beige);
+}
+
 .stat-axiom-explanation-container {
 	display: flex;
 	flex-direction: column;

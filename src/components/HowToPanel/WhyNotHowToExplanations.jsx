@@ -65,7 +65,7 @@ export function InteractionRemovalAxiom(props) {
                 className="temp-adj-axiom-container"
                 onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
                 onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-                style={{ position: "relative" }}
+                style={{ position: "relative", cursor: "pointer" }}
             >
                 <div className="icon-container2">
                     <svg width={25} height={25}>
@@ -103,7 +103,7 @@ export function TemporalAdjustmentAxiom(props) {
     }
 
 	return (
-        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer"}}>
         {props.timeRemoval &&<span className="suggestion-subtitle">Removing the time distance condition</span>}
         {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div
@@ -159,7 +159,7 @@ export function InteractionAdditionAxiom(props) {
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-			style={{ position: "relative" }}
+			style={{ position: "relative", cursor: "pointer" }}
 		>
 			<div className="icon-container3">
 				{[...icons]}
@@ -187,7 +187,7 @@ export function DurationAdjustmentAxiom(props) {
     }
 
 	return (
-        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center"}}>
+        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer"}}>
         {props.timeRemoval &&<span className="suggestion-subtitle">Removing the duration condition</span>}
         {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div

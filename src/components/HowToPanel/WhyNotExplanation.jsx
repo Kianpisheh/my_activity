@@ -76,13 +76,13 @@ function WhyNotExplanation(props) {
 	}
 
 	return (
-		<div style={{ width: "90%", display: "flex", flexDirection: "column", alignItems: "center", rowGap: 10 }}>
-			<div>
-				<span className="text-explanation" style={{ color: "#5F5656" }}>
+		<div style={{ width: "90%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+			<div style={{marginBottom: 5}}>
+				<span className="text-explanation" style={{ color: "#5F5656", fontSize: 14 }}>
 					The selected {samples} {doesDo} not {satisfy} the following defined conditions for
 				</span>
-				<span style={{ color: "var(--explanation)", fontWeight: 600 }}> {activity.getName()}</span>
-				<span className="text-explanation" style={{ color: "#5F5656" }}>
+				<span style={{ color: "var(--explanation)", fontWeight: 600, fontSize: 14 }}> {activity.getName()}</span>
+				<span className="text-explanation" style={{ color: "#5F5656", fontSize: 14 }}>
 					{" "}
 					activity.
 				</span>

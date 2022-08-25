@@ -156,11 +156,12 @@ function HowToPanel2(props) {
 					></QuestionMenu>
 				</div>
 			)}
-
+            {whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
 			{whyExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
 			{whyExplanation.length > 0 && <div className="why-explanation-container" style={{marginBottom: 20}}>{[...whyExplanation]}</div>}
+            {whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
 			{selectedWhys !== null && whatExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}

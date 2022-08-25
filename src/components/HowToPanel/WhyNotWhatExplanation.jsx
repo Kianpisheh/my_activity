@@ -17,29 +17,61 @@ function WhyNotWhatExplanation(props) {
 
 	const axiom = stats.getAxiom();
 	const axiomType = axiom?.getType();
-    const selectedInstances = instances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx))
-
-	let axiomStatComp = null;
+	const selectedInstances = instances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx));
+    
+    let axiomStatComp = null;
 	let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
-		//axiomStatText = <TimeDistanceAxiomStatText stats={stats} ></TimeDistanceAxiomStatText>;
-		axiomStatComp = <TimeDistanceAxiomStat stats={stats} selectedInstances={selectedInstances} axiom={axiom} onWhyWhatSelection={props.onWhyWhatSelection}></TimeDistanceAxiomStat>;
+		axiomStatComp = (
+			<TimeDistanceAxiomStat
+				stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyWhatSelection={props.onWhyWhatSelection}
+			></TimeDistanceAxiomStat>
+		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
-		//axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
-		axiomStatComp = <DurationAxiomStat stats={stats} selectedInstances={selectedInstances} axiom={axiom} onWhyWhatSelection={props.onWhyWhatSelection}></DurationAxiomStat>;
+		axiomStatComp = (
+			<DurationAxiomStat
+				stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyWhatSelection={props.onWhyWhatSelection}
+			></DurationAxiomStat>
+		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
 		return (axiomStatText = (
-			<InteractionAxiomWhyNotWhatText stats={stats} selectedInstances={selectedInstances} axiom={axiom}></InteractionAxiomWhyNotWhatText>
+			<InteractionAxiomWhyNotWhatText
+				stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+			></InteractionAxiomWhyNotWhatText>
 		));
 	} else {
 		return;
 	}
 
+    const multiple = selectedInstances.length > 1;
+    const samples = multiple ? "samples" : "sample";
+    const include = multiple ? "include" : "includes";
+    let time = "";
+    if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+        time = "time distance";
+    } else if (axiomType === AxiomTypes.TYPE_DURATION) {
+        time = "duration";
+    }
+    
 	return (
 		<div className="stat-container">
-			<div className="text-explanation-container">{axiomStatText}</div>
+            <span style={{fontSize: 14, color: "#5F5656", marginBottom: 5}}>The selected {samples}{" "}{include} {time} outside of the defined range [{axiom.getTh1()},{axiom.getTh2()}].</span>
 			<div className="stat-axiom-explanation-container">{axiomStatComp}</div>
-			<div
+			{/* <div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
 					if (props.qmenuPos[0] > 0) {
@@ -50,7 +82,7 @@ function WhyNotWhatExplanation(props) {
 				}}
 			>
 				{CircleNum("?")}
-			</div>
+			</div> */}
 		</div>
 	);
 }
@@ -60,78 +92,89 @@ export default WhyNotWhatExplanation;
 export function DurationAxiomStat(props) {
 	const { stats, axiom, selectedInstances } = props;
 	const event = axiom.getEvents()?.[0];
-    const Icon = Icons.getIcon(pascalCase(event), true);
+	const Icon = Icons.getIcon(pascalCase(event), true);
 
-    const eventStats = EventStat.getEventInstanceStat(selectedInstances, [event]);
-    const durations = EventStat.getStatsDurations(eventStats, null);
+	const eventStats = EventStat.getEventInstanceStat(selectedInstances, [event]);
+	const durations = EventStat.getStatsDurations(eventStats, null);
 
-    // dimensions
-    const w = 400;
-    const w1 = w/2 - 3
-    const h = 70;
-    const icSize = 25;
-    const lineSize = 90;
-    const iconLineGap = 10;
+	// dimensions
+	const w = 400;
+	const w1 = w / 2 - 3;
+	const h = 70;
+	const icSize = 25;
+	const lineSize = 90;
+	const iconLineGap = 10;
 
-	return <div className="axiom-stat-container">
-        <svg className="time-dist-axiom-stat-svg" style={{width:w, height:h}}>
-            <g>
-                <svg className="time-dist-stat-icon-vis" style={{width:w1, height:h}}>
-                    <Icon
-                        x={w1/2 - icSize / 2}
-                        y={h/2 - 4*icSize/5 }
-                        key={"duration-stat-whynotwhat"}
-                        width={icSize}
-                        height={icSize}
-                        fill={"#3A2A0D"}
-				></Icon>
-                <line
-					y1={h/2 + icSize/4 + 3}
-					x1={w1 / 2 - lineSize / 2}
-					x2={w1 / 2 + lineSize / 2}
-					y2={h/2 + icSize/4 + 3}
-					stroke="#777777"
-					strokeWidth={1}
-                    strokeDasharray={4}
-				></line>
-                <polygon
-					points={[
-						w1 / 2 - lineSize / 2,
-						h/2 + icSize/4 + 3,
-						w1 / 2 - lineSize / 2 - 5,
-						h/2 + icSize/4,
-						w1 / 2 - lineSize / 2 - 5,
-						h/2 + icSize/4 + 6,
-					]}
-					fill="#555555"
-					stroke="#555555"
-					strokeWidth={1}
-				/>
-				<polygon
-					points={[
-						w1 / 2 + lineSize / 2,
-						h/2 + icSize/4 + 3,
-						w1 / 2 + lineSize / 2 + 5,
-						h/2 + icSize/4,
-						w1 / 2 + lineSize / 2 + 5,
-						h/2 + icSize/4 + 6,
-					]}
-					fill="#555555"
-					stroke="#555555"
-					strokeWidth={1}
-				/>
-                </svg>
-            </g>
-            <line y1={10} x1={w/2} x2={w/2} y2={h-10} stroke="#777777" strokeWidth={1}></line>
-            <g transform={"translate(" + (w/2+ 20) + "," + (h/2 -15) + ")"}>
-                <svg className="time-distribution-svg" style={{width:w1, height:h}}>
-                <g>
-                    <RangeVis numbers={durations} w={170}></RangeVis>
-                </g>
-                </svg>
-            </g>
-        </svg>
-    </div>
+	return (
+		<div
+			className="axiom-stat-container"
+			onClick={(ev) => {
+				if (props.qmenuPos[0] > 0) {
+					props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+				} else {
+					props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+				}
+			}}
+		>
+			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
+				<g>
+					<svg className="time-dist-stat-icon-vis" style={{ width: w1, height: h }}>
+						<Icon
+							x={w1 / 2 - icSize / 2}
+							y={h / 2 - (4 * icSize) / 5}
+							key={"duration-stat-whynotwhat"}
+							width={icSize}
+							height={icSize}
+							fill={"#3A2A0D"}
+						></Icon>
+						<line
+							y1={h / 2 + icSize / 4 + 3}
+							x1={w1 / 2 - lineSize / 2}
+							x2={w1 / 2 + lineSize / 2}
+							y2={h / 2 + icSize / 4 + 3}
+							stroke="#777777"
+							strokeWidth={1}
+							strokeDasharray={4}
+						></line>
+						<polygon
+							points={[
+								w1 / 2 - lineSize / 2,
+								h / 2 + icSize / 4 + 3,
+								w1 / 2 - lineSize / 2 - 5,
+								h / 2 + icSize / 4,
+								w1 / 2 - lineSize / 2 - 5,
+								h / 2 + icSize / 4 + 6,
+							]}
+							fill="#555555"
+							stroke="#555555"
+							strokeWidth={1}
+						/>
+						<polygon
+							points={[
+								w1 / 2 + lineSize / 2,
+								h / 2 + icSize / 4 + 3,
+								w1 / 2 + lineSize / 2 + 5,
+								h / 2 + icSize / 4,
+								w1 / 2 + lineSize / 2 + 5,
+								h / 2 + icSize / 4 + 6,
+							]}
+							fill="#555555"
+							stroke="#555555"
+							strokeWidth={1}
+						/>
+					</svg>
+				</g>
+				<line y1={10} x1={w / 2} x2={w / 2} y2={h - 10} stroke="#777777" strokeWidth={1}></line>
+				<g transform={"translate(" + (w / 2 + 20) + "," + (h / 2 - 15) + ")"}>
+					<svg className="time-distribution-svg" style={{ width: w1, height: h }}>
+						<g>
+							<RangeVis numbers={durations} w={170}></RangeVis>
+						</g>
+					</svg>
+				</g>
+			</svg>
+		</div>
+	);
 }
 
 export function TimeDistanceAxiomStat(props) {
@@ -142,8 +185,8 @@ export function TimeDistanceAxiomStat(props) {
 	const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
 
 	const hasTimeDistance = minTimeDistance && maxTimeDistance;
-    const eventStats = EventStat.getEventInstanceStat(selectedInstances, events);
-    const timeDistances = EventStat.getStatsTimeDistances(eventStats, null);
+	const eventStats = EventStat.getEventInstanceStat(selectedInstances, events);
+	const timeDistances = EventStat.getStatsTimeDistances(eventStats, null);
 
 	// lost interactions
 	let iconColor1 = "#3A2A0D";
@@ -159,68 +202,76 @@ export function TimeDistanceAxiomStat(props) {
 		isMissing2 = true;
 	}
 
-    // dimensions
-    const w = 400;
-    const w1 = w/2 - 3
-    const h = 70;
-    const icSize = 25;
-    const lineSize = 90;
-    const iconLineGap = 10;
+	// dimensions
+	const w = 400;
+	const w1 = w / 2 - 3;
+	const h = 70;
+	const icSize = 25;
+	const lineSize = 90;
+	const iconLineGap = 10;
 
-	return <div className="axiom-stat-container">
-        <svg className="time-dist-axiom-stat-svg" style={{width:w, height:h}}>
-            <g>
-                <svg className="time-dist-stat-icon-vis" style={{width:w1, height:h}}>
-                    <Icon1
-                        x={w1/2 - lineSize/2 - icSize/2 - 2*iconLineGap}
-                        y={h/2 - icSize/2}
-                        key={"time-dist-1-repr"}
-                        width={icSize}
-                        height={icSize}
-                        fill={"#3A2A0D"}
-				></Icon1>
-				<Icon2
-					x={w1/2 + lineSize/2 + iconLineGap}
-					y={h/2 - icSize/2}
-					key={"time-dist-2-repr"}
-					width={icSize}
-					height={icSize}
-					fill={"#3A2A0D"}
-				></Icon2>
-				<line
-					y1={h/2}
-					x1={w1 / 2 - lineSize / 2}
-					x2={w1 / 2 + lineSize / 2}
-					y2={h/2}
-					stroke="#777777"
-					strokeWidth={1}
-                    strokeDasharray={4}
-				></line>
-				<polygon
-					points={[
-						w1 / 2 + lineSize / 2,
-						h/2,
-						w1 / 2 + lineSize / 2 - 5,
-						h/2 -3,
-						w1 / 2 + lineSize / 2 - 5,
-						h/2 + 3,
-					]}
-					fill="#777777"
-					stroke="#777777"
-					strokeWidth={1}
-				/>
-                </svg>
-            </g>
-            <line y1={10} x1={w/2} x2={w/2} y2={h-10} stroke="#777777" strokeWidth={1}></line>
-            <g transform={"translate(" + (w/2+ 20) + "," + (h/2 -15) + ")"}>
-                <svg className="time-distribution-svg" style={{width:w1, height:h}}>
-                <g>
-                    <RangeVis numbers={timeDistances} w={170}></RangeVis>
-                </g>
-                </svg>
-            </g>
-        </svg>
-    </div>
+	return (
+		<div className="axiom-stat-container" onClick={(ev) => {
+				if (props.qmenuPos[0] > 0) {
+					props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+				} else {
+					props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+				}
+			}}>
+			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
+				<g>
+					<svg className="time-dist-stat-icon-vis" style={{ width: w1, height: h }}>
+						<Icon1
+							x={w1 / 2 - lineSize / 2 - icSize / 2 - 2 * iconLineGap}
+							y={h / 2 - icSize / 2}
+							key={"time-dist-1-repr"}
+							width={icSize}
+							height={icSize}
+							fill={"#3A2A0D"}
+						></Icon1>
+						<Icon2
+							x={w1 / 2 + lineSize / 2 + iconLineGap}
+							y={h / 2 - icSize / 2}
+							key={"time-dist-2-repr"}
+							width={icSize}
+							height={icSize}
+							fill={"#3A2A0D"}
+						></Icon2>
+						<line
+							y1={h / 2}
+							x1={w1 / 2 - lineSize / 2}
+							x2={w1 / 2 + lineSize / 2}
+							y2={h / 2}
+							stroke="#777777"
+							strokeWidth={1}
+							strokeDasharray={4}
+						></line>
+						<polygon
+							points={[
+								w1 / 2 + lineSize / 2,
+								h / 2,
+								w1 / 2 + lineSize / 2 - 5,
+								h / 2 - 3,
+								w1 / 2 + lineSize / 2 - 5,
+								h / 2 + 3,
+							]}
+							fill="#777777"
+							stroke="#777777"
+							strokeWidth={1}
+						/>
+					</svg>
+				</g>
+				<line y1={10} x1={w / 2} x2={w / 2} y2={h - 10} stroke="#777777" strokeWidth={1}></line>
+				<g transform={"translate(" + (w / 2 + 20) + "," + (h / 2 - 15) + ")"}>
+					<svg className="time-distribution-svg" style={{ width: w1, height: h }}>
+						<g>
+							<RangeVis numbers={timeDistances} w={170}></RangeVis>
+						</g>
+					</svg>
+				</g>
+			</svg>
+		</div>
+	);
 }
 
 export function InteractionAxiomWhyNotWhatText(props) {
@@ -418,14 +469,17 @@ export function InteractionAxiomStat(props) {
 
 	return (
 		<div
-			className="interaction-axiom-stat-container" onClick={() => {props.onWhyWhatSelection()}}
+			className="interaction-axiom-stat-container"
+			onClick={() => {
+				props.onWhyWhatSelection();
+			}}
 			style={{
 				display: "flex",
 				flexDirection: "column",
 				rowGap: 20,
 				background: "var(--light-beige)",
 				padding: 20,
-                borderRadius: 5
+				borderRadius: 5,
 			}}
 		>
 			{events.map((ev) => {

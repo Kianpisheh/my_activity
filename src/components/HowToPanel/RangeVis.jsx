@@ -14,6 +14,7 @@ function RangeVis(props) {
     let secs = [];
     const range = maxVal - minVal
     if (range < 5) {
+        secs = [minVal, minVal + range/2, maxVal]
     } else {
         secs = [minVal, minVal + range/4, minVal + range/2, minVal + 3*range/4, maxVal]
     }
