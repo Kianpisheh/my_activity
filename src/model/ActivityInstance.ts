@@ -330,7 +330,7 @@ class ActivityInstance {
 					loop1: for (let i = 0; i < evInstance1.length; i++) {
 						for (let j = 0; j < evInstance2.length; j++) {
 							const timeDsitance = evInstance2[j].getStartTime() - evInstance1[i].getEndTime();
-							if (timeDsitance < ax.getTh2() && timeDsitance > ax.getTh1()) {
+							if (timeDsitance <= ax.getTh2() && timeDsitance >= ax.getTh1()) {
 								numSatisfied += 1;
 								break loop1;
 							}

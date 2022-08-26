@@ -7,6 +7,7 @@ import cloneDeep from "lodash/cloneDeep";
 export function classifyInstances(activityInstances: ActivityInstance[], activities: Activity[]) {
 	let predActs: string[][] = [];
 	let axNums: number[][] = [];
+	let i = 0;
 	for (const instance of activityInstances) {
 		let classified = false;
 		for (const act of activities) {
@@ -25,6 +26,7 @@ export function classifyInstances(activityInstances: ActivityInstance[], activit
 			predActs.push(["Unknown"]);
 			axNums.push([0]);
 		}
+		i += 1;
 	}
 
 	let finalPredictions: string[] = [];

@@ -15,7 +15,6 @@ import QuestionMenu from "../QuestionMenu/QuestionMenu";
 
 function HowToPanel2(props) {
 	const [selectedWhys, setSelectedWhy] = useState(null);
-	const [selectedHows, setSelectedHow] = useState(null);
 	const [selectedwhyWhat, setSelectedwhyWhat] = useState(false);
 
 	const {
@@ -141,8 +140,6 @@ function HowToPanel2(props) {
 			<WhyNotHowToExplanations
 				suggestions={whyNotHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
-				selectedHows={selectedHows}
-				onHowSelection={() => console.log("first")}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
@@ -150,8 +147,6 @@ function HowToPanel2(props) {
 			<WhyHowToExplanations
 				suggestions={whyHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
-				selectedHows={selectedHows}
-				onHowSelection={() => console.log("first")}
 			></WhyHowToExplanations>
 		);
 	}
