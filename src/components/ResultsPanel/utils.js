@@ -183,14 +183,34 @@ export function subtractIntervals(ts1, te1, ts2, te2) {
 	if (ts1 > ts2 && ts1 < te2 && te1 > ts2 && te1 < te2) {
 		return [];
 	} else if (ts1 > ts2 && ts1 < te2 && te1 > te2) {
-		return [[te2, te1]];
+		if (te2 + 1 < te1) {
+			return [[te2 + 1, te1]];
+		} else {
+			return [];
+		}
 	} else if (ts1 < ts2 && te1 > ts2 && te1 < te2) {
-		return [[ts1, ts2]];
+		if (ts2 - 1 > ts1) {
+			return [[ts1, ts2 - 1]];
+		} else {
+			return [];
+		}
 	} else if (ts1 < ts2 && te1 > te2) {
-		return [
-			[ts1, ts2],
-			[te2, te1],
-		];
+		let intervals = [];
+		let interval1 = [];
+		if (ts2 - 1 > ts1) {
+			interval1 = [ts1, ts2 - 1];
+		}
+		if (interval1.length) {
+			intervals.push(interval1);
+		}
+		let interval2 = [];
+		if (te2 + 1 < te1) {
+			interval2 = [te2 + 1, te1];
+		}
+		if (interval2.length) {
+			intervals.push(interval2);
+		}
+		return intervals;
 	} else {
 		return [];
 	}

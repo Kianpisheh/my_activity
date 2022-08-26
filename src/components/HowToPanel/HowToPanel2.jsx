@@ -56,14 +56,17 @@ function HowToPanel2(props) {
                 }}
 			></WhyNotExplanation>
 		);
-	} else if (queryTrigger === QueryTrigger.WHY && whyQueryMode) {
+	} else if (selectedInstancesIdx["FP"]?.length && (props.whyQueryMode || props.queryTrigger === QueryTrigger.WHY_WHAT)) {
 		const selectedInstances = instances.filter((instance, idx) =>
-			Object.values(selectedInstancesIdx)[0].includes(idx)
+			selectedInstancesIdx["FP"].includes(idx)
 		);
 		const numInstances = selectedInstances.length;
 		whyExplanation.push(
 			<WhyExplanation
+                qmenuPos={props.qmenuPos}
+				queryTrigger={props.queryTrigger}
 				numInstances={numInstances}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				activity={activity}
 				selectedWhys={selectedWhys}
 				onWhySelection={(axIdx) => {
@@ -115,6 +118,13 @@ function HowToPanel2(props) {
 				selectedInstancesIdx={props.selectedInstancesIdx}
 				qmenuPos={props.qmenuPos}
                 selectedwhyWhat={selectedwhyWhat}
+                onWhyWhatSelection={() => {
+                    if (selectedwhyWhat) {
+                        setSelectedwhyWhat(false);
+                    } else {
+                        setSelectedwhyWhat(true);
+                    }
+                }}
 			></WhyWhatExplanation>
 		);
 	}

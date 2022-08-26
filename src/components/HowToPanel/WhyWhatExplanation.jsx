@@ -15,18 +15,42 @@ function WhyWhatExplanation(props) {
 
 	const axiom = stats.getAxiom();
 	const axiomType = axiom?.getType();
+    let selectedInstances = instances.filter((instance,idx) => selectedInstancesIdx["FP"].includes(idx));
 
 	let axiomStatComp = null;
 	let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
 		axiomStatText = <TimeDistanceAxiomStatText stats={stats}></TimeDistanceAxiomStatText>;
-		axiomStatComp = <TimeDistanceAxiomStat stats={stats} axiom={axiom}></TimeDistanceAxiomStat>;
+		axiomStatComp = <TimeDistanceAxiomStat stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyHowTo={props.onWhyHowTo}
+                selectedInstancesIdx={selectedInstancesIdx}
+				onWhyWhatSelection={props.onWhyWhatSelection}></TimeDistanceAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
         axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
-		axiomStatComp = <DurationAxiomStat stats={stats} axiom={axiom}></DurationAxiomStat>;
+		axiomStatComp = <DurationAxiomStat stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyHowTo={props.onWhyHowTo}
+				onWhyWhatSelection={props.onWhyWhatSelection}
+                selectedInstancesIdx={selectedInstancesIdx}>
+                </DurationAxiomStat>;
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-        let selectedInstances = instances.filter((instance,idx) => Object.values(selectedInstancesIdx)[0].includes(idx));
-        axiomStatComp = <InteractionAxiomStat instances={selectedInstances} axiom={axiom}></InteractionAxiomStat>
+        axiomStatComp = 
+        <InteractionAxiomStat stats={stats}
+				selectedInstances={selectedInstances}
+				axiom={axiom}
+				qmenuPos={props.qmenuPos}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyHowTo={props.onWhyHowTo}
+                selectedInstancesIdx={selectedInstancesIdx}
+				onWhyWhatSelection={props.onWhyWhatSelection}>
+            </InteractionAxiomStat>
     } else {
 		return;
 	}
@@ -37,7 +61,7 @@ function WhyWhatExplanation(props) {
 			<div className="stat-axiom-explanation-container" style={{cursor: "pointer"}}>
                 {axiomStatComp}
             </div>
-			<div
+			{/* <div
 				id="why-not-what-qmark"
 				onClick={(ev) => {
                     if (props.qmenuPos[0] > 0) {
@@ -48,7 +72,7 @@ function WhyWhatExplanation(props) {
 				}}
 			>
 				{CircleNum("?")}
-			</div>
+			</div> */}
 		</div>
 	);
 }

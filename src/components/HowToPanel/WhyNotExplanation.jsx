@@ -1,6 +1,8 @@
 import AxiomData from "../../model/AxiomData";
 import AxiomTypes from "../../model/AxiomTypes";
 
+import QueryTrigger from "../../model/QueryTrigger";
+
 import TimeDistanceAxiomRepr from "./TimeDistanceAxiomRepr";
 import DurationAxiomRepr from "./DurationAxiomRepr";
 import InteractionAxiomRepr from "./InteractionAxiomRepr";
@@ -36,6 +38,7 @@ function WhyNotExplanation(props) {
                         selectedWhys={props.selectedWhys}
 				        onWhySelection={props.onWhySelection}
                         idx={i}
+                        expType={QueryTrigger.WHY_NOT}
 					></TimeDistanceAxiomRepr>
 			);
 		} else if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
@@ -52,6 +55,7 @@ function WhyNotExplanation(props) {
                         selectedWhys={props.selectedWhys}
 				        onWhySelection={props.onWhySelection}
                         idx={i}
+                        expType={QueryTrigger.WHY_NOT}
 					></DurationAxiomRepr>
 			);
 		} else if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
@@ -68,6 +72,7 @@ function WhyNotExplanation(props) {
                         selectedWhys={props.selectedWhys}
 				        onWhySelection={props.onWhySelection}
                         idx={i}
+                        expType={QueryTrigger.WHY_NOT}
 					></InteractionAxiomRepr>
 			);
 		}

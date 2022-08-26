@@ -27,24 +27,26 @@ function TimeDistanceAxiomRepr(props) {
 	const br = props.selectedWhys === props.idx ? "solid" : "none";
 
 	// check if this is an unsatisfied axiom based on the user query
-	const numnum = getWhyNotNum(
-		props.unsatisfiedAxioms,
-		props.axiom,
-		props.onWhyNotWhatQuery,
-		props.onWhyNotNumHover,
-		props.queryTrigger,
-		props.qmenuPos
-	);
-
+	let numnum = null;
 	let selFNIds = [];
-	for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
-		const ax = AxiomData.axiomFromString(axiomString);
-		if (isEqual(ax, props.axiom)) {
-			selFNIds = [...ids];
-			break;
+	if (props.unsatisfiedAxioms) {
+		numnum = getWhyNotNum(
+			props.unsatisfiedAxioms,
+			props.axiom,
+			props.onWhyNotWhatQuery,
+			props.onWhyNotNumHover,
+			props.queryTrigger,
+			props.qmenuPos
+		);
+
+		for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
+			const ax = AxiomData.axiomFromString(axiomString);
+			if (isEqual(ax, props.axiom)) {
+				selFNIds = [...ids];
+				break;
+			}
 		}
 	}
-
 	function handleAxiomClick(ev) {
 		if (!props.whyQueryMode) {
             if (props.qmenuPos[0] > 0) {

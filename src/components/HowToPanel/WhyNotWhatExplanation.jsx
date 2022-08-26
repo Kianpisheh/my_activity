@@ -30,6 +30,7 @@ function WhyNotWhatExplanation(props) {
 				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
 				onWhyWhatSelection={props.onWhyWhatSelection}
+                selectedInstancesIdx={selectedInstancesIdx}
 			></TimeDistanceAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -41,6 +42,7 @@ function WhyNotWhatExplanation(props) {
 				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
 				onWhyWhatSelection={props.onWhyWhatSelection}
+                selectedInstancesIdx={selectedInstancesIdx}
 			></DurationAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
@@ -51,6 +53,7 @@ function WhyNotWhatExplanation(props) {
 				axiom={axiom}
 				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
+                selectedInstancesIdx={selectedInstancesIdx}
 			></InteractionAxiomWhyNotWhatText>
 		));
 	} else {
@@ -110,9 +113,17 @@ export function DurationAxiomStat(props) {
 			className="axiom-stat-container"
 			onClick={(ev) => {
 				if (props.qmenuPos[0] > 0) {
-					props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+                    if (props.selectedInstancesIdx["FN"]?.length) {
+					    props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+                    } else if (props.selectedInstancesIdx["FP"]?.length) {
+                        props.onWhyHowTo(-1, -1, QueryTrigger.WHY_WHAT);
+                    }
 				} else {
-					props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+                    if (props.selectedInstancesIdx["FN"]?.length) {
+					    props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+                    }  else if (props.selectedInstancesIdx["FP"]?.length) {
+                        props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
+                    }
 				}
 			}}
 		>
@@ -213,9 +224,17 @@ export function TimeDistanceAxiomStat(props) {
 	return (
 		<div className="axiom-stat-container" onClick={(ev) => {
 				if (props.qmenuPos[0] > 0) {
-					props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+                    if (props.selectedInstancesIdx["FN"]?.length) {
+					    props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
+                    } else if (props.selectedInstancesIdx["FP"]?.length) {
+                        props.onWhyHowTo(-1, -1, QueryTrigger.WHY_WHAT);
+                    }
 				} else {
-					props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+                    if (props.selectedInstancesIdx["FN"]?.length) {
+					    props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
+                    }  else if (props.selectedInstancesIdx["FP"]?.length) {
+                        props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
+                    }
 				}
 			}}>
 			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>

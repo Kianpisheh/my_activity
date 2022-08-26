@@ -27,30 +27,37 @@ function DurationAxiomRepr(props) {
 
 
 	// check if this is an unsatisfied axiom based on the user query
-	const numnum = getWhyNotNum(
-		props.unsatisfiedAxioms,
-		props.axiom,
-		props.onWhyNotWhatQuery,
-		props.onWhyNotNumHover,
-		props.queryTrigger,
-		props.qmenuPos
-	);
+	let numnum = null;
+	let selFNIds = [];
+	if (props.unsatisfiedAxioms) {
+		numnum = getWhyNotNum(
+			props.unsatisfiedAxioms,
+			props.axiom,
+			props.onWhyNotWhatQuery,
+			props.onWhyNotNumHover,
+			props.queryTrigger,
+			props.qmenuPos
+		);
 
-    let selFNIds = [];
-    for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
-		const ax = AxiomData.axiomFromString(axiomString);
-		if (isEqual(ax, props.axiom)) {
-            selFNIds = [...ids];
-            break;
-        }
-    }
+		for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
+			const ax = AxiomData.axiomFromString(axiomString);
+			if (isEqual(ax, props.axiom)) {
+				selFNIds = [...ids];
+				break;
+			}
+		}
+	}
 
     function handleAxiomClick(ev) {
 		if (!props.whyQueryMode) {
             if (props.qmenuPos[0] > 0) {
-                props.onWhyNotWhatQuery(-1, -1, props.axiom, QueryTrigger.WHY_NOT);
+                props.onWhyNotWhatQuery(-1, -1, props.axiom, props.expType);
             } else {
-                props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT)
+                if (props.expType === QueryTrigger.WHY_NOT) {
+                    props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT);
+                } else if (props.expType === QueryTrigger.WHY){
+                    props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_WHAT);
+                }
             }       
 		}
 	}
