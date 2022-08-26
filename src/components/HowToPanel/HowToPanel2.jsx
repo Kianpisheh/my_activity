@@ -31,6 +31,11 @@ function HowToPanel2(props) {
 		whyQueryMode,
 	} = props;
 
+    if ((!Object.keys(selectedInstancesIdx)[0] || selectedInstancesIdx[Object.keys(selectedInstancesIdx)[0]].length === 0) && (selectedWhys !== null || selectedwhyWhat)) {
+        setSelectedWhy(null);
+        setSelectedwhyWhat(false);
+    }
+
 	let whyExplanation = [];
 	if (Object.keys(unsatisfiedAxioms).length !== 0) {
 		const selectedInstances = instances.filter((instance, idx) =>
