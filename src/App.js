@@ -14,6 +14,7 @@ import "./App.css";
 import AxiomTypes from "./model/AxiomTypes";
 import Activity from "./model/Activity";
 import ActivityInstance from "./model/ActivityInstance";
+import ExpStatus from "./model/ExpStatus";
 import Ruleitem from "./model/RuleitemData";
 
 import ActivityAxiomPane from "./components/AxiomPane/ActivityAxiomPane";
@@ -21,6 +22,7 @@ import ActivityPane from "./components/ActivityPane/ActivityPane";
 import ActivityInstanceVis from "./components/ActivityVis/ActivityInstanceVis";
 import ActivityInstancePane from "./components/ActivityInstancePane";
 import Login from "./components/Login";
+import FloatingQuestions from "./components/HowToPanel/FloatingQuestions";
 
 import { handleAxiomPaneMessages } from "./Handlers";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
@@ -67,6 +69,8 @@ function App() {
 	const [enteredPass, setEnteredPass] = useState("");
 	const [loggedin, setLoggedin] = useState(false);
 	const [classificationRes, setClassificationRes] = useState({});
+	const [explanationStatus, setExplanationStatus] = useState(ExpStatus.NONE);
+	const [floatingCoords, setFloatingCoords] = useState([-1, -1]);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -111,17 +115,20 @@ function App() {
 				classificationRes
 			);
 			setUnsatisfiedAxioms(unsatisfiedAxioms);
-			setQmenuPos([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_NOT_LIST);
+			setFloatingCoords([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY) {
 			const qMode = WhyFPQueryController.handleWhyQuery(queryMode);
 			setWhyQueryMode(qMode);
-			setQmenuPos([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_LIST);
+			setFloatingCoords([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_NOT_WHAT) {
 			const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx));
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, FNInstances);
 			setWhyNotWhat(whatExp);
 			setWhyWhat(null);
-			setQmenuPos([-1, -1]);
+			setFloatingCoords([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_WHY_NOT_LIST);
 		} else if (questionType === QueryQuestion.WHY_WHAT) {
 			const FPInstances = activityInstances.filter((instance, idx) =>
 				selectedInstancesIdx?.["FP"]?.includes(idx)
@@ -129,7 +136,7 @@ function App() {
 			const whyWhatExp = WhyWhatQueryController.handleWhyWhatQuery(queriedAxiom, FPInstances);
 			setWhyWhat(whyWhatExp);
 			setWhyNotWhat(null);
-			setQmenuPos([-1, -1]);
+			setFloatingCoords([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
@@ -141,7 +148,7 @@ function App() {
 			);
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
-			setQmenuPos([-1, -1]);
+			setFloatingCoords([-1, -1]);
 		} else if (questionType === QueryQuestion.WHY_HOW_TO) {
 			const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
 				queriedAxiom,
@@ -154,7 +161,7 @@ function App() {
 			);
 			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
-			setQmenuPos([-1, -1]);
+			setFloatingCoords([-1, -1]);
 		}
 	}
 
@@ -389,6 +396,16 @@ function App() {
 			)}
 			{loggedin && (
 				<React.Fragment>
+					{floatingCoords[0] > 0 && (
+						<div id="floating-questions" style={{ left: floatingCoords[0], top: floatingCoords[1] }}>
+							<FloatingQuestions
+								expStatus={explanationStatus}
+								selectedIdx={selectedInstancesIdx}
+								currentActivity={currentActivity}
+								onQuery={handleQuery}
+							></FloatingQuestions>
+						</div>
+					)}
 					<div id="act-instances-pane">
 						<ActivityInstancePane
 							activtiyInstances={activityInstances}
@@ -482,6 +499,8 @@ function App() {
 							queryTrigger={queryTrigger}
 							qmenuPos={qmenuPos}
 							unsatisfiedAxioms={unsatisfiedAxioms}
+							queriedAxiom={queriedAxiom}
+							explanationStatus={explanationStatus}
 							onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
 								setQueriedAxiom(ax);
 								setQmenuPos([x, y]);
@@ -495,6 +514,29 @@ function App() {
 							whyQueryMode={whyQueryMode}
 							selectedIdx={selectedInstancesIdx}
 							onQuery={handleQuery}
+							onWhyHover={(xx, yy, axiom) => {
+								if (
+									explanationStatus === ExpStatus.WHY_LIST ||
+									explanationStatus === ExpStatus.WHY_NOT_LIST
+								) {
+									setFloatingCoords([xx, yy]);
+									if (axiom !== null) {
+										setQueriedAxiom(axiom);
+									}
+								}
+							}}
+							onWhyWhatHover={(xx, yy, axiom) => {
+								setFloatingCoords([xx, yy]);
+							}}
+							onWhyNotAxiomClick={() => {
+								if (explanationStatus !== ExpStatus.WHY_NOT_LIST) {
+									setExplanationStatus(ExpStatus.WHY_NOT_LIST);
+									setWhyNotWhat(null);
+									setWhyWhat(null);
+									setWhyNotHowToSuggestions(null);
+									setWhyHowToSuggestions(null);
+								}
+							}}
 						></HowToPanel2>
 					</div>
 					<div id="explanations">
@@ -503,9 +545,12 @@ function App() {
 							onInstanceClick={handleInstanceClick}
 							classificationResult={classificationRes}
 							selectedInstancesIdx={selectedInstancesIdx}
+							currentActivity={currentActivity}
 							newTPs={newTPs}
 							newFPs={newFPs}
 							queryMode={queryMode}
+							onQuery={handleQuery}
+							explanationStatus={explanationStatus}
 							onInstanceSelection={(idx, type, activity) => {
 								let selInstancesIdx = {};
 								if (currentActivity && currentActivity.getName() !== activity) {
@@ -533,11 +578,15 @@ function App() {
 								if (selInstancesIdx[Object.keys(selInstancesIdx)[0]].length !== 0) {
 									let queryTrigger = null;
 									if (selInstancesIdx["FN"] && selInstancesIdx["FN"].length > 0) {
+										setExplanationStatus(ExpStatus.FN_SELECTED);
 										queryTrigger = QueryTrigger.WHY_NOT;
 									} else if (selInstancesIdx["FP"] && selInstancesIdx["FP"].length > 0) {
 										queryTrigger = QueryTrigger.WHY;
+										setExplanationStatus(ExpStatus.FP_SELECTED);
 									}
 									setQueryTrigger(queryTrigger);
+								} else {
+									setExplanationStatus(ExpStatus.NONE);
 								}
 								handleActInstanceChange(idx);
 							}}

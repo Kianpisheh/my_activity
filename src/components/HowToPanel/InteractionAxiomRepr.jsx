@@ -44,26 +44,17 @@ function InteractionAxiomRepr(props) {
 		}
 	}
 
-	function handleAxiomClick(ev) {
-		if (!props.whyQueryMode) {
-			if (props.qmenuPos[0] > 0) {
-				props.onWhyNotWhatQuery(-1, -1, props.axiom, QueryTrigger.WHY_NOT);
-			} else {
-				props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT);
-			}
-		}
-	}
-
 	return (
 		<div
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-			onClick={(ev) => {
-				props.onWhySelection(props.idx);
-				handleAxiomClick(ev);
-			}}
+			onClick={() => props.onWhyNotAxiomClick()}
 			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
 			onMouseLeave={() => props.onWhyNotNumHover([])}
+            onMouseEnter={(ev)=> {
+                const domRect = ev.target.getBoundingClientRect();
+                props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
+            }}
 		>
 			<svg width={w} height={h}>
 				<Icon1

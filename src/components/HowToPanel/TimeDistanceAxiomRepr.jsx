@@ -47,26 +47,22 @@ function TimeDistanceAxiomRepr(props) {
 			}
 		}
 	}
-	function handleAxiomClick(ev) {
-		if (!props.whyQueryMode) {
-            if (props.qmenuPos[0] > 0) {
-                props.onWhyNotWhatQuery(-1, -1, props.axiom, QueryTrigger.WHY_NOT);
-            } else {
-                props.onWhyNotWhatQuery(ev.pageX, ev.pageY, props.axiom, QueryTrigger.WHY_NOT_WHAT)
-            }       
-		}
-	}
 
 	return (
 		<div
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-			onClick={(ev) => {
-				props.onWhySelection(props.idx);
-				handleAxiomClick(ev);
-			}}
-			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
-			onMouseLeave={() => props.onWhyNotNumHover([])}
+            onClick={() => props.onWhyNotAxiomClick()}
+			onMouseOver={(ev) => {
+                props.onWhyNotNumHover(selFNIds);
+            }}
+            onMouseEnter={(ev)=> {
+                const domRect = ev.target.getBoundingClientRect();
+                props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
+            }}
+			onMouseLeave={() => {
+                props.onWhyNotNumHover([]);}
+            }
 		>
 			<svg width={w} height={h}>
 				<Icon1

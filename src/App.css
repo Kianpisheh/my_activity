@@ -112,3 +112,7 @@ body,
 	display: flex;
 	flex-direction: column;
 }
+
+#floating-questions {
+	position: absolute;
+}

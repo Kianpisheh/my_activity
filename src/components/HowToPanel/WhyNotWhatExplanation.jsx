@@ -3,8 +3,6 @@ import "./WhyNotWhatExplanation.css";
 import Icons from "../../icons/Icons";
 import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
-import { CircleNum } from "../ResultsPanel/utils";
-import QueryTrigger from "../../model/QueryTrigger";
 
 import EventStat from "../../model/EventStat";
 import RangeVis from "./RangeVis";
@@ -25,10 +23,11 @@ function WhyNotWhatExplanation(props) {
 		axiomStatComp = (
 			<TimeDistanceAxiomStat
 				stats={stats}
+                onWhyHover={props.onWhyHover}
 				selectedInstances={selectedInstances}
 				axiom={axiom}
-				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
+                onWhyWhatHover={props.onWhyWhatHover}
 				onWhyWhatSelection={props.onWhyWhatSelection}
                 selectedInstancesIdx={selectedInstancesIdx}
 			></TimeDistanceAxiomStat>
@@ -39,10 +38,10 @@ function WhyNotWhatExplanation(props) {
 				stats={stats}
 				selectedInstances={selectedInstances}
 				axiom={axiom}
-				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
 				onWhyWhatSelection={props.onWhyWhatSelection}
                 selectedInstancesIdx={selectedInstancesIdx}
+                onWhyWhatHover={props.onWhyWhatHover}
 			></DurationAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
@@ -51,7 +50,6 @@ function WhyNotWhatExplanation(props) {
 				stats={stats}
 				selectedInstances={selectedInstances}
 				axiom={axiom}
-				qmenuPos={props.qmenuPos}
 				onWhyNotHowTo={props.onWhyNotHowTo}
                 selectedInstancesIdx={selectedInstancesIdx}
 			></InteractionAxiomWhyNotWhatText>
@@ -74,18 +72,6 @@ function WhyNotWhatExplanation(props) {
 		<div className="stat-container">
             <span style={{fontSize: 14, color: "#5F5656", marginBottom: 5}}>The selected {samples}{" "}{include} {time} outside of the defined range [{axiom.getTh1()},{axiom.getTh2()}].</span>
 			<div className="stat-axiom-explanation-container">{axiomStatComp}</div>
-			{/* <div
-				id="why-not-what-qmark"
-				onClick={(ev) => {
-					if (props.qmenuPos[0] > 0) {
-						props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
-					} else {
-						props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
-					}
-				}}
-			>
-				{CircleNum("?")}
-			</div> */}
 		</div>
 	);
 }
@@ -111,21 +97,10 @@ export function DurationAxiomStat(props) {
 	return (
 		<div
 			className="axiom-stat-container"
-			onClick={(ev) => {
-				if (props.qmenuPos[0] > 0) {
-                    if (props.selectedInstancesIdx["FN"]?.length) {
-					    props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
-                    } else if (props.selectedInstancesIdx["FP"]?.length) {
-                        props.onWhyHowTo(-1, -1, QueryTrigger.WHY_WHAT);
-                    }
-				} else {
-                    if (props.selectedInstancesIdx["FN"]?.length) {
-					    props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
-                    }  else if (props.selectedInstancesIdx["FP"]?.length) {
-                        props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
-                    }
-				}
-			}}
+            onMouseEnter={(ev)=> {
+                const domRect = ev.target.getBoundingClientRect();
+                props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
+            }}
 		>
 			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
 				<g>
@@ -222,21 +197,11 @@ export function TimeDistanceAxiomStat(props) {
 	const iconLineGap = 10;
 
 	return (
-		<div className="axiom-stat-container" onClick={(ev) => {
-				if (props.qmenuPos[0] > 0) {
-                    if (props.selectedInstancesIdx["FN"]?.length) {
-					    props.onWhyNotHowTo(-1, -1, QueryTrigger.WHY_NOT_WHAT);
-                    } else if (props.selectedInstancesIdx["FP"]?.length) {
-                        props.onWhyHowTo(-1, -1, QueryTrigger.WHY_WHAT);
-                    }
-				} else {
-                    if (props.selectedInstancesIdx["FN"]?.length) {
-					    props.onWhyNotHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_NOT_HOW_TO);
-                    }  else if (props.selectedInstancesIdx["FP"]?.length) {
-                        props.onWhyHowTo(ev.pageX, ev.pageY, QueryTrigger.WHY_HOW_TO);
-                    }
-				}
-			}}>
+		<div className="axiom-stat-container" 
+            onMouseEnter={(ev)=> {
+                const domRect = ev.target.getBoundingClientRect();
+                props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
+            }}>
 			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
 				<g>
 					<svg className="time-dist-stat-icon-vis" style={{ width: w1, height: h }}>

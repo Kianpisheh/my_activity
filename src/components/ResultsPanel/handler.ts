@@ -1,5 +1,6 @@
 import Activity from "../../model/Activity";
 import ActivityInstance from "../../model/ActivityInstance";
+import AxiomTypes from "../../model/AxiomTypes";
 
 function handleInstanceSelection(idx: number, type: string, selectedInstances: { [type: string]: number[] }) {
 	let new_selectedIdx = { ...selectedInstances };
@@ -37,6 +38,23 @@ export function getUnsatisfiedAxioms(
 				allAxioms[ax].push(FNIdx);
 			} else {
 				allAxioms[ax] = [FNIdx];
+			}
+		}
+	}
+
+	// remove more constrained unsatisfied axioms
+	let interactionAxIdx: number[] = [];
+	for (const ax in allAxioms) {
+		if (ax.split(":")[0] === AxiomTypes.TYPE_INTERACTION) {
+			interactionAxIdx = interactionAxIdx.concat(allAxioms[ax]);
+		}
+	}
+
+	for (const ax in allAxioms) {
+		if (ax.split(":")[0] !== AxiomTypes.TYPE_INTERACTION) {
+			allAxioms[ax] = allAxioms[ax].filter((val) => !interactionAxIdx.includes(val));
+			if (allAxioms[ax].length === 0) {
+				delete allAxioms[ax];
 			}
 		}
 	}

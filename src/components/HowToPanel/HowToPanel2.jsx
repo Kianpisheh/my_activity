@@ -14,8 +14,6 @@ import QueryTrigger from "../../model/QueryTrigger";
 import QuestionMenu from "../QuestionMenu/QuestionMenu";
 
 function HowToPanel2(props) {
-	const [selectedWhys, setSelectedWhy] = useState(null);
-	const [selectedwhyWhat, setSelectedwhyWhat] = useState(false);
 
 	const {
 		whyWhat,
@@ -29,11 +27,6 @@ function HowToPanel2(props) {
 		unsatisfiedAxioms,
 		whyQueryMode,
 	} = props;
-
-    if ((!Object.keys(selectedInstancesIdx)[0] || selectedInstancesIdx[Object.keys(selectedInstancesIdx)[0]].length === 0) && (selectedWhys !== null || selectedwhyWhat)) {
-        setSelectedWhy(null);
-        setSelectedwhyWhat(false);
-    }
 
 	let whyExplanation = [];
 	if (Object.keys(unsatisfiedAxioms).length !== 0) {
@@ -49,37 +42,27 @@ function HowToPanel2(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				numInstances={numInstances}
 				activity={activity}
+                onWhyHover={props.onWhyHover}
 				unsatisfiedAxioms={unsatisfiedAxioms}
-				selectedWhys={selectedWhys}
-				onWhySelection={(axIdx) => {
-                    if (selectedWhys === axIdx) {
-                        setSelectedWhy(null);
-                    } else {
-                        setSelectedWhy(axIdx);
-                    }
-                }}
+                queriedAxiom={props.queriedAxiom}
+                explanationStatus={props.explanationStatus}
+                onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 			></WhyNotExplanation>
 		);
-	} else if (selectedInstancesIdx["FP"]?.length && (props.whyQueryMode || props.queryTrigger === QueryTrigger.WHY_WHAT)) {
-		const selectedInstances = instances.filter((instance, idx) =>
-			selectedInstancesIdx["FP"].includes(idx)
-		);
+	} else if (
+		selectedInstancesIdx["FP"]?.length &&
+		(props.whyQueryMode || props.queryTrigger === QueryTrigger.WHY_WHAT)
+	) {
+		const selectedInstances = instances.filter((instance, idx) => selectedInstancesIdx["FP"].includes(idx));
 		const numInstances = selectedInstances.length;
 		whyExplanation.push(
 			<WhyExplanation
-                qmenuPos={props.qmenuPos}
 				queryTrigger={props.queryTrigger}
 				numInstances={numInstances}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				activity={activity}
-				selectedWhys={selectedWhys}
-				onWhySelection={(axIdx) => {
-                    if (selectedWhys === axIdx) {
-                        setSelectedWhy(null);
-                    } else {
-                        setSelectedWhy(axIdx);
-                    }
-                }}
+                onWhyHover={props.onWhyHover}
+                explanationStatus={props.explanationStatus}
 			></WhyExplanation>
 		);
 	}
@@ -101,14 +84,8 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-				qmenuPos={props.qmenuPos}
-                onWhyWhatSelection={() => {
-                    if (selectedwhyWhat) {
-                        setSelectedwhyWhat(false);
-                    } else {
-                        setSelectedwhyWhat(true);
-                    }
-                }}
+                onWhyWhatHover={props.onWhyWhatHover}
+                explanationStatus={props.explanationStatus}
 			></WhyNotWhatExplanation>
 		);
 	} else if (whyWhat) {
@@ -120,15 +97,8 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-				qmenuPos={props.qmenuPos}
-                selectedwhyWhat={selectedwhyWhat}
-                onWhyWhatSelection={() => {
-                    if (selectedwhyWhat) {
-                        setSelectedwhyWhat(false);
-                    } else {
-                        setSelectedwhyWhat(true);
-                    }
-                }}
+                onWhyWhatHover={props.onWhyWhatHover}
+                explanationStatus={props.explanationStatus}
 			></WhyWhatExplanation>
 		);
 	}
@@ -152,37 +122,36 @@ function HowToPanel2(props) {
 	}
 
 	return (
-		<div className="exp-container">
+		<div className="exp-container" onClick={() => {
+            props.onWhyHover(-1,-1, null);
+            props.onWhyWhatHover(-1,-1);
+        }
+        }>
+            
 			<div id="exp-title-section">
 				<span className="section-title">Explanations</span>
 			</div>
-			{props.queryTrigger !== "" && (
-				<div id="question-menu">
-					<QuestionMenu
-						selectedIdx={props.selectedIdx}
-						currentActivity={props.activity}
-						onQuery={props.onQuery}
-						queryTrigger={props.queryTrigger}
-					></QuestionMenu>
-				</div>
-			)}
-            {whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+			{whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
 			{whyExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
-			{whyExplanation.length > 0 && <div className="why-explanation-container" style={{marginBottom: 20}}>{[...whyExplanation]}</div>}
-            {whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
-			{selectedWhys !== null && whatExplanation.length > 0 && (
+			{whyExplanation.length > 0 && (
+				<div className="why-explanation-container" style={{ marginBottom: 20 }}>
+					{[...whyExplanation]}
+				</div>
+			)}
+			{whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
+			{whatExplanation.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
 			)}
-			{selectedWhys !== null && <div className="axiom-explanations-container">{[...whatExplanation]}</div>}
-			{selectedWhys !== null && suggestions.length > 0 && whatExplanation.length > 0 && (
+			{<div className="axiom-explanations-container">{[...whatExplanation]}</div>}
+			{suggestions.length > 0 && whatExplanation.length > 0 && (
 				<hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />
 			)}
-			{selectedWhys !== null && suggestions.length > 0 && (
+			{suggestions.length > 0 && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
-			{selectedWhys !== null && <div className="how-to-explanations-container">{[...suggestions]}</div>}
+			{<div className="how-to-explanations-container">{[...suggestions]}</div>}
 			<div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);

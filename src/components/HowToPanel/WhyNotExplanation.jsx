@@ -6,9 +6,11 @@ import QueryTrigger from "../../model/QueryTrigger";
 import TimeDistanceAxiomRepr from "./TimeDistanceAxiomRepr";
 import DurationAxiomRepr from "./DurationAxiomRepr";
 import InteractionAxiomRepr from "./InteractionAxiomRepr";
+import isEqual from "lodash.isequal";
+import ExpStatus from "../../model/ExpStatus";
 
 function WhyNotExplanation(props) {
-	const { numInstances, activity, unsatisfiedAxioms } = props;
+	const { numInstances, activity, unsatisfiedAxioms, queriedAxiom, explanationStatus } = props;
 	const samples = numInstances > 1 ? "samples" : "sample";
 	const doesDo = numInstances > 1 ? "do" : "does";
 	const satisfy = numInstances > 1 ? "satisfy" : "satisfies";
@@ -17,13 +19,11 @@ function WhyNotExplanation(props) {
     let i = 0;
 	for (const axString of Object.keys(unsatisfiedAxioms)) {
 
-        if (props.selectedWhys !== null && props.selectedWhys !== i) {
-            i += 1;
-            continue;
-        }
-
 		let axComp = null;
 		const axiom = AxiomData.axiomFromString(axString);
+        if ((queriedAxiom !==null) && explanationStatus === ExpStatus.WHY_WHY_NOT_LIST && !isEqual(axiom, queriedAxiom)) {
+            continue;
+        }
 		if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
 			axComp = (
 					<TimeDistanceAxiomRepr
@@ -33,12 +33,12 @@ function WhyNotExplanation(props) {
 						onWhyNotNumHover={props.onWhyNotNumHover}
 						numInstances={numInstances}
 						unsatisfiedAxioms={unsatisfiedAxioms}
+                        onWhyHover={props.onWhyHover}
 						activity={activity}
 						axiom={axiom}
-                        selectedWhys={props.selectedWhys}
-				        onWhySelection={props.onWhySelection}
                         idx={i}
                         expType={QueryTrigger.WHY_NOT}
+                        onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 					></TimeDistanceAxiomRepr>
 			);
 		} else if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
@@ -49,13 +49,13 @@ function WhyNotExplanation(props) {
 						onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 						onWhyNotNumHover={props.onWhyNotNumHover}
 						numInstances={numInstances}
+                        onWhyHover={props.onWhyHover}
 						activity={activity}
 						axiom={axiom}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        selectedWhys={props.selectedWhys}
-				        onWhySelection={props.onWhySelection}
                         idx={i}
                         expType={QueryTrigger.WHY_NOT}
+                        onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 					></DurationAxiomRepr>
 			);
 		} else if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
@@ -66,13 +66,13 @@ function WhyNotExplanation(props) {
 						onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 						onWhyNotNumHover={props.onWhyNotNumHover}
 						numInstances={numInstances}
+                        onWhyHover={props.onWhyHover}
 						activity={activity}
 						axiom={axiom}
 						unsatisfiedAxioms={unsatisfiedAxioms}
-                        selectedWhys={props.selectedWhys}
-				        onWhySelection={props.onWhySelection}
                         idx={i}
                         expType={QueryTrigger.WHY_NOT}
+                        onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 					></InteractionAxiomRepr>
 			);
 		}

@@ -31,6 +31,14 @@
 	padding-top: 15px;
 }
 
+#FNFP-questions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	grid-column: 1 / 3;
+}
+
 .result-act-class {
 	display: flex;
 	flex-direction: column;
