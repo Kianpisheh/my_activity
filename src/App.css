@@ -13,6 +13,10 @@
 	--inactive-event: #8c8b8b;
 	--missing-line: #a77c7c;
 	--explanation: #2a86e3;
+	--whywhy: #cad5e2;
+	--whywhy-hover: #abbccf;
+	--how: #ebdfeb;
+	--how-hover: #d7cbd7;
 	background-color: var(--main-beige);
 }
 

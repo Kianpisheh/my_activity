@@ -12,7 +12,7 @@
 	align-items: center;
 	width: 75%;
 	height: 75px;
-	background-color: var(--light-beige);
+	background-color: var(--how);
 	border-radius: 3px;
 }
 
@@ -25,19 +25,8 @@
 	padding-bottom: 4px;
 }
 
-/* TemporalAdjustmentAxiom */
-.temp-adj-axiom-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 75%;
-	height: 75px;
-	background-color: var(--light-beige);
-	border-radius: 3px;
-}
-
 .temp-adj-axiom-container:hover {
-	background-color: var(--hover-beige);
+	background-color: var(--how-hover);
 }
 
 .temp-adj-icons {

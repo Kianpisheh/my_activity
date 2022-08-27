@@ -1,6 +1,6 @@
 import "./FloatingQuestions.css"
 
-import {getQuestionsFromExpStatus} from "../QuestionMenu/QuestionMenu"
+import {getQuestionsFromExpStatus, getQuestionBgColor} from "../QuestionMenu/QuestionMenu"
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 import { questionIcon } from "../QuestionMenu/QuestionMenu";
@@ -12,7 +12,6 @@ function FloatingQuestions(props) {
     }
 
     const Q = getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity);
-    let bgColor = "#e4eef5";
 
     return (
 		<div className="FloatingQ-container">
@@ -24,7 +23,7 @@ function FloatingQuestions(props) {
 						<div
 							className="floating-question-item"
 							onClick={() => props.onQuery(qtype)}
-							style={{ background: bgColor }}
+							style={{ background: getQuestionBgColor(qtype) }}
 						>
 							<div className="question-icon">
 								<Icon key={idx} style={{ width: 35, height: 35 }}></Icon>

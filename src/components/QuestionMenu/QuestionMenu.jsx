@@ -40,6 +40,14 @@ function QuestionMenu(props) {
 	);
 }
 
+export function getQuestionBgColor(questionType) {
+    if (questionType === QueryQuestion.WHY_NOT_WHAT || questionType === QueryQuestion.WHY_WHAT) {
+        return "var(--whywhy)";
+    } else if (questionType === QueryQuestion.WHY_HOW_TO || questionType === QueryQuestion.WHY_NOT_HOW_TO){
+        return "var(--how)";
+    }
+}
+
 export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity) {
     const targetActivity = currentActivity.getName();
 	const multiple = selectedIdx && selectedIdx.length > 1;

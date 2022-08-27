@@ -4,12 +4,12 @@
 	align-items: center;
 	justify-content: center;
 	width: 100%;
-	background-color: var(--light-beige);
+	background-color: var(--whywhy);
 	border-radius: 5px;
 }
 
 .axiom-stat-container:hover {
-	background-color: var(--hover-beige);
+	background-color: var(--whywhy-hover);
 }
 
 .stat-axiom-explanation-container {
