@@ -36,7 +36,6 @@ function HowToPanel2(props) {
 		const numInstances = selectedInstances.length;
 		whyExplanation.push(
 			<WhyNotExplanation
-				qmenuPos={props.qmenuPos}
 				queryTrigger={props.queryTrigger}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyNotNumHover={props.onWhyNotNumHover}
@@ -60,9 +59,10 @@ function HowToPanel2(props) {
 				queryTrigger={props.queryTrigger}
 				numInstances={numInstances}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+                queriedAxiom={props.queriedAxiom}
+                explanationStatus={props.explanationStatus}
 				activity={activity}
                 onWhyHover={props.onWhyHover}
-                explanationStatus={props.explanationStatus}
 			></WhyExplanation>
 		);
 	}

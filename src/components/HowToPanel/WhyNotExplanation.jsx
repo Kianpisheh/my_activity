@@ -21,13 +21,12 @@ function WhyNotExplanation(props) {
 
 		let axComp = null;
 		const axiom = AxiomData.axiomFromString(axString);
-        if ((queriedAxiom !==null) && explanationStatus === ExpStatus.WHY_WHY_NOT_LIST && !isEqual(axiom, queriedAxiom)) {
+        if ((queriedAxiom !==null) && (explanationStatus === ExpStatus.WHY_WHY_NOT_LIST || explanationStatus === ExpStatus.WHY_NOT_HOW_TO_LIST) && !isEqual(axiom, queriedAxiom)) {
             continue;
         }
 		if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
 			axComp = (
 					<TimeDistanceAxiomRepr
-						qmenuPos={props.qmenuPos}
 						queryTrigger={props.queryTrigger}
 						onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 						onWhyNotNumHover={props.onWhyNotNumHover}
@@ -44,7 +43,6 @@ function WhyNotExplanation(props) {
 		} else if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
 			axComp = (
 					<DurationAxiomRepr
-						qmenuPos={props.qmenuPos}
 						queryTrigger={props.queryTrigger}
 						onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 						onWhyNotNumHover={props.onWhyNotNumHover}
@@ -61,7 +59,6 @@ function WhyNotExplanation(props) {
 		} else if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
 			axComp = (
 					<InteractionAxiomRepr
-						qmenuPos={props.qmenuPos}
 						queryTrigger={props.queryTrigger}
 						onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 						onWhyNotNumHover={props.onWhyNotNumHover}

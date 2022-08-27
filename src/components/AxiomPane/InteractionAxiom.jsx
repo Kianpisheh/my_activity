@@ -30,13 +30,13 @@ function InteractionAxiom(props) {
 
 	// check if each interaction is an unsatisfied axiom based on the user query
     let numnum = {}; // event -> num
-	for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
-		const axType = axString.split(":")[0];
-		if (axType === AxiomTypes.TYPE_INTERACTION) {
-			const event = axString.split(":")[1];
-			numnum[event] = indeces;
-		}
-	}
+	// for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
+	// 	const axType = axString.split(":")[0];
+	// 	if (axType === AxiomTypes.TYPE_INTERACTION) {
+	// 		const event = axString.split(":")[1];
+	// 		numnum[event] = indeces;
+	// 	}
+	// }
 
 	let interactionIcons = [];
 	for (let i = 0; i < events.length; i++) {

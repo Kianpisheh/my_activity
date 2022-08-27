@@ -94,6 +94,21 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 		);
 		questions[QueryQuestion.WHY_NOT_WHAT] = q1;
         questions[QueryQuestion.WHY_NOT_HOW_TO] = q2;
+    } else if (expStatus === ExpStatus.WHY_LIST) {
+        const q1 = (
+			<span className="question-content">
+				<span style={{ fontWeight: 700 }}>Why</span> is this condition satisfied for the {targetActivity}{" "}
+				activity?
+			</span>
+		);
+		const q2 = (
+			<span className="question-content">
+				<span style={{ fontWeight: 700 }}>How</span> to modify this condition so it is{" "}
+				<span style={{ fontWeight: 700 }}>not</span> satisfied for the {targetActivity} activity?
+			</span>
+		);
+		questions[QueryQuestion.WHY_WHAT] = q1;
+        questions[QueryQuestion.WHY_HOW_TO] = q2;
     } else if (expStatus === ExpStatus.WHY_WHY_NOT_LIST) {
         const q = (
 			<span className="question-content">
@@ -102,6 +117,14 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 			</span>
 		);
 		questions[QueryQuestion.WHY_NOT_HOW_TO] = q;
+    } else if (expStatus === ExpStatus.WHY_WHY_LIST) {
+        const q = (
+			<span className="question-content">
+				<span style={{ fontWeight: 700 }}>How</span> to make the system to{" "}
+				<span style={{ fontWeight: 700 }}>not</span> recognize {thisThese} {sample} as {targetActivity}?
+			</span>
+		);
+		questions[QueryQuestion.WHY_HOW_TO] = q;
     }
 
     return questions;

@@ -92,8 +92,6 @@ function ActivityAxiomPane(props) {
 							data={axioms[0]}
 							config={props.config}
 							messageCallback={props.sendMessage}
-							unsatisfiedAxioms={props.unsatisfiedAxioms}
-							onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 							onWhyWhatQuery={props.onWhyWhatQuery}
 							activityInstances={props.activityInstances}
@@ -108,7 +106,6 @@ function ActivityAxiomPane(props) {
                             ruleitems={props.ruleitems}
                             onQuestionMenu={props.onQuestionMenu}
                             queryTrigger={props.queryTrigger}
-                            qmenuPos={props.qmenuPos}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
@@ -144,8 +141,6 @@ function ActivityAxiomPane(props) {
 								data={axiom}
 								config={props.config}
 								messageCallback={props.sendMessage}
-								unsatisfiedAxioms={props.unsatisfiedAxioms}
-								onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
 								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 							    onWhyWhatQuery={props.onWhyWhatQuery}
 								activityInstances={props.activityInstances}
@@ -159,7 +154,6 @@ function ActivityAxiomPane(props) {
                                 onWhyHowToQuery={props.onWhyHowToQuery}
                                 onQuestionMenu={props.onQuestionMenu}
                                 queryTrigger={props.queryTrigger}
-                                qmenuPos={props.qmenuPos}
 							></Axiom>
 						))}
 					</div>{" "}

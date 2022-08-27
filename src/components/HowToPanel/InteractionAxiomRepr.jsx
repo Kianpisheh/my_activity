@@ -49,8 +49,6 @@ function InteractionAxiomRepr(props) {
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
 			onClick={() => props.onWhyNotAxiomClick()}
-			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
-			onMouseLeave={() => props.onWhyNotNumHover([])}
             onMouseEnter={(ev)=> {
                 const domRect = ev.target.getBoundingClientRect();
                 props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);

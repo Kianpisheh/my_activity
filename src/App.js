@@ -137,6 +137,7 @@ function App() {
 			setWhyWhat(whyWhatExp);
 			setWhyNotWhat(null);
 			setFloatingCoords([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_WHY_LIST);
 		} else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
@@ -149,6 +150,7 @@ function App() {
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
 			setFloatingCoords([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_NOT_HOW_TO_LIST);
 		} else if (questionType === QueryQuestion.WHY_HOW_TO) {
 			const whyHowToSuggestions = WhyHowToQueryController.handleWhyHowToQuery(
 				queriedAxiom,
@@ -162,6 +164,7 @@ function App() {
 			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
 			setFloatingCoords([-1, -1]);
+			setExplanationStatus(ExpStatus.WHY_HOW_TO_LIST);
 		}
 	}
 
@@ -448,7 +451,6 @@ function App() {
 								activity={currentActivity}
 								sendMessage={onAxiomPaneMessage}
 								config={config}
-								unsatisfiedAxioms={unsatisfiedAxioms}
 								ruleitems={ruleitems}
 								onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
 									setQueriedAxiom(ax);
