@@ -158,7 +158,7 @@ function App() {
 				classificationRes,
 				activityInstances,
 				selectedInstancesIdx["FP"],
-				ruleitems,
+				ruleitems[currentActivity.getName()],
 				activities
 			);
 			setWhyHowToSuggestions(whyHowToSuggestions);

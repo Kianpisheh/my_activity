@@ -48,10 +48,10 @@ export function getWhyHowToSuggestions(
 		);
 
 		suggestions = suggestions2.concat(suggestions1);
-	} else if (axType === axiom.getType()) {
+	} else if (axType === AxiomTypes.TYPE_INTERACTION) {
 		const suggestion3 = getInteractionAdditionAxiomSuggestions(
 			axiom,
-			ruleitems[currentActivity.getName()],
+			ruleitems,
 			classificationResult,
 			currentActivity,
 			instances,
@@ -61,7 +61,7 @@ export function getWhyHowToSuggestions(
 		suggestions = suggestion3;
 	}
 
-	suggestions = checkDuplicate(suggestions);
+	//suggestions = checkDuplicate(suggestions);
 
 	return suggestions;
 }
@@ -302,8 +302,8 @@ function getInteractionAdditionAxiomSuggestions(
 	selectedFPs: number[],
 	activities: Activity[]
 ) {
-	const SUPP_TH = 0.85;
-	const CONF_TH = 0.9;
+	const SUPP_TH = 0.75;
+	const CONF_TH = 0.5;
 	const activityNum = ActivityInstance.getNum(currentActivity.getName(), instances);
 	let candidateRuleitems: RuleitemData[] = [];
 
@@ -340,11 +340,18 @@ function getInteractionAdditionAxiomSuggestions(
 
 	// now create the suggestions
 	let suggestions = [];
+	const timeTiedEvents = currentActivity.getTimeTiedEvents();
 	for (const ruleitem of candidateRuleitems2.slice(0, 3)) {
+		// check if current items is a subset of the ruleitmes
+		const isSubset = timeTiedEvents.every((ev) => ruleitem.items.includes(ev));
+		if (!isSubset) {
+			continue;
+		}
+
 		// new axiom has replaced the old one
 		let newAxiomSet = [...currentActivity.getAxioms()];
 		// remove the curr interaction axiom
-		newAxiomSet.filter((axiom) => axiom.getType() !== AxiomTypes.TYPE_INTERACTION);
+		newAxiomSet = newAxiomSet.filter((axiom) => axiom.getType() !== AxiomTypes.TYPE_INTERACTION);
 		// replace the newAxiom with the old one
 		let newItems = ruleitem.getItems().map((item) => item[0].toUpperCase() + item.slice(1).toLowerCase());
 		let newAxiom = new AxiomData({ type: AxiomTypes.TYPE_INTERACTION, events: newItems, th1: -1, th2: -1 });

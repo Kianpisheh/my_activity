@@ -69,6 +69,14 @@ class Activity {
 		return this.constraints;
 	}
 
+	getTimeTiedEvents() {
+		let evs: string[] = [];
+		for (const constraint of this.constraints) {
+			evs = evs.concat(constraint.events);
+		}
+		return [...new Set(evs)];
+	}
+
 	getAxioms(): AxiomData[] {
 		let axioms: AxiomData[] = [];
 
