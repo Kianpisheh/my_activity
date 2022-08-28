@@ -239,12 +239,12 @@ function App() {
 	//-------------------------------------------------//
 
 	//--------------Retrieving ruleitems--------------//
-	function handleRuleitemRequest(idx) {
-		// let prom = getRuleitems();
-		// prom.then((data) => {
-		// 	let ruleItems = Ruleitem.getitems(data.data);
-		// 	setRuleitems(ruleItems);
-		// });
+	function handleRuleitemRequest(dataset) {
+		let prom = getRuleitems(dataset);
+		prom.then((data) => {
+			let ruleItems = Ruleitem.getitems(data.data);
+			setRuleitems(ruleItems);
+		});
 	}
 
 	function handleInstanceEventSelection(event, idx) {
@@ -271,7 +271,7 @@ function App() {
 	function readDataFromDB(dataset) {
 		setDataset(dataset);
 		let activitiesPromise = retrieveActivities(dataset, enteredUser);
-		handleRuleitemRequest();
+		handleRuleitemRequest(dataset);
 		activitiesPromise.then((data) => {
 			let activities = data.data;
 			let activityItems = [];

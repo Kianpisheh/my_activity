@@ -35,7 +35,7 @@ export async function classifyInstance(activityInstance) {
 	return axios.post(url, activityInstance);
 }
 
-export async function getRuleitems() {
+export async function getRuleitems(dataset) {
 	const url = "http://localhost:8080/ruleitems/get_ruleitems";
-	return axios.get(url);
+	return axios.post(url, { dataset: dataset });
 }
