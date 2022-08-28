@@ -10,7 +10,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 75%;
+	width: 70%;
 	height: 75px;
 	background-color: var(--how);
 	border-radius: 3px;
@@ -65,4 +65,6 @@
 .icon-container3 {
 	display: flex;
 	column-gap: 20px;
+	align-items: center;
+	justify-content: center;
 }

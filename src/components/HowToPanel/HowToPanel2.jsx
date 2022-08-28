@@ -117,6 +117,7 @@ function HowToPanel2(props) {
 			<WhyHowToExplanations
 				suggestions={whyHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
+                currentActivity={activity}
 			></WhyHowToExplanations>
 		);
 	}

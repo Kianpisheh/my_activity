@@ -15,10 +15,7 @@ function WhyNotHowToExplanations(props) {
 	for (const suggestion of suggestions) {
 		const { axiom } = suggestion;
 		const suggestionType = suggestion.getType();
-		if (
-			suggestionType === "time_expansion" ||
-			suggestionType === "time_removal"
-		) {
+		if (suggestionType === "time_expansion" || suggestionType === "time_removal") {
 			if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
 				suggestionItems.push(
 					<DurationAdjustmentAxiom
@@ -37,10 +34,12 @@ function WhyNotHowToExplanations(props) {
 				);
 			}
 		} else if (suggestionType === "interaction_removal") {
-			suggestionItems.push(<InteractionRemovalAxiom
-				suggestion={suggestion}
-				onWhyHowToAxiomHover={onWhyHowToAxiomHover}
-			></InteractionRemovalAxiom>);
+			suggestionItems.push(
+				<InteractionRemovalAxiom
+					suggestion={suggestion}
+					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+				></InteractionRemovalAxiom>
+			);
 		}
 	}
 
@@ -59,24 +58,24 @@ export function InteractionRemovalAxiom(props) {
 	const Icon = Icons.getIcon(pascalCase(events[0]), true);
 
 	return (
-        <div>
-            <span className="suggestion-subtitle">Removing the interaction condition</span>
-            <div
-                className="temp-adj-axiom-container"
-                onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
-                onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-                style={{ position: "relative", cursor: "pointer" }}
-            >
-                <div className="icon-container2">
-                    <svg width={25} height={25}>
-                        <Icon fill="#BBBBBB" style={{ width: 25, height: 25 }} />
-                        <svg width={25} height={25}>
-                            <line x1={0} x2={25} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
-                        </svg>
-                    </svg>
-                </div>
-            </div>
-        </div>
+		<div>
+			<span className="suggestion-subtitle">Removing the interaction condition</span>
+			<div
+				className="temp-adj-axiom-container"
+				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+				style={{ position: "relative", cursor: "pointer" }}
+			>
+				<div className="icon-container2">
+					<svg width={25} height={25}>
+						<Icon fill="#BBBBBB" style={{ width: 25, height: 25 }} />
+						<svg width={25} height={25}>
+							<line x1={0} x2={25} y1={25} y2={0} stroke="var(--missing-line)" strokeWidth={3} />
+						</svg>
+					</svg>
+				</div>
+			</div>
+		</div>
 	);
 }
 
@@ -97,74 +96,100 @@ export function TemporalAdjustmentAxiom(props) {
 		sepColor = "#BBBBBB";
 	}
 
-    let changing = "Shrinking";
-    if ((axiom.getTh1() > th1) || (axiom.getTh2() < th2)) {
-        changing = "Expanding";
-    }
+	let changing = "Shrinking";
+	if (axiom.getTh1() > th1 || axiom.getTh2() < th2) {
+		changing = "Expanding";
+	}
 
 	return (
-        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer"}}>
-        {props.timeRemoval &&<span className="suggestion-subtitle">Removing the time distance condition</span>}
-        {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div
-			className="temp-adj-axiom-container"
-			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
-			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-			style={{ position: "relative" }}
+			style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" }}
 		>
-			<div className="temp-adj-icons">
-				<div className="icon-container">
-					<Icon1 style={{ fill: color, width: 25, height: 25 }}></Icon1>
+			{props.timeRemoval && <span className="suggestion-subtitle">Removing the time distance condition</span>}
+			{!props.timeRemoval && <span className="suggestion-subtitle">{changing} the time limits</span>}
+			<div
+				className="temp-adj-axiom-container"
+				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+				style={{ position: "relative" }}
+			>
+				<div className="temp-adj-icons">
+					<div className="icon-container">
+						<Icon1 style={{ fill: color, width: 25, height: 25 }}></Icon1>
+					</div>
+					<div className="icon-container" style={{ width: 100, height: 25 }}>
+						<TimeDistIcon style={{ fill: color, width: 100, height: 25 }}></TimeDistIcon>
+					</div>
+					<div className="icon-container" style={{ width: 25, height: 25 }}>
+						<Icon2 style={{ fill: color, width: 25, height: 25 }}></Icon2>
+					</div>
 				</div>
-				<div className="icon-container" style={{ width: 100, height: 25 }}>
-					<TimeDistIcon style={{ fill: color, width: 100, height: 25 }}></TimeDistIcon>
+				<div id="vertical-line-sep" style={{ borderLeft: "1px solid " + sepColor, height: "80%" }}></div>
+				<div className="temp-adj-limits">
+					<p style={{ color: color }}>
+						at least <span style={{ fontWeight: 600 }}>{th1}</span> sec later{" "}
+					</p>
+					<p style={{ color: color }}>
+						at most <span style={{ fontWeight: 600 }}>{th2}</span> sec later
+					</p>
 				</div>
-				<div className="icon-container" style={{ width: 25, height: 25 }}>
-					<Icon2 style={{ fill: color, width: 25, height: 25 }}></Icon2>
-				</div>
+				{props.timeRemoval && (
+					<p style={{ position: "absolute", fontSize: 36, color: "#E35A73", opacity: 0.8 }}>Remove</p>
+				)}
+				{props.timeRemoval && (
+					<div
+						className="icon-container"
+						style={{ right: "20%", position: "absolute", width: 30, height: 30 }}
+					>
+						<Trashcan style={{ stroke: "#E56F84", fill: "none", width: 40, height: 40 }}></Trashcan>
+					</div>
+				)}
 			</div>
-			<div id="vertical-line-sep" style={{ borderLeft: "1px solid " + sepColor, height: "80%" }}></div>
-			<div className="temp-adj-limits">
-				<p style={{ color: color }}>
-					at least <span style={{ fontWeight: 600 }}>{th1}</span> sec later{" "}
-				</p>
-				<p style={{ color: color }}>
-					at most <span style={{ fontWeight: 600 }}>{th2}</span> sec later
-				</p>
-			</div>
-			{props.timeRemoval && (
-				<p style={{ position: "absolute", fontSize: 36, color: "#E35A73", opacity: 0.8 }}>Remove</p>
-			)}
-			{props.timeRemoval && (
-				<div className="icon-container" style={{ right: "20%", position: "absolute", width: 30, height: 30 }}>
-					<Trashcan style={{ stroke: "#E56F84", fill: "none", width: 40, height: 40 }}></Trashcan>
-				</div>
-			)}
 		</div>
-        </div>
 	);
 }
 
 export function InteractionAdditionAxiom(props) {
-    const { axiom, newTPs, newFPs } = props.suggestion;
-	const events = axiom.getEvents();
+	const { axiom, newTPs, newFPs } = props.suggestion;
+	const newEvents = axiom.getEvents();
 
-    let icons = [];
-    for (let ev of events) {
-	    const Icon = Icons.getIcon(pascalCase(ev), true);
-        icons.push(<svg width={25} height={25}> 
-<Icon fill="#3A2A0D" style={{ width: 25, height: 25 }} /></svg>);
-    }
-    return <div
+    const currentEvents = props.currentActivity.getEvents();
+
+    let currentIcons = [];
+	for (let ev of currentEvents) {
+		const Icon = Icons.getIcon(pascalCase(ev), true);
+		currentIcons.push(
+			<svg width={25} height={25}>
+				<Icon fill="#3A2A0D" style={{ width: 25, height: 25 }} />
+			</svg>
+		);
+	}
+	let newIcons = [];
+	for (let ev of newEvents) {
+		const Icon = Icons.getIcon(pascalCase(ev), true);
+		newIcons.push(
+			<svg width={25} height={25}>
+				<Icon fill="#3A2A0D" style={{ width: 25, height: 25 }} />
+			</svg>
+		);
+	}
+	return (
+		<div
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 			style={{ position: "relative", cursor: "pointer" }}
 		>
 			<div className="icon-container3">
-				{[...icons]}
-			</div>
+                {[...currentIcons]}
+                <svg height={10} width={70}>
+                    <line x1={0} y1={5} x2={65} y2={5} stroke="#555555" strokeWidth={1.5}></line>
+                    <polygon points={[70, 5, 65, 0, 65, 10]} fill="#555555"></polygon>
+                </svg>
+                {[...newIcons]}
+            </div>
 		</div>
+	);
 }
 
 export function DurationAdjustmentAxiom(props) {
@@ -181,47 +206,52 @@ export function DurationAdjustmentAxiom(props) {
 		color = "#999999";
 	}
 
-    let changing = "Shrinking";
-    if ((axiom.getTh1() > th1) || (axiom.getTh2() < th2)) {
-        changing = "Expanding";
-    }
+	let changing = "Shrinking";
+	if (axiom.getTh1() > th1 || axiom.getTh2() < th2) {
+		changing = "Expanding";
+	}
 
 	return (
-        <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer"}}>
-        {props.timeRemoval &&<span className="suggestion-subtitle">Removing the duration condition</span>}
-        {!props.timeRemoval &&<span className="suggestion-subtitle">{changing} the time limits</span>}
 		<div
-			className="temp-adj-axiom-container"
-			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
-			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-			style={{ position: "relative" }}
+			style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer" }}
 		>
-			<div className="duration-adj-icons">
-				<div className="icon-container">
-					<Icon1 style={{ fill: color, width: 25, height: 25, marginTop: -15 }}></Icon1>
+			{props.timeRemoval && <span className="suggestion-subtitle">Removing the duration condition</span>}
+			{!props.timeRemoval && <span className="suggestion-subtitle">{changing} the time limits</span>}
+			<div
+				className="temp-adj-axiom-container"
+				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+				style={{ position: "relative" }}
+			>
+				<div className="duration-adj-icons">
+					<div className="icon-container">
+						<Icon1 style={{ fill: color, width: 25, height: 25, marginTop: -15 }}></Icon1>
+					</div>
+					<div className="icon-container" style={{ width: 100, height: 10, marginTop: -17 }}>
+						<TimeDistIcon style={{ fill: color, width: 100, height: 10 }}></TimeDistIcon>
+					</div>
 				</div>
-				<div className="icon-container" style={{ width: 100, height: 10, marginTop: -17 }}>
-					<TimeDistIcon style={{ fill: color, width: 100, height: 10 }}></TimeDistIcon>
+				<div id="vertical-line-sep" style={{ borderLeft: "1px solid #A5A2A2", height: "80%" }}></div>
+				<div className="temp-adj-limits">
+					<p style={{ color: color }}>
+						at least for <span style={{ fontWeight: 600 }}>{th1}</span> sec{" "}
+					</p>
+					<p style={{ color: color }}>
+						at most for <span style={{ fontWeight: 600 }}>{th2}</span> sec
+					</p>
 				</div>
+				{props.timeRemoval && (
+					<p style={{ position: "absolute", fontSize: 36, color: "#E35A73", opacity: 0.8 }}>Remove</p>
+				)}
+				{props.timeRemoval && (
+					<div
+						className="icon-container"
+						style={{ right: "20%", position: "absolute", width: 30, height: 30 }}
+					>
+						<Trashcan style={{ stroke: "#E56F84", fill: "none", width: 40, height: 40 }}></Trashcan>
+					</div>
+				)}
 			</div>
-			<div id="vertical-line-sep" style={{ borderLeft: "1px solid #A5A2A2", height: "80%" }}></div>
-			<div className="temp-adj-limits">
-				<p style={{ color: color }}>
-					at least for <span style={{ fontWeight: 600 }}>{th1}</span> sec{" "}
-				</p>
-				<p style={{ color: color }}>
-					at most for <span style={{ fontWeight: 600 }}>{th2}</span> sec
-				</p>
-			</div>
-			{props.timeRemoval && (
-				<p style={{ position: "absolute", fontSize: 36, color: "#E35A73", opacity: 0.8 }}>Remove</p>
-			)}
-			{props.timeRemoval && (
-				<div className="icon-container" style={{ right: "20%", position: "absolute", width: 30, height: 30 }}>
-					<Trashcan style={{ stroke: "#E56F84", fill: "none", width: 40, height: 40 }}></Trashcan>
-				</div>
-			)}
 		</div>
-        </div>
 	);
 }

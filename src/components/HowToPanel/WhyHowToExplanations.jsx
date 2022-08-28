@@ -2,7 +2,7 @@ import AxiomTypes from "../../model/AxiomTypes";
 import { DurationAdjustmentAxiom, InteractionAdditionAxiom, TemporalAdjustmentAxiom } from "./WhyNotHowToExplanations";
 
 function WhyHowToExplanations(props) {
-	const { suggestions, onWhyHowToAxiomHover } = props;
+	const { suggestions, onWhyHowToAxiomHover, currentActivity } = props;
 	if (!Object.keys(suggestions).length) {
 		return;
 	}
@@ -33,6 +33,7 @@ function WhyHowToExplanations(props) {
 			suggestionItems.push(
             <InteractionAdditionAxiom
 				suggestion={suggestion}
+                currentActivity={currentActivity}
 				onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 			></InteractionAdditionAxiom>);
 		}
