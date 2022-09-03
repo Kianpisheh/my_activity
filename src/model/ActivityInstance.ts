@@ -124,12 +124,20 @@ class ActivityInstance {
 
 	notSatisfied(activity: Activity) {
 		let notSatisfiedInteractionAxs: string[] = [];
+		let notSatisfiedNegationInteractionAxs: string[] = [];
 		let notSatisfiedTemporalAxs = [];
 
 		// first check interaction axioms
 		for (const ev of activity.getEvents()) {
 			if (!this.hasEvent(ev)) {
 				notSatisfiedInteractionAxs.push("interaction:" + ev);
+			}
+		}
+
+		// negation interaction axiom
+		for (const ev of activity.getExcludedEvents()) {
+			if (this.hasEvent(ev)) {
+				notSatisfiedNegationInteractionAxs.push("negation_interaction:" + ev);
 			}
 		}
 
@@ -159,7 +167,7 @@ class ActivityInstance {
 			}
 		}
 
-		return notSatisfiedInteractionAxs.concat(notSatisfiedTemporalAxs);
+		return notSatisfiedInteractionAxs.concat(notSatisfiedTemporalAxs).concat(notSatisfiedNegationInteractionAxs);
 	}
 
 	isConstraintSatisfied(constraint: Constraint): boolean {
@@ -316,6 +324,21 @@ class ActivityInstance {
 					}
 				}
 				if (intEventsNum === ax.getEvents().length) {
+					numSatisfied += 1;
+				} else {
+					return false;
+				}
+			}
+
+			// negation interaction axioms
+			if (axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+				let negIntEventsNum = 0;
+				for (const ev of ax.getEvents()) {
+					if (!this.hasEvent(ev)) {
+						negIntEventsNum += 1;
+					}
+				}
+				if (negIntEventsNum === ax.getEvents().length) {
 					numSatisfied += 1;
 				} else {
 					return false;

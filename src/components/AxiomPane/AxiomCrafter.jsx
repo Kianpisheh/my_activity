@@ -17,7 +17,9 @@ function AxiomCrafter(props) {
     let axiomType = "";
     if (props.ruleType === AxiomTypes.TYPE_INTERACTION) {
         axiomType = AxiomTypes.TYPE_INTERACTION;
-    }
+    } else if (props.ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+        axiomType = AxiomTypes.TYPE_INTERACTION_NEGATION;
+    } 
 
     if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
         axiomType =

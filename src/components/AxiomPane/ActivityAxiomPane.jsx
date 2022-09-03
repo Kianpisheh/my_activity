@@ -25,7 +25,7 @@ function ActivityAxiomPane(props) {
 	}
 
 	let objectList = [];
-	if (ruleType === AxiomTypes.TYPE_INTERACTION) {
+	if (ruleType === AxiomTypes.TYPE_INTERACTION || ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 		objectList = [...Icons.getEventList()];
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
 		objectList = AxiomManager.findInteractionObjects([...axioms]);
@@ -78,7 +78,7 @@ function ActivityAxiomPane(props) {
 								className="add-int-btn"
 								onClick={() => {
 									setRuleType(AxiomTypes.TYPE_INTERACTION);
-									setDefiningRule("interaction");
+									setDefiningRule(AxiomTypes.TYPE_INTERACTION);
 								}}
 							>
 								+
@@ -109,7 +109,62 @@ function ActivityAxiomPane(props) {
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
-						{definingRule === "interaction" && (
+						{definingRule === AxiomTypes.TYPE_INTERACTION && (
+							<AxiomCrafter
+								config={props.config}
+								objects={objectList}
+								handleAxiomCreation={handleAxiomCreation}
+								ruleType={ruleType}
+							></AxiomCrafter>
+						)}
+					</div>
+                    <hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
+                    <div
+						style={{
+							display: "flex",
+							width: "100%",
+							alignContent: "center",
+							height: "30px",
+						}}
+					>
+						<span className="sub-section-title" style={{width: 270}}>Excluding Interaction with objects and appliances</span>
+						<div style={{ display: "flex", marginLeft: 10 }}>
+							<button
+								className="add-int-btn"
+								onClick={() => {
+									setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
+									setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
+								}}
+							>
+								+
+							</button>
+						</div>
+					</div>
+                    <div className="negation-interaction-axioms-container">
+						<Axiom
+							idx={1}
+							key={1}
+							data={axioms[1]}
+							config={props.config}
+							messageCallback={props.sendMessage}
+							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+							onWhyWhatQuery={props.onWhyWhatQuery}
+							activityInstances={props.activityInstances}
+							onWhyNotNumHover={props.onWhyNotNumHover}
+							classificationResult={props.classificationResult}
+							activity={props.activity}
+							selectedInstancesIdx={props.selectedInstancesIdx}
+							onWhyNotHowTo={props.onWhyNotHowTo}
+                            stats={props.whyNotWhat}
+                            whyQueryMode={props.whyQueryMode}
+                            onWhyHowToQuery={props.onWhyHowToQuery}
+                            ruleitems={props.ruleitems}
+                            onQuestionMenu={props.onQuestionMenu}
+                            queryTrigger={props.queryTrigger}
+						></Axiom>
+					</div>
+                    <div className="axiom-crafter-container">
+						{definingRule === AxiomTypes.TYPE_INTERACTION_NEGATION && (
 							<AxiomCrafter
 								config={props.config}
 								objects={objectList}
@@ -134,7 +189,7 @@ function ActivityAxiomPane(props) {
 						</div>
 					</div>
 					<div className="temporal-axioms-container">
-						{axioms.slice(1).map((axiom, idx) => (
+						{axioms.slice(2).map((axiom, idx) => (
 							<Axiom
 								idx={idx + 1}
 								key={idx + 1}

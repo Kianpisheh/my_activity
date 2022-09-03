@@ -42,6 +42,33 @@ function Axiom(props) {
                 qmenuPos={props.qmenuPos}
 			></InteractionAxiom>
 		);
+	} else if (axiomType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+		axiomComponent = (
+			<InteractionAxiom
+				data={props.data}
+				idx={props.idx}
+				config={props.config}
+				messageCallback={props.messageCallback}
+				explanation={props.explanation}
+				unsatisfiedAxioms={props.unsatisfiedAxioms}
+				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyWhatQuery={props.onWhyWhatQuery}
+				activityInstances={props.activityInstances}
+				onWhyNotNumHover={props.onWhyNotNumHover}
+				classificationResult={props.classificationResult}
+				activity={props.activity}
+				selectedInstancesIdx={props.selectedInstancesIdx}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyHowToQuery={props.onWhyHowToQuery}
+				stats={props.whyNotWhat}
+				whyQueryMode={props.whyQueryMode}
+				ruleitems={props.ruleitems}
+                onQuestionMenu={props.onQuestionMenu}
+                queryTrigger={props.queryTrigger}
+                qmenuPos={props.qmenuPos}
+			></InteractionAxiom>
+		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
 		axiomComponent = (
 			<InteractionORAxiom

@@ -24,7 +24,7 @@ import ActivityInstancePane from "./components/ActivityInstancePane";
 import Login from "./components/Login";
 import FloatingQuestions from "./components/HowToPanel/FloatingQuestions";
 
-import { handleAxiomPaneMessages } from "./Handlers";
+import { handleAxiomPaneMessages } from "./AxiomPaneHandler";
 import HowToPanel2 from "./components/HowToPanel/HowToPanel2";
 import WhyNotHowToQueryController from "./Controllers/WhyNotHowToQueryController";
 import QueryQuestion from "./model/QueryQuestion";

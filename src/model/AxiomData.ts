@@ -79,16 +79,26 @@ class AxiomData {
 			return AxiomTypes.TYPE_DURATION + ":" + this.events[0] + ":" + this.th1 + ":" + this.th2;
 		} else if (this.type === AxiomTypes.TYPE_INTERACTION) {
 			return AxiomTypes.TYPE_INTERACTION + ":" + this.events[0];
+		} else if (this.type === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+			return AxiomTypes.TYPE_INTERACTION_NEGATION + ":" + this.events[0];
 		}
 	}
 
 	static axiomFromString(axiomString: string) {
 		const { axType, event1, event2, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString);
-		let events = [event1];
+		let events: string[] = [];
+		if (axType === AxiomTypes.TYPE_INTERACTION || axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+			events = [event1];
+		}
 		if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
 			events.push(event2);
 		}
-		const axiom = new AxiomData({ type: axType, events: events, th1: th1, th2: th2 });
+		const axiom = new AxiomData({
+			events: events,
+			type: axType,
+			th1: th1,
+			th2: th2,
+		});
 		return axiom;
 	}
 

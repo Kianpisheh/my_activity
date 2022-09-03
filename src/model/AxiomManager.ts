@@ -1,20 +1,20 @@
 import AxiomTypes from "./AxiomTypes";
 import AxiomData from "./AxiomData";
 
-
 interface IProps {
-	[key: string]: any
+	[key: string]: any;
 }
 
 class AxiomManager {
 	static createAxiom(current_axioms: AxiomData[], props: IProps) {
 		let newAxioms = [...current_axioms];
+
 		newAxioms.push(
 			new AxiomData({
 				events: props["events"],
 				type: props["type"],
 				th1: props["th1"],
-				th2: props["th2"]
+				th2: props["th2"],
 			})
 		);
 		return newAxioms;
@@ -84,7 +84,10 @@ class AxiomManager {
 			if (axiom.getEvents().includes(eventType)) {
 				if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
 					newAxioms?.[idx]?.removeEvent(eventType);
-				} else if (axiom.getType() === AxiomTypes.TYPE_DURATION || axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
+				} else if (
+					axiom.getType() === AxiomTypes.TYPE_DURATION ||
+					axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE
+				) {
 					toRemove.push(idx);
 				}
 			}
@@ -92,6 +95,19 @@ class AxiomManager {
 
 		// remove time constraint axioms
 		newAxioms = newAxioms.filter((axiom, idx) => !toRemove.includes(idx));
+
+		return newAxioms;
+	}
+
+	static removeObjectInteractionExclusion(axiomIdx: number, eventType: string, axioms: AxiomData[]): AxiomData[] {
+		let newAxioms = [...axioms];
+		newAxioms.forEach((axiom, idx) => {
+			if (axiom.getEvents().includes(eventType)) {
+				if (axiom.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+					newAxioms?.[idx]?.removeEvent(eventType);
+				}
+			}
+		});
 
 		return newAxioms;
 	}

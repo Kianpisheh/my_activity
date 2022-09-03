@@ -7,7 +7,6 @@ import cloneDeep from "lodash/cloneDeep";
 export function classifyInstances(activityInstances: ActivityInstance[], activities: Activity[]) {
 	let predActs: string[][] = [];
 	let axNums: number[][] = [];
-	let i = 0;
 	for (const instance of activityInstances) {
 		let classified = false;
 		for (const act of activities) {
@@ -26,17 +25,9 @@ export function classifyInstances(activityInstances: ActivityInstance[], activit
 			predActs.push(["Unknown"]);
 			axNums.push([0]);
 		}
-		i += 1;
 	}
 
-	let finalPredictions: string[] = [];
-	// assign the activity class with the most num of axioms
-	for (let i = 0; i < predActs.length; i++) {
-		const maxIdx = axNums[i].indexOf(Math.max(...axNums[i]));
-		finalPredictions.push(predActs[i][maxIdx]);
-	}
-
-	return finalPredictions;
+	return predActs;
 }
 
 export function updateClassificationResults(
@@ -103,7 +94,7 @@ export function updateClassificationResults(
 
 export function getClassificationResult(
 	activityInstances: ActivityInstance[],
-	predictedActivities: string[],
+	predictedActivities: string[][],
 	activities: Activity[]
 ) {
 	let results: { [act: string]: any } = {};
@@ -125,13 +116,13 @@ export function getClassificationResult(
 
 			if (Ai === At) {
 				N += 1;
-				if (Ap === Ai) {
+				if (Ap.includes(Ai) && Ap.length === 1) {
 					TP.push(i);
 				} else {
 					FN.push(i);
 				}
 			} else {
-				if (Ap === At) {
+				if (Ap.includes(At)) {
 					FP.push(i);
 				} else {
 					TN.push(i);

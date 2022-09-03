@@ -1,7 +1,6 @@
 import "./HowToPanel2.css";
 
 import WhyNotHowToExplanations from "./WhyNotHowToExplanations";
-import { useState } from "react";
 
 import WhyHowToExplanations from "./WhyHowToExplanations";
 import WhyNotWhatExplanation from "./WhyNotWhatExplanation";
@@ -11,7 +10,6 @@ import WhyNotExplanation from "./WhyNotExplanation";
 import EventStatExplanation from "./EventStatExplanation";
 
 import QueryTrigger from "../../model/QueryTrigger";
-import QuestionMenu from "../QuestionMenu/QuestionMenu";
 
 function HowToPanel2(props) {
 

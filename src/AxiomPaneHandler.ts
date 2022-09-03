@@ -43,6 +43,14 @@ function handleAxiomPaneMessages(
 		);
 		let newActivities = [...activities];
 		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+	} else if (message === AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION_EXCLUSION) {
+		let newAxioms = AxiomManager.removeObjectInteractionExclusion(
+			values["axiomIdx"],
+			values["eventType"],
+			currentActivity.getAxioms()
+		);
+		let newActivities = [...activities];
+		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 	} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
 		newActivities[currentActivtyIdx]?.setName(values["title"]);
 	} else if (message === AxiomTypes.MSG_REMOVE_AXIOM) {
@@ -65,7 +73,5 @@ function handleAxiomPaneMessages(
 
 	return newActivities;
 }
-
-function handleSystemStatusChange(action: { [key: string]: any }) {}
 
 export { handleAxiomPaneMessages };

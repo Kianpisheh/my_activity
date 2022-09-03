@@ -6,6 +6,7 @@ import Constraint from "./Constraint";
 interface IActivityObj {
 	name: string;
 	events: string[];
+	excludedEvents: string[];
 	constraints: Constraint[];
 	id: number;
 }
@@ -13,6 +14,7 @@ interface IActivityObj {
 class Activity {
 	name: string;
 	events: string[];
+	excludedEvents: string[];
 	constraints: Constraint[];
 	id: number;
 	eventORList: string[][]; // [[e1,e4]. [e2, e5]] list of list of strings
@@ -20,6 +22,7 @@ class Activity {
 	constructor(activityObj: IActivityObj) {
 		this.name = activityObj["name"];
 		this.events = activityObj["events"];
+		this.excludedEvents = activityObj["excludedEvents"];
 		this.constraints = activityObj["constraints"];
 		this.id = activityObj["id"];
 		this.eventORList = [];
@@ -46,7 +49,7 @@ class Activity {
 	}
 
 	getAxiomNum() {
-		return this.events.length + this.constraints.length;
+		return this.events.length + this.constraints.length + this.excludedEvents.length;
 	}
 
 	getID() {
@@ -63,6 +66,10 @@ class Activity {
 
 	getEvents() {
 		return this.events;
+	}
+
+	getExcludedEvents() {
+		return this.excludedEvents;
 	}
 
 	getConstraints() {
@@ -91,24 +98,22 @@ class Activity {
 		// the interaction axioms
 		axioms.push(
 			new AxiomData({
-				events: singleEventInteraction,
+				events: this.events,
 				type: AxiomTypes.TYPE_INTERACTION,
 				th1: -1,
 				th2: -1,
 			})
 		);
 
-		// the interaction_OR axioms
-		this.eventORList.forEach((events) => {
-			axioms.push(
-				new AxiomData({
-					events: events,
-					type: AxiomTypes.TYPE_OR_INTERACTION,
-					th1: -1,
-					th2: -1,
-				})
-			);
-		});
+		// the negation interaction axioms
+		axioms.push(
+			new AxiomData({
+				events: this.excludedEvents,
+				type: AxiomTypes.TYPE_INTERACTION_NEGATION,
+				th1: -1,
+				th2: -1,
+			})
+		);
 
 		// temporal axioms
 		this.constraints.forEach((constraint) => {
@@ -132,25 +137,29 @@ class Activity {
 		return axioms;
 	}
 
-	updateAxioms(new_axioms: AxiomData[]) {
+	updateAxioms(newAxioms: AxiomData[]) {
 		let newEvents: string[] = [];
+		let newExcludedEvents: string[] = [];
 		let newConstraints: Constraint[] = [];
-		let newEventORList: string[][] = [];
 
-		new_axioms.forEach((axiom) => {
-			let events = axiom["events"];
-			newEvents = newEvents.concat(events);
+		newAxioms.forEach((axiom) => {
+			const axType = axiom["type"];
+			if (axType === AxiomTypes.TYPE_INTERACTION) {
+				newEvents = newEvents.concat(axiom["events"]);
+			} else if (axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+				newExcludedEvents = newExcludedEvents.concat(axiom["events"]);
+			}
+
 			if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
-				let constraint = { type: axiom["type"], th1: axiom["th1"], th2: axiom["th2"], events: axiom["events"] };
+				let constraint = new Constraint(axiom["events"], axiom["th1"], axiom["th2"], axiom["type"]);
 				newConstraints.push(constraint);
-			} else if (axiom["type"] === AxiomTypes.TYPE_OR_INTERACTION) {
-				newEventORList.push(axiom["events"]);
 			}
 		});
 		let newEventsSet = new Set(newEvents);
+		let newExcludedEventsSet = new Set(newExcludedEvents);
 		this.events = Array.from(newEventsSet);
+		this.excludedEvents = Array.from(newExcludedEventsSet);
 		this.constraints = [...newConstraints];
-		this.eventORList = [...newEventORList];
 	}
 
 	static getUniqueID(activities: Activity[]) {

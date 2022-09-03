@@ -1,5 +1,6 @@
 export default {
 	TYPE_INTERACTION: "interaction",
+	TYPE_INTERACTION_NEGATION: "interaction_negation",
 	TYPE_TIME_DISTANCE: "time_distance",
 	TYPE_DURATION: "duration",
 	TYPE_OR_INTERACTION: "interaction-or",
@@ -16,6 +17,7 @@ export default {
 	MSG_TIME_CONSTRAINT_FINALIZED: "time_constraint_finalized",
 	MSG_CLASSIFY_CURRENT_INSTANCE: "classify_current_instance",
 	MSG_REMOVE_OBJECT_INTERACTION: "remove_object_interaction",
+	MSG_REMOVE_OBJECT_INTERACTION_EXCLUSION: "remove_object_interaction_exclusion",
 	MSG_INTERACTION_OR_AXIOM_CREATION: "interaction-or-axiom-creation",
 	MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS: "time-distance-axiom-flip-events",
 	MSG_REMOVE_AXIOM: "remove_axiom",
