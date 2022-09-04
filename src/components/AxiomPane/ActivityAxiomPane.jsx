@@ -25,11 +25,15 @@ function ActivityAxiomPane(props) {
 	}
 
 	let objectList = [];
-	if (ruleType === AxiomTypes.TYPE_INTERACTION || ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+	if (ruleType === AxiomTypes.TYPE_INTERACTION) {
 		objectList = [...Icons.getEventList()];
+	} else if (ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+		objectList = [...Icons.getEventList()].filter((item) => !axioms?.[0]?.getEvents()?.includes(item));
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
 		objectList = AxiomManager.findInteractionObjects([...axioms]);
 	}
+
+	console.log(props.activity.name);
 
 	return (
 		<div className="ax-container">
@@ -61,6 +65,12 @@ function ActivityAxiomPane(props) {
 								title: value,
 							})
 						}
+						onBlur={() =>
+							props.sendMessage(AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED, {
+								id: props.activity["id"],
+								title: props.activity.name,
+							})
+						}
 					></EditText>
 				</div>
 				<div className="Axiom-pane">
@@ -72,7 +82,9 @@ function ActivityAxiomPane(props) {
 							height: "30px",
 						}}
 					>
-						<span className="sub-section-title" style={{width: 220}}>Interaction with objects and appliances</span>
+						<span className="sub-section-title" style={{ width: 220 }}>
+							Interaction with objects and appliances
+						</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
 							<button
 								className="add-int-btn"
@@ -100,12 +112,12 @@ function ActivityAxiomPane(props) {
 							activity={props.activity}
 							selectedInstancesIdx={props.selectedInstancesIdx}
 							onWhyNotHowTo={props.onWhyNotHowTo}
-                            stats={props.whyNotWhat}
-                            whyQueryMode={props.whyQueryMode}
-                            onWhyHowToQuery={props.onWhyHowToQuery}
-                            ruleitems={props.ruleitems}
-                            onQuestionMenu={props.onQuestionMenu}
-                            queryTrigger={props.queryTrigger}
+							stats={props.whyNotWhat}
+							whyQueryMode={props.whyQueryMode}
+							onWhyHowToQuery={props.onWhyHowToQuery}
+							ruleitems={props.ruleitems}
+							onQuestionMenu={props.onQuestionMenu}
+							queryTrigger={props.queryTrigger}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
@@ -118,8 +130,8 @@ function ActivityAxiomPane(props) {
 							></AxiomCrafter>
 						)}
 					</div>
-                    <hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
-                    <div
+					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
+					<div
 						style={{
 							display: "flex",
 							width: "100%",
@@ -127,7 +139,9 @@ function ActivityAxiomPane(props) {
 							height: "30px",
 						}}
 					>
-						<span className="sub-section-title" style={{width: 270}}>Excluding Interaction with objects and appliances</span>
+						<span className="sub-section-title" style={{ width: 270 }}>
+							Excluding Interaction with objects and appliances
+						</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
 							<button
 								className="add-int-btn"
@@ -140,7 +154,7 @@ function ActivityAxiomPane(props) {
 							</button>
 						</div>
 					</div>
-                    <div className="negation-interaction-axioms-container">
+					<div className="negation-interaction-axioms-container">
 						<Axiom
 							idx={1}
 							key={1}
@@ -155,15 +169,15 @@ function ActivityAxiomPane(props) {
 							activity={props.activity}
 							selectedInstancesIdx={props.selectedInstancesIdx}
 							onWhyNotHowTo={props.onWhyNotHowTo}
-                            stats={props.whyNotWhat}
-                            whyQueryMode={props.whyQueryMode}
-                            onWhyHowToQuery={props.onWhyHowToQuery}
-                            ruleitems={props.ruleitems}
-                            onQuestionMenu={props.onQuestionMenu}
-                            queryTrigger={props.queryTrigger}
+							stats={props.whyNotWhat}
+							whyQueryMode={props.whyQueryMode}
+							onWhyHowToQuery={props.onWhyHowToQuery}
+							ruleitems={props.ruleitems}
+							onQuestionMenu={props.onQuestionMenu}
+							queryTrigger={props.queryTrigger}
 						></Axiom>
 					</div>
-                    <div className="axiom-crafter-container">
+					<div className="axiom-crafter-container">
 						{definingRule === AxiomTypes.TYPE_INTERACTION_NEGATION && (
 							<AxiomCrafter
 								config={props.config}
@@ -175,7 +189,9 @@ function ActivityAxiomPane(props) {
 					</div>
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
-						<span className="sub-section-title" style={{width: 125}}>Temporal conditions</span>
+						<span className="sub-section-title" style={{ width: 125 }}>
+							Temporal conditions
+						</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
 							<button
 								className="add-int-btn"
@@ -191,24 +207,24 @@ function ActivityAxiomPane(props) {
 					<div className="temporal-axioms-container">
 						{axioms.slice(2).map((axiom, idx) => (
 							<Axiom
-								idx={idx + 1}
-								key={idx + 1}
+								idx={idx + 2}
+								key={idx + 2}
 								data={axiom}
 								config={props.config}
 								messageCallback={props.sendMessage}
 								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-							    onWhyWhatQuery={props.onWhyWhatQuery}
+								onWhyWhatQuery={props.onWhyWhatQuery}
 								activityInstances={props.activityInstances}
 								onWhyNotNumHover={props.onWhyNotNumHover}
 								classificationResult={props.classificationResult}
 								activity={props.activity}
 								selectedInstancesIdx={props.selectedInstancesIdx}
 								onWhyNotHowTo={props.onWhyNotHowTo}
-                                stats={props.whyNotWhat}
-                                whyQueryMode={props.whyQueryMode}
-                                onWhyHowToQuery={props.onWhyHowToQuery}
-                                onQuestionMenu={props.onQuestionMenu}
-                                queryTrigger={props.queryTrigger}
+								stats={props.whyNotWhat}
+								whyQueryMode={props.whyQueryMode}
+								onWhyHowToQuery={props.onWhyHowToQuery}
+								onQuestionMenu={props.onQuestionMenu}
+								queryTrigger={props.queryTrigger}
 							></Axiom>
 						))}
 					</div>{" "}

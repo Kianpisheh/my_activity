@@ -4,5 +4,8 @@
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnPaste": true,
 	"editor.formatOnSave": true,
-	"terminal.integrated.gpuAcceleration": "on"
+	"terminal.integrated.gpuAcceleration": "on",
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }

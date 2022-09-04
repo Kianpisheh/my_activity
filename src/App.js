@@ -192,6 +192,7 @@ function App() {
 					id: newID,
 					name: newActivityName,
 					events: [],
+					excludedEvents: [],
 					constraints: [],
 				})
 			);

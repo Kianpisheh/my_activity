@@ -53,6 +53,8 @@ function handleAxiomPaneMessages(
 		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 	} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATING) {
 		newActivities[currentActivtyIdx]?.setName(values["title"]);
+	} else if (message === AxiomTypes.MSG_ACTIVITY_TITLE_UPDATED) {
+		newActivities[currentActivtyIdx]?.setName(values["title"]);
 	} else if (message === AxiomTypes.MSG_REMOVE_AXIOM) {
 		let axioms: AxiomData[] | undefined = newActivities?.[currentActivtyIdx]?.getAxioms();
 		axioms?.splice(values["idx"], 1);

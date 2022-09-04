@@ -5,6 +5,7 @@ import InteractionAxiom from "./InteractionAxiom";
 import TimeDistanceAxiom from "./TimeDistanceAxiom";
 import DurationAxiom from "./DurationAxiom";
 import InteractionORAxiom from "./InteractionORAxiom";
+import InteractionNegationAxiom from "./InteractionNegationAxiom";
 
 import AxiomData from "../../model/AxiomData";
 import QueryTrigger from "../../model/QueryTrigger";
@@ -37,14 +38,14 @@ function Axiom(props) {
 				stats={props.whyNotWhat}
 				whyQueryMode={props.whyQueryMode}
 				ruleitems={props.ruleitems}
-                onQuestionMenu={props.onQuestionMenu}
-                queryTrigger={props.queryTrigger}
-                qmenuPos={props.qmenuPos}
+				onQuestionMenu={props.onQuestionMenu}
+				queryTrigger={props.queryTrigger}
+				qmenuPos={props.qmenuPos}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 		axiomComponent = (
-			<InteractionAxiom
+			<InteractionNegationAxiom
 				data={props.data}
 				idx={props.idx}
 				config={props.config}
@@ -64,10 +65,10 @@ function Axiom(props) {
 				stats={props.whyNotWhat}
 				whyQueryMode={props.whyQueryMode}
 				ruleitems={props.ruleitems}
-                onQuestionMenu={props.onQuestionMenu}
-                queryTrigger={props.queryTrigger}
-                qmenuPos={props.qmenuPos}
-			></InteractionAxiom>
+				onQuestionMenu={props.onQuestionMenu}
+				queryTrigger={props.queryTrigger}
+				qmenuPos={props.qmenuPos}
+			></InteractionNegationAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
 		axiomComponent = (
@@ -84,7 +85,7 @@ function Axiom(props) {
 				whyQueryMode={props.whyQueryMode}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				ruleitems={props.ruleitems}
-                qmenuPos={props.qmenuPos}
+				qmenuPos={props.qmenuPos}
 			></InteractionORAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -102,9 +103,9 @@ function Axiom(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                onQuestionMenu={props.onQuestionMenu}
-                queryTrigger={props.queryTrigger}
-                qmenuPos={props.qmenuPos}
+				onQuestionMenu={props.onQuestionMenu}
+				queryTrigger={props.queryTrigger}
+				qmenuPos={props.qmenuPos}
 			></TimeDistanceAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -122,9 +123,9 @@ function Axiom(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                onQuestionMenu={props.onQuestionMenu}
-                queryTrigger={props.queryTrigger}
-                qmenuPos={props.qmenuPos}
+				onQuestionMenu={props.onQuestionMenu}
+				queryTrigger={props.queryTrigger}
+				qmenuPos={props.qmenuPos}
 			></DurationAxiom>
 		);
 	}
@@ -137,25 +138,25 @@ export default Axiom;
 export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyNotNumHover, queryTrigger, qmenuPos) {
 	let numnum = null;
 
-    if (queryTrigger === "") {
-        return null;
-    }
+	if (queryTrigger === "") {
+		return null;
+	}
 
 	for (const [axiomString, selFNIds] of Object.entries(unsatisfiedAxioms)) {
 		const ax = AxiomData.axiomFromString(axiomString);
 		if (isEqual(ax, axiom)) {
 			numnum = (
 				<div
-                    style={{width: 15, height: 15, cursor: "pointer"}}
+					style={{ width: 15, height: 15, cursor: "pointer" }}
 					onMouseOver={() => onWhyNotNumHover(selFNIds)}
 					onMouseLeave={() => onWhyNotNumHover([])}
 					onClick={(ev) => {
-                        if (qmenuPos[0] > 0) {
-                            onWhyNotWhatQuery(-1, -1, ax, QueryTrigger.WHY_NOT);
-                        } else {
-                            onWhyNotWhatQuery(ev.pageX, ev.pageY, ax, QueryTrigger.WHY_NOT_WHAT)
-                        }
-                    }}
+						if (qmenuPos[0] > 0) {
+							onWhyNotWhatQuery(-1, -1, ax, QueryTrigger.WHY_NOT);
+						} else {
+							onWhyNotWhatQuery(ev.pageX, ev.pageY, ax, QueryTrigger.WHY_NOT_WHAT);
+						}
+					}}
 				>
 					{CircleNum(selFNIds.length)}
 				</div>
@@ -166,7 +167,8 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyN
 }
 
 export function QMark(props) {
-	const { axiom, instances, onWhyWhatQuery, selectedIdx, onWhyHowToQuery, activity, classificationResult, qmenuPos } = props;
+	const { axiom, instances, onWhyWhatQuery, selectedIdx, onWhyHowToQuery, activity, classificationResult, qmenuPos } =
+		props;
 
 	return (
 		<div
@@ -183,11 +185,11 @@ export function QMark(props) {
 					// );
 					// onWhyHowToQuery(suggestions);
 				}
-                if (qmenuPos?.[0] > 0) {
-				    onWhyWhatQuery(-1, -1, axiom, QueryTrigger.WHY);
-                } else {
-				    onWhyWhatQuery(ev.pageX, ev.pageY, axiom, QueryTrigger.WHY_WHAT);
-                }
+				if (qmenuPos?.[0] > 0) {
+					onWhyWhatQuery(-1, -1, axiom, QueryTrigger.WHY);
+				} else {
+					onWhyWhatQuery(ev.pageX, ev.pageY, axiom, QueryTrigger.WHY_WHAT);
+				}
 			}}
 		>
 			{CircleQMark()}
