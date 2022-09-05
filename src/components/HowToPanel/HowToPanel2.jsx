@@ -20,9 +20,7 @@ function HowToPanel2(props) {
 		selectedInstancesIdx,
 		instances,
 		activity,
-		queryTrigger,
 		unsatisfiedAxioms,
-		whyQueryMode,
 	} = props;
 
 	let whyExplanation = [];

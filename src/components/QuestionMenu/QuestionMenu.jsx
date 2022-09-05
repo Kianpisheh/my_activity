@@ -120,7 +120,12 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 				<span style={{ fontWeight: 700 }}>not</span> satisfied for the {targetActivity} activity?
 			</span>
 		);
-		questions[QueryQuestion.WHY_WHAT] = q1;
+		if (
+			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION &&
+			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION_NEGATION
+		) {
+			questions[QueryQuestion.WHY_WHAT] = q1;
+		}
 		questions[QueryQuestion.WHY_HOW_TO] = q2;
 	} else if (expStatus === ExpStatus.WHY_WHY_NOT_LIST) {
 		const q = (

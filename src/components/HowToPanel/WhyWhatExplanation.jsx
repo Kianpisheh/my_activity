@@ -1,13 +1,8 @@
 import AxiomTypes from "../../model/AxiomTypes";
-import QueryTrigger from "../../model/QueryTrigger";
-import { CircleNum } from "../ResultsPanel/utils";
-import { DurationAxiomStat, TimeDistanceAxiomStat, InteractionAxiomStat } from "./WhyNotWhatExplanation";
-
-import { TimeDistanceAxiomStatText } from "./WhyNotWhatExplanation";
-import { DurationAxiomStatText } from "./WhyNotWhatExplanation";
+import { DurationAxiomStat, TimeDistanceAxiomStat } from "./WhyNotWhatExplanation";
 
 function WhyWhatExplanation(props) {
-	const { stats, activity, instances, classificationResult, selectedInstancesIdx } = props;
+	const { stats, instances, selectedInstancesIdx } = props;
 	if (!stats) {
 		return;
 	}
@@ -17,9 +12,9 @@ function WhyWhatExplanation(props) {
 	let selectedInstances = instances.filter((instance, idx) => selectedInstancesIdx["FP"].includes(idx));
 
 	let axiomStatComp = null;
-	let axiomStatText = null;
+	// let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
-		axiomStatText = <TimeDistanceAxiomStatText stats={stats}></TimeDistanceAxiomStatText>;
+		// axiomStatText = <TimeDistanceAxiomStatText stats={stats}></TimeDistanceAxiomStatText>;
 		axiomStatComp = (
 			<TimeDistanceAxiomStat
 				stats={stats}
@@ -33,7 +28,7 @@ function WhyWhatExplanation(props) {
 			></TimeDistanceAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
-		axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
+		// axiomStatText = <DurationAxiomStatText stats={stats}></DurationAxiomStatText>;
 		axiomStatComp = (
 			<DurationAxiomStat
 				stats={stats}
@@ -46,20 +41,20 @@ function WhyWhatExplanation(props) {
 				onWhyWhatHover={props.onWhyWhatHover}
 			></DurationAxiomStat>
 		);
-	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-		axiomStatComp = (
-			<InteractionAxiomStat
-				stats={stats}
-				selectedInstances={selectedInstances}
-				axiom={axiom}
-				onWhyNotHowTo={props.onWhyNotHowTo}
-				onWhyHowTo={props.onWhyHowTo}
-				selectedInstancesIdx={selectedInstancesIdx}
-				onWhyWhatSelection={props.onWhyWhatSelection}
-				onWhyWhatHover={props.onWhyWhatHover}
-			></InteractionAxiomStat>
-		);
-	} else {
+		// } else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
+		// 	axiomStatComp = (
+		// 		<InteractionAxiomStat
+		// 			stats={stats}
+		// 			selectedInstances={selectedInstances}
+		// 			axiom={axiom}
+		// 			onWhyNotHowTo={props.onWhyNotHowTo}
+		// 			onWhyHowTo={props.onWhyHowTo}
+		// 			selectedInstancesIdx={selectedInstancesIdx}
+		// 			onWhyWhatSelection={props.onWhyWhatSelection}
+		// 			onWhyWhatHover={props.onWhyWhatHover}
+		// 		></InteractionAxiomStat>
+		// 	);
+		// } else {
 		return;
 	}
 

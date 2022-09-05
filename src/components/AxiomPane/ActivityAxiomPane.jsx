@@ -33,8 +33,6 @@ function ActivityAxiomPane(props) {
 		objectList = AxiomManager.findInteractionObjects([...axioms]);
 	}
 
-	console.log(props.activity.name);
-
 	return (
 		<div className="ax-container">
 			<div className="main-container">
@@ -131,52 +129,56 @@ function ActivityAxiomPane(props) {
 						)}
 					</div>
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
-					<div
-						style={{
-							display: "flex",
-							width: "100%",
-							alignContent: "center",
-							height: "30px",
-						}}
-					>
-						<span className="sub-section-title" style={{ width: 270 }}>
-							Excluding Interaction with objects and appliances
-						</span>
-						<div style={{ display: "flex", marginLeft: 10 }}>
-							<button
-								className="add-int-btn"
-								onClick={() => {
-									setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
-									setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
-								}}
-							>
-								+
-							</button>
+					{axioms[1] && axioms[1].getType() === AxiomTypes.TYPE_INTERACTION_NEGATION && (
+						<div
+							style={{
+								display: "flex",
+								width: "100%",
+								alignContent: "center",
+								height: "30px",
+							}}
+						>
+							<span className="sub-section-title" style={{ width: 270 }}>
+								Excluding Interaction with objects and appliances
+							</span>
+							<div style={{ display: "flex", marginLeft: 10 }}>
+								<button
+									className="add-int-btn"
+									onClick={() => {
+										setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
+										setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
+									}}
+								>
+									+
+								</button>
+							</div>
 						</div>
-					</div>
-					<div className="negation-interaction-axioms-container">
-						<Axiom
-							idx={1}
-							key={1}
-							data={axioms[1]}
-							config={props.config}
-							messageCallback={props.sendMessage}
-							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-							onWhyWhatQuery={props.onWhyWhatQuery}
-							activityInstances={props.activityInstances}
-							onWhyNotNumHover={props.onWhyNotNumHover}
-							classificationResult={props.classificationResult}
-							activity={props.activity}
-							selectedInstancesIdx={props.selectedInstancesIdx}
-							onWhyNotHowTo={props.onWhyNotHowTo}
-							stats={props.whyNotWhat}
-							whyQueryMode={props.whyQueryMode}
-							onWhyHowToQuery={props.onWhyHowToQuery}
-							ruleitems={props.ruleitems}
-							onQuestionMenu={props.onQuestionMenu}
-							queryTrigger={props.queryTrigger}
-						></Axiom>
-					</div>
+					)}
+					{axioms[1] && axioms[1].getType() === AxiomTypes.TYPE_INTERACTION_NEGATION && (
+						<div className="negation-interaction-axioms-container">
+							<Axiom
+								idx={1}
+								key={1}
+								data={axioms[1]}
+								config={props.config}
+								messageCallback={props.sendMessage}
+								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+								onWhyWhatQuery={props.onWhyWhatQuery}
+								activityInstances={props.activityInstances}
+								onWhyNotNumHover={props.onWhyNotNumHover}
+								classificationResult={props.classificationResult}
+								activity={props.activity}
+								selectedInstancesIdx={props.selectedInstancesIdx}
+								onWhyNotHowTo={props.onWhyNotHowTo}
+								stats={props.whyNotWhat}
+								whyQueryMode={props.whyQueryMode}
+								onWhyHowToQuery={props.onWhyHowToQuery}
+								ruleitems={props.ruleitems}
+								onQuestionMenu={props.onQuestionMenu}
+								queryTrigger={props.queryTrigger}
+							></Axiom>
+						</div>
+					)}
 					<div className="axiom-crafter-container">
 						{definingRule === AxiomTypes.TYPE_INTERACTION_NEGATION && (
 							<AxiomCrafter
@@ -205,28 +207,30 @@ function ActivityAxiomPane(props) {
 						</div>
 					</div>
 					<div className="temporal-axioms-container">
-						{axioms.slice(2).map((axiom, idx) => (
-							<Axiom
-								idx={idx + 2}
-								key={idx + 2}
-								data={axiom}
-								config={props.config}
-								messageCallback={props.sendMessage}
-								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-								onWhyWhatQuery={props.onWhyWhatQuery}
-								activityInstances={props.activityInstances}
-								onWhyNotNumHover={props.onWhyNotNumHover}
-								classificationResult={props.classificationResult}
-								activity={props.activity}
-								selectedInstancesIdx={props.selectedInstancesIdx}
-								onWhyNotHowTo={props.onWhyNotHowTo}
-								stats={props.whyNotWhat}
-								whyQueryMode={props.whyQueryMode}
-								onWhyHowToQuery={props.onWhyHowToQuery}
-								onQuestionMenu={props.onQuestionMenu}
-								queryTrigger={props.queryTrigger}
-							></Axiom>
-						))}
+						{axioms
+							.slice(axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1)
+							.map((axiom, idx) => (
+								<Axiom
+									idx={idx + 2}
+									key={idx + 2}
+									data={axiom}
+									config={props.config}
+									messageCallback={props.sendMessage}
+									onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+									onWhyWhatQuery={props.onWhyWhatQuery}
+									activityInstances={props.activityInstances}
+									onWhyNotNumHover={props.onWhyNotNumHover}
+									classificationResult={props.classificationResult}
+									activity={props.activity}
+									selectedInstancesIdx={props.selectedInstancesIdx}
+									onWhyNotHowTo={props.onWhyNotHowTo}
+									stats={props.whyNotWhat}
+									whyQueryMode={props.whyQueryMode}
+									onWhyHowToQuery={props.onWhyHowToQuery}
+									onQuestionMenu={props.onQuestionMenu}
+									queryTrigger={props.queryTrigger}
+								></Axiom>
+							))}
 					</div>{" "}
 					<div className="axiom-crafter-container">
 						{definingRule === "temporal" && (

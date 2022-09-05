@@ -106,14 +106,16 @@ class Activity {
 		);
 
 		// the negation interaction axioms
-		axioms.push(
-			new AxiomData({
-				events: this.excludedEvents,
-				type: AxiomTypes.TYPE_INTERACTION_NEGATION,
-				th1: -1,
-				th2: -1,
-			})
-		);
+		if (this.excludedEvents.length) {
+			axioms.push(
+				new AxiomData({
+					events: this.excludedEvents,
+					type: AxiomTypes.TYPE_INTERACTION_NEGATION,
+					th1: -1,
+					th2: -1,
+				})
+			);
+		}
 
 		// temporal axioms
 		this.constraints.forEach((constraint) => {

@@ -167,8 +167,7 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyN
 }
 
 export function QMark(props) {
-	const { axiom, instances, onWhyWhatQuery, selectedIdx, onWhyHowToQuery, activity, classificationResult, qmenuPos } =
-		props;
+	const { axiom, onWhyWhatQuery, qmenuPos } = props;
 
 	return (
 		<div
