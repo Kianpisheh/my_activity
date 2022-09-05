@@ -29,7 +29,7 @@ function WhyWhatExplanation(props) {
 				onWhyHowTo={props.onWhyHowTo}
 				selectedInstancesIdx={selectedInstancesIdx}
 				onWhyWhatSelection={props.onWhyWhatSelection}
-                onWhyWhatHover={props.onWhyWhatHover}
+				onWhyWhatHover={props.onWhyWhatHover}
 			></TimeDistanceAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -43,7 +43,7 @@ function WhyWhatExplanation(props) {
 				onWhyHowTo={props.onWhyHowTo}
 				onWhyWhatSelection={props.onWhyWhatSelection}
 				selectedInstancesIdx={selectedInstancesIdx}
-                onWhyWhatHover={props.onWhyWhatHover}
+				onWhyWhatHover={props.onWhyWhatHover}
 			></DurationAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
@@ -56,7 +56,7 @@ function WhyWhatExplanation(props) {
 				onWhyHowTo={props.onWhyHowTo}
 				selectedInstancesIdx={selectedInstancesIdx}
 				onWhyWhatSelection={props.onWhyWhatSelection}
-                onWhyWhatHover={props.onWhyWhatHover}
+				onWhyWhatHover={props.onWhyWhatHover}
 			></InteractionAxiomStat>
 		);
 	} else {

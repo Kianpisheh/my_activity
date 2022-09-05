@@ -63,7 +63,7 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-	const DATASETS = ["CASAS8", "Opportunity"];
+	const DATASETS = ["CASAS8", "Opportunity", "Epic"];
 	const [dataset, setDataset] = useState(DATASETS[1]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
@@ -201,7 +201,6 @@ function App() {
 			updateDatabase(new_activities[new_activities.length - 1], "update", dataset);
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let new_activities = [...activities];
-			const activityName = activities[activityID].getName();
 			new_activities = new_activities.filter((activity) => {
 				return activity.getID() !== activityID;
 			});
@@ -272,7 +271,9 @@ function App() {
 	function readDataFromDB(dataset) {
 		setDataset(dataset);
 		let activitiesPromise = retrieveActivities(dataset, enteredUser);
-		handleRuleitemRequest(dataset);
+		if (dataset !== "Epic") {
+			handleRuleitemRequest(dataset);
+		}
 		activitiesPromise.then((data) => {
 			let activities = data.data;
 			let activityItems = [];
@@ -293,10 +294,10 @@ function App() {
 				setActivityInstances(instanceItems);
 				if (instanceItems.length) {
 					let PredActs = classifyInstances(instanceItems, activityItems);
-					setPredictedActivities(PredActs);
 					setCurrentActInstanceIdx(0);
 					let res = getClassificationResult(instanceItems, PredActs, activityItems);
 					setClassificationRes(res);
+					setPredictedActivities(PredActs);
 				}
 			});
 		});
@@ -407,6 +408,7 @@ function App() {
 								selectedIdx={selectedInstancesIdx}
 								currentActivity={currentActivity}
 								onQuery={handleQuery}
+								queriedAxiom={queriedAxiom}
 							></FloatingQuestions>
 						</div>
 					)}

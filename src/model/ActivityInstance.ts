@@ -137,7 +137,7 @@ class ActivityInstance {
 		// negation interaction axiom
 		for (const ev of activity.getExcludedEvents()) {
 			if (this.hasEvent(ev)) {
-				notSatisfiedNegationInteractionAxs.push("negation_interaction:" + ev);
+				notSatisfiedNegationInteractionAxs.push(AxiomTypes.TYPE_INTERACTION_NEGATION + ":" + ev);
 			}
 		}
 

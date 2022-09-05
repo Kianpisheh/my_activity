@@ -1,19 +1,19 @@
-import "./FloatingQuestions.css"
+import "./FloatingQuestions.css";
 
-import {getQuestionsFromExpStatus, getQuestionBgColor} from "../QuestionMenu/QuestionMenu"
+import { getQuestionsFromExpStatus, getQuestionBgColor } from "../QuestionMenu/QuestionMenu";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 import { questionIcon } from "../QuestionMenu/QuestionMenu";
 
 function FloatingQuestions(props) {
-    const {expStatus, selectedIdx, currentActivity} = props;
-    if (!selectedIdx || (!selectedIdx["FN"] && !selectedIdx["FP"]) || !currentActivity) {
-        return;
-    }
+	const { expStatus, selectedIdx, currentActivity, queriedAxiom } = props;
+	if (!selectedIdx || (!selectedIdx["FN"] && !selectedIdx["FP"]) || !currentActivity) {
+		return;
+	}
 
-    const Q = getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity);
+	const Q = getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity, queriedAxiom);
 
-    return (
+	return (
 		<div className="FloatingQ-container">
 			<div className="Floating-question-list-container">
 				{Object.keys(Q).map((qtype, idx) => {
@@ -34,10 +34,7 @@ function FloatingQuestions(props) {
 				})}
 			</div>
 		</div>
-    );
-
+	);
 }
-
-
 
 export default FloatingQuestions;

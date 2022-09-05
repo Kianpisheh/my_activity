@@ -116,7 +116,7 @@ export function getClassificationResult(
 
 			if (Ai === At) {
 				N += 1;
-				if (Ap.includes(Ai) && Ap.length === 1) {
+				if (Ap.includes(At)) {
 					TP.push(i);
 				} else {
 					FN.push(i);

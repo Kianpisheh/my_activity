@@ -73,7 +73,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 					let sw = 0;
 					for (const values of Object.values(selectedIdx)) {
 						if (values.includes(r)) {
-							sw = 2;
+							sw = 3;
 						}
 					}
 
@@ -84,10 +84,12 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 					}
 
 					if (data["AllFPs"] && data["FN"]) {
-						const fnIdx = data["FN"][idx - data["TP"].length];
-						if (data["AllFPs"].includes(fnIdx)) {
-							color = "#E9A37C";
+						if (idx < data["TP"].length && data["AllFPs"].includes(data["TP"][idx])) {
+							color = "#4EAB2B";
 						}
+						// const fnIdx = data["FN"][idx - data["TP"].length];
+						// if (data["AllFPs"].includes(fnIdx) && data["TP"].includes(fnIdx)) {
+						// }
 					}
 
 					return (
@@ -122,7 +124,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 								height={rectSize}
 								fill={color}
 								fillOpacity={opacity}
-								stroke={"#000000"}
+								stroke={"#4784FF"}
 								strokeWidth={sw}
 								rx={3}
 								x={2}

@@ -16,20 +16,20 @@ function WhyNotWhatExplanation(props) {
 	const axiom = stats.getAxiom();
 	const axiomType = axiom?.getType();
 	const selectedInstances = instances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx));
-    
-    let axiomStatComp = null;
+
+	let axiomStatComp = null;
 	let axiomStatText = null;
 	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
 		axiomStatComp = (
 			<TimeDistanceAxiomStat
 				stats={stats}
-                onWhyHover={props.onWhyHover}
+				onWhyHover={props.onWhyHover}
 				selectedInstances={selectedInstances}
 				axiom={axiom}
 				onWhyNotHowTo={props.onWhyNotHowTo}
-                onWhyWhatHover={props.onWhyWhatHover}
+				onWhyWhatHover={props.onWhyWhatHover}
 				onWhyWhatSelection={props.onWhyWhatSelection}
-                selectedInstancesIdx={selectedInstancesIdx}
+				selectedInstancesIdx={selectedInstancesIdx}
 			></TimeDistanceAxiomStat>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
@@ -40,37 +40,40 @@ function WhyNotWhatExplanation(props) {
 				axiom={axiom}
 				onWhyNotHowTo={props.onWhyNotHowTo}
 				onWhyWhatSelection={props.onWhyWhatSelection}
-                selectedInstancesIdx={selectedInstancesIdx}
-                onWhyWhatHover={props.onWhyWhatHover}
+				selectedInstancesIdx={selectedInstancesIdx}
+				onWhyWhatHover={props.onWhyWhatHover}
 			></DurationAxiomStat>
 		);
-	} else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
-		return (axiomStatText = (
-			<InteractionAxiomWhyNotWhatText
-				stats={stats}
-				selectedInstances={selectedInstances}
-				axiom={axiom}
-				onWhyNotHowTo={props.onWhyNotHowTo}
-                selectedInstancesIdx={selectedInstancesIdx}
-			></InteractionAxiomWhyNotWhatText>
-		));
-	} else {
+		// } else if (axiomType === AxiomTypes.TYPE_INTERACTION) {
+		// 	return (axiomStatText = (
+		// 		<InteractionAxiomWhyNotWhatText
+		// 			stats={stats}
+		// 			selectedInstances={selectedInstances}
+		// 			axiom={axiom}
+		// 			onWhyNotHowTo={props.onWhyNotHowTo}
+		//             selectedInstancesIdx={selectedInstancesIdx}
+		// 		></InteractionAxiomWhyNotWhatText>
+		// 	));
+		// } else {
 		return;
 	}
 
-    const multiple = selectedInstances.length > 1;
-    const samples = multiple ? "samples" : "sample";
-    const include = multiple ? "include" : "includes";
-    let time = "";
-    if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
-        time = "time distance";
-    } else if (axiomType === AxiomTypes.TYPE_DURATION) {
-        time = "duration";
-    }
-    
+	const multiple = selectedInstances.length > 1;
+	const samples = multiple ? "samples" : "sample";
+	const include = multiple ? "include" : "includes";
+	let time = "";
+	if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+		time = "time distance";
+	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
+		time = "duration";
+	}
+
 	return (
 		<div className="stat-container">
-            <span style={{fontSize: 14, color: "#5F5656", marginBottom: 5}}>The selected {samples}{" "}{include} {time} outside of the defined range [{axiom.getTh1()},{axiom.getTh2()}].</span>
+			<span style={{ fontSize: 14, color: "#5F5656", marginBottom: 5 }}>
+				The selected {samples} {include} {time} outside of the defined range [{axiom.getTh1()},{axiom.getTh2()}
+				].
+			</span>
 			<div className="stat-axiom-explanation-container">{axiomStatComp}</div>
 		</div>
 	);
@@ -97,10 +100,10 @@ export function DurationAxiomStat(props) {
 	return (
 		<div
 			className="axiom-stat-container"
-            onMouseEnter={(ev)=> {
-                const domRect = ev.target.getBoundingClientRect();
-                props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
-            }}
+			onMouseEnter={(ev) => {
+				const domRect = ev.target.getBoundingClientRect();
+				props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
+			}}
 		>
 			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
 				<g>
@@ -197,11 +200,13 @@ export function TimeDistanceAxiomStat(props) {
 	const iconLineGap = 10;
 
 	return (
-		<div className="axiom-stat-container" 
-            onMouseEnter={(ev)=> {
-                const domRect = ev.target.getBoundingClientRect();
-                props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
-            }}>
+		<div
+			className="axiom-stat-container"
+			onMouseEnter={(ev) => {
+				const domRect = ev.target.getBoundingClientRect();
+				props.onWhyWhatHover(domRect.x + domRect.width, domRect.y);
+			}}
+		>
 			<svg className="time-dist-axiom-stat-svg" style={{ width: w, height: h }}>
 				<g>
 					<svg className="time-dist-stat-icon-vis" style={{ width: w1, height: h }}>

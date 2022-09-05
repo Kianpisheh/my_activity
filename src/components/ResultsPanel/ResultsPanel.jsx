@@ -102,17 +102,16 @@ function ResultsPanel(props) {
 					</div>
 				);
 			})}
-			{(explanationStatus === ExpStatus.FN_SELECTED ||
-				explanationStatus === ExpStatus.FP_SELECTED) && (
-					<div id="FNFP-questions">
-						<FNFPQuestions
-							expStatus={explanationStatus}
-							selectedIdx={selectedInstancesIdx}
-							currentActivity={currentActivity}
-							onQuery={onQuery}
-						></FNFPQuestions>
-					</div>
-				)}
+			{(explanationStatus === ExpStatus.FN_SELECTED || explanationStatus === ExpStatus.FP_SELECTED) && (
+				<div id="FNFP-questions">
+					<FNFPQuestions
+						expStatus={explanationStatus}
+						selectedIdx={selectedInstancesIdx}
+						currentActivity={currentActivity}
+						onQuery={onQuery}
+					></FNFPQuestions>
+				</div>
+			)}
 			<div id="result-legends-container">
 				<div>
 					<svg height={18} width={210}>
@@ -140,7 +139,7 @@ function ResultsPanel(props) {
 				</div>
 				<div>
 					<svg height={18} width={210}>
-						<rect y={3} width={15} height={7} fill={"#E9A37C"} rx={2}></rect>
+						<rect y={3} width={15} height={7} fill={"#4EAB2B"} rx={2}></rect>
 						<text x={25} y={10} style={{ fontSize: 11 }}>
 							Classified as another activity
 						</text>

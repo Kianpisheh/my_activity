@@ -12,7 +12,6 @@ import EventStatExplanation from "./EventStatExplanation";
 import QueryTrigger from "../../model/QueryTrigger";
 
 function HowToPanel2(props) {
-
 	const {
 		whyWhat,
 		whyNotWhat,
@@ -39,11 +38,11 @@ function HowToPanel2(props) {
 				onWhyNotNumHover={props.onWhyNotNumHover}
 				numInstances={numInstances}
 				activity={activity}
-                onWhyHover={props.onWhyHover}
+				onWhyHover={props.onWhyHover}
 				unsatisfiedAxioms={unsatisfiedAxioms}
-                queriedAxiom={props.queriedAxiom}
-                explanationStatus={props.explanationStatus}
-                onWhyNotAxiomClick={props.onWhyNotAxiomClick}
+				queriedAxiom={props.queriedAxiom}
+				explanationStatus={props.explanationStatus}
+				onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 			></WhyNotExplanation>
 		);
 	} else if (
@@ -57,10 +56,10 @@ function HowToPanel2(props) {
 				queryTrigger={props.queryTrigger}
 				numInstances={numInstances}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-                queriedAxiom={props.queriedAxiom}
-                explanationStatus={props.explanationStatus}
+				queriedAxiom={props.queriedAxiom}
+				explanationStatus={props.explanationStatus}
 				activity={activity}
-                onWhyHover={props.onWhyHover}
+				onWhyHover={props.onWhyHover}
 			></WhyExplanation>
 		);
 	}
@@ -82,8 +81,8 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                onWhyWhatHover={props.onWhyWhatHover}
-                explanationStatus={props.explanationStatus}
+				onWhyWhatHover={props.onWhyWhatHover}
+				explanationStatus={props.explanationStatus}
 			></WhyNotWhatExplanation>
 		);
 	} else if (whyWhat) {
@@ -95,8 +94,9 @@ function HowToPanel2(props) {
 				activity={props.activity}
 				instances={props.instances}
 				selectedInstancesIdx={props.selectedInstancesIdx}
-                onWhyWhatHover={props.onWhyWhatHover}
-                explanationStatus={props.explanationStatus}
+				onWhyWhatHover={props.onWhyWhatHover}
+				unsatisfiedAxioms={unsatisfiedAxioms}
+				explanationStatus={props.explanationStatus}
 			></WhyWhatExplanation>
 		);
 	}
@@ -115,18 +115,19 @@ function HowToPanel2(props) {
 			<WhyHowToExplanations
 				suggestions={whyHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
-                currentActivity={activity}
+				currentActivity={activity}
 			></WhyHowToExplanations>
 		);
 	}
 
 	return (
-		<div className="exp-container" onClick={() => {
-            props.onWhyHover(-1,-1, null);
-            props.onWhyWhatHover(-1,-1);
-        }
-        }>
-            
+		<div
+			className="exp-container"
+			onClick={() => {
+				props.onWhyHover(-1, -1, null);
+				props.onWhyWhatHover(-1, -1);
+			}}
+		>
 			<div id="exp-title-section">
 				<span className="section-title">Explanations</span>
 			</div>

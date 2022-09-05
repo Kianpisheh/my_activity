@@ -47,23 +47,31 @@ function InteractionAxiomRepr(props) {
 	return (
 		<div
 			className="time-distance-axiom-repr"
-			style={{ cursor: "pointer", border: br }}
+			style={{
+				cursor: "pointer",
+				border: br,
+				columnGap: 30,
+				height: 50,
+				diplay: "flex",
+				justifyContent: "center",
+			}}
 			onClick={() => props.onWhyNotAxiomClick()}
-            onMouseEnter={(ev)=> {
-                const domRect = ev.target.getBoundingClientRect();
-                props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
-            }}
+			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotNumHover([])}
+			onMouseEnter={(ev) => {
+				const domRect = ev.target.getBoundingClientRect();
+				props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
+			}}
 		>
-			<svg width={w} height={h}>
-				<Icon1
-					x={xIcon1}
-					y={yIcon}
-					key={"time-dist-1-repr"}
-					width={icSize}
-					height={icSize}
-					fill={"#3A2A0D"}
-				></Icon1>
-			</svg>
+			{events.map((ev) => {
+				const Icon = Icons.getIcon(pascalCase(ev), true);
+				return (
+					<svg width={icSize} height={icSize}>
+						<Icon key={"time-dist-1-repr"} width={icSize} height={icSize} fill={"#3A2A0D"}></Icon>
+					</svg>
+				);
+			})}
+
 			<div id="num-div">{!props.whyQueryMode && numnum}</div>
 		</div>
 	);
