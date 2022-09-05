@@ -41,6 +41,7 @@ function InteractionNegationAxiom(props) {
 	let interactionIcons = [];
 	for (let i = 0; i < events.length; i++) {
 		const Icon = Icons.getIcon(pascalCase(events[i]), true);
+		const NotIcon = Icons.getIcon("NotFound");
 
 		// adjust the opacity if it is an unsatisfied axiom
 		let opacity = numnum[events[i]] ? 0.3 : 1;
@@ -51,20 +52,40 @@ function InteractionNegationAxiom(props) {
 				onMouseEnter={() => setObjectedHovered(i)}
 				onMouseLeave={() => setObjectedHovered(-1)}
 			>
-				<Icon
-					key={i}
+				<svg
 					style={{
 						width: props.config.ic_w,
 						height: props.config.ic_h,
-						fill: "#3A2A0D",
-						padding: 2,
-						border: selected.has(events[i]) && "2px solid #4DB49C",
 					}}
-					opacity={opacity}
-					onClick={(clickEvent) =>
-						setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
-					}
-				></Icon>
+				>
+					<Icon
+						key={i}
+						style={{
+							width: props.config.ic_w,
+							height: props.config.ic_h,
+							fill: "#3A2A0D",
+							padding: 2,
+							border: selected.has(events[i]) && "2px solid #4DB49C",
+						}}
+						opacity={opacity}
+						onClick={(clickEvent) =>
+							setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
+						}
+					></Icon>
+					<NotIcon
+						key={i}
+						style={{
+							width: 1.2 * props.config.ic_w,
+							height: 1.2 * props.config.ic_h,
+							fill: "red",
+							padding: 2,
+						}}
+						opacity={0.7}
+						onClick={(clickEvent) =>
+							setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
+						}
+					></NotIcon>
+				</svg>
 				{!props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
 					<button
 						className="remove-object-btn"

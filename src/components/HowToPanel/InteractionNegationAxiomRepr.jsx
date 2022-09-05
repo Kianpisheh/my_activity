@@ -7,11 +7,9 @@ import { getWhyNotNum } from "../AxiomPane/Axiom";
 import isEqual from "lodash.isequal";
 
 import AxiomData from "../../model/AxiomData";
-import QueryTrigger from "../../model/QueryTrigger";
 
-function InteractionAxiomRepr(props) {
+function InteractionNegationAxiomRepr(props) {
 	const events = props.axiom.getEvents();
-	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 
 	// dimentions
 	const icSize = 25;
@@ -60,9 +58,18 @@ function InteractionAxiomRepr(props) {
 		>
 			{events.map((ev) => {
 				const Icon = Icons.getIcon(pascalCase(ev), true);
+				const NotIcon = Icons.getIcon("NotFound");
+
 				return (
 					<svg width={icSize} height={icSize}>
 						<Icon key={"time-dist-1-repr"} width={icSize} height={icSize} fill={"#3A2A0D"}></Icon>
+						<NotIcon
+							key={"time-dist-1-repr"}
+							width={icSize}
+							height={icSize}
+							fill={"red"}
+							opacity={0.7}
+						></NotIcon>
 					</svg>
 				);
 			})}
@@ -72,4 +79,4 @@ function InteractionAxiomRepr(props) {
 	);
 }
 
-export default InteractionAxiomRepr;
+export default InteractionNegationAxiomRepr;

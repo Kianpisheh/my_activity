@@ -5,6 +5,7 @@ import QueryTrigger from "../../model/QueryTrigger";
 
 import TimeDistanceAxiomRepr from "./TimeDistanceAxiomRepr";
 import DurationAxiomRepr from "./DurationAxiomRepr";
+import InteractionNegationAxiomRepr from "./InteractionNegationAxiomRepr";
 import InteractionAxiomRepr from "./InteractionAxiomRepr";
 import isEqual from "lodash.isequal";
 import ExpStatus from "../../model/ExpStatus";
@@ -59,10 +60,7 @@ function WhyNotExplanation(props) {
 					onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 				></DurationAxiomRepr>
 			);
-		} else if (
-			axiom.getType() === AxiomTypes.TYPE_INTERACTION ||
-			axiom.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION
-		) {
+		} else if (axiom.getType() === AxiomTypes.TYPE_INTERACTION) {
 			axComp = (
 				<InteractionAxiomRepr
 					queryTrigger={props.queryTrigger}
@@ -77,6 +75,22 @@ function WhyNotExplanation(props) {
 					expType={QueryTrigger.WHY_NOT}
 					onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 				></InteractionAxiomRepr>
+			);
+		} else if (axiom.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+			axComp = (
+				<InteractionNegationAxiomRepr
+					queryTrigger={props.queryTrigger}
+					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+					onWhyNotNumHover={props.onWhyNotNumHover}
+					numInstances={numInstances}
+					onWhyHover={props.onWhyHover}
+					activity={activity}
+					axiom={axiom}
+					unsatisfiedAxioms={unsatisfiedAxioms}
+					idx={i}
+					expType={QueryTrigger.WHY_NOT}
+					onWhyNotAxiomClick={props.onWhyNotAxiomClick}
+				></InteractionNegationAxiomRepr>
 			);
 		}
 		whyNotAxioms.push(axComp);
