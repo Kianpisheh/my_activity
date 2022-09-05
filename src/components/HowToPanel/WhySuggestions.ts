@@ -366,6 +366,11 @@ function getInteractionAdditionAxiomSuggestions(
 			[...activities]
 		);
 
+		// check if it removes any of the selected FPs
+		if (selectedFPs.every((fpIdx) => whatIfRes["newFPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
+			continue;
+		}
+
 		suggestions.push(
 			new HowToAxiom(
 				"interaction_addition",
@@ -378,6 +383,8 @@ function getInteractionAdditionAxiomSuggestions(
 			)
 		);
 	}
+
+	// rank suggestions based on their improvements
 
 	return suggestions;
 }

@@ -8,6 +8,7 @@ function WhyHowToExplanations(props) {
 	}
 
 	let suggestionItems = [];
+	let i = 0;
 	for (const suggestion of suggestions) {
 		const { axiom } = suggestion;
 		const suggestionType = suggestion.getType();
@@ -15,6 +16,7 @@ function WhyHowToExplanations(props) {
 			if (axiom.getType() === AxiomTypes.TYPE_DURATION) {
 				suggestionItems.push(
 					<DurationAdjustmentAxiom
+						suggestionId={i}
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
@@ -23,6 +25,7 @@ function WhyHowToExplanations(props) {
 			} else if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
 				suggestionItems.push(
 					<TemporalAdjustmentAxiom
+						suggestionId={i}
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
@@ -31,12 +34,15 @@ function WhyHowToExplanations(props) {
 			}
 		} else if (suggestionType === "interaction_addition") {
 			suggestionItems.push(
-            <InteractionAdditionAxiom
-				suggestion={suggestion}
-                currentActivity={currentActivity}
-				onWhyHowToAxiomHover={onWhyHowToAxiomHover}
-			></InteractionAdditionAxiom>);
+				<InteractionAdditionAxiom
+					suggestionId={i}
+					suggestion={suggestion}
+					currentActivity={currentActivity}
+					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+				></InteractionAdditionAxiom>
+			);
 		}
+		i += 1;
 	}
 
 	return (

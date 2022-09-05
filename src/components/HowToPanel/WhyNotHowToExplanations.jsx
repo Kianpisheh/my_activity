@@ -153,9 +153,9 @@ export function InteractionAdditionAxiom(props) {
 	const { axiom, newTPs, newFPs } = props.suggestion;
 	const newEvents = axiom.getEvents();
 
-    const currentEvents = props.currentActivity.getEvents();
+	const currentEvents = props.currentActivity.getEvents();
 
-    let currentIcons = [];
+	let currentIcons = [];
 	for (let ev of currentEvents) {
 		const Icon = Icons.getIcon(pascalCase(ev), true);
 		currentIcons.push(
@@ -175,19 +175,20 @@ export function InteractionAdditionAxiom(props) {
 	}
 	return (
 		<div
+			key={props.suggestionId}
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 			style={{ position: "relative", cursor: "pointer" }}
 		>
 			<div className="icon-container3">
-                {[...currentIcons]}
-                <svg height={10} width={70}>
-                    <line x1={0} y1={5} x2={65} y2={5} stroke="#555555" strokeWidth={1.5}></line>
-                    <polygon points={[70, 5, 65, 0, 65, 10]} fill="#555555"></polygon>
-                </svg>
-                {[...newIcons]}
-            </div>
+				{[...currentIcons]}
+				<svg height={10} width={70}>
+					<line x1={0} y1={5} x2={65} y2={5} stroke="#555555" strokeWidth={1.5}></line>
+					<polygon points={[70, 5, 65, 0, 65, 10]} fill="#555555"></polygon>
+				</svg>
+				{[...newIcons]}
+			</div>
 		</div>
 	);
 }

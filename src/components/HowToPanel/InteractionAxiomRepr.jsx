@@ -41,6 +41,7 @@ function InteractionAxiomRepr(props) {
 
 	return (
 		<div
+			key={props.idx}
 			className="time-distance-axiom-repr"
 			style={{
 				cursor: "pointer",
@@ -67,7 +68,7 @@ function InteractionAxiomRepr(props) {
 				);
 			})}
 
-			<div id="num-div">{!props.whyQueryMode && numnum}</div>
+			{/* <div id="num-div">{!props.whyQueryMode && numnum}</div> */}
 		</div>
 	);
 }

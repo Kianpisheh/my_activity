@@ -77,10 +77,11 @@ import SvgChair from "./Chair";
 import SvgBread from "./Bread";
 import SvgSalami from "./Salami";
 import SvgSugar from "./Sugar";
-import SvgDrawerTop from "./DrawerTop"
-import SvgDrawerMiddle from "./DrawerMiddle"
-import SvgDrawerLower from "./DrawerLower"
+import SvgDrawerTop from "./DrawerTop";
+import SvgDrawerMiddle from "./DrawerMiddle";
+import SvgDrawerLower from "./DrawerLower";
 import SvgDoor from "./Door";
+import SvgSwitch from "./Switch";
 
 class Icons {
 	static icons = {
@@ -155,31 +156,32 @@ class Icons {
 		DownArrow: SvgDownArrow,
 		TimeDistance2: SvgTimeDistance2,
 		TimeDistance3: SvgTimeDistance3,
-        Trashcan: SvgTrashcan,
-        Why: SvgWhy,
-        WhyNot: SvgWhyNot,
-        WhyWhat: SvgWhyWhat,
-        WhyNotWhat: SvgWhyNotWhat,
-        WhyHowTo: SvgWhyHowTo,
-        WhyNotHowTo: SvgWhyNotHowTo,
-        Watercan: SvgWatercan,
-        TVShelf: SvgTVShelf,
-        Closet: SvgCloset,
-        KitchenCloset: SvgKitchenCloset,
-        Table: SvgTable,
-        TapHot: SvgTap,
-        Cheese: SvgCheese,
-        Chair: SvgChair,
-        Salami: SvgSalami,
-        Dishwasher: SvgDishwasher,
-        Sugar: SvgSugar,
-        Milk: SvgMilk,
-        Bread: SvgBread,
-        DrawerLower: SvgDrawerLower,
-        DrawerTop: SvgDrawerTop,
-        DrawerMiddle: SvgDrawerMiddle,
-        Door1: SvgDoor,
-        Door2: SvgDoor
+		Trashcan: SvgTrashcan,
+		Why: SvgWhy,
+		WhyNot: SvgWhyNot,
+		WhyWhat: SvgWhyWhat,
+		WhyNotWhat: SvgWhyNotWhat,
+		WhyHowTo: SvgWhyHowTo,
+		WhyNotHowTo: SvgWhyNotHowTo,
+		Watercan: SvgWatercan,
+		TVShelf: SvgTVShelf,
+		Closet: SvgCloset,
+		KitchenCloset: SvgKitchenCloset,
+		Table: SvgTable,
+		TapHot: SvgTap,
+		Cheese: SvgCheese,
+		Chair: SvgChair,
+		Salami: SvgSalami,
+		Dishwasher: SvgDishwasher,
+		Sugar: SvgSugar,
+		Milk: SvgMilk,
+		Bread: SvgBread,
+		DrawerLower: SvgDrawerLower,
+		DrawerTop: SvgDrawerTop,
+		DrawerMiddle: SvgDrawerMiddle,
+		Door1: SvgDoor,
+		Door2: SvgDoor,
+		Switch: SvgSwitch,
 	};
 
 	static colors = {
@@ -249,25 +251,26 @@ class Icons {
 		TimeDistance2: "#1391D8",
 		TimeDistance3: "#1391D8",
 		Trashcan: "#1391D8",
-        Watercan: "#36AA56",
-        TVShelf: "#433C29",
-        Closet: "#17473C",
-        KitchenCloset: "#000000",
-        Table: "#D64B00",
-        TapHot: "#F01010",
-        Dishwasher: "#22A4D8",
-        Salami: "#C62F0D",
-        Cheese: "#E4DB15",
-        Milk: "#25D4E8",
-        Chair: "#A7531C",
-        Sugar: "#B68EDF",
-        Bread: "#B9845B",
-        Drawer: "#CD862A",
-        DrawerLower: "#5B2E0B",
-        DrawerTop: "#5B2E0B",
-        DrawerMiddle: "#5B2E0B",
-        Door1: "#949493",
-        Door2: "#686868"
+		Watercan: "#36AA56",
+		TVShelf: "#433C29",
+		Closet: "#17473C",
+		KitchenCloset: "#000000",
+		Table: "#D64B00",
+		TapHot: "#F01010",
+		Dishwasher: "#22A4D8",
+		Salami: "#C62F0D",
+		Cheese: "#E4DB15",
+		Milk: "#25D4E8",
+		Chair: "#A7531C",
+		Sugar: "#B68EDF",
+		Bread: "#B9845B",
+		Drawer: "#CD862A",
+		DrawerLower: "#5B2E0B",
+		DrawerTop: "#5B2E0B",
+		DrawerMiddle: "#5B2E0B",
+		Door1: "#949493",
+		Door2: "#686868",
+		Switch: "#143788",
 	};
 
 	static getIcons() {
