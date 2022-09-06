@@ -56,7 +56,8 @@ export function getWhyHowToSuggestions(
 			currentActivity,
 			instances,
 			selectedFPs,
-			[...activities]
+			[...activities],
+			"FP"
 		);
 		suggestions = suggestion3;
 	}
@@ -293,14 +294,15 @@ function checkDuplicate(suggestions: HowToAxiom[]) {
 	return uniqueSuggestions;
 }
 
-function getInteractionAdditionAxiomSuggestions(
+export function getInteractionAdditionAxiomSuggestions(
 	axiom: AxiomData,
 	ruleitems: RuleitemData[],
 	classificationResult: { [type: string]: any },
 	currentActivity: Activity,
 	instances: ActivityInstance[],
-	selectedFPs: number[],
-	activities: Activity[]
+	selectedInstances: number[],
+	activities: Activity[],
+	instanceType: string
 ) {
 	const SUPP_TH = 0.75;
 	const CONF_TH = 0.5;
@@ -367,8 +369,14 @@ function getInteractionAdditionAxiomSuggestions(
 		);
 
 		// check if it removes any of the selected FPs
-		if (selectedFPs.every((fpIdx) => whatIfRes["newFPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
-			continue;
+		if (instanceType === "FP") {
+			if (selectedInstances.every((fpIdx) => whatIfRes["newFPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
+				continue;
+			}
+		} else if (instanceType === "FN") {
+			if (selectedInstances.some((fpIdx) => whatIfRes["newTPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
+				continue;
+			}
 		}
 
 		suggestions.push(

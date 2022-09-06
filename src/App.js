@@ -145,7 +145,8 @@ function App() {
 				classificationRes,
 				activityInstances,
 				selectedInstancesIdx["FN"],
-				activities
+				activities,
+				ruleitems[currentActivity.getName()]
 			);
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
@@ -518,6 +519,7 @@ function App() {
 							}}
 							whyQueryMode={whyQueryMode}
 							selectedIdx={selectedInstancesIdx}
+							ruleitems={ruleitems}
 							onQuery={handleQuery}
 							onWhyHover={(xx, yy, axiom) => {
 								if (
@@ -547,6 +549,7 @@ function App() {
 					<div id="explanations">
 						<ResultsPanel
 							parentWidth={leftPaneWidth}
+							instances={activityInstances}
 							onInstanceClick={handleInstanceClick}
 							classificationResult={classificationRes}
 							selectedInstancesIdx={selectedInstancesIdx}

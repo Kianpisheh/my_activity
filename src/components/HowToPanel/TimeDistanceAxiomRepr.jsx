@@ -29,34 +29,36 @@ function TimeDistanceAxiomRepr(props) {
 	// check if this is an unsatisfied axiom based on the user query
 	let numnum = null;
 	let selFNIds = [];
-	// if (props.unsatisfiedAxioms) {
-	// 	numnum = getWhyNotNum(
-	// 		props.unsatisfiedAxioms,
-	// 		props.axiom,
-	// 		props.onWhyNotWhatQuery,
-	// 		props.onWhyNotNumHover,
-	// 		props.queryTrigger,
-	// 		props.qmenuPos
-	// 	);
+	if (props.unsatisfiedAxioms) {
+		numnum = getWhyNotNum(
+			props.unsatisfiedAxioms,
+			props.axiom,
+			props.onWhyNotWhatQuery,
+			props.onWhyNotNumHover,
+			props.queryTrigger,
+			props.qmenuPos
+		);
 
-	// 	for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
-	// 		const ax = AxiomData.axiomFromString(axiomString);
-	// 		if (isEqual(ax, props.axiom)) {
-	// 			selFNIds = [...ids];
-	// 			break;
-	// 		}
-	// 	}
-	// }
+		for (const [axiomString, ids] of Object.entries(props.unsatisfiedAxioms)) {
+			const ax = AxiomData.axiomFromString(axiomString);
+			if (isEqual(ax, props.axiom)) {
+				selFNIds = [...ids];
+				break;
+			}
+		}
+	}
 
 	return (
 		<div
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-            onClick={() => props.onWhyNotAxiomClick()}
-            onMouseEnter={(ev)=> {
-                const domRect = ev.target.getBoundingClientRect();
-                props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
-            }}
+			onClick={() => props.onWhyNotAxiomClick()}
+			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotNumHover([])}
+			onMouseEnter={(ev) => {
+				const domRect = ev.target.getBoundingClientRect();
+				props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
+			}}
 		>
 			<svg width={w} height={h}>
 				<Icon1
@@ -82,7 +84,7 @@ function TimeDistanceAxiomRepr(props) {
 					y2={icSize + 5}
 					stroke="#777777"
 					strokeWidth={1}
-                    strokeDasharray={4}
+					strokeDasharray={4}
 				></line>
 				<polygon
 					points={[

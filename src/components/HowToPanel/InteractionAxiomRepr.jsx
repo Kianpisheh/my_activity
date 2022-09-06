@@ -11,7 +11,6 @@ import QueryTrigger from "../../model/QueryTrigger";
 
 function InteractionAxiomRepr(props) {
 	const events = props.axiom.getEvents();
-	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
 
 	// dimentions
 	const icSize = 25;
@@ -68,7 +67,7 @@ function InteractionAxiomRepr(props) {
 				);
 			})}
 
-			{/* <div id="num-div">{!props.whyQueryMode && numnum}</div> */}
+			<div id="num-div">{!props.whyQueryMode && numnum}</div>
 		</div>
 	);
 }

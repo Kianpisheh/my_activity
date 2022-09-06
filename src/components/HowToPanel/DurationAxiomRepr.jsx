@@ -23,8 +23,7 @@ function DurationAxiomRepr(props) {
 	const xIcon1 = w / 6 - icSize / 2;
 	const yIcon = 0;
 
-    const br = props.selectedWhys === props.idx ? "solid" : "none";
-
+	const br = props.selectedWhys === props.idx ? "solid" : "none";
 
 	// check if this is an unsatisfied axiom based on the user query
 	let numnum = null;
@@ -52,11 +51,13 @@ function DurationAxiomRepr(props) {
 		<div
 			className="duration-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
-            onClick={() => props.onWhyNotAxiomClick()}
-            onMouseEnter={(ev)=> {
-                const domRect = ev.target.getBoundingClientRect();
-                props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
-            }}
+			onClick={() => props.onWhyNotAxiomClick()}
+			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotNumHover([])}
+			onMouseEnter={(ev) => {
+				const domRect = ev.target.getBoundingClientRect();
+				props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);
+			}}
 		>
 			<svg width={w} height={h}>
 				<Icon1
@@ -73,7 +74,7 @@ function DurationAxiomRepr(props) {
 					x2={w / 6 + lineSize / 2}
 					y2={icSize + 5}
 					stroke="#555555"
-                    strokeDasharray={4}
+					strokeDasharray={4}
 					strokeWidth={1}
 				></line>
 				<polygon

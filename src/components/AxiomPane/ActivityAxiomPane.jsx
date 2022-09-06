@@ -209,8 +209,8 @@ function ActivityAxiomPane(props) {
 							.slice(axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1)
 							.map((axiom, idx) => (
 								<Axiom
-									idx={idx + 2}
-									key={idx + 2}
+									idx={idx + axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1}
+									key={idx + axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1}
 									data={axiom}
 									config={props.config}
 									messageCallback={props.sendMessage}

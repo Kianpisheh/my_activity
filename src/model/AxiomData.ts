@@ -87,9 +87,7 @@ class AxiomData {
 	static axiomFromString(axiomString: string) {
 		const { axType, event1, event2, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString);
 		let events: string[] = [];
-		if (axType === AxiomTypes.TYPE_INTERACTION || axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
-			events = [event1];
-		}
+		events = [event1];
 		if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
 			events.push(event2);
 		}

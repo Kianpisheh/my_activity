@@ -51,15 +51,17 @@ function InteractionNegationAxiom(props) {
 				className="rem-object-btn-div"
 				onMouseEnter={() => setObjectedHovered(i)}
 				onMouseLeave={() => setObjectedHovered(-1)}
+				key={i + "negSvg"}
 			>
 				<svg
+					key={i}
 					style={{
 						width: props.config.ic_w,
 						height: props.config.ic_h,
 					}}
 				>
 					<Icon
-						key={i}
+						key={i + "icon"}
 						style={{
 							width: props.config.ic_w,
 							height: props.config.ic_h,
@@ -73,7 +75,7 @@ function InteractionNegationAxiom(props) {
 						}
 					></Icon>
 					<NotIcon
-						key={i}
+						key={i + "notIcon"}
 						style={{
 							width: 1.2 * props.config.ic_w,
 							height: 1.2 * props.config.ic_h,
@@ -88,6 +90,7 @@ function InteractionNegationAxiom(props) {
 				</svg>
 				{!props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
 					<button
+						key={i}
 						className="remove-object-btn"
 						onClick={() => {
 							props.messageCallback(AxiomTypes.MSG_REMOVE_OBJECT_INTERACTION_EXCLUSION, {

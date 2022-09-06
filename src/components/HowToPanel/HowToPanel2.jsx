@@ -21,6 +21,7 @@ function HowToPanel2(props) {
 		instances,
 		activity,
 		unsatisfiedAxioms,
+		ruleitems,
 	} = props;
 
 	let whyExplanation = [];
@@ -41,6 +42,7 @@ function HowToPanel2(props) {
 				queriedAxiom={props.queriedAxiom}
 				explanationStatus={props.explanationStatus}
 				onWhyNotAxiomClick={props.onWhyNotAxiomClick}
+				ruleitems={ruleitems}
 			></WhyNotExplanation>
 		);
 	} else if (
@@ -106,6 +108,7 @@ function HowToPanel2(props) {
 			<WhyNotHowToExplanations
 				suggestions={whyNotHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
+				ruleitems={ruleitems}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {

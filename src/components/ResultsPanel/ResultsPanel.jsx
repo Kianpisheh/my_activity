@@ -15,6 +15,7 @@ function ResultsPanel(props) {
 		newFPs,
 		newFPsLabel,
 		currentActivity,
+		instances,
 	} = props;
 
 	if (!props.classificationResult) {
@@ -54,6 +55,16 @@ function ResultsPanel(props) {
 				activity
 			)
 		);
+
+		if (activity === "Coffee_time") {
+			let y = 1;
+		}
+
+		for (const act in newFPs) {
+			if (act !== activity && !(act in FP) && newFPs[activity].some((idx) => instances[idx].getType() === act)) {
+				FP[act] = [];
+			}
+		}
 		if (FP) {
 			for (const [activityName, fp] of Object.entries(FP)) {
 				if (activityName === "all") {

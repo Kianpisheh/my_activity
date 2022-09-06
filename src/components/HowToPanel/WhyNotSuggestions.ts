@@ -7,7 +7,10 @@ import HowToAxiom from "../../model/HowToAxiom";
 
 import { updateClassificationResults } from "../../Classification";
 
+import { getInteractionAdditionAxiomSuggestions } from "./WhySuggestions";
+
 import isEqual from "lodash.isequal";
+import RuleitemData from "../../model/RuleitemData";
 
 export function getWhyNotHowToSuggestions(
 	axiom: AxiomData,
@@ -16,7 +19,8 @@ export function getWhyNotHowToSuggestions(
 	selectedFNs: number[],
 	classificationResult: { [resType: string]: any },
 	instances: ActivityInstance[],
-	activities: Activity[]
+	activities: Activity[],
+	ruleitems: RuleitemData[]
 ): HowToAxiom[] {
 	// 2. find axiom suggestions (HowTo)
 	let suggestions: HowToAxiom[] = [];
@@ -47,7 +51,7 @@ export function getWhyNotHowToSuggestions(
 			suggestions.push(suggestion2);
 		}
 	} else if (axType === AxiomTypes.TYPE_INTERACTION) {
-		const suggestion = getInteractionAxiomRemovalSuggestion(
+		const suggestion1 = getInteractionAxiomRemovalSuggestion(
 			axiom,
 			axiomIdx,
 			currentActivity,
@@ -56,8 +60,22 @@ export function getWhyNotHowToSuggestions(
 			instances,
 			[...activities]
 		);
-		if (suggestion) {
-			suggestions.push(suggestion);
+		if (suggestion1) {
+			suggestions.push(suggestion1);
+		}
+
+		const suggestion2 = getInteractionAdditionAxiomSuggestions(
+			axiom,
+			ruleitems,
+			classificationResult,
+			currentActivity,
+			instances,
+			selectedFNs,
+			[...activities],
+			"FN"
+		);
+		if (suggestion2) {
+			//suggestions.push(suggestion2);
 		}
 	}
 

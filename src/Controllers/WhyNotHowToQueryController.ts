@@ -3,6 +3,7 @@ import ActivityInstance from "../model/ActivityInstance";
 import AxiomData from "../model/AxiomData";
 import HowToAxiom from "../model/HowToAxiom";
 import { getWhyNotHowToSuggestions } from "../components/HowToPanel/WhyNotSuggestions";
+import RuleitemData from "../model/RuleitemData";
 
 class WhyNotHowToQueryController {
 	static handleWhyNotHowToQuery(
@@ -11,7 +12,8 @@ class WhyNotHowToQueryController {
 		classificationResult: { [type: string]: any },
 		instances: ActivityInstance[],
 		selectedInstancesIdx: number[],
-		activities: Activity[]
+		activities: Activity[],
+		ruleitems: RuleitemData[]
 	) {
 		let i = 0;
 		let suggestions: HowToAxiom[] = [];
@@ -22,7 +24,8 @@ class WhyNotHowToQueryController {
 			selectedInstancesIdx,
 			classificationResult,
 			instances,
-			activities
+			activities,
+			ruleitems
 		);
 		return suggestions;
 	}
