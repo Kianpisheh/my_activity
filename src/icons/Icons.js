@@ -82,6 +82,15 @@ import SvgDrawerMiddle from "./DrawerMiddle";
 import SvgDrawerLower from "./DrawerLower";
 import SvgDoor from "./Door";
 import SvgSwitch from "./Switch";
+import SvgReach from "./Reach";
+import SvgRelease from "./Release";
+import SvgSip from "./Sip";
+import SvgStir from "./Reach";
+import SvgMove from "./Move";
+import SvgLock from "./Lock";
+import SvgUnlock from "./Unlock";
+import SvgCut from "./Cut";
+import SvgBite from "./Bite";
 
 class Icons {
 	static icons = {
@@ -182,6 +191,15 @@ class Icons {
 		Door1: SvgDoor,
 		Door2: SvgDoor,
 		Switch: SvgSwitch,
+		Reach: SvgReach,
+		Release: SvgRelease,
+		Sip: SvgSip,
+		Stir: SvgStir,
+		Move: SvgMove,
+		Lock: SvgLock,
+		Unlock: SvgUnlock,
+		Cut: SvgCut,
+		Bite: SvgBite,
 	};
 
 	static colors = {
