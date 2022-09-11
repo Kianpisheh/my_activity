@@ -9,6 +9,7 @@ interface IActivityObj {
 	excludedEvents: string[];
 	constraints: Constraint[];
 	id: number;
+	eventORList: string[][];
 }
 
 class Activity {
@@ -25,7 +26,7 @@ class Activity {
 		this.excludedEvents = activityObj["excludedEvents"];
 		this.constraints = activityObj["constraints"];
 		this.id = activityObj["id"];
-		this.eventORList = [];
+		this.eventORList = activityObj["eventORList"] ?? [];
 	}
 
 	addEventOR(events: string[]) {
@@ -117,6 +118,20 @@ class Activity {
 			);
 		}
 
+		// ORed events axioms
+		if (this.eventORList.length) {
+			for (const evPair of this.eventORList) {
+				axioms.push(
+					new AxiomData({
+						events: [...evPair],
+						type: AxiomTypes.TYPE_OR_INTERACTION,
+						th1: -1,
+						th2: -1,
+					})
+				);
+			}
+		}
+
 		// temporal axioms
 		this.constraints.forEach((constraint) => {
 			let numEvents = constraint["events"].length;
@@ -142,6 +157,7 @@ class Activity {
 	updateAxioms(newAxioms: AxiomData[]) {
 		let newEvents: string[] = [];
 		let newExcludedEvents: string[] = [];
+		let newEventORList: string[][] = [];
 		let newConstraints: Constraint[] = [];
 
 		newAxioms.forEach((axiom) => {
@@ -150,20 +166,23 @@ class Activity {
 				newEvents = newEvents.concat(axiom["events"]);
 			} else if (axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 				newExcludedEvents = newExcludedEvents.concat(axiom["events"]);
-			}
-
-			if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
+			} else if (axType === AxiomTypes.TYPE_OR_INTERACTION) {
+				newEventORList.push(axiom["events"]);
+			} else if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
 				let constraint = new Constraint(axiom["events"], axiom["th1"], axiom["th2"], axiom["type"]);
 				newConstraints.push(constraint);
 			}
 		});
+
 		let newEventsSet = new Set(newEvents);
 		let newExcludedEventsSet = new Set(newExcludedEvents);
 		this.events = Array.from(newEventsSet);
 		this.excludedEvents = Array.from(newExcludedEventsSet);
+		this.eventORList = Array.from(newEventORList);
 		this.constraints = [...newConstraints];
 	}
 
+	// static methods
 	static getUniqueID(activities: Activity[]) {
 		let idsList: number[] = [];
 		activities.forEach((activtiy) => {

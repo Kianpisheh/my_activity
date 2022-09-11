@@ -9,6 +9,8 @@ import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 import Icons from "../../icons/Icons";
 
+import { getStartIdx } from "./TimeDistanceAxiom";
+
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
 	const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
@@ -32,6 +34,15 @@ function ActivityAxiomPane(props) {
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
 		objectList = AxiomManager.findInteractionObjects([...axioms]);
 	}
+
+	let temporalAxStartIdx = Math.min(
+		getStartIdx(axioms, AxiomTypes.TYPE_TIME_DISTANCE) ?? 1000,
+		getStartIdx(axioms, AxiomTypes.TYPE_DURATION) ?? 1000
+	);
+	if (temporalAxStartIdx === 0) {
+		temporalAxStartIdx = axioms.length;
+	}
+	const interactionORAxStartIdx = getStartIdx(axioms, AxiomTypes.TYPE_OR_INTERACTION);
 
 	return (
 		<div className="ax-container">
@@ -95,6 +106,7 @@ function ActivityAxiomPane(props) {
 							</button>
 						</div>
 					</div>
+					{/* ------------------Interaction Axioms---------------- */}
 					<div className="interaction-axioms-container">
 						<Axiom
 							idx={0}
@@ -128,6 +140,7 @@ function ActivityAxiomPane(props) {
 							></AxiomCrafter>
 						)}
 					</div>
+					{/* ------------------Interaction negation Axioms---------------- */}
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div
 						style={{
@@ -187,9 +200,55 @@ function ActivityAxiomPane(props) {
 							></AxiomCrafter>
 						)}
 					</div>
+					{/* ------------------Intreraction OR Axioms---------------- */}
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
-						<span className="sub-section-title" style={{ width: 125 }}>
+						<span className="sub-section-title" style={{ width: 160 }}>
+							At least one of the follwoing
+						</span>
+						<div style={{ display: "flex", marginLeft: 10 }}>
+							<button
+								className="add-int-btn"
+								onClick={() => {
+									setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
+									setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+								}}
+							>
+								+
+							</button>
+						</div>
+					</div>
+					{interactionORAxStartIdx && (
+						<div className="negation-interaction-axioms-container">
+							{axioms.slice(interactionORAxStartIdx, temporalAxStartIdx).map((axiom, idx) => (
+								<Axiom
+									idx={idx + interactionORAxStartIdx}
+									key={idx + interactionORAxStartIdx}
+									data={axiom}
+									config={props.config}
+									messageCallback={props.sendMessage}
+									onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+									onWhyWhatQuery={props.onWhyWhatQuery}
+									activityInstances={props.activityInstances}
+									onWhyNotNumHover={props.onWhyNotNumHover}
+									classificationResult={props.classificationResult}
+									activity={props.activity}
+									selectedInstancesIdx={props.selectedInstancesIdx}
+									onWhyNotHowTo={props.onWhyNotHowTo}
+									stats={props.whyNotWhat}
+									whyQueryMode={props.whyQueryMode}
+									onWhyHowToQuery={props.onWhyHowToQuery}
+									ruleitems={props.ruleitems}
+									onQuestionMenu={props.onQuestionMenu}
+									queryTrigger={props.queryTrigger}
+								></Axiom>
+							))}
+						</div>
+					)}
+					{/* ------------------Temporal Axioms---------------- */}
+					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
+					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
+						<span className="sub-section-title" style={{ width: 115 }}>
 							Temporal conditions
 						</span>
 						<div style={{ display: "flex", marginLeft: 10 }}>
@@ -204,13 +263,12 @@ function ActivityAxiomPane(props) {
 							</button>
 						</div>
 					</div>
-					<div className="temporal-axioms-container">
-						{axioms
-							.slice(axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1)
-							.map((axiom, idx) => (
+					{temporalAxStartIdx && (
+						<div className="temporal-axioms-container">
+							{axioms.slice(temporalAxStartIdx).map((axiom, idx) => (
 								<Axiom
-									idx={idx + axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1}
-									key={idx + axioms[1]?.getType() === AxiomTypes.TYPE_INTERACTION_NEGATION ? 2 : 1}
+									idx={idx + temporalAxStartIdx}
+									key={idx + temporalAxStartIdx}
 									data={axiom}
 									config={props.config}
 									messageCallback={props.sendMessage}
@@ -229,7 +287,8 @@ function ActivityAxiomPane(props) {
 									queryTrigger={props.queryTrigger}
 								></Axiom>
 							))}
-					</div>{" "}
+						</div>
+					)}
 					<div className="axiom-crafter-container">
 						{definingRule === "temporal" && (
 							<AxiomCrafter

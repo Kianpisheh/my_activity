@@ -76,7 +76,7 @@ class ActivityInstance {
 		return this.name;
 	}
 
-	hasEvent(event: string) {
+	private hasEvent(event: string) {
 		for (const ev of this.events) {
 			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
 				return true;
@@ -125,6 +125,7 @@ class ActivityInstance {
 	notSatisfied(activity: Activity) {
 		let notSatisfiedInteractionAxs: string[] = [];
 		let notSatisfiedNegationInteractionAxs: string[] = [];
+		let notSatisfiedORInteractionAxs: string[] = [];
 		let notSatisfiedTemporalAxs = [];
 
 		// first check interaction axioms
@@ -138,6 +139,15 @@ class ActivityInstance {
 		for (const ev of activity.getExcludedEvents()) {
 			if (this.hasEvent(ev)) {
 				notSatisfiedNegationInteractionAxs.push(AxiomTypes.TYPE_INTERACTION_NEGATION + ":" + ev);
+			}
+		}
+
+		// event OR axioms
+		for (const eventPair of activity.getEventORList()) {
+			if (!this.hasEvent(eventPair[0]) && !this.hasEvent(eventPair[1])) {
+				notSatisfiedORInteractionAxs.push(
+					AxiomTypes.TYPE_OR_INTERACTION + ":" + eventPair[0] + ":" + eventPair[1]
+				);
 			}
 		}
 
@@ -167,10 +177,13 @@ class ActivityInstance {
 			}
 		}
 
-		return notSatisfiedInteractionAxs.concat(notSatisfiedTemporalAxs).concat(notSatisfiedNegationInteractionAxs);
+		return notSatisfiedInteractionAxs
+			.concat(notSatisfiedTemporalAxs)
+			.concat(notSatisfiedNegationInteractionAxs)
+			.concat(notSatisfiedORInteractionAxs);
 	}
 
-	isConstraintSatisfied(constraint: Constraint): boolean {
+	private isConstraintSatisfied(constraint: Constraint): boolean {
 		const constraintType = constraint.type;
 		const th1 = constraint.th1;
 		const th2 = constraint.th2;
@@ -339,6 +352,16 @@ class ActivityInstance {
 					}
 				}
 				if (negIntEventsNum === ax.getEvents().length) {
+					numSatisfied += 1;
+				} else {
+					return false;
+				}
+			}
+
+			// interacion or axioms
+			if (axType === AxiomTypes.TYPE_OR_INTERACTION) {
+				let events = ax.getEvents();
+				if (this.hasEvent(events[1]) || this.hasEvent(events[0])) {
 					numSatisfied += 1;
 				} else {
 					return false;

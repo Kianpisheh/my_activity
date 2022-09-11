@@ -77,14 +77,23 @@ function Axiom(props) {
 				idx={props.idx}
 				config={props.config}
 				messageCallback={props.messageCallback}
+				explanation={props.explanation}
 				unsatisfiedAxioms={props.unsatisfiedAxioms}
 				onUnsatisfiedAxiomClick={props.onUnsatisfiedAxiomClick}
+				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
 				onWhyNotNumHover={props.onWhyNotNumHover}
-				onWhyWhatQuery={props.onWhyWhatQuery}
+				classificationResult={props.classificationResult}
+				activity={props.activity}
+				selectedInstancesIdx={props.selectedInstancesIdx}
+				onWhyNotHowTo={props.onWhyNotHowTo}
+				onWhyHowToQuery={props.onWhyHowToQuery}
+				stats={props.whyNotWhat}
 				whyQueryMode={props.whyQueryMode}
-				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				ruleitems={props.ruleitems}
+				onQuestionMenu={props.onQuestionMenu}
+				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
 			></InteractionORAxiom>
 		);

@@ -63,7 +63,7 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-	const DATASETS = ["CASAS8", "Opportunity", "Opportunity_gesture", "Epic"];
+	const DATASETS = ["CASAS8", "Opportunity", "Epic", "Task1", "Task2"];
 	const [dataset, setDataset] = useState(DATASETS[1]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
@@ -245,6 +245,8 @@ function App() {
 		prom.then((data) => {
 			let ruleItems = Ruleitem.getitems(data.data);
 			setRuleitems(ruleItems);
+		}).catch((reason) => {
+			console.log("No ruleitems");
 		});
 	}
 

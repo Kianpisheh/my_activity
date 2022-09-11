@@ -29,11 +29,11 @@ function TimeDistanceAxiom(props) {
 	// 	props.data,
 	// 	props.onWhyNotWhatQuery,
 	// 	props.onWhyNotNumHover,
-    //     props.queryTrigger,
-    //     props.qmenuPos
+	//     props.queryTrigger,
+	//     props.qmenuPos
 	// );
 
-    // let opacity = numnum ? 0.3 : 1;
+	// let opacity = numnum ? 0.3 : 1;
 
 	return (
 		<div
@@ -54,12 +54,12 @@ function TimeDistanceAxiom(props) {
 			</div>
 			<div
 				id="vertical-line-sep"
-				style={{ borderLeft: "1px solid #A5A2A2", height: "80%", alignSelf: "center"}}
+				style={{ borderLeft: "1px solid #A5A2A2", height: "80%", alignSelf: "center" }}
 			></div>
-			<div className="temp-adj-limits2" >
-				<span style={{ display: "flex", flexDirection: "row"}}>
-					<p style={{ width: 110,  }}>
-						at least <span style={{ fontWeight: 600}}>{props.data.getTh1()}</span> sec later{" "}
+			<div className="temp-adj-limits2">
+				<span style={{ display: "flex", flexDirection: "row" }}>
+					<p style={{ width: 110 }}>
+						at least <span style={{ fontWeight: 600 }}>{props.data.getTh1()}</span> sec later{" "}
 					</p>
 					<AdjustableTime
 						key={"more than"}
@@ -93,12 +93,12 @@ function TimeDistanceAxiom(props) {
 				)}
 			</div>
 			{!props.whyQueryMode}
-			{props.whyQueryMode && (props.queryTrigger !== "") && (
+			{props.whyQueryMode && props.queryTrigger !== "" && (
 				<QMark
 					onWhyWhatQuery={props.onWhyWhatQuery}
 					instances={props.activityInstances}
 					axiom={props.data}
-                    selectedIdx={props.selectedInstancesIdx["FP"]}
+					selectedIdx={props.selectedInstancesIdx["FP"]}
 				></QMark>
 			)}
 		</div>
@@ -106,3 +106,13 @@ function TimeDistanceAxiom(props) {
 }
 
 export default TimeDistanceAxiom;
+
+export function getStartIdx(axioms, axiomType) {
+	for (let i = 0; i < axioms.length; i++) {
+		const axType = axioms[i].getType();
+		if (axType === axiomType) {
+			return i;
+		}
+	}
+	return null;
+}
