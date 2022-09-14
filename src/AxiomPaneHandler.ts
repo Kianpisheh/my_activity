@@ -12,10 +12,7 @@ function handleAxiomPaneMessages(
 ) {
 	let newActivities = [...activities];
 
-	if (message === AxiomTypes.MSG_CREATE_NEW_AXIOM) {
-		let newAxioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
-		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
-	} else if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
+	if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
 		let newAxioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
 		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 	} else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
@@ -63,10 +60,6 @@ function handleAxiomPaneMessages(
 		} else {
 			return null;
 		}
-	} else if (message === AxiomTypes.MSG_INTERACTION_OR_AXIOM_CREATION) {
-		let currActivity = currentActivity;
-		currActivity.addEventOR(Array.from(values.selectedEvents));
-		newActivities[currentActivtyIdx] = currActivity;
 	} else if (message === AxiomTypes.MSG_TIME_DISTANCE_AXIOM_FLIP_EVENTS) {
 		let axioms = currentActivity.getAxioms();
 		axioms[values["idx"]].flipEvents();

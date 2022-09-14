@@ -174,11 +174,15 @@ class Activity {
 			}
 		});
 
+		// remove OR Interaction events from regular events
+		newEvents = newEvents.filter((newEv) => !newEventORList.flat().includes(newEv));
+
 		let newEventsSet = new Set(newEvents);
 		let newExcludedEventsSet = new Set(newExcludedEvents);
+
 		this.events = Array.from(newEventsSet);
 		this.excludedEvents = Array.from(newExcludedEventsSet);
-		this.eventORList = Array.from(newEventORList);
+		this.eventORList = [...newEventORList];
 		this.constraints = [...newConstraints];
 	}
 

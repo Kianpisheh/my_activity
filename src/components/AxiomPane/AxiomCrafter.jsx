@@ -19,8 +19,9 @@ function AxiomCrafter(props) {
 		axiomType = AxiomTypes.TYPE_INTERACTION;
 	} else if (props.ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 		axiomType = AxiomTypes.TYPE_INTERACTION_NEGATION;
+	} else if (props.ruleType === AxiomTypes.TYPE_OR_INTERACTION) {
+		axiomType = AxiomTypes.TYPE_OR_INTERACTION;
 	}
-
 	if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
 		axiomType = selectedItems.length > 1 ? AxiomTypes.TYPE_TIME_DISTANCE : AxiomTypes.TYPE_DURATION;
 	}
@@ -73,14 +74,20 @@ function AxiomCrafter(props) {
 			<div id="axiom-done-btn-div">
 				<button
 					id="axiom-crafter-done-btn"
-					onClick={() =>
+					onClick={() => {
+						if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
+							if (selectedItems.length < 2) {
+								props.handleAxiomCreation(null);
+								return;
+							}
+						}
 						props.handleAxiomCreation({
 							events: selectedItems,
 							type: axiomType,
 							th1: initialTh1,
 							th2: initialTh2,
-						})
-					}
+						});
+					}}
 				>
 					Done
 				</button>

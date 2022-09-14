@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import AxiomManager from "../../model/AxiomManager";
 import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
@@ -22,12 +22,14 @@ function ActivityAxiomPane(props) {
 
 	function handleAxiomCreation(data) {
 		setDefiningRule("");
-		setRuleType(data.type);
-		props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+		if (data) {
+			setRuleType(data.type);
+			props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+		}
 	}
 
 	let objectList = [];
-	if (ruleType === AxiomTypes.TYPE_INTERACTION) {
+	if (ruleType === AxiomTypes.TYPE_INTERACTION || ruleType === AxiomTypes.TYPE_OR_INTERACTION) {
 		objectList = [...Icons.getEventList()];
 	} else if (ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 		objectList = [...Icons.getEventList()].filter((item) => !axioms?.[0]?.getEvents()?.includes(item));
@@ -218,33 +220,61 @@ function ActivityAxiomPane(props) {
 							</button>
 						</div>
 					</div>
-					{interactionORAxStartIdx && (
-						<div className="negation-interaction-axioms-container">
-							{axioms.slice(interactionORAxStartIdx, temporalAxStartIdx).map((axiom, idx) => (
-								<Axiom
-									idx={idx + interactionORAxStartIdx}
-									key={idx + interactionORAxStartIdx}
-									data={axiom}
-									config={props.config}
-									messageCallback={props.sendMessage}
-									onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-									onWhyWhatQuery={props.onWhyWhatQuery}
-									activityInstances={props.activityInstances}
-									onWhyNotNumHover={props.onWhyNotNumHover}
-									classificationResult={props.classificationResult}
-									activity={props.activity}
-									selectedInstancesIdx={props.selectedInstancesIdx}
-									onWhyNotHowTo={props.onWhyNotHowTo}
-									stats={props.whyNotWhat}
-									whyQueryMode={props.whyQueryMode}
-									onWhyHowToQuery={props.onWhyHowToQuery}
-									ruleitems={props.ruleitems}
-									onQuestionMenu={props.onQuestionMenu}
-									queryTrigger={props.queryTrigger}
-								></Axiom>
-							))}
-						</div>
-					)}
+					{interactionORAxStartIdx &&
+						axioms.slice(interactionORAxStartIdx, temporalAxStartIdx).map((axiom, idx) => (
+							<React.Fragment>
+								<div className="OR-interaction-axioms-container">
+									<Axiom
+										idx={idx + interactionORAxStartIdx}
+										key={idx + interactionORAxStartIdx}
+										data={axiom}
+										config={props.config}
+										messageCallback={props.sendMessage}
+										onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+										onWhyWhatQuery={props.onWhyWhatQuery}
+										activityInstances={props.activityInstances}
+										onWhyNotNumHover={props.onWhyNotNumHover}
+										classificationResult={props.classificationResult}
+										activity={props.activity}
+										selectedInstancesIdx={props.selectedInstancesIdx}
+										onWhyNotHowTo={props.onWhyNotHowTo}
+										stats={props.whyNotWhat}
+										whyQueryMode={props.whyQueryMode}
+										onWhyHowToQuery={props.onWhyHowToQuery}
+										ruleitems={props.ruleitems}
+										onQuestionMenu={props.onQuestionMenu}
+										queryTrigger={props.queryTrigger}
+									></Axiom>
+								</div>
+								<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
+								<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
+									<span className="sub-section-title" style={{ width: 160 }}>
+										At least one of the follwoing
+									</span>
+									<div style={{ display: "flex", marginLeft: 10 }}>
+										<button
+											className="add-int-btn"
+											onClick={() => {
+												setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
+												setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+											}}
+										>
+											+
+										</button>
+									</div>
+								</div>
+							</React.Fragment>
+						))}
+					<div className="axiom-crafter-container">
+						{definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+							<AxiomCrafter
+								config={props.config}
+								objects={objectList}
+								handleAxiomCreation={handleAxiomCreation}
+								ruleType={ruleType}
+							></AxiomCrafter>
+						)}
+					</div>
 					{/* ------------------Temporal Axioms---------------- */}
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>

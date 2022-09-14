@@ -34,6 +34,15 @@
 	max-height: 450px;
 }
 
+.OR-interaction-axioms-container {
+	align-items: center;
+	border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+	justify-content: flex-start;
+}
+
 .Axiom-pane {
 	display: flex;
 	flex-direction: column;
