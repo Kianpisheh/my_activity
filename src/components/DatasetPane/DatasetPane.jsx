@@ -16,6 +16,7 @@ function DatasetPane(props) {
 					}
 					return (
 						<div
+							key={d}
 							id="dataset-list-item"
 							className="list-item"
 							style={style}

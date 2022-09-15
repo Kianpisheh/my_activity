@@ -27,6 +27,8 @@ function AxiomCrafter(props) {
 	}
 
 	props.objects.sort();
+	console.log(props?.axiom?.getEvents());
+	console.log(props.idx);
 	return (
 		<div id="ax-crafter-container">
 			<div id="ax-crafter-header">

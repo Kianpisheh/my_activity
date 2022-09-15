@@ -1,3 +1,4 @@
+import isEqual from "lodash.isequal";
 import ActivityInstance from "./ActivityInstance";
 import AxiomData from "./AxiomData";
 import AxiomTypes from "./AxiomTypes";
@@ -154,6 +155,14 @@ class Activity {
 		return axioms;
 	}
 
+	hasNegation() {
+		return this.excludedEvents.length > 0;
+	}
+
+	hasORInteraction() {
+		return this.eventORList.length > 0;
+	}
+
 	updateAxioms(newAxioms: AxiomData[]) {
 		let newEvents: string[] = [];
 		let newExcludedEvents: string[] = [];
@@ -177,13 +186,81 @@ class Activity {
 		// remove OR Interaction events from regular events
 		newEvents = newEvents.filter((newEv) => !newEventORList.flat().includes(newEv));
 
+		// removing redundant axioms
 		let newEventsSet = new Set(newEvents);
 		let newExcludedEventsSet = new Set(newExcludedEvents);
+		newEventORList = this.removeRedundantOREvents(newEventORList);
 
 		this.events = Array.from(newEventsSet);
 		this.excludedEvents = Array.from(newExcludedEventsSet);
 		this.eventORList = [...newEventORList];
 		this.constraints = [...newConstraints];
+	}
+
+	getStartIdx(axiomType: string) {
+		if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
+			if (this.eventORList.length) {
+				return 1 + Number(this.excludedEvents.length > 0);
+			}
+		} else if (axiomType === AxiomTypes.TYPE_TEMPORAL) {
+			if (this.constraints.length) {
+				return 1 + Number(this.excludedEvents.length > 0) + this.eventORList.length;
+			}
+		}
+
+		return null;
+	}
+
+	getLastIdx(axiomType: string) {
+		if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
+			return 1 + Number(this.excludedEvents.length > 0) + this.eventORList.length;
+		} else if (axiomType === AxiomTypes.TYPE_TEMPORAL) {
+			return 1 + Number(this.excludedEvents.length > 0) + this.eventORList.length + this.constraints.length;
+		}
+	}
+
+	private removeRedundantOREvents(eventsList: string[][]) {
+		let newEventsList: string[][] = [];
+		for (let i = 0; i < eventsList.length; i++) {
+			let unique = true;
+			let candidates = [];
+			for (let j = i + 1; j < eventsList.length; j++) {
+				if (this.subSetEither(eventsList[i], eventsList[j])) {
+					unique = false;
+					if (eventsList[i].length >= eventsList[j].length) {
+						candidates.push(eventsList[i]);
+					} else {
+						candidates.push(eventsList[j]);
+					}
+				}
+			}
+			if (unique) {
+				newEventsList.push(eventsList[i]);
+			} else {
+				// take the largest set
+				let idx = 0;
+				let maxL = 2;
+				let i = 0;
+				for (const evs of candidates) {
+					if (evs.length > maxL) {
+						idx = i;
+						maxL = evs.length;
+					}
+					i += 1;
+				}
+				newEventsList.push(candidates[idx]);
+			}
+		}
+
+		return newEventsList;
+	}
+
+	private subSetEither(arr1: any, arr2: any) {
+		let intersect = new Set([...arr1].filter((i) => arr2.includes(i)));
+		if (intersect.size === arr1.length || intersect.size === arr2.length) {
+			return true;
+		}
+		return false;
 	}
 
 	// static methods

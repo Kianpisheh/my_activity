@@ -27,6 +27,7 @@ function ResultsPanel(props) {
 		allFPs.push(...props.classificationResult[act]["FP"]["all"]);
 	}
 	let allClassesResults = [];
+	let i = 0;
 	for (const [activity, classificationResult] of Object.entries(props.classificationResult)) {
 		const { FP, FN, TP, N, TN } = classificationResult;
 
@@ -46,6 +47,7 @@ function ResultsPanel(props) {
 					newFPsLabel: newFPsLabel,
 					newTPs: newTPs[activity],
 					queryMode: props.queryMode,
+					key: i + "TPFN",
 				},
 				"TPFN",
 				rectSize,
@@ -56,16 +58,13 @@ function ResultsPanel(props) {
 			)
 		);
 
-		if (activity === "Coffee_time") {
-			let y = 1;
-		}
-
 		for (const act in newFPs) {
 			if (act !== activity && !(act in FP) && newFPs[activity].some((idx) => instances[idx].getType() === act)) {
 				FP[act] = [];
 			}
 		}
 		if (FP) {
+			let j = 0;
 			for (const [activityName, fp] of Object.entries(FP)) {
 				if (activityName === "all") {
 					continue;
@@ -78,6 +77,7 @@ function ResultsPanel(props) {
 							newFPsLabel: newFPsLabel,
 							queryMode: props.queryMode,
 							fpActivity: activityName,
+							key: i + "FP" + j,
 						},
 						"FP",
 						rectSize,
@@ -87,13 +87,15 @@ function ResultsPanel(props) {
 						activity
 					)
 				);
+				j += 1;
 			}
 		}
 		allClassesResults[activity] = results;
+		i += 1;
 	}
 
 	return (
-		<div className="result-container">
+		<div key={"asd"} className="result-container">
 			<div id="recog-section-title">
 				<span key={"res_title"} className="section-title">
 					Recognition result
@@ -101,8 +103,9 @@ function ResultsPanel(props) {
 			</div>
 			{Object.keys(allClassesResults).map((activity, idx) => {
 				return (
-					<div className="class-results-container">
+					<div key={idx + "ress"} className="class-results-container">
 						<span
+							key={idx + "spann"}
 							style={{ paddingLeft: 15, fontSize: 14, paddingBottom: 10, color: "var(--list-item-text)" }}
 						>
 							{activity}

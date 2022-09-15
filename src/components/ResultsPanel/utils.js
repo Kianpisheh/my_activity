@@ -13,7 +13,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 	}
 
 	return (
-		<div>
+		<div key={data["key"]}>
 			<span style={{ fontSize: 13, color: "var(--list-item-text)" }}>{data["fpActivity"]}</span>
 			<div className="results-rects-container">
 				{res.map((r, idx) => {

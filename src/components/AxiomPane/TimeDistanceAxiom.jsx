@@ -106,13 +106,3 @@ function TimeDistanceAxiom(props) {
 }
 
 export default TimeDistanceAxiom;
-
-export function getStartIdx(axioms, axiomType) {
-	for (let i = 0; i < axioms.length; i++) {
-		const axType = axioms[i].getType();
-		if (axType === axiomType) {
-			return i;
-		}
-	}
-	return null;
-}

@@ -9,11 +9,10 @@ import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 import Icons from "../../icons/Icons";
 
-import { getStartIdx } from "./TimeDistanceAxiom";
-
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
 	const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
+	const [ORIdx, setORIdx] = useState(null);
 
 	let axioms = [];
 	if (props.activity != null) {
@@ -25,6 +24,7 @@ function ActivityAxiomPane(props) {
 		if (data) {
 			setRuleType(data.type);
 			props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+			setORIdx(null);
 		}
 	}
 
@@ -37,14 +37,9 @@ function ActivityAxiomPane(props) {
 		objectList = AxiomManager.findInteractionObjects([...axioms]);
 	}
 
-	let temporalAxStartIdx = Math.min(
-		getStartIdx(axioms, AxiomTypes.TYPE_TIME_DISTANCE) ?? 1000,
-		getStartIdx(axioms, AxiomTypes.TYPE_DURATION) ?? 1000
-	);
-	if (temporalAxStartIdx === 0) {
-		temporalAxStartIdx = axioms.length;
-	}
-	const interactionORAxStartIdx = getStartIdx(axioms, AxiomTypes.TYPE_OR_INTERACTION);
+	const interactionORAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_OR_INTERACTION);
+	const interactionORAxLastIdx = props.activity.getLastIdx(AxiomTypes.TYPE_OR_INTERACTION);
+	const temporalAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_TEMPORAL);
 
 	return (
 		<div className="ax-container">
@@ -214,6 +209,7 @@ function ActivityAxiomPane(props) {
 								onClick={() => {
 									setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
 									setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+									setORIdx(props.activity.excludedEvents.length ? 2 : 1);
 								}}
 							>
 								+
@@ -221,7 +217,7 @@ function ActivityAxiomPane(props) {
 						</div>
 					</div>
 					{interactionORAxStartIdx &&
-						axioms.slice(interactionORAxStartIdx, temporalAxStartIdx).map((axiom, idx) => (
+						axioms.slice(interactionORAxStartIdx, interactionORAxLastIdx).map((axiom, idx) => (
 							<React.Fragment>
 								<div className="OR-interaction-axioms-container">
 									<Axiom
@@ -246,8 +242,29 @@ function ActivityAxiomPane(props) {
 										queryTrigger={props.queryTrigger}
 									></Axiom>
 								</div>
+								<div key={idx + "craft"} className="axiom-crafter-container">
+									{ORIdx === idx + (props.activity.hasNegation() ? 2 : 1) &&
+										definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+											<AxiomCrafter
+												key={idx + "craft"}
+												config={props.config}
+												objects={objectList}
+												handleAxiomCreation={handleAxiomCreation}
+												ruleType={ruleType}
+												axiom={axiom}
+												idx={idx}
+											></AxiomCrafter>
+										)}
+								</div>
 								<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
-								<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
+								<div
+									style={{
+										display: "flex",
+										width: "100%",
+										alignContent: "center",
+										height: "30px",
+									}}
+								>
 									<span className="sub-section-title" style={{ width: 160 }}>
 										At least one of the follwoing
 									</span>
@@ -257,6 +274,7 @@ function ActivityAxiomPane(props) {
 											onClick={() => {
 												setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
 												setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+												setORIdx(idx + interactionORAxStartIdx + 1);
 											}}
 										>
 											+
@@ -265,16 +283,17 @@ function ActivityAxiomPane(props) {
 								</div>
 							</React.Fragment>
 						))}
-					<div className="axiom-crafter-container">
-						{definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+					{ORIdx === interactionORAxLastIdx && definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+						<div key={777 + "craft"} className="axiom-crafter-container">
 							<AxiomCrafter
 								config={props.config}
 								objects={objectList}
 								handleAxiomCreation={handleAxiomCreation}
 								ruleType={ruleType}
 							></AxiomCrafter>
-						)}
-					</div>
+						</div>
+					)}
+
 					{/* ------------------Temporal Axioms---------------- */}
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
 					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
@@ -298,7 +317,7 @@ function ActivityAxiomPane(props) {
 							{axioms.slice(temporalAxStartIdx).map((axiom, idx) => (
 								<Axiom
 									idx={idx + temporalAxStartIdx}
-									key={idx + temporalAxStartIdx}
+									key={idx + temporalAxStartIdx + 1}
 									data={axiom}
 									config={props.config}
 									messageCallback={props.sendMessage}

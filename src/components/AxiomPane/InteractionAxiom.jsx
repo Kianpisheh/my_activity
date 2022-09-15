@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 
 import "./InteractionAxiom.css";
 
@@ -29,7 +29,7 @@ function InteractionAxiom(props) {
 	}
 
 	// check if each interaction is an unsatisfied axiom based on the user query
-    let numnum = {}; // event -> num
+	let numnum = {}; // event -> num
 	// for (const [axString, indeces] of Object.entries(props.unsatisfiedAxioms)) {
 	// 	const axType = axString.split(":")[0];
 	// 	if (axType === AxiomTypes.TYPE_INTERACTION) {
@@ -42,11 +42,12 @@ function InteractionAxiom(props) {
 	for (let i = 0; i < events.length; i++) {
 		const Icon = Icons.getIcon(pascalCase(events[i]), true);
 
-        // adjust the opacity if it is an unsatisfied axiom
-        let opacity  = numnum[events[i]] ? 0.3 : 1;
-		
+		// adjust the opacity if it is an unsatisfied axiom
+		let opacity = numnum[events[i]] ? 0.3 : 1;
+
 		interactionIcons.push(
 			<div
+				key={i}
 				className="rem-object-btn-div"
 				onMouseEnter={() => setObjectedHovered(i)}
 				onMouseLeave={() => setObjectedHovered(-1)}
@@ -60,7 +61,7 @@ function InteractionAxiom(props) {
 						padding: 2,
 						border: selected.has(events[i]) && "2px solid #4DB49C",
 					}}
-                    opacity = {opacity}
+					opacity={opacity}
 					onClick={(clickEvent) =>
 						setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
 					}
@@ -79,22 +80,34 @@ function InteractionAxiom(props) {
 						X
 					</button>
 				)}
-				{numnum[events[i]] && (props.queryTrigger !== "") && <div
-					id="why-not-num-container"
-					onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
-					onMouseLeave={() => props.onWhyNotNumHover([])}
-                    onClick={(ev) => { 
-                        ev.stopPropagation();
-                        let unsatisfiedAxiom = new AxiomData({type:AxiomTypes.TYPE_INTERACTION, th1:-1, th2:-1, events: [events[i]]})
-                        if (props.qmenuPos[0] > 0) {
-                            props.onWhyNotWhatQuery(-1,-1, unsatisfiedAxiom, QueryTrigger.WHY_NOT);
-                        } else {
-                            props.onWhyNotWhatQuery(ev.pageX, ev.pageY, unsatisfiedAxiom, QueryTrigger.WHY_NOT_WHAT);
-                        }
-                        }
-                    }>
-					    {numnum[events[i]] && CircleNum(numnum[events[i]].length)}
-				</div>}
+				{numnum[events[i]] && props.queryTrigger !== "" && (
+					<div
+						id="why-not-num-container"
+						onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
+						onMouseLeave={() => props.onWhyNotNumHover([])}
+						onClick={(ev) => {
+							ev.stopPropagation();
+							let unsatisfiedAxiom = new AxiomData({
+								type: AxiomTypes.TYPE_INTERACTION,
+								th1: -1,
+								th2: -1,
+								events: [events[i]],
+							});
+							if (props.qmenuPos[0] > 0) {
+								props.onWhyNotWhatQuery(-1, -1, unsatisfiedAxiom, QueryTrigger.WHY_NOT);
+							} else {
+								props.onWhyNotWhatQuery(
+									ev.pageX,
+									ev.pageY,
+									unsatisfiedAxiom,
+									QueryTrigger.WHY_NOT_WHAT
+								);
+							}
+						}}
+					>
+						{numnum[events[i]] && CircleNum(numnum[events[i]].length)}
+					</div>
+				)}
 			</div>
 		);
 	}
@@ -115,7 +128,7 @@ function InteractionAxiom(props) {
 					className="rem-btn"
 					style={{ width: "0%", marginTop: "14px" }}
 				>
-					{(hovered && !props.whyQueryMode) &&(
+					{hovered && !props.whyQueryMode && (
 						<button
 							className="remove-axiom-btn"
 							onClick={() => {
@@ -128,20 +141,20 @@ function InteractionAxiom(props) {
 							X
 						</button>
 					)}
-                    {props.whyQueryMode && (
-				(props.queryTrigger !== "") && <QMark
-                    ruleitems={props.ruleitems}
-                    activity={props.activity}
-                    classificationResult={props.classificationResult}
-					onWhyWhatQuery={props.onWhyWhatQuery}
-					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyHowToQuery={props.onWhyHowToQuery}
-					instances={props.activityInstances}
-					axiom={props.data}
-                    selectedIdx={props.selectedInstancesIdx["FP"]}
-                    qmenuPos={props.qmenuPos}
-				></QMark>
-			)}
+					{props.whyQueryMode && props.queryTrigger !== "" && (
+						<QMark
+							ruleitems={props.ruleitems}
+							activity={props.activity}
+							classificationResult={props.classificationResult}
+							onWhyWhatQuery={props.onWhyWhatQuery}
+							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+							onWhyHowToQuery={props.onWhyHowToQuery}
+							instances={props.activityInstances}
+							axiom={props.data}
+							selectedIdx={props.selectedInstancesIdx["FP"]}
+							qmenuPos={props.qmenuPos}
+						></QMark>
+					)}
 				</div>
 			</div>
 		</div>

@@ -153,6 +153,7 @@ function InteractionNegationAxiom(props) {
 				>
 					{hovered && !props.whyQueryMode && (
 						<button
+							key={0}
 							className="remove-axiom-btn"
 							onClick={() => {
 								props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, {

@@ -131,6 +131,7 @@ function EventIconThumb(props) {
 					const tooltip = (
 						<Tooltip
 							key={idx + "_tt"}
+							idx={idx}
 							x={props.iconX[idx].x1 + ic_w / 2}
 							y={props.iconY[idx] - 5}
 							text={props.iconEvents[idx].getType()}
@@ -148,11 +149,11 @@ function EventIconThumb(props) {
 					);
 
 					let highlight = false;
-                    if (props.selectedInstanceEvents) {
-                        if (props.selectedInstanceEvents[pascalCase(props.iconEvents[idx].getType())] === idx) {
-                            highlight = true;
-                        }
-                    }
+					if (props.selectedInstanceEvents) {
+						if (props.selectedInstanceEvents[pascalCase(props.iconEvents[idx].getType())] === idx) {
+							highlight = true;
+						}
+					}
 
 					return (
 						<g key={idx + "_g2"}>
