@@ -168,6 +168,7 @@ class Activity {
 			const axType = axiom["type"];
 			if (axType === AxiomTypes.TYPE_INTERACTION) {
 				newEvents = newEvents.concat(axiom["events"]);
+				newEvents = newEvents.filter((ev) => !ev.includes("EventGroup"));
 			} else if (axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 				newExcludedEvents = newExcludedEvents.concat(axiom["events"]);
 			} else if (axType === AxiomTypes.TYPE_OR_INTERACTION) {

@@ -28,6 +28,10 @@ class Constraint {
 	getTh1() {
 		return this.th1;
 	}
+
+	getOpSize() {
+		return this.opSize;
+	}
 }
 
 export default Constraint;
