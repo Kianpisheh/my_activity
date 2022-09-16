@@ -5,9 +5,7 @@ import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
 
 function AxiomCrafter(props) {
-	const [selectedItems, setSelectedItems] = useState([]);
-
-	console.log(selectedItems);
+	const [selectedItems, setSelectedItems] = useState(props?.axiom?.getEvents() ?? []);
 
 	let initialTh1 = null;
 	let initialTh2 = null;
