@@ -5,6 +5,18 @@
 	height: 65px;
 }
 
+.icon-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.duration-adj-icons {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
 .time-axiom-main-content-2 {
 	display: flex;
 	flex-direction: column;

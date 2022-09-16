@@ -1,4 +1,3 @@
-import isEqual from "lodash.isequal";
 import ActivityInstance from "./ActivityInstance";
 import AxiomData from "./AxiomData";
 import AxiomTypes from "./AxiomTypes";
@@ -19,7 +18,7 @@ class Activity {
 	excludedEvents: string[];
 	constraints: Constraint[];
 	id: number;
-	eventORList: string[][]; // [[e1,e4]. [e2, e5]] list of list of strings
+	eventORList: string[][];
 
 	constructor(activityObj: IActivityObj) {
 		this.name = activityObj["name"];
@@ -135,20 +134,16 @@ class Activity {
 
 		// temporal axioms
 		this.constraints.forEach((constraint) => {
-			let numEvents = constraint["events"].length;
-			let axiomType = "";
-			if (numEvents === 1) {
-				axiomType = AxiomTypes.TYPE_DURATION;
-			} else if (numEvents === 2) {
-				axiomType = AxiomTypes.TYPE_TIME_DISTANCE;
-			}
 			axioms.push(
-				new AxiomData({
-					events: constraint["events"],
-					type: axiomType,
-					th1: constraint["th1"],
-					th2: constraint["th2"],
-				})
+				new AxiomData(
+					{
+						events: constraint["events"],
+						type: constraint["type"],
+						th1: constraint["th1"],
+						th2: constraint["th2"],
+					},
+					constraint.opSize
+				)
 			);
 		});
 
@@ -177,8 +172,17 @@ class Activity {
 				newExcludedEvents = newExcludedEvents.concat(axiom["events"]);
 			} else if (axType === AxiomTypes.TYPE_OR_INTERACTION) {
 				newEventORList.push(axiom["events"]);
-			} else if (axiom["type"] === AxiomTypes.TYPE_DURATION || axiom["type"] === AxiomTypes.TYPE_TIME_DISTANCE) {
-				let constraint = new Constraint(axiom["events"], axiom["th1"], axiom["th2"], axiom["type"]);
+			} else if (
+				axiom["type"].includes(AxiomTypes.TYPE_DURATION) ||
+				axiom["type"].includes(AxiomTypes.TYPE_TIME_DISTANCE)
+			) {
+				let constraint = new Constraint(
+					axiom["events"],
+					axiom["th1"],
+					axiom["th2"],
+					axiom["type"],
+					axiom["opSize"]
+				);
 				newConstraints.push(constraint);
 			}
 		});

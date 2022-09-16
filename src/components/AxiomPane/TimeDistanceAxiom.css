@@ -37,6 +37,12 @@
 	align-items: center;
 }
 
+.icon-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .temp-adj-limits2 {
 	display: flex;
 	flex-direction: column;

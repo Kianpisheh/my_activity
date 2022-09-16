@@ -22,7 +22,13 @@ function ActivityAxiomPane(props) {
 	function handleAxiomCreation(data) {
 		setDefiningRule("");
 		if (data) {
-			setRuleType(data.type);
+			if (data.type.includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
+				setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
+			} else if (data.type.includes(AxiomTypes.TYPE_DURATION)) {
+				setRuleType(AxiomTypes.TYPE_DURATION);
+			} else {
+				setRuleType(data.type);
+			}
 			props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
 			setORIdx(null);
 		}
@@ -34,7 +40,7 @@ function ActivityAxiomPane(props) {
 	} else if (ruleType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
 		objectList = [...Icons.getEventList()].filter((item) => !axioms?.[0]?.getEvents()?.includes(item));
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
-		objectList = AxiomManager.findInteractionObjects([...axioms]);
+		objectList = AxiomManager.findInteractionObjects(axioms);
 	}
 
 	const interactionORAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_OR_INTERACTION);

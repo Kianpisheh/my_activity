@@ -97,7 +97,7 @@ function Axiom(props) {
 				qmenuPos={props.qmenuPos}
 			></InteractionORAxiom>
 		);
-	} else if (axiomType === AxiomTypes.TYPE_TIME_DISTANCE) {
+	} else if (axiomType.includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
 		axiomComponent = (
 			<TimeDistanceAxiom
 				idx={props.idx}
@@ -117,7 +117,7 @@ function Axiom(props) {
 				qmenuPos={props.qmenuPos}
 			></TimeDistanceAxiom>
 		);
-	} else if (axiomType === AxiomTypes.TYPE_DURATION) {
+	} else if (axiomType.includes(AxiomTypes.TYPE_DURATION)) {
 		axiomComponent = (
 			<DurationAxiom
 				idx={props.idx}

@@ -6,7 +6,7 @@ import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/Icons";
-import { getWhyNotNum, QMark } from "./Axiom";
+import { QMark } from "./Axiom";
 
 function TimeDistanceAxiom(props) {
 	const [hovered, setHovered] = useState(false);
@@ -19,8 +19,34 @@ function TimeDistanceAxiom(props) {
 		return;
 	}
 
-	const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
-	const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
+	let icons1 = [];
+	let icons2 = [];
+	const opSize = props.data.getOpSize();
+	let iconSize = [25 + 15 * (opSize[0] - 1), 25 + 15 * (opSize[1] - 1)];
+
+	if (props.data.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
+		const Icon1 = Icons.getIcon(pascalCase(events[0]), true);
+		icons1 = [<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon1>];
+		const Icon2 = Icons.getIcon(pascalCase(events[1]), true);
+		icons2 = [<Icon2 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon2>];
+	} else if (props.data.getType() === AxiomTypes.TYPE_OR_TIME_DISTANCE) {
+		const evNum = props.data.getOpSize();
+		for (let i = 0; i < events.length; i++) {
+			const Icon1 = Icons.getIcon(pascalCase(events[i]), true);
+			if (i < evNum[0]) {
+				icons1.push(<Icon1 style={{ fill: "#3A2A0D", width: iconSize[0], height: iconSize[1] }}></Icon1>);
+				if (i < evNum[0] - 1) {
+					icons1.push(<p style={{ fontSize: 9 }}>OR</p>);
+				}
+			} else {
+				icons2.push(<Icon1 style={{ fill: "#3A2A0D", width: iconSize[0], height: iconSize[1] }}></Icon1>);
+				if (i < evNum[0] + evNum[1] - 1) {
+					icons2.push(<p style={{ fontSize: 9 }}>OR</p>);
+				}
+			}
+		}
+	}
+
 	const TimeDistIcon = Icons.getIcon("TimeDistance2");
 
 	// check if this is an unsatisfied axiom based on the user query
@@ -42,14 +68,20 @@ function TimeDistanceAxiom(props) {
 			onMouseLeave={() => setHovered(false)}
 		>
 			<div className="temp-adj-icons">
-				<div className="icon-container">
-					<Icon1 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon1>
+				<div
+					className="icon-container"
+					style={{ width: 30 * (opSize[0] - 1) + 25, height: 30 * (opSize[0] - 1) + 25 }}
+				>
+					{icons1}
 				</div>
 				<div className="icon-container" style={{ width: 100, height: 25 }}>
 					<TimeDistIcon style={{ fill: "#807457", width: 100, height: 25 }}></TimeDistIcon>
 				</div>
-				<div className="icon-container" style={{ width: 25, height: 25 }}>
-					<Icon2 style={{ fill: "#3A2A0D", width: 25, height: 25 }}></Icon2>
+				<div
+					className="icon-container"
+					style={{ width: 30 * (opSize[1] - 1) + 25, height: 30 * (opSize[1] - 1) + 25 }}
+				>
+					{icons2}
 				</div>
 			</div>
 			<div

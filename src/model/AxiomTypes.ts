@@ -5,6 +5,8 @@ export default {
 	TYPE_DURATION: "duration",
 	TYPE_OR_INTERACTION: "interaction-or",
 	TYPE_TEMPORAL: "temporal",
+	TYPE_OR_DURATION: "or_duration",
+	TYPE_OR_TIME_DISTANCE: "or_time_distance",
 	MSG_AXIOM_CREATION_DONE: "axiom-creation-done",
 	MSG_CREATE_NEW_AXIOM: "create-new-axiom",
 	MSG_TIME_CONSTRAINT_UPDATED: "time-constraint-updated",

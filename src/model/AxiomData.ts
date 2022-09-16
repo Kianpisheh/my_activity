@@ -12,12 +12,14 @@ class AxiomData {
 	type: string;
 	th1: number;
 	th2: number;
+	opSize: number[]; // size=2; events=[[2,1], 4] -> opSize=[2,1]
 
-	constructor(axiom: IAxiom) {
+	constructor(axiom: IAxiom, opSize: number[] = []) {
 		this.events = axiom["events"];
 		this.type = axiom["type"];
 		this.th1 = axiom["th1"];
 		this.th2 = axiom["th2"];
+		this.opSize = [...opSize];
 	}
 
 	getType() {
@@ -38,8 +40,16 @@ class AxiomData {
 		return this.events;
 	}
 
+	getOpSize() {
+		return this.opSize;
+	}
+
 	setEvents(evs: string[]) {
 		this.events = [...evs];
+	}
+
+	setOpSize(sizes: number[]) {
+		this.opSize = [...sizes];
 	}
 
 	removeEvent(eventType: string) {

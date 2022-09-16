@@ -7,6 +7,8 @@ import Icons from "../../icons/Icons";
 function AxiomCrafter(props) {
 	const [selectedItems, setSelectedItems] = useState([]);
 
+	console.log(selectedItems);
+
 	let initialTh1 = null;
 	let initialTh2 = null;
 	if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
@@ -23,12 +25,16 @@ function AxiomCrafter(props) {
 		axiomType = AxiomTypes.TYPE_OR_INTERACTION;
 	}
 	if (props.ruleType === AxiomTypes.TYPE_TEMPORAL) {
-		axiomType = selectedItems.length > 1 ? AxiomTypes.TYPE_TIME_DISTANCE : AxiomTypes.TYPE_DURATION;
+		if (selectedItems.length === 1) {
+			axiomType = !selectedItems[0].includes("/") ? AxiomTypes.TYPE_DURATION : AxiomTypes.TYPE_OR_DURATION;
+		} else if (selectedItems.length === 2) {
+			axiomType =
+				selectedItems[0].includes("/") || selectedItems[1].includes("/")
+					? AxiomTypes.TYPE_OR_TIME_DISTANCE
+					: AxiomTypes.TYPE_TIME_DISTANCE;
+		}
 	}
 
-	props.objects.sort();
-	console.log(props?.axiom?.getEvents());
-	console.log(props.idx);
 	return (
 		<div id="ax-crafter-container">
 			<div id="ax-crafter-header">

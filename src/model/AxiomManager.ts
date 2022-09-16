@@ -8,33 +8,48 @@ interface IProps {
 class AxiomManager {
 	static createAxiom(current_axioms: AxiomData[], props: IProps) {
 		let newAxioms = [...current_axioms];
+		let opSize: number[] = [];
 
-		newAxioms.push(
-			new AxiomData({
-				events: props["events"],
+		// handle temporal-OR axioms
+		let isTemporal =
+			props["type"] === AxiomTypes.TYPE_OR_TIME_DISTANCE || props["type"] === AxiomTypes.TYPE_OR_DURATION;
+		let events: string[] = [];
+		if (isTemporal) {
+			for (const ev of props["events"]) {
+				if (ev.includes("/")) {
+					events = events.concat(...ev.split("/"));
+					opSize.push(ev.split("/").length);
+				} else {
+					events.push(ev);
+					opSize.push(1);
+				}
+			}
+		} else {
+			events = [...props["events"]];
+		}
+
+		let axiom = new AxiomData(
+			{
+				events: events,
 				type: props["type"],
 				th1: props["th1"],
 				th2: props["th2"],
-			})
+			},
+			opSize
 		);
+
+		newAxioms.push(axiom);
 		return newAxioms;
 	}
 
 	static findInteractionObjects(axioms: AxiomData[]) {
-		let interactionAxioms: string[] = [];
-		for (let i = 0; i < axioms?.length; i++) {
-			if (axioms?.[i]?.getType() === AxiomTypes.TYPE_INTERACTION) {
-				let l = axioms?.[i]?.getEvents()?.length ?? 0;
-				for (let j = 0; j < l; j++) {
-					let e = axioms?.[i]?.getEvents()[j];
-					if (e && !interactionAxioms.includes(e)) {
-						interactionAxioms.push(e);
-					}
-				}
+		let events = [...axioms[0].getEvents()]; // interaction evs
+		for (const axiom of axioms) {
+			if (axiom.getType() === AxiomTypes.TYPE_OR_INTERACTION) {
+				events.push(axiom.getEvents().join("/"));
 			}
 		}
-
-		return interactionAxioms;
+		return events;
 	}
 
 	static updateTimeConstraint(idx: number, axioms: AxiomData[], time: number, type: string) {
