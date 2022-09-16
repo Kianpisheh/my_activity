@@ -37,8 +37,15 @@ class AxiomManager {
 			},
 			opSize
 		);
+		// check for duplicate axioms and subset
+		if (!AxiomData.isUnique(newAxioms, axiom)) {
+			return newAxioms;
+		}
 
 		newAxioms.push(axiom);
+		// check subset axiom for OR_interaction axiom
+		newAxioms = AxiomData.removeSubsetOR(newAxioms);
+
 		return newAxioms;
 	}
 

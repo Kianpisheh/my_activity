@@ -1,3 +1,4 @@
+import isEqual from "lodash.isequal";
 import AxiomTypes from "./AxiomTypes";
 
 interface IAxiom {
@@ -110,6 +111,14 @@ class AxiomData {
 		return axiom;
 	}
 
+	private subSetEither(arr1: any, arr2: any) {
+		let intersect = new Set([...arr1].filter((i) => arr2.includes(i)));
+		if (intersect.size === arr1.length || intersect.size === arr2.length) {
+			return true;
+		}
+		return false;
+	}
+
 	static destrcutAxiomFromString(axiomString: string) {
 		const axType = axiomString.split(":")[0];
 		const event1: string = axiomString.split(":")[1];
@@ -122,6 +131,72 @@ class AxiomData {
 		}
 
 		return { axType: axType, event1: event1, event2: event2, th1: th1, th2: th2 };
+	}
+
+	static isUnique(axioms: AxiomData[], axiomQ: AxiomData) {
+		for (const ax of axioms) {
+			if (ax.getType() === axiomQ.getType()) {
+				if (ax.getType().includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
+					if (isEqual(ax.getEvents(), axiomQ.getEvents())) {
+						return false;
+					}
+				}
+				if (isEqual(ax.getEvents().sort(), axiomQ.getEvents().sort())) {
+					return false;
+				}
+			}
+
+			if (isEqual(ax, axiomQ)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	static removeSubsetOR(axioms: AxiomData[]) {
+		let newAxioms: AxiomData[] = [];
+
+		for (let i = 0; i < axioms.length; i++) {
+			let ax1 = axioms[i];
+			if (ax1.getType() === AxiomTypes.TYPE_OR_INTERACTION) {
+				let subset = false;
+				let submAxiom = null;
+				let axIdx2 = 0;
+				for (let j = 0; j < newAxioms.length; j++) {
+					let ax2 = newAxioms[j];
+					if (ax2.getType() !== AxiomTypes.TYPE_OR_INTERACTION) {
+						continue;
+					}
+					let intersect = new Set([...ax1.getEvents()].filter((i) => ax2.getEvents().includes(i)));
+					if (intersect.size === ax1.getEvents().length || intersect.size === ax2.getEvents().length) {
+						subset = true;
+						axIdx2 = j;
+						submAxiom = new AxiomData(
+							{
+								events: ax2.events,
+								th1: ax2.getTh1(),
+								th2: ax2.getTh2(),
+								type: ax2.getType(),
+							},
+							ax2.opSize
+						);
+					}
+				}
+				if (subset) {
+					// replace if the new one is larger
+					if (ax1.getEvents().length > submAxiom.getEvents().length) {
+						newAxioms[axIdx2] = JSON.parse(JSON.stringify(ax1));
+					}
+				} else {
+					newAxioms.push(ax1);
+				}
+			} else {
+				newAxioms.push(ax1);
+			}
+		}
+
+		return newAxioms;
 	}
 }
 
