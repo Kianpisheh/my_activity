@@ -42,6 +42,7 @@ function ActivityAxiomPane(props) {
 	} else if (ruleType === AxiomTypes.TYPE_TEMPORAL) {
 		objectList = AxiomManager.findInteractionObjects(axioms);
 	}
+	objectList.sort();
 
 	const interactionORAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_OR_INTERACTION);
 	const interactionORAxLastIdx = props.activity.getLastIdx(AxiomTypes.TYPE_OR_INTERACTION);
