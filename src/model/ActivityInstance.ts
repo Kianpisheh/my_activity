@@ -122,7 +122,7 @@ class ActivityInstance {
 		return axiomStat;
 	}
 
-	notSatisfied(activity: Activity) {
+	findUnsatisfiedAxioms(activity: Activity) {
 		let notSatisfiedInteractionAxs: string[] = [];
 		let notSatisfiedNegationInteractionAxs: string[] = [];
 		let notSatisfiedORInteractionAxs: string[] = [];

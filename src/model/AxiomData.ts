@@ -96,12 +96,7 @@ class AxiomData {
 	}
 
 	static axiomFromString(axiomString: string) {
-		const { axType, event1, event2, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString);
-		let events: string[] = [];
-		events = [event1];
-		if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
-			events.push(event2);
-		}
+		const { axType, events, th1, th2 } = AxiomData.destrcutAxiomFromString(axiomString);
 		const axiom = new AxiomData({
 			events: events,
 			type: axType,
@@ -120,17 +115,28 @@ class AxiomData {
 	}
 
 	static destrcutAxiomFromString(axiomString: string) {
-		const axType = axiomString.split(":")[0];
-		const event1: string = axiomString.split(":")[1];
-		const event2: string = axiomString.split(":")[2];
-		let th1: number = +axiomString.split(":")[3];
-		let th2: number = +axiomString.split(":")[4]; // axType: time_distance
-		if (axType === AxiomTypes.TYPE_DURATION) {
-			th1 = +axiomString.split(":")[2];
-			th2 = +axiomString.split(":")[3];
+		const axiomParts = axiomString.split(":");
+		const axType = axiomParts[0];
+
+		let events = [];
+		let th1: number;
+		let th2: number;
+		if (axType === AxiomTypes.TYPE_INTERACTION || axType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
+			events.push(axiomParts[1]);
+		} else if (axType === AxiomTypes.TYPE_OR_INTERACTION) {
+			events = [...axiomParts.slice(1, axiomParts.length)];
+		} else if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
+			events.push(axiomParts[1]);
+			events.push(axiomParts[2]);
+			th1 = +axiomParts[3];
+			th2 = +axiomParts[4];
+		} else if (axType === AxiomTypes.TYPE_DURATION) {
+			events.push(axiomParts[1]);
+			th1 = +axiomParts[2];
+			th2 = +axiomParts[3];
 		}
 
-		return { axType: axType, event1: event1, event2: event2, th1: th1, th2: th2 };
+		return { axType: axType, events: events, th1: th1, th2: th2 };
 	}
 
 	static isUnique(axioms: AxiomData[], axiomQ: AxiomData) {

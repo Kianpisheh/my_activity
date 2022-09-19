@@ -32,7 +32,7 @@ export function getUnsatisfiedAxioms(
 	let allAxioms: { [type: string]: number[] } = {};
 	for (const FNIdx of instancesIdx) {
 		const actInstance = allActivityInstances[FNIdx];
-		const axioms = actInstance.notSatisfied(activity);
+		const axioms = actInstance.findUnsatisfiedAxioms(activity);
 		for (const ax of axioms) {
 			if (allAxioms.hasOwnProperty(ax)) {
 				allAxioms[ax].push(FNIdx);
