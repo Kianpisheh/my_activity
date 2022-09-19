@@ -6,7 +6,7 @@ import "./EventIconThumb.css";
 import Shadow from "./Shadow";
 import Tooltip from "./Tooltip";
 import LocationOverlay from "./LocationOverlay";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 import { pascalCase } from "../../Utils/utils";
 import { useEffect, useState } from "react";

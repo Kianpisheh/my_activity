@@ -2,7 +2,7 @@ import { useState } from "react";
 import AxiomTypes from "../../model/AxiomTypes";
 import "./AxiomCrafter.css";
 import { pascalCase } from "../../Utils/utils";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 function AxiomCrafter(props) {
 	const [selectedItems, setSelectedItems] = useState(props?.axiom?.getEvents() ?? []);

@@ -1,6 +1,6 @@
 import "./DurationAxiomRepr.css";
 
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { pascalCase } from "../../Utils/utils";
 import { getWhyNotNum } from "../AxiomPane/Axiom";
 

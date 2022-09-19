@@ -2,7 +2,7 @@ import "./FloatingQuestions.css";
 
 import { getQuestionsFromExpStatus, getQuestionBgColor } from "../QuestionMenu/QuestionMenu";
 import { pascalCase } from "../../Utils/utils";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { questionIcon } from "../QuestionMenu/QuestionMenu";
 
 function FloatingQuestions(props) {

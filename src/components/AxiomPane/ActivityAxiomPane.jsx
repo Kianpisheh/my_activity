@@ -7,7 +7,7 @@ import AxiomTypes from "../../model/AxiomTypes";
 
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");

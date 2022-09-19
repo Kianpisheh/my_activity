@@ -5,7 +5,7 @@ import "./TimeDistanceAxiom.css";
 import AdjustableTime from "./AdjustableTime";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { QMark } from "./Axiom";
 
 function TimeDistanceAxiom(props) {

@@ -1,6 +1,6 @@
 import "./QuestionMenu.css";
 
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { pascalCase } from "../../Utils/utils";
 import QueryTrigger from "../../model/QueryTrigger";
 import QueryQuestion from "../../model/QueryQuestion";

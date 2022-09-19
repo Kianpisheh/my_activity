@@ -143,11 +143,9 @@ class ActivityInstance {
 		}
 
 		// event OR axioms
-		for (const eventPair of activity.getEventORList()) {
-			if (!this.hasEvent(eventPair[0]) && !this.hasEvent(eventPair[1])) {
-				notSatisfiedORInteractionAxs.push(
-					AxiomTypes.TYPE_OR_INTERACTION + ":" + eventPair[0] + ":" + eventPair[1]
-				);
+		for (const orEvents of activity.getEventORList()) {
+			if (orEvents.every((ev) => !this.hasEvent(ev))) {
+				notSatisfiedORInteractionAxs.push(AxiomTypes.TYPE_OR_INTERACTION + ":" + orEvents.join(":"));
 			}
 		}
 
@@ -361,7 +359,7 @@ class ActivityInstance {
 			// interacion or axioms
 			if (axType === AxiomTypes.TYPE_OR_INTERACTION) {
 				let events = ax.getEvents();
-				if (this.hasEvent(events[1]) || this.hasEvent(events[0])) {
+				if (events.some((ev) => this.hasEvent(ev))) {
 					numSatisfied += 1;
 				} else {
 					return false;

@@ -26,7 +26,11 @@ class Activity {
 		this.excludedEvents = activityObj["excludedEvents"];
 		this.constraints = activityObj["constraints"];
 		this.id = activityObj["id"];
-		this.eventORList = activityObj["eventORList"] ?? [];
+		this.eventORList = [];
+		if (activityObj["eventORList"] && activityObj["eventORList"].length) {
+			const OREvents = this.removeRedundantOREvents(activityObj["eventORList"]);
+			this.eventORList = OREvents ?? [];
+		}
 	}
 
 	addEventOR(events: string[]) {
@@ -228,32 +232,16 @@ class Activity {
 		let newEventsList: string[][] = [];
 		for (let i = 0; i < eventsList.length; i++) {
 			let unique = true;
-			let candidates = [];
-			for (let j = i + 1; j < eventsList.length; j++) {
-				if (this.subSetEither(eventsList[i], eventsList[j])) {
+			for (let j = 0; j < newEventsList.length; j++) {
+				if (this.subSetEither(eventsList[i], newEventsList[j])) {
 					unique = false;
-					if (eventsList[i].length >= eventsList[j].length) {
-						candidates.push(eventsList[i]);
-					} else {
-						candidates.push(eventsList[j]);
+					if (eventsList[i].length > newEventsList[j].length) {
+						newEventsList[j] = [...eventsList[i]];
 					}
 				}
 			}
 			if (unique) {
 				newEventsList.push(eventsList[i]);
-			} else {
-				// take the largest set
-				let idx = 0;
-				let maxL = 2;
-				let i = 0;
-				for (const evs of candidates) {
-					if (evs.length > maxL) {
-						idx = i;
-						maxL = evs.length;
-					}
-					i += 1;
-				}
-				newEventsList.push(candidates[idx]);
 			}
 		}
 

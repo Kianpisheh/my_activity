@@ -47,24 +47,24 @@ import SvgTupperware from "./Tupperware";
 import SvgWaterBottle from "./WaterBottle";
 import SvgWaterFaucet from "./WaterFaucet";
 import SvgNotFound from "./NotFound";
-import SvgTimeDistance from "./TimeDistance";
-import SvgZoomIn from "./ZoomIn";
-import SvgZoomOut from "./ZoomOut";
+import SvgTimeDistance from "../others/TimeDistance";
+import SvgZoomIn from "../others/ZoomIn";
+import SvgZoomOut from "../others/ZoomOut";
 import SvgMicrowave from "./Microwave";
 import SvgMedicineContainer from "./MedicineContainer";
 import SvgPhoneBook from "./PhoneBook";
 import SvgRaisin from "./Raisin";
-import SvgUpArrow from "./UpArrow";
-import SvgDownArrow from "./DownArrow";
-import SvgTimeDistance2 from "./TimeDistance2";
-import SvgTimeDistance3 from "./TimeDistance3";
+import SvgUpArrow from "../others/UpArrow";
+import SvgDownArrow from "../others/DownArrow";
+import SvgTimeDistance2 from "../others/TimeDistance2";
+import SvgTimeDistance3 from "../others/TimeDistance3";
 import SvgTrashcan from "./Trashcan";
-import SvgWhy from "./Why";
-import SvgWhyNot from "./WhyNot";
-import SvgWhyHowTo from "./WhyHowTo";
-import SvgWhyNotHowTo from "./WhyNotHowTo";
-import SvgWhyWhat from "./WhyWhat";
-import SvgWhyNotWhat from "./WhyNotWhat";
+import SvgWhy from "../others/Why";
+import SvgWhyNot from "../others/WhyNot";
+import SvgWhyHowTo from "../others/WhyHowTo";
+import SvgWhyNotHowTo from "../others/WhyNotHowTo";
+import SvgWhyWhat from "../others/WhyWhat";
+import SvgWhyNotWhat from "../others/WhyNotWhat";
 import SvgWatercan from "./Watercan";
 import SvgTVShelf from "./TVShelf";
 import SvgCloset from "./Closet";
@@ -82,15 +82,15 @@ import SvgDrawerMiddle from "./DrawerMiddle";
 import SvgDrawerLower from "./DrawerLower";
 import SvgDoor from "./Door";
 import SvgSwitch from "./Switch";
-import SvgReach from "./Reach";
-import SvgRelease from "./Release";
-import SvgSip from "./Sip";
-import SvgStir from "./Reach";
-import SvgMove from "./Move";
-import SvgLock from "./Lock";
-import SvgUnlock from "./Unlock";
-import SvgCut from "./Cut";
-import SvgBite from "./Bite";
+import SvgReach from "../others/Reach";
+import SvgRelease from "../others/Release";
+import SvgSip from "../others/Sip";
+import SvgStir from "../others/Reach";
+import SvgMove from "../others/Move";
+import SvgLock from "../others/Lock";
+import SvgUnlock from "../others/Unlock";
+import SvgCut from "../others/Cut";
+import SvgBite from "../others/Bite";
 
 class Icons {
 	static icons = {
@@ -131,9 +131,6 @@ class Icons {
 		Carafe: SvgCoffeePot,
 		Peach: SvgPeach,
 		NotFound: SvgNotFound,
-		TimeDistance: SvgTimeDistance,
-		ZoomOut: SvgZoomOut,
-		ZoomIn: SvgZoomIn,
 		CoffeeCup: SvgMug,
 		Cup: SvgMug,
 		StoveTop: SvgMokaPot,
@@ -161,17 +158,7 @@ class Icons {
 		PhoneBook: SvgPhoneBook,
 		Raisins: SvgRaisin,
 		Rasins: SvgRaisin,
-		UpArrow: SvgUpArrow,
-		DownArrow: SvgDownArrow,
-		TimeDistance2: SvgTimeDistance2,
-		TimeDistance3: SvgTimeDistance3,
 		Trashcan: SvgTrashcan,
-		Why: SvgWhy,
-		WhyNot: SvgWhyNot,
-		WhyWhat: SvgWhyWhat,
-		WhyNotWhat: SvgWhyNotWhat,
-		WhyHowTo: SvgWhyHowTo,
-		WhyNotHowTo: SvgWhyNotHowTo,
 		Watercan: SvgWatercan,
 		TVShelf: SvgTVShelf,
 		Closet: SvgCloset,
@@ -191,6 +178,9 @@ class Icons {
 		Door1: SvgDoor,
 		Door2: SvgDoor,
 		Switch: SvgSwitch,
+	};
+
+	static others = {
 		Reach: SvgReach,
 		Release: SvgRelease,
 		Sip: SvgSip,
@@ -200,6 +190,19 @@ class Icons {
 		Unlock: SvgUnlock,
 		Cut: SvgCut,
 		Bite: SvgBite,
+		UpArrow: SvgUpArrow,
+		DownArrow: SvgDownArrow,
+		TimeDistance2: SvgTimeDistance2,
+		TimeDistance3: SvgTimeDistance3,
+		Why: SvgWhy,
+		WhyNot: SvgWhyNot,
+		WhyWhat: SvgWhyWhat,
+		WhyNotWhat: SvgWhyNotWhat,
+		WhyHowTo: SvgWhyHowTo,
+		WhyNotHowTo: SvgWhyNotHowTo,
+		TimeDistance: SvgTimeDistance,
+		ZoomOut: SvgZoomOut,
+		ZoomIn: SvgZoomIn,
 	};
 
 	static colors = {
@@ -240,7 +243,7 @@ class Icons {
 		Carafe: "#341679",
 		SoapContainer: "#8B4513",
 		MokaPot: "#7C4513",
-		Pan: "#1B4213",
+		Pan: "#686664",
 		Pot: "#8B4C13",
 		SmallPot: "#8B4C13",
 		Fork: "#8B2523",
@@ -302,6 +305,8 @@ class Icons {
 	static getIcon(key, notFoundIcon = false) {
 		if (this.icons[key]) {
 			return this.icons[key];
+		} else if (this.others[key]) {
+			return this.others[key];
 		} else {
 			if (notFoundIcon) {
 				return this.icons["NotFound"];

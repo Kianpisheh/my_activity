@@ -152,7 +152,7 @@ Files
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/Fridge.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/FruitJuice.js                                | JavaScript         |         15 |          0 |          3 |         18 |
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/Glass.js                                     | JavaScript         |         20 |          0 |          3 |         23 |
-| /media/kian/Local Disk/HAKEE/my_activity/src/icons/Icons.js                                     | JavaScript         |        229 |          0 |          9 |        238 |
+| /media/kian/Local Disk/HAKEE/my_activity/src/icons/objects/Icons.js                                     | JavaScript         |        229 |          0 |          9 |        238 |
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/Jar.js                                       | JavaScript         |         16 |          0 |          3 |         19 |
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/Kettle.js                                    | JavaScript         |         15 |          0 |          3 |         18 |
 | /media/kian/Local Disk/HAKEE/my_activity/src/icons/Knife.js                                     | JavaScript         |         15 |          0 |          3 |         18 |

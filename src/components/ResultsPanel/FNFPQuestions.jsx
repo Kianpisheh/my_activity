@@ -1,22 +1,21 @@
-import "./FNFPQuestions.css"
+import "./FNFPQuestions.css";
 
-import {getQuestionsFromExpStatus} from "../QuestionMenu/QuestionMenu"
+import { getQuestionsFromExpStatus } from "../QuestionMenu/QuestionMenu";
 
 import { pascalCase } from "../../Utils/utils";
 import { questionIcon } from "../QuestionMenu/QuestionMenu";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 function FNFPQuestions(props) {
-    const {expStatus, selectedIdx, currentActivity} = props;
-    if (!selectedIdx || (!selectedIdx["FN"] && !selectedIdx["FP"]) || !currentActivity) {
-        return;
-    }
+	const { expStatus, selectedIdx, currentActivity } = props;
+	if (!selectedIdx || (!selectedIdx["FN"] && !selectedIdx["FP"]) || !currentActivity) {
+		return;
+	}
 
+	const Q = getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity);
+	let bgColor = "#e4eef5";
 
-    const Q = getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivity);
-    let bgColor = "#e4eef5";
-
-    return (
+	return (
 		<div className="FNFP-container">
 			<div className="FNFP-question-list-container">
 				{Object.keys(Q).map((qtype, idx) => {
@@ -37,9 +36,7 @@ function FNFPQuestions(props) {
 				})}
 			</div>
 		</div>
-    );
-
+	);
 }
-
 
 export default FNFPQuestions;

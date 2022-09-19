@@ -1,6 +1,6 @@
 import "./WhyNotWhatExplanation.css";
 
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 

@@ -63,7 +63,7 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-	const DATASETS = ["CASAS8", "Opportunity", "Epic", "Task1", "Task2", "Task3"];
+	const DATASETS = ["CASAS8", "Opportunity", "Opportunity_gesture", "Epic", "Task1", "Task2", "Task3", "Task4"];
 	const [dataset, setDataset] = useState(DATASETS[1]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");

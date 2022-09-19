@@ -4,7 +4,7 @@ import "./InteractionORAxiom.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 function InteractionOR(props) {
 	const [hovered, setHovered] = useState(false);

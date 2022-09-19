@@ -5,7 +5,7 @@ import "./InteractionAxiom.css";
 import { CircleNum } from "../ResultsPanel/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 import { pascalCase } from "../../Utils/utils";
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 
 import AxiomData from "../../model/AxiomData";
 import QueryTrigger from "../../model/QueryTrigger";

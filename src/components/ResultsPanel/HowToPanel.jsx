@@ -1,6 +1,6 @@
 import "./HowToPanel.css";
 
-import Icons from "../../icons/Icons";
+import Icons from "../../icons/objects/Icons";
 import { pascalCase } from "../../Utils/utils";
 import AxiomTypes from "../../model/AxiomTypes";
 
@@ -34,10 +34,7 @@ function HowToPanel(props) {
 					onMouseOver={() => props.onHowToAxiomHover(newTPs, newFPs)}
 					onMouseLeave={() => props.onHowToAxiomHover([], [])}
 				>
-					<div
-						key={"ic1-howto"}
-						className="howto-time-dist-icons-container"
-					>
+					<div key={"ic1-howto"} className="howto-time-dist-icons-container">
 						<Icon1
 							key={"ic1-how-to"}
 							style={{
@@ -86,16 +83,9 @@ function HowToPanel(props) {
 								}}
 							></DownArrow>
 						)}
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{th1}
-						</span>
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{" < duration < "}
-						</span>
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{" "}
-							{th2}
-						</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}>{th1}</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}>{" < duration < "}</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}> {th2}</span>
 						{th2 - oldTh2 > 0 && (
 							<UpArrow
 								key={"right-up-arrow"}
@@ -127,8 +117,7 @@ function HowToPanel(props) {
 	}
 
 	if (whyNotHowToSuggestion[AxiomTypes.AX_CHANGE_TEMPORAL_REMOVAL]) {
-		const { newTPs, newFPs, axiom, th1, th2 } =
-			whyNotHowToSuggestion[AxiomTypes.AX_CHANGE_TEMPORAL_REMOVAL];
+		const { newTPs, newFPs, axiom, th1, th2 } = whyNotHowToSuggestion[AxiomTypes.AX_CHANGE_TEMPORAL_REMOVAL];
 		const axType = axiom.split(":")[0];
 		if (axType === AxiomTypes.TYPE_TIME_DISTANCE) {
 			const Icon1 = Icons.getIcon(pascalCase(axiom.split(":")[1]), true);
@@ -141,10 +130,7 @@ function HowToPanel(props) {
 					onMouseOver={() => props.onHowToAxiomHover(newTPs, newFPs)}
 					onMouseLeave={() => props.onHowToAxiomHover([], [])}
 				>
-					<div
-						key={"ic1-howto"}
-						className="howto-time-dist-icons-container"
-					>
+					<div key={"ic1-howto"} className="howto-time-dist-icons-container">
 						<Icon1
 							key={"ic1-how-to"}
 							style={{
@@ -171,16 +157,9 @@ function HowToPanel(props) {
 						></Icon2>
 					</div>
 					<span className="how-to-lower-td-div">
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{th1}
-						</span>
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{" < duration < "}
-						</span>
-						<span style={{ fontSize: 11, color: "#3A2A0D" }}>
-							{" "}
-							{th2}
-						</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}>{th1}</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}>{" < duration < "}</span>
+						<span style={{ fontSize: 11, color: "#3A2A0D" }}> {th2}</span>
 					</span>
 				</div>
 			);
@@ -188,9 +167,7 @@ function HowToPanel(props) {
 		}
 	}
 
-	return (
-		<div className="how-to-panel-container">{howToSuggestionsElements}</div>
-	);
+	return <div className="how-to-panel-container">{howToSuggestionsElements}</div>;
 }
 
 export default HowToPanel;
