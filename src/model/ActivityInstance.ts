@@ -320,6 +320,11 @@ class ActivityInstance {
 	}
 
 	isSatisfied(axioms: AxiomData[]) {
+		// empty activity -> FN
+		if (axioms.length === 0 || axioms[0].getEvents().length === 0) {
+			return false;
+		}
+
 		let numSatisfied = 0;
 		for (const ax of axioms) {
 			const axType = ax.getType();

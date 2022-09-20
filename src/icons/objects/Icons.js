@@ -104,7 +104,7 @@ class Icons {
 		Kettle: SvgKettle,
 		CoffeeMachine: SvgCoffeeMachine,
 		WaterFaucet: SvgWaterFaucet,
-		PotatoPeeler: SvgPotatoPeeler,
+		Peeler: SvgPotatoPeeler,
 		Tap: SvgTap,
 		Scissors: SvgScissors,
 		Fridge: SvgFridge,
@@ -217,7 +217,7 @@ class Icons {
 		Toothbrush: "#d45087",
 		ToothBrush: "#d45087",
 		CoffeeMachine: "#233599",
-		PotatoPeeler: "#483D8B",
+		Peeler: "#483D8B",
 		Tap: "#483D8B",
 		Scissors: "#FF4500",
 		Cutlery: "#DC143C",
@@ -298,11 +298,21 @@ class Icons {
 		return this.icons;
 	}
 
+	static eventMap = {
+		CoffeeCup: "Cup",
+		Mug: "Cup",
+		Dish: "Plate",
+	};
+
 	static getEventList() {
 		return Object.keys(this.icons);
 	}
 
 	static getIcon(key, notFoundIcon = false) {
+		if (this.eventMap[key]) {
+			key = this.eventMap[key];
+		}
+
 		if (this.icons[key]) {
 			return this.icons[key];
 		} else if (this.others[key]) {
