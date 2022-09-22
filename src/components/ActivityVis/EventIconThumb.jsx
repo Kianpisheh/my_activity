@@ -64,7 +64,7 @@ function EventIconThumb(props) {
 						(props.filters.includes(props.thumbEvents[idx].getType()) || filteredNum === 0) && (
 							<g key={idx + "_gg"}>
 								<rect
-									key={idx}
+									key={idx + "rectviss"}
 									x={X.x1}
 									y={18}
 									width={X.x2 - X.x1}
@@ -95,7 +95,7 @@ function EventIconThumb(props) {
 					if (Icon) {
 						IconComponent = (
 							<Icon
-								key={idx}
+								key={idx + "icvis"}
 								onMouseEnter={() => {
 									if (hovered === -1) {
 										setHovered(idx);
@@ -115,7 +115,7 @@ function EventIconThumb(props) {
 					} else {
 						IconComponent = (
 							<text
-								key={idx}
+								key={idx + "tty"}
 								x={props.iconX[idx].x1}
 								y={15}
 								style={{
@@ -130,8 +130,8 @@ function EventIconThumb(props) {
 
 					const tooltip = (
 						<Tooltip
-							key={idx + "_tt"}
-							idx={idx}
+							key={idx.toString() + x.x1.toString() + props.idx.toString()}
+							idx={idx.toString() + x.x1.toString() + props.idx.toString()}
 							x={props.iconX[idx].x1 + ic_w / 2}
 							y={props.iconY[idx] - 5}
 							text={props.iconEvents[idx].getType()}
@@ -139,7 +139,7 @@ function EventIconThumb(props) {
 					);
 					const shadow = (
 						<Shadow
-							key={idx}
+							key={idx + "sahdow"}
 							id={idx}
 							x={props.iconX[idx].x1}
 							y={props.iconY[idx]}
@@ -168,6 +168,7 @@ function EventIconThumb(props) {
 									{IconComponent}
 									{highlight && (
 										<rect
+											key={idx + "rect_4"}
 											width={ic_w}
 											height={ic_h}
 											x={props.iconX[idx].x1}

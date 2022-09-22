@@ -390,6 +390,48 @@ function App() {
 					setUnsatisfiedAxioms({});
 				}
 			}}
+			tabIndex="0"
+			onKeyDown={(ev) => {
+				if (ev.code !== "Escape") {
+					return;
+				}
+				if (explanationStatus === ExpStatus.WHY_NOT_HOW_TO_LIST) {
+					setExplanationStatus(ExpStatus.WHY_NOT_LIST);
+					setWhyNotWhat(null);
+					setWhyWhat(null);
+					setWhyNotHowToSuggestions(null);
+					setWhyHowToSuggestions(null);
+				} else if (explanationStatus === ExpStatus.WHY_HOW_TO_LIST) {
+					setExplanationStatus(ExpStatus.WHY_LIST);
+					setWhyNotWhat(null);
+					setWhyWhat(null);
+					setWhyNotHowToSuggestions(null);
+					setWhyHowToSuggestions(null);
+				} else if (explanationStatus === ExpStatus.WHY_NOT_LIST) {
+					setExplanationStatus(ExpStatus.FN_SELECTED);
+					setUnsatisfiedAxioms({});
+					setWhyNotWhat(null);
+					setWhyWhat(null);
+					setWhyNotHowToSuggestions(null);
+					setWhyHowToSuggestions(null);
+				} else if (explanationStatus === ExpStatus.WHY_LIST) {
+					setExplanationStatus(ExpStatus.FP_SELECTED);
+					setWhyQueryMode(false);
+					setWhyNotWhat(null);
+					setWhyWhat(null);
+					setWhyNotHowToSuggestions(null);
+					setWhyHowToSuggestions(null);
+				} else if (explanationStatus === ExpStatus.FP_SELECTED || explanationStatus === ExpStatus.FN_SELECTED) {
+					setExplanationStatus(ExpStatus.NONE);
+					setUnsatisfiedAxioms({});
+					setWhyQueryMode(false);
+					setWhyNotWhat(null);
+					setWhyWhat(null);
+					setWhyNotHowToSuggestions(null);
+					setWhyHowToSuggestions(null);
+					setSelectedInstancesIdx({});
+				}
+			}}
 		>
 			{!loggedin && (
 				<div id="login">

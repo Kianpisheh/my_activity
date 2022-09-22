@@ -21,6 +21,9 @@ class AxiomData {
 		this.th1 = axiom["th1"];
 		this.th2 = axiom["th2"];
 		this.opSize = [...opSize];
+		if (opSize.length === 0 && axiom["type"] === AxiomTypes.TYPE_DURATION) {
+			this.opSize = [1];
+		}
 	}
 
 	getType() {

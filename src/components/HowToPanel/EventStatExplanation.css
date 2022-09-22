@@ -48,3 +48,15 @@
 	flex-direction: column;
 	column-gap: 15px;
 }
+
+#AND-stats {
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+}
+
+#OR-stats {
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+}

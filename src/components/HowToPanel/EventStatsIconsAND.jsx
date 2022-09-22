@@ -3,13 +3,13 @@ import Icons from "../../icons/objects/Icons";
 
 import { pascalCase } from "../../Utils/utils";
 
-function StatEvents(props) {
+function EventStatsIconsAND(props) {
 	const { events } = props;
 	const numEvents = events.length;
 	const h = 40;
 	const w = 400;
 	const icSize = 25;
-	const lineSize = 150;
+	const lineSize = 120;
 
 	let statRepr = null;
 
@@ -22,7 +22,7 @@ function StatEvents(props) {
 				if (numEvents > 2) {
 					xIcon = w / 2 - 3 * icSize + i * (icSize + 22);
 				} else if (numEvents === 2) {
-					xIcon = w / 2 - lineSize / 2 - icSize - 5 + 2 * i * (lineSize / 2) + i * (icSize + 13);
+					xIcon = w / 2 - lineSize / 2 - icSize - 5 + 2 * i * (lineSize / 2) + i * (icSize + 18);
 					yIcon = icSize / 2;
 				}
 				return (
@@ -39,21 +39,22 @@ function StatEvents(props) {
 			{numEvents === 1 && (
 				<g>
 					<line
-						y1={icSize + 5}
+						y1={icSize - 3 + 5}
 						x1={w / 2 - lineSize / 2}
 						x2={w / 2 + lineSize / 2}
-						y2={icSize + 5}
+						y2={icSize - 3 + 5}
 						stroke="#555555"
-						strokeWidth={2}
+						strokeDasharray={"4"}
+						strokeWidth={1}
 					></line>
 					<polygon
 						points={[
 							w / 2 - lineSize / 2,
-							icSize + 5,
+							icSize - 3 + 5,
 							w / 2 - lineSize / 2 - 5,
-							icSize + 2,
+							icSize - 3 + 2,
 							w / 2 - lineSize / 2 - 5,
-							icSize + 8,
+							icSize - 3 + 8,
 						]}
 						fill="#555555"
 						stroke="#555555"
@@ -62,11 +63,11 @@ function StatEvents(props) {
 					<polygon
 						points={[
 							w / 2 + lineSize / 2,
-							icSize + 5,
+							icSize - 3 + 5,
 							w / 2 + lineSize / 2 + 5,
-							icSize + 2,
+							icSize - 3 + 2,
 							w / 2 + lineSize / 2 + 5,
-							icSize + 8,
+							icSize - 3 + 8,
 						]}
 						fill="#555555"
 						stroke="#555555"
@@ -77,21 +78,22 @@ function StatEvents(props) {
 			{numEvents === 2 && (
 				<g>
 					<line
-						y1={icSize + 5}
+						y1={icSize - 3 + 5}
 						x1={w / 2 - lineSize / 2}
 						x2={w / 2 + lineSize / 2}
-						y2={icSize + 5}
+						y2={icSize - 3 + 5}
 						stroke="#555555"
-						strokeWidth={2}
+						strokeDasharray={"4"}
+						strokeWidth={1}
 					></line>
 					<polygon
 						points={[
 							w / 2 + lineSize / 2 + 5,
-							icSize + 5,
+							icSize - 3 + 5,
 							w / 2 + lineSize / 2,
-							icSize + 2,
+							icSize - 3 + 2,
 							w / 2 + lineSize / 2,
-							icSize + 8,
+							icSize - 3 + 8,
 						]}
 						fill="#555555"
 						stroke="#555555"
@@ -105,4 +107,4 @@ function StatEvents(props) {
 	return <div className="stat-events-container">{statRepr}</div>;
 }
 
-export default StatEvents;
+export default EventStatsIconsAND;

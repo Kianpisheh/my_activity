@@ -10,6 +10,7 @@ class EventStat {
 	immediateTimeDistance: number;
 	timeDistances: number[];
 	durations: number[];
+	ORSatisfiability: boolean;
 
 	constructor(activityInstance: ActivityInstance, events: string[]) {
 		this.instanceType = activityInstance.getType();
@@ -19,6 +20,7 @@ class EventStat {
 		this.timeDistances = [];
 		this.durationRange = [];
 		this.timeDistanceRange = [];
+		this.ORSatisfiability = events.some((ev) => activityInstance.hasEvent(ev));
 
 		this.hasEvents = activityInstance.hasOccurred(this.events);
 		if (this.hasEvents && events.length === 1) {
@@ -128,6 +130,23 @@ class EventStat {
 		}
 
 		return coverage;
+	}
+
+	static getORCoverageNum(stats: EventStat[], activity: string) {
+		let covertage = 0;
+
+		for (const stat of stats) {
+			if (activity !== "") {
+				if (activity && stat.instanceType !== activity) {
+					continue;
+				}
+			}
+			if (stat.ORSatisfiability) {
+				covertage += 1;
+			}
+		}
+
+		return covertage;
 	}
 }
 

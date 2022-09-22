@@ -1,12 +1,12 @@
 function Tooltip(props) {
 	const toolTip = (
-		<text key={props.idx} style={{ fontSize: 11, fill: "#FFFFFF" }} x={props.x} y={props.y}>
+		<text key={props.idx + "tex"} style={{ fontSize: 11, fill: "#FFFFFF" }} x={props.x} y={props.y}>
 			{props.text}
 		</text>
 	);
 	const tooltipRect = (
 		<rect
-			key={props.idx}
+			key={props.idx + "rr"}
 			rx={3}
 			x={props.x - 4}
 			y={props.y - 12}

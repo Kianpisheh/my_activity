@@ -76,7 +76,7 @@ class ActivityInstance {
 		return this.name;
 	}
 
-	private hasEvent(event: string) {
+	hasEvent(event: string) {
 		for (const ev of this.events) {
 			if (this.pascalCase2(ev.getType()) === this.pascalCase2(event)) {
 				return true;

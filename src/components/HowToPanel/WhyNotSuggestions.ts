@@ -230,7 +230,7 @@ function getTimeExpansionSuggestion(
 
 	const newAxiom = new AxiomData({ type: axiom.getType(), th1: newTh1, th2: newTh2, events: axiom.getEvents() });
 
-	// new axiom has replaced the old one
+	// replace the old axiom with the new axiom
 	let newAxiomSet = [...currentActivity.getAxioms()];
 	for (let j = 0; j < newAxiomSet.length; j++) {
 		if (isEqual(newAxiomSet[j], axiom)) {

@@ -71,7 +71,7 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 			</span>
 		);
 		questions[QueryQuestion.WHY_NOT] = q1;
-		questions[QueryQuestion.WHY_NOT_HOW_TO] = q2;
+		// questions[QueryQuestion.WHY_NOT_HOW_TO] = q2;
 	} else if (expStatus === ExpStatus.FP_SELECTED) {
 		const q1 = (
 			<span className="question-content">
@@ -86,7 +86,7 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 			</span>
 		);
 		questions[QueryQuestion.WHY] = q1;
-		questions[QueryQuestion.WHY_HOW_TO] = q2;
+		// questions[QueryQuestion.WHY_HOW_TO] = q2;
 	} else if (expStatus === ExpStatus.WHY_NOT_LIST) {
 		const q1 = (
 			<span className="question-content">
@@ -96,15 +96,16 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 		);
 		const q2 = (
 			<span className="question-content">
-				<span style={{ fontWeight: 700 }}>How</span> to modify this condition so it is satisfied for the{" "}
+				<span style={{ fontWeight: 700 }}>How</span> can this condition be modified so it is satisfied for the{" "}
 				{targetActivity} activity?
 			</span>
 		);
+
 		if (
 			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION &&
 			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION_NEGATION
 		) {
-			questions[QueryQuestion.WHY_NOT_WHAT] = q1;
+			// questions[QueryQuestion.WHY_NOT_WHAT] = q1;
 		}
 		questions[QueryQuestion.WHY_NOT_HOW_TO] = q2;
 	} else if (expStatus === ExpStatus.WHY_LIST) {
@@ -124,7 +125,7 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION &&
 			queriedAxiom.getType() !== AxiomTypes.TYPE_INTERACTION_NEGATION
 		) {
-			questions[QueryQuestion.WHY_WHAT] = q1;
+			// questions[QueryQuestion.WHY_WHAT] = q1;
 		}
 		questions[QueryQuestion.WHY_HOW_TO] = q2;
 	} else if (expStatus === ExpStatus.WHY_WHY_NOT_LIST) {
