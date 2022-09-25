@@ -8,6 +8,7 @@ import {
 } from "./APICalls/activityAPICalls";
 
 import { classifyInstances, getClassificationResult } from "./Classification";
+import ActivityDefinition from "./model/ActivityDefinition";
 
 import "./App.css";
 
@@ -497,6 +498,7 @@ function App() {
 						{currentActivity && (
 							<ActivityAxiomPane
 								activity={currentActivity}
+								dataset={dataset}
 								sendMessage={onAxiomPaneMessage}
 								config={config}
 								ruleitems={ruleitems}
@@ -517,6 +519,7 @@ function App() {
 								whyQueryMode={whyQueryMode}
 								queryTrigger={queryTrigger}
 								qmenuPos={qmenuPos}
+								onAxiomSetChange={(axSet) => console.log("first")}
 							></ActivityAxiomPane>
 						)}
 					</div>
@@ -548,6 +551,7 @@ function App() {
 							eventStats={eventStats}
 							queryTrigger={queryTrigger}
 							qmenuPos={qmenuPos}
+							expStatus={explanationStatus}
 							unsatisfiedAxioms={unsatisfiedAxioms}
 							queriedAxiom={queriedAxiom}
 							explanationStatus={explanationStatus}

@@ -8,15 +8,40 @@ import AxiomTypes from "../../model/AxiomTypes";
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
 import Icons from "../../icons/objects/Icons";
+import AxiomNavBar from "./AxiomNavbar";
+import ActivityDefinition from "../../model/ActivityDefinition";
 
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
 	const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
 	const [ORIdx, setORIdx] = useState(null);
+	const [currAxiomSetIdx, setCurrAxiomSetIdx] = useState(0);
+	const [savedFormulas, setSavedFormulas] = useState([]);
 
 	let axioms = [];
-	if (props.activity != null) {
+	if (props.activity != null && currAxiomSetIdx === 0) {
 		axioms = props.activity.getAxioms();
+	}
+
+	if (currAxiomSetIdx > 0) {
+		axioms = savedFormulas[currAxiomSetIdx - 1].getAxioms();
+	}
+
+	function handleSaveFormula() {
+		const formula = new ActivityDefinition(props.dataset, props.activity.getName(), props.activity.getAxioms());
+
+		// check for duplicate
+		for (const formula2 of savedFormulas) {
+			if (JSON.stringify(formula2) === JSON.stringify(formula)) {
+				return;
+			}
+		}
+		setSavedFormulas([...savedFormulas, formula]);
+	}
+
+	function handleDeleteFormula() {
+		setSavedFormulas(savedFormulas.filter((f, idx) => idx !== currAxiomSetIdx - 1));
+		setCurrAxiomSetIdx(currAxiomSetIdx - 1);
 	}
 
 	function handleAxiomCreation(data) {
@@ -86,6 +111,16 @@ function ActivityAxiomPane(props) {
 						}
 					></EditText>
 				</div>
+				<div id="axiom-navbar">
+					<AxiomNavBar
+						axiomSets={axioms}
+						savedFormulasNum={savedFormulas.length}
+						onSave={handleSaveFormula}
+						onDelete={handleDeleteFormula}
+						onAxiomSetChange={(idx) => setCurrAxiomSetIdx(idx)}
+						currentIdx={currAxiomSetIdx}
+					></AxiomNavBar>
+				</div>
 				<div className="Axiom-pane">
 					<div
 						style={{
@@ -93,22 +128,36 @@ function ActivityAxiomPane(props) {
 							width: "100%",
 							alignContent: "center",
 							height: "30px",
+							alignItems: "center",
+							marginBottom: 5,
 						}}
 					>
-						<span className="sub-section-title" style={{ width: 220 }}>
-							Interaction with objects and appliances
-						</span>
-						<div style={{ display: "flex", marginLeft: 10 }}>
-							<button
-								className="add-int-btn"
-								onClick={() => {
-									setRuleType(AxiomTypes.TYPE_INTERACTION);
-									setDefiningRule(AxiomTypes.TYPE_INTERACTION);
+						<span className="sub-section-title" style={{ width: 170 }}>
+							<p>Must include</p>
+							<p
+								style={{
+									fontWeight: 600,
+									color: "#E10B86",
+									marginLeft: 3,
 								}}
 							>
-								+
-							</button>
-						</div>
+								all
+							</p>
+							<p style={{ marginLeft: 3 }}>the following</p>
+						</span>
+						{currAxiomSetIdx === 0 && (
+							<div style={{ display: "flex", marginLeft: 10 }}>
+								<button
+									className="add-int-btn"
+									onClick={() => {
+										setRuleType(AxiomTypes.TYPE_INTERACTION);
+										setDefiningRule(AxiomTypes.TYPE_INTERACTION);
+									}}
+								>
+									+
+								</button>
+							</div>
+						)}
 					</div>
 					{/* ------------------Interaction Axioms---------------- */}
 					<div className="interaction-axioms-container">
@@ -132,6 +181,7 @@ function ActivityAxiomPane(props) {
 							ruleitems={props.ruleitems}
 							onQuestionMenu={props.onQuestionMenu}
 							queryTrigger={props.queryTrigger}
+							active={currAxiomSetIdx === 0}
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
@@ -157,17 +207,19 @@ function ActivityAxiomPane(props) {
 						<span className="sub-section-title" style={{ width: 270 }}>
 							Excluding Interaction with objects and appliances
 						</span>
-						<div style={{ display: "flex", marginLeft: 10 }}>
-							<button
-								className="add-int-btn"
-								onClick={() => {
-									setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
-									setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
-								}}
-							>
-								+
-							</button>
-						</div>
+						{currAxiomSetIdx === 0 && (
+							<div style={{ display: "flex", marginLeft: 10 }}>
+								<button
+									className="add-int-btn"
+									onClick={() => {
+										setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
+										setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
+									}}
+								>
+									+
+								</button>
+							</div>
+						)}
 					</div>
 					{axioms[1] && axioms[1].getType() === AxiomTypes.TYPE_INTERACTION_NEGATION && (
 						<div className="negation-interaction-axioms-container">
@@ -191,6 +243,7 @@ function ActivityAxiomPane(props) {
 								ruleitems={props.ruleitems}
 								onQuestionMenu={props.onQuestionMenu}
 								queryTrigger={props.queryTrigger}
+								active={currAxiomSetIdx === 0}
 							></Axiom>
 						</div>
 					)}
@@ -206,22 +259,34 @@ function ActivityAxiomPane(props) {
 					</div>
 					{/* ------------------Intreraction OR Axioms---------------- */}
 					<hr id="divider" style={{ marginTop: 13, marginBottom: 13 }} />
-					<div style={{ display: "flex", width: "100%", alignContent: "center", height: "30px" }}>
-						<span className="sub-section-title" style={{ width: 160 }}>
-							At least one of the follwoing
-						</span>
-						<div style={{ display: "flex", marginLeft: 10 }}>
-							<button
-								className="add-int-btn"
-								onClick={() => {
-									setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
-									setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
-									setORIdx(props.activity.excludedEvents.length ? 2 : 1);
+					<div style={{ display: "flex", width: "100%", alignItems: "center", height: "30px" }}>
+						<span className="sub-section-title" style={{ width: 230 }}>
+							<p>Must include</p>
+							<p
+								style={{
+									fontWeight: 600,
+									color: "#E10B86",
+									marginLeft: 3,
 								}}
 							>
-								+
-							</button>
-						</div>
+								at least one
+							</p>
+							<p style={{ marginLeft: 3 }}> of the follwoing</p>
+						</span>
+						{currAxiomSetIdx === 0 && (
+							<div style={{ display: "flex", marginLeft: 10 }}>
+								<button
+									className="add-int-btn"
+									onClick={() => {
+										setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
+										setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+										setORIdx(props.activity.excludedEvents.length ? 2 : 1);
+									}}
+								>
+									+
+								</button>
+							</div>
+						)}
 					</div>
 					{interactionORAxStartIdx &&
 						axioms.slice(interactionORAxStartIdx, interactionORAxLastIdx).map((axiom, idx) => (
@@ -247,6 +312,7 @@ function ActivityAxiomPane(props) {
 										ruleitems={props.ruleitems}
 										onQuestionMenu={props.onQuestionMenu}
 										queryTrigger={props.queryTrigger}
+										active={currAxiomSetIdx === 0}
 									></Axiom>
 								</div>
 								<div key={idx + "craft"} className="axiom-crafter-container">
@@ -268,25 +334,37 @@ function ActivityAxiomPane(props) {
 									style={{
 										display: "flex",
 										width: "100%",
-										alignContent: "center",
+										alignItems: "center",
 										height: "30px",
 									}}
 								>
-									<span className="sub-section-title" style={{ width: 160 }}>
-										At least one of the follwoing
-									</span>
-									<div style={{ display: "flex", marginLeft: 10 }}>
-										<button
-											className="add-int-btn"
-											onClick={() => {
-												setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
-												setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
-												setORIdx(idx + interactionORAxStartIdx + 1);
+									<span className="sub-section-title" style={{ width: 230 }}>
+										<p>Must include</p>
+										<p
+											style={{
+												fontWeight: 600,
+												color: "#E10B86",
+												marginLeft: 3,
 											}}
 										>
-											+
-										</button>
-									</div>
+											at least one
+										</p>
+										<p style={{ marginLeft: 3 }}> of the follwoing</p>
+									</span>
+									{currAxiomSetIdx === 0 && (
+										<div style={{ display: "flex", marginLeft: 10 }}>
+											<button
+												className="add-int-btn"
+												onClick={() => {
+													setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
+													setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+													setORIdx(idx + interactionORAxStartIdx + 1);
+												}}
+											>
+												+
+											</button>
+										</div>
+									)}
 								</div>
 							</React.Fragment>
 						))}
@@ -307,17 +385,19 @@ function ActivityAxiomPane(props) {
 						<span className="sub-section-title" style={{ width: 115 }}>
 							Temporal conditions
 						</span>
-						<div style={{ display: "flex", marginLeft: 10 }}>
-							<button
-								className="add-int-btn"
-								onClick={() => {
-									setRuleType(AxiomTypes.TYPE_TEMPORAL);
-									setDefiningRule("temporal");
-								}}
-							>
-								+
-							</button>
-						</div>
+						{currAxiomSetIdx === 0 && (
+							<div style={{ display: "flex", marginLeft: 10 }}>
+								<button
+									className="add-int-btn"
+									onClick={() => {
+										setRuleType(AxiomTypes.TYPE_TEMPORAL);
+										setDefiningRule("temporal");
+									}}
+								>
+									+
+								</button>
+							</div>
+						)}
 					</div>
 					{temporalAxStartIdx && (
 						<div className="temporal-axioms-container">
@@ -341,6 +421,7 @@ function ActivityAxiomPane(props) {
 									onWhyHowToQuery={props.onWhyHowToQuery}
 									onQuestionMenu={props.onQuestionMenu}
 									queryTrigger={props.queryTrigger}
+									active={currAxiomSetIdx === 0}
 								></Axiom>
 							))}
 						</div>

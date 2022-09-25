@@ -368,13 +368,13 @@ export function getInteractionAdditionAxiomSuggestions(
 			[...activities]
 		);
 
-		// check if it removes any of the selected FPs
+		// check if it removes any of the selected FPs or FNs
 		if (instanceType === "FP") {
 			if (selectedInstances.every((fpIdx) => whatIfRes["newFPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
 				continue;
 			}
 		} else if (instanceType === "FN") {
-			if (selectedInstances.some((fpIdx) => whatIfRes["newTPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
+			if (selectedInstances.every((fnIdx) => whatIfRes["newTPs"]?.[currentActivity.getName()]?.includes(fnIdx))) {
 				continue;
 			}
 		}

@@ -78,6 +78,7 @@ function ResultsPanel(props) {
 							queryMode: props.queryMode,
 							fpActivity: activityName,
 							key: i + "FP" + j,
+							idx: j,
 						},
 						"FP",
 						rectSize,
@@ -106,11 +107,20 @@ function ResultsPanel(props) {
 					<div key={idx + "ress"} className="class-results-container">
 						<span
 							key={idx + "spann"}
-							style={{ paddingLeft: 15, fontSize: 14, paddingBottom: 10, color: "var(--list-item-text)" }}
+							style={{
+								fontSize: 13,
+								marginBottom: 15,
+								fontWeight: 600,
+								color: "var(--list-item-text)",
+							}}
 						>
 							{activity}
 						</span>
-						<div key={"res_div2_" + idx} className="result-act-all-classes">
+						<div
+							key={"res_div2_" + idx}
+							className="result-act-all-classes"
+							style={{ display: "flex", flexDireaction: "column", rowGap: 15 }}
+						>
 							{[...allClassesResults[activity]]}
 						</div>
 					</div>

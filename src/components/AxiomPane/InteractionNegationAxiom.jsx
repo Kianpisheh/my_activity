@@ -88,7 +88,7 @@ function InteractionNegationAxiom(props) {
 						}
 					></NotIcon>
 				</svg>
-				{!props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
+				{props.active && !props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
 					<button
 						key={i}
 						className="remove-object-btn"

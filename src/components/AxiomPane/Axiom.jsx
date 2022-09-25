@@ -41,6 +41,7 @@ function Axiom(props) {
 				onQuestionMenu={props.onQuestionMenu}
 				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
+				active={props.active}
 			></InteractionAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_INTERACTION_NEGATION) {
@@ -68,6 +69,7 @@ function Axiom(props) {
 				onQuestionMenu={props.onQuestionMenu}
 				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
+				active={props.active}
 			></InteractionNegationAxiom>
 		);
 	} else if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
@@ -95,6 +97,7 @@ function Axiom(props) {
 				onQuestionMenu={props.onQuestionMenu}
 				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
+				active={props.active}
 			></InteractionORAxiom>
 		);
 	} else if (axiomType.includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
@@ -115,6 +118,7 @@ function Axiom(props) {
 				onQuestionMenu={props.onQuestionMenu}
 				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
+				active={props.active}
 			></TimeDistanceAxiom>
 		);
 	} else if (axiomType.includes(AxiomTypes.TYPE_DURATION)) {
@@ -135,6 +139,7 @@ function Axiom(props) {
 				onQuestionMenu={props.onQuestionMenu}
 				queryTrigger={props.queryTrigger}
 				qmenuPos={props.qmenuPos}
+				active={props.active}
 			></DurationAxiom>
 		);
 	}

@@ -66,7 +66,7 @@ function InteractionAxiom(props) {
 						setSelected(handleIconSelection(selected, events[i], clickEvent, props.messageCallback))
 					}
 				></Icon>
-				{!props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
+				{props.active && !props.whyQueryMode && objectHovered === i && !numnum[events[i]] && (
 					<button
 						className="remove-object-btn"
 						onClick={() => {

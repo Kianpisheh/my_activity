@@ -91,6 +91,7 @@ import SvgLock from "../others/Lock";
 import SvgUnlock from "../others/Unlock";
 import SvgCut from "../others/Cut";
 import SvgBite from "../others/Bite";
+import SvgSave from "../others/Save";
 
 class Icons {
 	static icons = {
@@ -199,6 +200,7 @@ class Icons {
 		TimeDistance: SvgTimeDistance,
 		ZoomOut: SvgZoomOut,
 		ZoomIn: SvgZoomIn,
+		Save: SvgSave,
 	};
 
 	static colors = {
@@ -288,6 +290,7 @@ class Icons {
 		Door1: "#949493",
 		Door2: "#686868",
 		Switch: "#143788",
+		Save: "#97947b",
 	};
 
 	static getIcons() {

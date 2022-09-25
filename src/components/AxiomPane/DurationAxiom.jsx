@@ -64,6 +64,7 @@ function DurationAxiom(props) {
 						data={props.data}
 						title="more than"
 						messageCallback={props.messageCallback}
+						active={props.active}
 					></AdjustableTime>
 				</span>
 				<span style={{ display: "flex", flexDirection: "row" }}>
@@ -76,11 +77,12 @@ function DurationAxiom(props) {
 						data={props.data}
 						title="less than"
 						messageCallback={props.messageCallback}
+						active={props.active}
 					></AdjustableTime>
 				</span>
 			</div>
 			<div className="rem-btn-td2">
-				{!props.whyQueryMode && hovered && (
+				{props.active && !props.whyQueryMode && hovered && (
 					<button
 						className="remove-axiom-btn-td"
 						onClick={() => props.messageCallback(AxiomTypes.MSG_REMOVE_AXIOM, { idx: props.idx })}

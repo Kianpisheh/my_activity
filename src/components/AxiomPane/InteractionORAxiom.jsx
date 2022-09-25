@@ -43,7 +43,7 @@ function InteractionOR(props) {
 					);
 				})}
 
-				{hovered && (
+				{props.active && hovered && (
 					<button
 						className="remove-axiom-btn-or"
 						onClick={() => {

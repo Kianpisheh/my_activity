@@ -96,11 +96,16 @@ function WhyExplanation(props) {
 	}
 
 	return (
-		<div style={{ width: "90%" }}>
-			<span className="text-explanation" style={{ color: "#5F5656", fontSize: 14 }}>
-				The selected {samples} {satisfies} all the defined conditions for activity
-			</span>
-			<span style={{ color: "var(--explanation)", fontWeight: 600, fontSize: 14 }}> {activity.getName()}.</span>
+		<div style={{ width: "90%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+			<div style={{ marginBottom: 10 }}>
+				<span className="text-explanation" style={{ color: "#5F5656", fontSize: 14, paddingBottom: 15 }}>
+					The selected {samples} {satisfies} all the defined conditions for activity
+				</span>
+				<span style={{ color: "var(--explanation)", fontWeight: 600, fontSize: 14 }}>
+					{" "}
+					{activity.getName()}.
+				</span>
+			</div>
 			<div style={{ width: "100%", display: "flex", flexDirection: "column", rowGap: 10, alignItems: "center" }}>
 				{whyAxioms}
 			</div>

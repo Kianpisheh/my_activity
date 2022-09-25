@@ -117,7 +117,7 @@ export function getQuestionsFromExpStatus(expStatus, selectedIdx, currentActivit
 		);
 		const q2 = (
 			<span className="question-content">
-				<span style={{ fontWeight: 700 }}>How</span> to modify this condition so it is{" "}
+				<span style={{ fontWeight: 700 }}>How</span> can this condition be modified so it is{" "}
 				<span style={{ fontWeight: 700 }}>not</span> satisfied for the {targetActivity} activity?
 			</span>
 		);

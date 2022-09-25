@@ -8,8 +8,10 @@ import WhyWhatExplanation from "./WhyWhatExplanation";
 import WhyExplanation from "./WhyExplanation";
 import WhyNotExplanation from "./WhyNotExplanation";
 import EventStatExplanation from "./EventStatExplanation";
+import NoSuggestions from "./NoSuggestions";
 
 import QueryTrigger from "../../model/QueryTrigger";
+import ExpStatus from "../../model/ExpStatus";
 
 function HowToPanel2(props) {
 	const {
@@ -121,6 +123,14 @@ function HowToPanel2(props) {
 		);
 	}
 
+	let noSuggestions = false;
+	const howStatus =
+		props.expStatus === ExpStatus.WHY_NOT_HOW_TO_LIST || props.expStatus === ExpStatus.WHY_HOW_TO_LIST;
+	if (suggestions.length === 0 && howStatus) {
+		suggestions.push(<NoSuggestions></NoSuggestions>);
+		noSuggestions = true;
+	}
+
 	return (
 		<div
 			className="exp-container"
@@ -134,7 +144,9 @@ function HowToPanel2(props) {
 			</div>
 			{whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
 			{whyExplanation.length > 0 && (
-				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
+				<span style={{ fontSize: 22, fontWeight: 700, marginBottom: 10, color: "var(--explanation)" }}>
+					Why?
+				</span>
 			)}
 			{whyExplanation.length > 0 && (
 				<div className="why-explanation-container" style={{ marginBottom: 20 }}>
@@ -143,13 +155,15 @@ function HowToPanel2(props) {
 			)}
 			{whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
 			{whatExplanation.length > 0 && (
-				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>Why?</span>
+				<span style={{ fontSize: 22, fontWeight: 700, marginBottom: 10, color: "var(--explanation)" }}>
+					Why?
+				</span>
 			)}
 			{<div className="axiom-explanations-container">{[...whatExplanation]}</div>}
 			{suggestions.length > 0 && whatExplanation.length > 0 && (
 				<hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />
 			)}
-			{suggestions.length > 0 && (
+			{suggestions.length > 0 && howStatus && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
 			{<div className="how-to-explanations-container">{[...suggestions]}</div>}

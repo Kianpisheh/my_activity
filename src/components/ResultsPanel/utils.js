@@ -13,7 +13,20 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 	}
 
 	return (
-		<div key={data["key"]}>
+		<div key={data["key"]} style={{ display: "flex", flexDirection: "column" }}>
+			{type === "FP" && data.idx === 0 && <hr id="divider2" style={{ marginTop: 10, marginBottom: 15 }} />}
+			{type === "FP" && data.idx === 0 && (
+				<span
+					style={{
+						fontSize: 13,
+						paddingBottom: 10,
+						fontWeight: 600,
+						color: "var(--list-item-text)",
+					}}
+				>
+					Other activities recognized as {activity}
+				</span>
+			)}
 			<span style={{ fontSize: 13, color: "var(--list-item-text)" }}>{data["fpActivity"]}</span>
 			<div className="results-rects-container">
 				{res.map((r, idx) => {
