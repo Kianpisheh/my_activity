@@ -519,7 +519,6 @@ function App() {
 								whyQueryMode={whyQueryMode}
 								queryTrigger={queryTrigger}
 								qmenuPos={qmenuPos}
-								onAxiomSetChange={(axSet) => console.log("first")}
 							></ActivityAxiomPane>
 						)}
 					</div>

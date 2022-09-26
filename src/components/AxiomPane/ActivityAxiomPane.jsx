@@ -4,6 +4,7 @@ import "./ActivityAxiomPane.css";
 import Axiom from "./Axiom";
 import AxiomCrafter from "./AxiomCrafter";
 import AxiomTypes from "../../model/AxiomTypes";
+import Activity from "../../model/Activity";
 
 import { EditText } from "react-edit-text";
 import "react-edit-text/dist/index.css";
@@ -20,11 +21,11 @@ function ActivityAxiomPane(props) {
 
 	let axioms = [];
 	if (props.activity != null && currAxiomSetIdx === 0) {
-		axioms = props.activity.getAxioms();
+		axioms = [...props.activity.getAxioms()];
 	}
 
 	if (currAxiomSetIdx > 0) {
-		axioms = savedFormulas[currAxiomSetIdx - 1].getAxioms();
+		axioms = [...savedFormulas[currAxiomSetIdx - 1].getAxioms()];
 	}
 
 	function handleSaveFormula() {
@@ -69,9 +70,15 @@ function ActivityAxiomPane(props) {
 	}
 	objectList.sort();
 
-	const interactionORAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_OR_INTERACTION);
-	const interactionORAxLastIdx = props.activity.getLastIdx(AxiomTypes.TYPE_OR_INTERACTION);
-	const temporalAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_TEMPORAL);
+	let interactionORAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_OR_INTERACTION);
+	let interactionORAxLastIdx = props.activity.getLastIdx(AxiomTypes.TYPE_OR_INTERACTION);
+	let temporalAxStartIdx = props.activity.getStartIdx(AxiomTypes.TYPE_TEMPORAL);
+
+	if (currAxiomSetIdx > 0) {
+		interactionORAxStartIdx = Activity.getStartIdx2(axioms, AxiomTypes.TYPE_OR_INTERACTION);
+		interactionORAxLastIdx = Activity.getLastIdx2(axioms, AxiomTypes.TYPE_OR_INTERACTION);
+		temporalAxStartIdx = Activity.getStartIdx2(axioms, AxiomTypes.TYPE_TEMPORAL);
+	}
 
 	return (
 		<div className="ax-container">
@@ -113,7 +120,6 @@ function ActivityAxiomPane(props) {
 				</div>
 				<div id="axiom-navbar">
 					<AxiomNavBar
-						axiomSets={axioms}
 						savedFormulasNum={savedFormulas.length}
 						onSave={handleSaveFormula}
 						onDelete={handleDeleteFormula}

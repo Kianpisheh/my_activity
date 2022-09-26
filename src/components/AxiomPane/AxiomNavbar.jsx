@@ -5,7 +5,7 @@ function AxiomNavBar(props) {
 	// dataset --> savedSets: [axiomset1, axiomset2]
 	// axiomset: {activity, axioms: AxiomData[]}
 
-	const { axiomSets, onAxiomSetChange } = props;
+	const { onAxiomSetChange } = props;
 	const w = 170;
 	const h = 30;
 	const arr = [...Array(props.savedFormulasNum)].map(() => {

@@ -1,7 +1,3 @@
-import { useState } from "react";
-
-import Checkbox from "react-custom-checkbox";
-
 import "./AdjustableTime.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
@@ -22,9 +18,6 @@ function AdjustableTime(props) {
 		th = props.title === "more than" ? AxiomTypes.VALUE_DEFAULT_TH1 : AxiomTypes.VALUE_DEFAULT_TH2;
 	}
 
-	// const [time, setTime] = useState(th);
-	const [active, setActive] = useState(active0);
-
 	let time = null;
 	if (props.title === "more than") {
 		time = props.data.getTh1();
@@ -33,14 +26,13 @@ function AdjustableTime(props) {
 	}
 
 	return (
-		<div className="time-distance-container" style={{ opacity: active ? "1" : "0.3" }}>
+		<div className="time-distance-container">
 			<div className="time-distance-adjust">
 				<input
 					id="sec"
 					type="number"
 					min={0}
 					value={time === null ? "-----" : time + ""}
-					disabled={!props.activie}
 					onChange={(event) => {
 						if (props.active) {
 							props.messageCallback(AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED, {
