@@ -11,6 +11,7 @@ import "react-edit-text/dist/index.css";
 import Icons from "../../icons/objects/Icons";
 import AxiomNavBar from "./AxiomNavbar";
 import ActivityDefinition from "../../model/ActivityDefinition";
+import { logEvent } from "../../APICalls/activityAPICalls";
 
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
@@ -37,10 +38,19 @@ function ActivityAxiomPane(props) {
 				return;
 			}
 		}
+		logEvent(formula, "formula", "formula_save", props.dataset + "-" + props.user);
+		logEvent([...savedFormulas, formula], "all_formulas", "all_formulas", props.dataset + "-" + props.user);
 		setSavedFormulas([...savedFormulas, formula]);
 	}
 
 	function handleDeleteFormula() {
+		logEvent(savedFormulas[currAxiomSetIdx - 1], "formula", "formula_removal", props.dataset + "-" + props.user);
+		logEvent(
+			savedFormulas.filter((f, idx) => idx !== currAxiomSetIdx - 1),
+			"all_formulas",
+			"all_formulas",
+			props.dataset + "-" + props.user
+		);
 		setSavedFormulas(savedFormulas.filter((f, idx) => idx !== currAxiomSetIdx - 1));
 		setCurrAxiomSetIdx(currAxiomSetIdx - 1);
 	}

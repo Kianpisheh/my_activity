@@ -240,7 +240,7 @@ function ActivityInstanceVis(props) {
 				}}
 			>
 				<span style={{ color: "#614E1E" }}>Predicted activity:</span>{" "}
-				<span style={{ color: "#F63B3B" }}>{predActivity}</span>
+				<span style={{ color: "#F63B3B", fontWeight: 600 }}>{predActivity}</span>
 			</div>
 		</div>
 	);

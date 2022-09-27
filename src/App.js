@@ -5,10 +5,10 @@ import {
 	updateDatabase,
 	getRuleitems,
 	checkPassword,
+	logEvent,
 } from "./APICalls/activityAPICalls";
 
 import { classifyInstances, getClassificationResult } from "./Classification";
-import ActivityDefinition from "./model/ActivityDefinition";
 
 import "./App.css";
 
@@ -86,7 +86,8 @@ function App() {
 				values,
 				activities,
 				currentActivtyIdx,
-				currentActivity
+				currentActivity,
+				dataset + "-" + enteredUser
 			);
 
 			setActivities(
@@ -99,6 +100,11 @@ function App() {
 	function handleFunc(message, currentActivity, activityInstances, currentActInstanceIdx) {
 		if (message !== AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
 			updateLocalAndSourceActivities(message, currentActivity, activityInstances, currentActInstanceIdx);
+			let instances = [];
+			for (let i = 0; i < activityInstances.length; i++) {
+				instances.push(activityInstances[i].getName());
+			}
+			handleActInstanceChange(currentActInstanceIdx, instances);
 		}
 	}
 
@@ -115,6 +121,8 @@ function App() {
 				selectedInstancesIdx,
 				classificationRes
 			);
+			logEvent(unsatisfiedAxioms, "explanations", "why_not_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities");
 			setUnsatisfiedAxioms(unsatisfiedAxioms);
 			setExplanationStatus(ExpStatus.WHY_NOT_LIST);
 			setFloatingCoords([-1, -1]);
@@ -123,6 +131,8 @@ function App() {
 			setWhyQueryMode(qMode);
 			setExplanationStatus(ExpStatus.WHY_LIST);
 			setFloatingCoords([-1, -1]);
+			logEvent(unsatisfiedAxioms, "explanations", "why_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 		} else if (questionType === QueryQuestion.WHY_NOT_WHAT) {
 			const FNInstances = activityInstances.filter((instance, idx) => selectedInstancesIdx["FN"].includes(idx));
 			const whatExp = WhyNotWhatQueryController.handleWhyNotWhatQuery(queriedAxiom, FNInstances);
@@ -130,6 +140,8 @@ function App() {
 			setWhyWhat(null);
 			setFloatingCoords([-1, -1]);
 			setExplanationStatus(ExpStatus.WHY_WHY_NOT_LIST);
+			logEvent(whatExp, "explanations", "why_not_what_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 		} else if (questionType === QueryQuestion.WHY_WHAT) {
 			const FPInstances = activityInstances.filter((instance, idx) =>
 				selectedInstancesIdx?.["FP"]?.includes(idx)
@@ -139,6 +151,8 @@ function App() {
 			setWhyNotWhat(null);
 			setFloatingCoords([-1, -1]);
 			setExplanationStatus(ExpStatus.WHY_WHY_LIST);
+			logEvent(setWhyWhat, "explanations", "why_what_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 		} else if (questionType === QueryQuestion.WHY_NOT_HOW_TO) {
 			const whyNotHowToSuggestions = WhyNotHowToQueryController.handleWhyNotHowToQuery(
 				queriedAxiom,
@@ -149,6 +163,8 @@ function App() {
 				activities,
 				ruleitems[currentActivity.getName()]
 			);
+			logEvent(whyNotHowToSuggestions, "explanations", "why_not_how_to_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 			setWhyNotHowToSuggestions(whyNotHowToSuggestions);
 			setWhyHowToSuggestions([]);
 			setFloatingCoords([-1, -1]);
@@ -163,6 +179,8 @@ function App() {
 				ruleitems[currentActivity.getName()],
 				activities
 			);
+			logEvent(whyHowToSuggestions, "explanations", "why_how_to_explanation", dataset + "-" + enteredUser);
+			logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 			setWhyHowToSuggestions(whyHowToSuggestions);
 			setWhyNotHowToSuggestions([]);
 			setFloatingCoords([-1, -1]);
@@ -185,6 +203,7 @@ function App() {
 	function handleActivityListChange(message, activityID) {
 		if (message === AxiomTypes.MSG_CHANGE_CURRENT_ACTIVITY) {
 			setCurrentActivityIdx(activityID);
+			logEvent(activities[activityID].getName(), "activity", "activity_change", dataset + "-" + enteredUser);
 		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
 			let new_activities = [...activities];
 			let newID = Activity.getUniqueID(activities);
@@ -198,6 +217,7 @@ function App() {
 					constraints: [],
 				})
 			);
+			logEvent(activities[activityID].getName(), "activity", "activity_addition", dataset + "-" + enteredUser);
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
 			updateDatabase(new_activities[new_activities.length - 1], "update", dataset);
@@ -206,6 +226,7 @@ function App() {
 			new_activities = new_activities.filter((activity) => {
 				return activity.getID() !== activityID;
 			});
+			logEvent(activities[activityID].getName(), "activity", "activity_removal", dataset + "-" + enteredUser);
 			setActivities(new_activities);
 			setCurrentActivityIdx(new_activities.length - 1);
 			updateDatabase(activities[activityID], "remove", dataset);
@@ -213,10 +234,14 @@ function App() {
 	}
 
 	function handleActInstanceChange(id) {
-		let PredActs = classifyInstances(activityInstances, activities);
-		let res = getClassificationResult(activityInstances, PredActs, activities);
+		let predActs = classifyInstances(activityInstances, activities);
+		let res = getClassificationResult(activityInstances, predActs, activities);
+		logEvent(id, "idx", "instance_change", dataset + "-" + enteredUser);
+		logEvent(predActs, "predictions", "prediction_result", dataset + "-" + enteredUser);
+		logEvent(res, "classification", "classification_result", dataset + "-" + enteredUser);
+		logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 		setClassificationRes(res);
-		setPredictedActivities(PredActs);
+		setPredictedActivities(predActs);
 		setCurrentActInstanceIdx(id);
 		setSelectedInstanceEvents({});
 	}
@@ -502,12 +527,15 @@ function App() {
 								sendMessage={onAxiomPaneMessage}
 								config={config}
 								ruleitems={ruleitems}
+								user={enteredUser}
 								onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
+									logEvent(ax, "axiom", "queried_axiom_why_not_what", dataset + "-" + enteredUser);
 									setQueriedAxiom(ax);
 									setQmenuPos([x, y]);
 									setQueryTrigger(queryTrigger);
 								}}
 								onWhyWhatQuery={(x, y, ax, queryTrigger) => {
+									logEvent(ax, "axiom", "queried_axiom_why_what", dataset + "-" + enteredUser);
 									setQueriedAxiom(ax);
 									setQmenuPos([x, y]);
 									setQueryTrigger(queryTrigger);
@@ -528,6 +556,14 @@ function App() {
 							whyNotHowTosuggestions={whyNotHowToSuggestions}
 							width={"100%"}
 							onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
+								if (queryMode) {
+									logEvent(
+										{ newTPs: newTPs, newFPs: newFPs },
+										"what_if",
+										"what_if_explanation",
+										dataset + "-" + enteredUser
+									);
+								}
 								setNewTPs(newTPs);
 								setNewFPs(newFPs);
 								setQueryMode(queryMode);
@@ -555,11 +591,13 @@ function App() {
 							queriedAxiom={queriedAxiom}
 							explanationStatus={explanationStatus}
 							onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
+								logEvent(ax, "axiom", "queried_axiom_why_not_what", dataset + "-" + enteredUser);
 								setQueriedAxiom(ax);
 								setQmenuPos([x, y]);
 								setQueryTrigger(queryTrigger);
 							}}
 							onWhyWhatQuery={(x, y, ax, queryTrigger) => {
+								logEvent(ax, "axiom", "queried_axiom_why_what", dataset + "-" + enteredUser);
 								setQueriedAxiom(ax);
 								setQmenuPos([x, y]);
 								setQueryTrigger(queryTrigger);
@@ -575,6 +613,12 @@ function App() {
 								) {
 									setFloatingCoords([xx, yy]);
 									if (axiom !== null) {
+										logEvent(
+											axiom,
+											"axiom",
+											"queried_axiom_why/why_not",
+											dataset + "-" + enteredUser
+										);
 										setQueriedAxiom(axiom);
 									}
 								}
@@ -607,6 +651,12 @@ function App() {
 							onQuery={handleQuery}
 							explanationStatus={explanationStatus}
 							onInstanceSelection={(idx, type, activity) => {
+								logEvent(
+									selectedInstancesIdx,
+									"old_idx",
+									"old_selected_instance",
+									dataset + "-" + enteredUser
+								);
 								let selInstancesIdx = {};
 								if (currentActivity && currentActivity.getName() !== activity) {
 									for (let i = 0; i < activities.length; i++) {
@@ -617,6 +667,12 @@ function App() {
 											} else {
 												selInstancesIdx = { FP: [idx] };
 											}
+											logEvent(
+												selInstancesIdx,
+												"current_idx",
+												"selected_instance_change",
+												dataset + "-" + enteredUser
+											);
 											setSelectedInstancesIdx(selInstancesIdx);
 										}
 									}
@@ -626,6 +682,12 @@ function App() {
 										type,
 										selectedInstancesIdx,
 										activity
+									);
+									logEvent(
+										selInstancesIdx,
+										"current_idx",
+										"selected_instance_change",
+										dataset + "-" + enteredUser
 									);
 									setSelectedInstancesIdx(selInstancesIdx);
 								}
@@ -643,7 +705,8 @@ function App() {
 								} else {
 									setExplanationStatus(ExpStatus.NONE);
 								}
-								handleActInstanceChange(idx);
+
+								//handleActInstanceChange(idx);
 							}}
 							highlightedInstancesIdx={highlightedInstancesIdx}
 						></ResultsPanel>

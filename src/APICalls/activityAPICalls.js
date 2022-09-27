@@ -39,3 +39,20 @@ export async function getRuleitems(dataset) {
 	const url = "http://localhost:8080/ruleitems/get_ruleitems";
 	return axios.post(url, { dataset: dataset });
 }
+
+export async function logEvent(data, dataLabel, msg, dataset) {
+	const url = "http://localhost:8080/log_event";
+	let jj = JSON.parse(JSON.stringify(data));
+	let data2 = { msg: msg, timestamp: Math.floor(Date.now() / 1000) };
+	data2[dataLabel] = jj;
+	return axios.post(
+		url,
+		{ event: JSON.stringify(data2), dataset: dataset },
+		{
+			headers: {
+				// Overwrite Axios's automatically set Content-Type
+				"Content-Type": "application/json",
+			},
+		}
+	);
+}

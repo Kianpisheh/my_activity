@@ -7,6 +7,7 @@ import EventStatsIconsAND from "./EventStatsIconsAND";
 import EventStatsIconsOR from "./EventStatsIconsOR";
 import EventStatsAND from "./EventStatsAND";
 import EventStatsOR from "./EventStatsOR";
+import { logEvent } from "../../APICalls/activityAPICalls";
 
 function EventStatExplanation(props) {
 	const { stats, instances } = props;
@@ -42,6 +43,20 @@ function EventStatExplanation(props) {
 			ORCoverages[act] = EventStat.getORCoverageNum(stats, act);
 		}
 	}
+
+	logEvent(
+		{
+			coverageAND: coverages,
+			coverageOR: ORCoverages,
+			numActivity: numActivity,
+			timeDistances: timeDistances,
+			timeDistanceRanges: timeDistanceRanges,
+			durations: durations,
+			durationRanges: durationRanges,
+		},
+		"stats",
+		"event_stats"
+	);
 
 	return (
 		<div className="stats-container">
