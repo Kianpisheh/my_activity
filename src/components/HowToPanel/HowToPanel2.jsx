@@ -69,7 +69,11 @@ function HowToPanel2(props) {
 	let eventInstanceExplanation = null;
 	if (props.eventStats && props.eventStats.length) {
 		eventInstanceExplanation = (
-			<EventStatExplanation stats={props.eventStats} instances={props.instances}></EventStatExplanation>
+			<EventStatExplanation
+				stats={props.eventStats}
+				instances={props.instances}
+				messageCallback={props.messageCallback}
+			></EventStatExplanation>
 		);
 	}
 	let whatExplanation = [];

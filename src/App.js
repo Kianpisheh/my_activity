@@ -80,6 +80,8 @@ function App() {
 				instances.push(activityInstances[i].getName());
 			}
 			handleActInstanceChange(currentActInstanceIdx, instances);
+		} else if (message === AxiomTypes.MSG_CLOSE_EVENT_STATS) {
+			setSelectedInstanceEvents({});
 		} else {
 			let newActivities = handleAxiomPaneMessages(
 				message,
@@ -205,10 +207,10 @@ function App() {
 			setCurrentActivityIdx(activityID);
 			logEvent(activities[activityID].getName(), "activity", "activity_change", dataset + "-" + enteredUser);
 		} else if (message === AxiomTypes.MSG_ADD_ACTIVITY) {
-			let new_activities = [...activities];
+			let newActivities = [...activities];
 			let newID = Activity.getUniqueID(activities);
 			let newActivityName = Activity.getUniqueName(activities, "New_activity");
-			new_activities.push(
+			newActivities.push(
 				new Activity({
 					id: newID,
 					name: newActivityName,
@@ -217,18 +219,18 @@ function App() {
 					constraints: [],
 				})
 			);
-			logEvent(activities[activityID].getName(), "activity", "activity_addition", dataset + "-" + enteredUser);
-			setActivities(new_activities);
-			setCurrentActivityIdx(new_activities.length - 1);
-			updateDatabase(new_activities[new_activities.length - 1], "update", dataset);
+			logEvent(newActivities[newID].getName(), "activity", "activity_addition", dataset + "-" + enteredUser);
+			setActivities(newActivities);
+			setCurrentActivityIdx(newActivities.length - 1);
+			updateDatabase(newActivities[newActivities.length - 1], "update", dataset);
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
-			let new_activities = [...activities];
-			new_activities = new_activities.filter((activity) => {
+			let newActivities = [...activities];
+			newActivities = newActivities.filter((activity) => {
 				return activity.getID() !== activityID;
 			});
 			logEvent(activities[activityID].getName(), "activity", "activity_removal", dataset + "-" + enteredUser);
-			setActivities(new_activities);
-			setCurrentActivityIdx(new_activities.length - 1);
+			setActivities(newActivities);
+			setCurrentActivityIdx(newActivities.length - 1);
 			updateDatabase(activities[activityID], "remove", dataset);
 		}
 	}
@@ -243,7 +245,6 @@ function App() {
 		setClassificationRes(res);
 		setPredictedActivities(predActs);
 		setCurrentActInstanceIdx(id);
-		setSelectedInstanceEvents({});
 	}
 
 	function handleScaleChange(action, graphIdx) {
@@ -583,6 +584,7 @@ function App() {
 							instances={activityInstances}
 							selectedInstancesIdx={selectedInstancesIdx}
 							onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+							messageCallback={onAxiomPaneMessage}
 							eventStats={eventStats}
 							queryTrigger={queryTrigger}
 							qmenuPos={qmenuPos}
@@ -706,7 +708,7 @@ function App() {
 									setExplanationStatus(ExpStatus.NONE);
 								}
 
-								//handleActInstanceChange(idx);
+								handleActInstanceChange(idx);
 							}}
 							highlightedInstancesIdx={highlightedInstancesIdx}
 						></ResultsPanel>

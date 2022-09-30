@@ -4,6 +4,7 @@ import Activity from "./model/Activity";
 import AxiomData from "./model/AxiomData";
 
 import { logEvent } from "./APICalls/activityAPICalls";
+import TaskDefaults from "./model/TaskDefaults";
 
 function handleAxiomPaneMessages(
 	message: string,
@@ -80,6 +81,20 @@ function handleAxiomPaneMessages(
 	} else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_FINALIZED) {
 		logEvent(newActivities?.[currentActivtyIdx], "activity", "time_limit_update", datasetUser);
 		logEvent(newActivities, "activities", "activities", datasetUser);
+	} else if (message === AxiomTypes.MSG_RESET_ACTIVITY) {
+		newActivities = [TaskDefaults.getDefault(datasetUser.split("-")[0])];
+	} else if (message === AxiomTypes.MSG_OR_EVENTS_AXIOM_EDIT) {
+		// find the corresponding axiom
+		let newAxioms = newActivities?.[currentActivtyIdx]?.getAxioms();
+		for (let i = 0; i < newAxioms.length; i++) {
+			if (newAxioms[i].getType() === AxiomTypes.TYPE_OR_INTERACTION) {
+				if (Activity.subSetEither(values["events"], newAxioms[i].getEvents())) {
+					newAxioms[i].setEvents(values["events"]);
+					break;
+				}
+			}
+		}
+		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
 	}
 
 	return newActivities;

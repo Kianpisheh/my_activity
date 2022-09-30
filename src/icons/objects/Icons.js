@@ -1,5 +1,4 @@
 import SvgBottle from "./Bottle";
-import SvgBanana from "./Banana";
 import SvgBowl from "./Bowl";
 import SvgCoffeeMachine from "./CoffeeMachine";
 import SvgCoffeePot from "./CoffeePot";
@@ -13,7 +12,6 @@ import SvgJar from "./Jar";
 import SvgKettle from "./Kettle";
 import SvgKnife from "./Knife";
 import SvgMug from "./Mug";
-import SvgPeach from "./Peach";
 import SvgPitcher from "./Pitcher";
 import SvgPlate from "./Plate";
 import SvgPotatoPeeler from "./PotatoPeeler";
@@ -32,13 +30,20 @@ import SvgUtensils from "./Utensils";
 import SvgSpatula from "./Spatula";
 import SvgCoffeeMaker from "./CoffeeMaker";
 import SvgCoffeeGrinder from "./CoffeeGrinder";
-import SvgCloth from "./Cloth";
 import SvgCabinet from "./Cabinet";
 import SvgSpoon from "./Spoon";
 import SvgCupboard from "./Cupboard";
 import SvgCoffee from "./Coffee";
 import SvgDetergent from "./Detergent";
 import SvgColander from "./Colander";
+import SvgOvenMitts from "./OvenMitts";
+import SvgWoodenSpoon from "./WoodenSpoon";
+import SvgSink from "./Sink";
+import SvgOil from "./Oil";
+import SvgSalt from "./Salt";
+import SvgToaster from "./Toaster";
+import SvgSpice from "./Spice";
+import SvgSauceBottle from "./SauceBottle";
 
 import SvgStraw from "./Straw";
 import SvgTap from "./Tap";
@@ -92,6 +97,11 @@ import SvgUnlock from "../others/Unlock";
 import SvgCut from "../others/Cut";
 import SvgBite from "../others/Bite";
 import SvgSave from "../others/Save";
+import SvgReset from "../others/Reset";
+import SvgMixer from "./Mixer";
+import SvgSaucepan from "./Saucepan";
+import SvgLadle from "./Ladle";
+import SvgBottleOpener from "./BottleOpener";
 
 class Icons {
 	static icons = {
@@ -175,6 +185,17 @@ class Icons {
 		Door1: SvgDoor,
 		Door2: SvgDoor,
 		Switch: SvgSwitch,
+		Reset: SvgReset,
+		OvenMitts: SvgOvenMitts,
+		WoodenSpoon: SvgWoodenSpoon,
+		Sink: SvgSink,
+		Oil: SvgOil,
+		Mixer: SvgMixer,
+		Salt: SvgSalt,
+		Toaster: SvgToaster,
+		Saucepan: SvgSaucepan,
+		SauceBottle: SvgSauceBottle,
+		Spice: SvgSpice,
 	};
 
 	static others = {
@@ -201,6 +222,8 @@ class Icons {
 		ZoomOut: SvgZoomOut,
 		ZoomIn: SvgZoomIn,
 		Save: SvgSave,
+		Ladle: SvgLadle,
+		BottleOpener: SvgBottleOpener,
 	};
 
 	static colors = {
@@ -291,27 +314,28 @@ class Icons {
 		Door2: "#686868",
 		Switch: "#143788",
 		Save: "#97947b",
+		OvenMitts: "#754E77",
+		WoodenSpoon: "#9F6E23",
+		Sink: "#82B7D3",
+		Oil: "#6F9F3B",
+		Mixer: "#85AF6E",
+		Salt: "#277691",
+		Toaster: "#7F8E93",
+		Saucepan: "#767C7E",
+		Ladle: "#676B87",
+		SauceBottle: "#E15839",
+		BottleOpener: "#635653",
 	};
 
 	static getIcons() {
 		return this.icons;
 	}
 
-	static eventMap = {
-		CoffeeCup: "Cup",
-		Mug: "Cup",
-		Dish: "Plate",
-	};
-
 	static getEventList() {
 		return Object.keys(this.icons);
 	}
 
 	static getIcon(key, notFoundIcon = false) {
-		if (this.eventMap[key]) {
-			key = this.eventMap[key];
-		}
-
 		if (this.icons[key]) {
 			return this.icons[key];
 		} else if (this.others[key]) {

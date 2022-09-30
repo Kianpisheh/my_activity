@@ -14,6 +14,7 @@ function AxiomNavBar(props) {
 
 	const SaveIcon = Icons.getIcon("Save", true);
 	const RemoveIcon = Icons.getIcon("Trashcan", true);
+	const ResetIcon = Icons.getIcon("Reset", true);
 
 	let liveBorderWidth = 0;
 	let liveBorderColor = "";
@@ -92,6 +93,21 @@ function AxiomNavBar(props) {
 					></RemoveIcon>
 				</div>
 				<div
+					id="reset-btn"
+					onClick={() => props.onReset()}
+					style={{
+						display: "flex",
+						justifySelf: "flex-end",
+						height: "100%",
+						cursor: "pointer",
+						border: "solid #C4BDA5",
+						borderRadius: 4,
+						padding: 2,
+					}}
+				>
+					<ResetIcon width={15} height={15} fill={"#817D85"} x={80} y={0}></ResetIcon>
+				</div>
+				<div
 					id="save-btn"
 					style={{
 						display: "flex",
@@ -106,7 +122,7 @@ function AxiomNavBar(props) {
 					<SaveIcon
 						width={15}
 						height={15}
-						fill={Icons.getColor("Save")}
+						fill={"#86B5E1"}
 						x={100}
 						y={0}
 						onClick={() => props.onSave()}

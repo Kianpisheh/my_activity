@@ -20,13 +20,18 @@ function ActivityAxiomPane(props) {
 	const [currAxiomSetIdx, setCurrAxiomSetIdx] = useState(0);
 	const [savedFormulas, setSavedFormulas] = useState([]);
 
+	let datasetFormulas = savedFormulas.filter((f) => f.dataset === props.dataset);
+	if (currAxiomSetIdx - 1 >= datasetFormulas.length) {
+		setCurrAxiomSetIdx(0);
+	}
+
 	let axioms = [];
 	if (props.activity != null && currAxiomSetIdx === 0) {
 		axioms = [...props.activity.getAxioms()];
 	}
 
 	if (currAxiomSetIdx > 0) {
-		axioms = [...savedFormulas[currAxiomSetIdx - 1].getAxioms()];
+		axioms = [...datasetFormulas[currAxiomSetIdx - 1].getAxioms()];
 	}
 
 	function handleSaveFormula() {
@@ -34,7 +39,7 @@ function ActivityAxiomPane(props) {
 
 		// check for duplicate
 		for (const formula2 of savedFormulas) {
-			if (JSON.stringify(formula2) === JSON.stringify(formula)) {
+			if (JSON.stringify(formula2) === JSON.stringify(formula) && formula.dataset === formula2.dataset) {
 				return;
 			}
 		}
@@ -55,7 +60,7 @@ function ActivityAxiomPane(props) {
 		setCurrAxiomSetIdx(currAxiomSetIdx - 1);
 	}
 
-	function handleAxiomCreation(data) {
+	function handleAxiomCreation(data, editOR = false) {
 		setDefiningRule("");
 		if (data) {
 			if (data.type.includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
@@ -65,7 +70,11 @@ function ActivityAxiomPane(props) {
 			} else {
 				setRuleType(data.type);
 			}
-			props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+			if (editOR) {
+				props.sendMessage(AxiomTypes.MSG_OR_EVENTS_AXIOM_EDIT, data);
+			} else {
+				props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, data);
+			}
 			setORIdx(null);
 		}
 	}
@@ -130,9 +139,10 @@ function ActivityAxiomPane(props) {
 				</div>
 				<div id="axiom-navbar">
 					<AxiomNavBar
-						savedFormulasNum={savedFormulas.length}
+						savedFormulasNum={datasetFormulas.length}
 						onSave={handleSaveFormula}
 						onDelete={handleDeleteFormula}
+						onReset={() => props.sendMessage(AxiomTypes.MSG_RESET_ACTIVITY, {})}
 						onAxiomSetChange={(idx) => setCurrAxiomSetIdx(idx)}
 						currentIdx={currAxiomSetIdx}
 					></AxiomNavBar>

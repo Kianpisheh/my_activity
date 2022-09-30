@@ -2,8 +2,12 @@ import "./StatEvents.css";
 import Icons from "../../icons/objects/Icons";
 
 import { pascalCase } from "../../Utils/utils";
+import { useState } from "react";
+import AxiomTypes from "../../model/AxiomTypes";
 
 function EventStatsIconsAND(props) {
+	const [hovered, setHovered] = useState(false);
+
 	const { events } = props;
 	const numEvents = events.length;
 	const h = 40;
@@ -104,7 +108,28 @@ function EventStatsIconsAND(props) {
 		</svg>
 	);
 
-	return <div className="stat-events-container">{statRepr}</div>;
+	return (
+		<div
+			className="stat-events-container"
+			style={{ display: "flex" }}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+		>
+			{statRepr}
+			{hovered && (
+				<button
+					key={0}
+					width={0}
+					className="remove-axiom-btn"
+					onClick={() => {
+						props.messageCallback(AxiomTypes.MSG_CLOSE_EVENT_STATS, {});
+					}}
+				>
+					X
+				</button>
+			)}
+		</div>
+	);
 }
 
 export default EventStatsIconsAND;

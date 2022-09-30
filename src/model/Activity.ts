@@ -291,7 +291,7 @@ class Activity {
 		for (let i = 0; i < eventsList.length; i++) {
 			let unique = true;
 			for (let j = 0; j < newEventsList.length; j++) {
-				if (this.subSetEither(eventsList[i], newEventsList[j])) {
+				if (Activity.subSetEither(eventsList[i], newEventsList[j])) {
 					unique = false;
 					if (eventsList[i].length > newEventsList[j].length) {
 						newEventsList[j] = [...eventsList[i]];
@@ -306,7 +306,7 @@ class Activity {
 		return newEventsList;
 	}
 
-	private subSetEither(arr1: any, arr2: any) {
+	public static subSetEither(arr1: any, arr2: any) {
 		let intersect = new Set([...arr1].filter((i) => arr2.includes(i)));
 		if (intersect.size === arr1.length || intersect.size === arr2.length) {
 			return true;

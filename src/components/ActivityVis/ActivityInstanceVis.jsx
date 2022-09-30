@@ -53,11 +53,11 @@ function ActivityInstanceVis(props) {
 		setFilters(f);
 	}
 
-	let predActivity = "Unknown";
+	let predActivity = ["Unknown"];
 	if (props.currentActInstanceIdx >= 0 && props.predictedActivities.length) {
 		predActivity = props.predictedActivities[props.currentActInstanceIdx];
 		if (!predActivity) {
-			predActivity = "Unknown";
+			predActivity = ["Unknown"];
 		}
 	}
 
@@ -240,7 +240,7 @@ function ActivityInstanceVis(props) {
 				}}
 			>
 				<span style={{ color: "#614E1E" }}>Predicted activity:</span>{" "}
-				<span style={{ color: "#F63B3B", fontWeight: 600 }}>{predActivity}</span>
+				<span style={{ color: "#F63B3B", fontWeight: 600 }}>{predActivity.join(",  ")}</span>
 			</div>
 		</div>
 	);

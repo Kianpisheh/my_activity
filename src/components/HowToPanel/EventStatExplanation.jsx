@@ -61,7 +61,11 @@ function EventStatExplanation(props) {
 	return (
 		<div className="stats-container">
 			<div id="AND-stats">
-				<EventStatsIconsAND events={stats[0].events}></EventStatsIconsAND>
+				messageCallback={props.messageCallback}
+				<EventStatsIconsAND
+					events={stats[0].events}
+					messageCallback={props.messageCallback}
+				></EventStatsIconsAND>
 				<EventStatsAND
 					coverages={coverages}
 					timeDistanceRanges={timeDistanceRanges}

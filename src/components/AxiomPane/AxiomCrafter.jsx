@@ -81,18 +81,25 @@ function AxiomCrafter(props) {
 				<button
 					id="axiom-crafter-done-btn"
 					onClick={() => {
+						let editOR = false;
 						if (axiomType === AxiomTypes.TYPE_OR_INTERACTION) {
+							if (props?.axiom?.getEvents().length > 0) {
+								editOR = true;
+							}
 							if (selectedItems.length < 2) {
 								props.handleAxiomCreation(null);
 								return;
 							}
 						}
-						props.handleAxiomCreation({
-							events: selectedItems,
-							type: axiomType,
-							th1: initialTh1,
-							th2: initialTh2,
-						});
+						props.handleAxiomCreation(
+							{
+								events: selectedItems,
+								type: axiomType,
+								th1: initialTh1,
+								th2: initialTh2,
+							},
+							editOR
+						);
 					}}
 				>
 					Done
