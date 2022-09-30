@@ -126,7 +126,10 @@ export function nonLinearScale(timestamps: ITime[]): ITime[] | null {
 
 	let duration: number = 0;
 	let timeDistance: number = 0;
-	newTimestamps.push({ startTime: 0, endTime: timestamps[0]?.endTime - timestamps[0]?.startTime } as ITime);
+	newTimestamps.push({
+		startTime: 0,
+		endTime: _nonlinearScale(timestamps[0]?.endTime - timestamps[0]?.startTime),
+	} as ITime);
 	for (let i = 1; i < timestamps.length; i++) {
 		timeDistance = (timestamps[i]?.startTime ?? 0) - (timestamps[i - 1]?.endTime ?? 0); // old time distance
 		timeDistance = timeDistance > 0 ? timeDistance : 0;
