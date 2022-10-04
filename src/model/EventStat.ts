@@ -3,6 +3,7 @@ import ActivityInstance from "./ActivityInstance";
 class EventStat {
 	instanceType: string;
 	instanceName: string;
+	instanceIdx: number;
 	events: string[];
 	hasEvents: boolean;
 	durationRange: number[];
@@ -12,9 +13,10 @@ class EventStat {
 	durations: number[];
 	ORSatisfiability: boolean;
 
-	constructor(activityInstance: ActivityInstance, events: string[]) {
+	constructor(activityInstance: ActivityInstance, idx: number, events: string[]) {
 		this.instanceType = activityInstance.getType();
 		this.instanceName = activityInstance.getName();
+		this.instanceIdx = idx;
 		this.events = events;
 		this.durations = [];
 		this.timeDistances = [];
@@ -33,6 +35,10 @@ class EventStat {
 		}
 	}
 
+	getInstanceIdx() {
+		return this.instanceIdx;
+	}
+
 	getTimeDistances() {
 		return this.timeDistances;
 	}
@@ -43,8 +49,8 @@ class EventStat {
 
 	static getEventInstanceStat(activityInstances: ActivityInstance[], events: string[]) {
 		let stats: EventStat[] = [];
-		for (const instance of activityInstances) {
-			stats.push(new EventStat(instance, events));
+		for (let i = 0; i < activityInstances.length; i++) {
+			stats.push(new EventStat(activityInstances[i], i, events));
 		}
 
 		return stats;
@@ -98,7 +104,9 @@ class EventStat {
 					continue;
 				}
 			}
-			durations.push(...stat.getDurations());
+			let tds: { [key: number]: number[] } = {};
+			tds[stat.getInstanceIdx()] = stat.getDurations();
+			durations.push(tds);
 		}
 
 		return durations;
@@ -110,14 +118,16 @@ class EventStat {
 			if (activity && stat.instanceType !== activity) {
 				continue;
 			}
-			timeDistances.push(...stat.getTimeDistances());
+			let tds: { [key: number]: number[] } = {};
+			tds[stat.getInstanceIdx()] = stat.getTimeDistances();
+			timeDistances.push(tds);
 		}
 
 		return timeDistances;
 	}
 
-	static getCoverageNums(stats: EventStat[], activity: string) {
-		let coverage = 0;
+	static getCoverage(stats: EventStat[], activity: string) {
+		let coverage = [];
 		for (const stat of stats) {
 			if (activity !== "") {
 				if (activity && stat.instanceType !== activity) {
@@ -125,16 +135,15 @@ class EventStat {
 				}
 			}
 			if (stat.hasEvents) {
-				coverage += 1;
+				coverage.push(stat.instanceIdx);
 			}
 		}
 
 		return coverage;
 	}
 
-	static getORCoverageNum(stats: EventStat[], activity: string) {
-		let covertage = 0;
-
+	static getORCoverage(stats: EventStat[], activity: string) {
+		let covertage = [];
 		for (const stat of stats) {
 			if (activity !== "") {
 				if (activity && stat.instanceType !== activity) {
@@ -142,7 +151,7 @@ class EventStat {
 				}
 			}
 			if (stat.ORSatisfiability) {
-				covertage += 1;
+				covertage.push(stat.instanceIdx);
 			}
 		}
 

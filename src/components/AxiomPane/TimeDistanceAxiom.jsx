@@ -54,7 +54,7 @@ function TimeDistanceAxiom(props) {
 	// 	props.unsatisfiedAxioms,
 	// 	props.data,
 	// 	props.onWhyNotWhatQuery,
-	// 	props.onWhyNotNumHover,
+	// 	props.onWhyNotHover,
 	//     props.queryTrigger,
 	//     props.qmenuPos
 	// );

@@ -1,5 +1,10 @@
 import AxiomTypes from "../../model/AxiomTypes";
-import { DurationAdjustmentAxiom, InteractionAdditionAxiom, TemporalAdjustmentAxiom } from "./WhyNotHowToExplanations";
+import {
+	DurationAdjustmentAxiom,
+	InteractionAdditionAxiom,
+	TemporalAdjustmentAxiom,
+	InteractionORAdditionAxiom,
+} from "./WhyNotHowToExplanations";
 
 function WhyHowToExplanations(props) {
 	const { suggestions, onWhyHowToAxiomHover, currentActivity } = props;
@@ -41,12 +46,22 @@ function WhyHowToExplanations(props) {
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 				></InteractionAdditionAxiom>
 			);
+		} else if (suggestionType === "interaction_or") {
+			suggestionItems.push(
+				<InteractionORAdditionAxiom
+					suggestion={suggestion}
+					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+				></InteractionORAdditionAxiom>
+			);
 		}
 		i += 1;
 	}
 
 	return (
-		<div className="suggestions-container" style={{ width: props.width }}>
+		<div
+			className="suggestions-container"
+			style={{ width: props.width, overflow: "scroll", maxHeight: "inherit", boxSizing: "border-box" }}
+		>
 			{suggestionItems}
 		</div>
 	);

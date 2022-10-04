@@ -106,8 +106,8 @@ function InteractionNegationAxiom(props) {
 				{numnum[events[i]] && props.queryTrigger !== "" && (
 					<div
 						id="why-not-num-container"
-						onMouseOver={() => props.onWhyNotNumHover(numnum[events[i]])}
-						onMouseLeave={() => props.onWhyNotNumHover([])}
+						onMouseOver={() => props.onWhyNotHover(numnum[events[i]])}
+						onMouseLeave={() => props.onWhyNotHover([])}
 						onClick={(ev) => {
 							ev.stopPropagation();
 							let unsatisfiedAxiom = new AxiomData({

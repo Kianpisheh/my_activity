@@ -4,7 +4,8 @@
 	align-items: center;
 	justify-content: center;
 	padding-top: 15px;
-	height: 100%;
+	max-height: inherit;
+	box-sizing: border-box;
 	overflow: auto;
 }
 
@@ -20,6 +21,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	max-height: inherit;
+	box-sizing: border-box;
 }
 
 .why-explanation-container {

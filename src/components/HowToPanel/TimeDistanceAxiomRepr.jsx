@@ -34,7 +34,7 @@ function TimeDistanceAxiomRepr(props) {
 			props.unsatisfiedAxioms,
 			props.axiom,
 			props.onWhyNotWhatQuery,
-			props.onWhyNotNumHover,
+			props.onWhyNotHover,
 			props.queryTrigger,
 			props.qmenuPos
 		);
@@ -53,8 +53,8 @@ function TimeDistanceAxiomRepr(props) {
 			className="time-distance-axiom-repr"
 			style={{ cursor: "pointer", border: br }}
 			onClick={() => props.onWhyNotAxiomClick()}
-			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
-			onMouseLeave={() => props.onWhyNotNumHover([])}
+			onMouseOver={() => props.onWhyNotHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotHover([])}
 			onMouseEnter={(ev) => {
 				const domRect = ev.target.getBoundingClientRect();
 				props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);

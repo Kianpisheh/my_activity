@@ -4,6 +4,7 @@ import AxiomTypes from "../../model/AxiomTypes";
 
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/objects/Icons";
+import React from "react";
 
 function WhyNotHowToExplanations(props) {
 	const { suggestions, onWhyHowToAxiomHover } = props;
@@ -146,6 +147,41 @@ export function TemporalAdjustmentAxiom(props) {
 				)}
 			</div>
 		</div>
+	);
+}
+
+export function InteractionORAdditionAxiom(props) {
+	const { axiom, newTPs, newFPs } = props.suggestion;
+	const events = axiom.getEvents();
+
+	return (
+		<React.Fragment>
+			<div
+				className="interaction-or-axiom"
+				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+			>
+				{events.map((ev, idx) => {
+					const Icon = Icons.getIcon(pascalCase(ev), true);
+					return (
+						<React.Fragment>
+							<Icon
+								style={{
+									width: 25,
+									height: 25,
+									fill: "#3A2A0D",
+								}}
+							></Icon>
+							{idx < events.length - 1 && (
+								<span key={idx + "or_int"} style={{ fontSize: 14 }}>
+									OR
+								</span>
+							)}
+						</React.Fragment>
+					);
+				})}
+			</div>
+		</React.Fragment>
 	);
 }
 

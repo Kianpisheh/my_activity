@@ -23,7 +23,7 @@ function InteractionNegationAxiomRepr(props) {
 			props.unsatisfiedAxioms,
 			props.axiom,
 			props.onWhyNotWhatQuery,
-			props.onWhyNotNumHover,
+			props.onWhyNotHover,
 			props.queryTrigger,
 			props.qmenuPos
 		);
@@ -49,8 +49,8 @@ function InteractionNegationAxiomRepr(props) {
 				justifyContent: "center",
 			}}
 			onClick={() => props.onWhyNotAxiomClick()}
-			onMouseOver={() => props.onWhyNotNumHover(selFNIds)}
-			onMouseLeave={() => props.onWhyNotNumHover([])}
+			onMouseOver={() => props.onWhyNotHover(selFNIds)}
+			onMouseLeave={() => props.onWhyNotHover([])}
 			onMouseEnter={(ev) => {
 				const domRect = ev.target.getBoundingClientRect();
 				props.onWhyHover(domRect.x + domRect.width, domRect.y, props.axiom);

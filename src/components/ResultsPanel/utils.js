@@ -1,4 +1,4 @@
-function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx, activity) {
+function createResRects(data, type, rectSize, onRectSelection, selectedIdx, highlightedIdx, borderedIdx, activity) {
 	let color = "#CE3131";
 	let opacity = 1;
 	let res = [];
@@ -50,7 +50,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 					}
 
 					// new false positives
-					if (
+					else if (
 						data &&
 						data["FP"] &&
 						data["newFPs"].includes(r) &&
@@ -60,7 +60,16 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 						color = "url(#gradient3)";
 					}
 
-					// new true positives
+					// untouched false positives
+					else if (
+						data &&
+						data["FP"] &&
+						data["newFPs"].includes(r) &&
+						data["FP"].includes(r) &&
+						data["queryMode"]
+					) {
+						color = "#CE3131";
+					}
 					if (
 						data &&
 						data["TP"] &&
@@ -68,6 +77,7 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 						!data["TP"].includes(r) &&
 						data["queryMode"]
 					) {
+						// new true positives
 						color = "url(#gradient)";
 					}
 
@@ -96,6 +106,10 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 						fi = "drop-shadow(0px 0px 5px rgb(255 0 0 / 0.9))";
 					}
 
+					// style instances that are within the slider time limit
+					if (borderedIdx && borderedIdx.includes(r)) {
+						fi = "drop-shadow(0px 0px 5px rgb(0 255 0 / 0.9))";
+					}
 					if (data["AllFPs"] && data["FN"]) {
 						if (idx < data["TP"].length && data["AllFPs"].includes(data["TP"][idx])) {
 							color = "#4EAB2B";

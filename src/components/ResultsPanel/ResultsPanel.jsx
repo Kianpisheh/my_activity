@@ -10,6 +10,7 @@ function ResultsPanel(props) {
 		selectedInstancesIdx,
 		explanationStatus,
 		highlightedInstancesIdx,
+		enclosedTimeSliderInstances,
 		onQuery,
 		newTPs,
 		newFPs,
@@ -54,6 +55,7 @@ function ResultsPanel(props) {
 				props.onInstanceSelection,
 				selectedInstancesIdx,
 				highlightedInstancesIdx,
+				enclosedTimeSliderInstances,
 				activity
 			)
 		);
@@ -85,6 +87,7 @@ function ResultsPanel(props) {
 						props.onInstanceSelection,
 						selectedInstancesIdx,
 						highlightedInstancesIdx,
+						enclosedTimeSliderInstances,
 						activity
 					)
 				);

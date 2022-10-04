@@ -38,6 +38,8 @@ import ResultsPanel from "./components/ResultsPanel/ResultsPanel";
 
 import EventStat from "./model/EventStat";
 
+import { getNewDurationAxiom } from "./components/HowToPanel/WhySuggestions";
+
 import handleInstanceSelection from "./components/ResultsPanel/handler";
 import QueryTrigger from "./model/QueryTrigger";
 
@@ -72,6 +74,7 @@ function App() {
 	const [classificationRes, setClassificationRes] = useState({});
 	const [explanationStatus, setExplanationStatus] = useState(ExpStatus.NONE);
 	const [floatingCoords, setFloatingCoords] = useState([-1, -1]);
+	const [enclosedTimeSliderInstances, setEnclosedTimeSliderInstances] = useState([]);
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -219,7 +222,9 @@ function App() {
 					constraints: [],
 				})
 			);
-			logEvent(newActivities[newID].getName(), "activity", "activity_addition", dataset + "-" + enteredUser);
+			if (newActivities[newID]) {
+				logEvent(newActivities[newID].getName(), "activity", "activity_addition", dataset + "-" + enteredUser);
+			}
 			setActivities(newActivities);
 			setCurrentActivityIdx(newActivities.length - 1);
 			updateDatabase(newActivities[newActivities.length - 1], "update", dataset);
@@ -385,6 +390,8 @@ function App() {
 		});
 	}
 
+	const suggestion4 = getNewDurationAxiom([...activities], currentActivity, activityInstances);
+
 	return (
 		<div
 			className="App"
@@ -544,7 +551,7 @@ function App() {
 								activityInstances={activityInstances}
 								selectedInstancesIdx={selectedInstancesIdx}
 								classificationResult={classificationRes[currentActivity?.getName()]}
-								onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+								onWhyNotHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 								whyQueryMode={whyQueryMode}
 								queryTrigger={queryTrigger}
 								qmenuPos={qmenuPos}
@@ -583,7 +590,7 @@ function App() {
 							activity={currentActivity}
 							instances={activityInstances}
 							selectedInstancesIdx={selectedInstancesIdx}
-							onWhyNotNumHover={(indeces) => setHighlightedInstancesIdx(indeces)}
+							onWhyNotHover={(indeces) => setHighlightedInstancesIdx(indeces)}
 							messageCallback={onAxiomPaneMessage}
 							eventStats={eventStats}
 							queryTrigger={queryTrigger}
@@ -637,6 +644,10 @@ function App() {
 									setWhyHowToSuggestions(null);
 								}
 							}}
+							onTimeSliderChange={(instancesIdx) => {
+								setEnclosedTimeSliderInstances(instancesIdx);
+								console.log(instancesIdx);
+							}}
 						></HowToPanel2>
 					</div>
 					<div id="explanations">
@@ -646,6 +657,7 @@ function App() {
 							onInstanceClick={handleInstanceClick}
 							classificationResult={classificationRes}
 							selectedInstancesIdx={selectedInstancesIdx}
+							enclosedTimeSliderInstances={enclosedTimeSliderInstances}
 							currentActivity={currentActivity}
 							newTPs={newTPs}
 							newFPs={newFPs}

@@ -27,27 +27,29 @@ function EventStatExplanation(props) {
 	if (events.length === 1) {
 		for (const act of activities) {
 			durationRanges[act] = EventStat.getStatsDurationRange(stats, act);
-			coverages[act] = EventStat.getCoverageNums(stats, act);
+			coverages[act] = EventStat.getCoverage(stats, act);
 			durations[act] = EventStat.getStatsDurations(stats, act);
 		}
 	} else if (events.length === 2) {
 		for (const act of activities) {
 			timeDistanceRanges[act] = EventStat.getStatsTimeDistanceRange(stats, act);
-			coverages[act] = EventStat.getCoverageNums(stats, act);
+			coverages[act] = EventStat.getCoverage(stats, act);
 			timeDistances[act] = EventStat.getStatsTimeDistances(stats, act);
-			ORCoverages[act] = EventStat.getORCoverageNum(stats, act);
+			ORCoverages[act] = EventStat.getORCoverage(stats, act);
 		}
 	} else if (events.length > 2) {
 		for (const act of activities) {
-			coverages[act] = EventStat.getCoverageNums(stats, act);
-			ORCoverages[act] = EventStat.getORCoverageNum(stats, act);
+			coverages[act] = EventStat.getCoverage(stats, act);
+			ORCoverages[act] = EventStat.getORCoverage(stats, act);
 		}
 	}
 
 	logEvent(
 		{
-			coverageAND: coverages,
-			coverageOR: ORCoverages,
+			coverageAND: coverages.length,
+			coverageANDIdx: coverages,
+			coverageOR: ORCoverages.length,
+			coverageORIdx: ORCoverages,
 			numActivity: numActivity,
 			timeDistances: timeDistances,
 			timeDistanceRanges: timeDistanceRanges,
@@ -61,7 +63,6 @@ function EventStatExplanation(props) {
 	return (
 		<div className="stats-container">
 			<div id="AND-stats">
-				messageCallback={props.messageCallback}
 				<EventStatsIconsAND
 					events={stats[0].events}
 					messageCallback={props.messageCallback}
@@ -73,13 +74,19 @@ function EventStatExplanation(props) {
 					durationRanges={durationRanges}
 					timeDistances={timeDistances}
 					durations={durations}
+					onWhyNotHover={props.onWhyNotHover}
+					onTimeSliderChange={props.onTimeSliderChange}
 				></EventStatsAND>
 			</div>
 			{events.length > 1 && <hr id="divider" style={{ marginTop: 3, marginBottom: 3 }} />}
 			{events.length > 1 && (
 				<div id="OR-stats">
 					<EventStatsIconsOR events={stats[0].events}></EventStatsIconsOR>
-					<EventStatsOR coverages={ORCoverages} numActivity={numActivity}></EventStatsOR>
+					<EventStatsOR
+						coverages={ORCoverages}
+						numActivity={numActivity}
+						onWhyNotHover={props.onWhyNotHover}
+					></EventStatsOR>
 				</div>
 			)}
 		</div>

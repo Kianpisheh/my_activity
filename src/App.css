@@ -75,7 +75,8 @@ body,
 
 #how-to-panel {
 	border-top: 1px solid var(--borders);
-	height: 100%;
+	max-height: inherit;
+	box-sizing: border-box;
 }
 
 #dataset-pane {

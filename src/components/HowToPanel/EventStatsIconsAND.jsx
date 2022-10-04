@@ -111,23 +111,25 @@ function EventStatsIconsAND(props) {
 	return (
 		<div
 			className="stat-events-container"
-			style={{ display: "flex" }}
+			style={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start" }}
 			onMouseEnter={() => setHovered(true)}
 			onMouseLeave={() => setHovered(false)}
 		>
 			{statRepr}
-			{hovered && (
-				<button
-					key={0}
-					width={0}
-					className="remove-axiom-btn"
-					onClick={() => {
-						props.messageCallback(AxiomTypes.MSG_CLOSE_EVENT_STATS, {});
-					}}
-				>
-					X
-				</button>
-			)}
+			{
+				<div>
+					<button
+						key={0}
+						width={0}
+						className="remove-axiom-btn"
+						onClick={() => {
+							props.messageCallback(AxiomTypes.MSG_CLOSE_EVENT_STATS, {});
+						}}
+					>
+						X
+					</button>
+				</div>
+			}
 		</div>
 	);
 }

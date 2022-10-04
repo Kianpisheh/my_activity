@@ -34,7 +34,7 @@ function WhyNotExplanation(props) {
 				<TimeDistanceAxiomRepr
 					queryTrigger={props.queryTrigger}
 					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyNotNumHover={props.onWhyNotNumHover}
+					onWhyNotHover={props.onWhyNotHover}
 					numInstances={numInstances}
 					unsatisfiedAxioms={unsatisfiedAxioms}
 					onWhyHover={props.onWhyHover}
@@ -50,7 +50,7 @@ function WhyNotExplanation(props) {
 				<DurationAxiomRepr
 					queryTrigger={props.queryTrigger}
 					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyNotNumHover={props.onWhyNotNumHover}
+					onWhyNotHover={props.onWhyNotHover}
 					numInstances={numInstances}
 					onWhyHover={props.onWhyHover}
 					activity={activity}
@@ -66,7 +66,7 @@ function WhyNotExplanation(props) {
 				<InteractionAxiomRepr
 					queryTrigger={props.queryTrigger}
 					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyNotNumHover={props.onWhyNotNumHover}
+					onWhyNotHover={props.onWhyNotHover}
 					numInstances={numInstances}
 					onWhyHover={props.onWhyHover}
 					activity={activity}
@@ -82,7 +82,7 @@ function WhyNotExplanation(props) {
 				<InteractionNegationAxiomRepr
 					queryTrigger={props.queryTrigger}
 					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyNotNumHover={props.onWhyNotNumHover}
+					onWhyNotHover={props.onWhyNotHover}
 					numInstances={numInstances}
 					onWhyHover={props.onWhyHover}
 					activity={activity}
@@ -98,7 +98,7 @@ function WhyNotExplanation(props) {
 				<InteractionORAxiomRepr
 					queryTrigger={props.queryTrigger}
 					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-					onWhyNotNumHover={props.onWhyNotNumHover}
+					onWhyNotHover={props.onWhyNotHover}
 					numInstances={numInstances}
 					onWhyHover={props.onWhyHover}
 					activity={activity}

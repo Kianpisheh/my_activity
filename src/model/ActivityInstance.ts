@@ -37,6 +37,11 @@ class ActivityInstance {
 		return this.events;
 	}
 
+	getUniqueEvents() {
+		const evs = this.getEventList();
+		return [...new Set(evs)];
+	}
+
 	setEvents(events: ActivityInstanceEvent[]) {
 		this.events = events;
 	}

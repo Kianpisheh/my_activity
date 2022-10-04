@@ -196,7 +196,7 @@ function ActivityAxiomPane(props) {
 							onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 							onWhyWhatQuery={props.onWhyWhatQuery}
 							activityInstances={props.activityInstances}
-							onWhyNotNumHover={props.onWhyNotNumHover}
+							onWhyNotHover={props.onWhyNotHover}
 							classificationResult={props.classificationResult}
 							activity={props.activity}
 							selectedInstancesIdx={props.selectedInstancesIdx}
@@ -258,7 +258,7 @@ function ActivityAxiomPane(props) {
 								onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 								onWhyWhatQuery={props.onWhyWhatQuery}
 								activityInstances={props.activityInstances}
-								onWhyNotNumHover={props.onWhyNotNumHover}
+								onWhyNotHover={props.onWhyNotHover}
 								classificationResult={props.classificationResult}
 								activity={props.activity}
 								selectedInstancesIdx={props.selectedInstancesIdx}
@@ -327,7 +327,7 @@ function ActivityAxiomPane(props) {
 										onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 										onWhyWhatQuery={props.onWhyWhatQuery}
 										activityInstances={props.activityInstances}
-										onWhyNotNumHover={props.onWhyNotNumHover}
+										onWhyNotHover={props.onWhyNotHover}
 										classificationResult={props.classificationResult}
 										activity={props.activity}
 										selectedInstancesIdx={props.selectedInstancesIdx}
@@ -437,7 +437,7 @@ function ActivityAxiomPane(props) {
 									onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 									onWhyWhatQuery={props.onWhyWhatQuery}
 									activityInstances={props.activityInstances}
-									onWhyNotNumHover={props.onWhyNotNumHover}
+									onWhyNotHover={props.onWhyNotHover}
 									classificationResult={props.classificationResult}
 									activity={props.activity}
 									selectedInstancesIdx={props.selectedInstancesIdx}

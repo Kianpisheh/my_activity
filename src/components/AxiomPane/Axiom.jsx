@@ -29,7 +29,7 @@ function Axiom(props) {
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				classificationResult={props.classificationResult}
 				activity={props.activity}
 				selectedInstancesIdx={props.selectedInstancesIdx}
@@ -57,7 +57,7 @@ function Axiom(props) {
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				classificationResult={props.classificationResult}
 				activity={props.activity}
 				selectedInstancesIdx={props.selectedInstancesIdx}
@@ -85,7 +85,7 @@ function Axiom(props) {
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				classificationResult={props.classificationResult}
 				activity={props.activity}
 				selectedInstancesIdx={props.selectedInstancesIdx}
@@ -112,7 +112,7 @@ function Axiom(props) {
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
 				onQuestionMenu={props.onQuestionMenu}
@@ -133,7 +133,7 @@ function Axiom(props) {
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
 				onWhyWhatQuery={props.onWhyWhatQuery}
 				activityInstances={props.activityInstances}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				whyQueryMode={props.whyQueryMode}
 				selectedInstancesIdx={props.selectedInstancesIdx}
 				onQuestionMenu={props.onQuestionMenu}
@@ -149,7 +149,7 @@ function Axiom(props) {
 
 export default Axiom;
 
-export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyNotNumHover, queryTrigger, qmenuPos) {
+export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyNotHover, queryTrigger, qmenuPos) {
 	let numnum = null;
 
 	if (queryTrigger === "") {
@@ -162,8 +162,8 @@ export function getWhyNotNum(unsatisfiedAxioms, axiom, onWhyNotWhatQuery, onWhyN
 			numnum = (
 				<div
 					style={{ width: 15, height: 15, cursor: "pointer" }}
-					onMouseOver={() => onWhyNotNumHover(selFNIds)}
-					onMouseLeave={() => onWhyNotNumHover([])}
+					onMouseOver={() => onWhyNotHover(selFNIds)}
+					onMouseLeave={() => onWhyNotHover([])}
 					onClick={(ev) => {
 						if (qmenuPos[0] > 0) {
 							onWhyNotWhatQuery(-1, -1, ax, QueryTrigger.WHY_NOT);

@@ -60,11 +60,146 @@ export function getWhyHowToSuggestions(
 			"FP"
 		);
 		suggestions = suggestion3;
+		//const suggestion4 = getNewDurationAxiom([...activities], currentActivity, instances);
 	}
+
+	const suggestions5 = getInteractionORAxiom(
+		[...activities],
+		currentActivity,
+		instances,
+		selectedFPs,
+		classificationResult,
+		-1
+	);
+
+	suggestions = suggestions.concat(suggestions5);
 
 	//suggestions = checkDuplicate(suggestions);
 
 	return suggestions;
+}
+
+function getInteractionORAxiom(
+	activities: Activity[],
+	currentActivity: Activity,
+	instances: ActivityInstance[],
+	selectedFPs: number[],
+	classificationResult: { [resType: string]: any },
+	TPNumTh: number
+) {
+	const targetInstances = instances.filter((instance) => instance.getType() === currentActivity.getName());
+	const selectedInstances = selectedFPs.map((idx) => instances[idx]);
+	let targetInstancesEventsUnion = targetInstances.map((instance) => instance.getUniqueEvents()).flat();
+
+	let selectedFPInstancesEventsUnion: string[] = [];
+	for (let i = 0; i < selectedInstances.length; i++) {
+		selectedFPInstancesEventsUnion = selectedFPInstancesEventsUnion.concat(
+			selectedInstances[i].getUniqueEvents().flat()
+		);
+	}
+
+	selectedFPInstancesEventsUnion = [...new Set(selectedFPInstancesEventsUnion)];
+
+	// const exclusiveTargetInstancesEventsUnion = targetInstancesEventsUnion.filter(
+	// 	(ev) => !selectedFPInstancesEventsUnion.includes(ev)
+	// );
+
+	const exclusiveTargetInstancesEventsUnion = [...targetInstancesEventsUnion];
+
+	let exclusiveTargetInstancesEventsUnionCount: { [ev: string]: number } = {};
+	for (const ev of exclusiveTargetInstancesEventsUnion) {
+		exclusiveTargetInstancesEventsUnionCount[ev] = exclusiveTargetInstancesEventsUnionCount[ev]
+			? exclusiveTargetInstancesEventsUnionCount[ev] + 1
+			: 1;
+	}
+
+	// target samples event coverage
+	let eventCoverage: { [ev: string]: number[] } = {};
+	for (const ev of exclusiveTargetInstancesEventsUnion) {
+		for (let i = 0; i < instances.length; i++) {
+			const instance = instances[i];
+			if (instance.getType() === currentActivity.getName() && instance.hasEvent(ev)) {
+				if (eventCoverage[ev] && !eventCoverage[ev].includes(i)) {
+					eventCoverage[ev].push(i);
+				} else {
+					eventCoverage[ev] = [i];
+				}
+			}
+		}
+	}
+
+	// find Logical OR events
+	let OREvents = [];
+	for (let i = 0; i < Object.keys(exclusiveTargetInstancesEventsUnionCount).length; i++) {
+		for (let j = i + 1; j < Object.keys(exclusiveTargetInstancesEventsUnionCount).length; j++) {
+			const ev1 = Object.keys(exclusiveTargetInstancesEventsUnionCount)[i];
+			const ev2 = Object.keys(exclusiveTargetInstancesEventsUnionCount)[j];
+			const cnt1 = exclusiveTargetInstancesEventsUnionCount[ev1];
+			const cnt2 = exclusiveTargetInstancesEventsUnionCount[ev2];
+			if (TPNumTh === -1) {
+				TPNumTh = targetInstances.length;
+			}
+			if (cnt1 + cnt2 >= TPNumTh) {
+				let union = new Set(eventCoverage[ev1].concat(eventCoverage[ev2]));
+				if (union.size >= TPNumTh) {
+					OREvents.push([ev1, ev2]);
+				}
+			}
+		}
+	}
+
+	// craete the the suggestions objects
+	let suggestions = [];
+	let improvments = [];
+	for (let i = 0; i < OREvents.length; i++) {
+		const axiom = new AxiomData({ type: AxiomTypes.TYPE_OR_INTERACTION, events: OREvents[i], th1: -1, th2: -1 });
+		const newAxiomSet = currentActivity.getAxioms().concat([axiom]);
+
+		const whatIfRes = updateClassificationResults(
+			classificationResult,
+			currentActivity,
+			axiom,
+			newAxiomSet,
+			instances,
+			[...activities]
+		);
+
+		// any improvements?
+		const improvement = selectedFPs.filter((idx) => !whatIfRes["newFPs"][currentActivity.getName()].includes(idx));
+		improvments.push({ i: improvement.length });
+		suggestions.push(
+			new HowToAxiom(
+				"interaction_or",
+				axiom,
+				0,
+				null,
+				"FN_SAME",
+				JSON.parse(JSON.stringify(whatIfRes["newTPs"])),
+				JSON.parse(JSON.stringify(whatIfRes["newFPs"]))
+			)
+		);
+	}
+
+	let rankedSuggestions: HowToAxiom[] = [];
+	if (suggestions[0]) {
+		rankedSuggestions = [suggestions[0]];
+	}
+
+	for (let i = 1; i < suggestions.length; i++) {
+		const imp = Object.values(improvments[i])[0];
+		for (let j = 0; j < rankedSuggestions.length; j++) {
+			const improvement = selectedFPs.filter(
+				(idx) => !rankedSuggestions[j]["newFPs"][currentActivity.getName()].includes(idx)
+			);
+			if (imp >= improvement.length) {
+				rankedSuggestions.splice(j, 0, suggestions[i]);
+				break;
+			}
+		}
+	}
+	// sort suggestion based on num of FP resolvings
+
+	return rankedSuggestions;
 }
 
 export function getAxiomStats(instances: ActivityInstance[], axiom: AxiomData) {
@@ -274,6 +409,33 @@ function getFNSameTimeContractionSuggestion(
 	}
 
 	return suggestions;
+}
+
+export function getNewDurationAxiom(activities: Activity[], currentActivity: Activity, instances: ActivityInstance[]) {
+	if (!currentActivity) {
+		return;
+	}
+	const candidateEvents = currentActivity.getEvents();
+	let targetActivityMins = [];
+	let targetActivityMaxs = [];
+	let otherActivitiesMins = [];
+	let otherActivitiesMaxs = [];
+	for (const candidateEvent of candidateEvents) {
+		for (const instance of instances) {
+			const durations = instance.getDurations(candidateEvent);
+			if (durations.length === 0) {
+				continue;
+			}
+			if (instance.getType() === currentActivity.getName()) {
+				targetActivityMaxs.push(Math.max(...durations));
+				targetActivityMins.push(Math.min(...durations));
+			} else {
+				otherActivitiesMaxs.push(Math.max(...durations));
+				otherActivitiesMins.push(Math.min(...durations));
+			}
+		}
+	}
+	let x = 1;
 }
 
 function checkDuplicate(suggestions: HowToAxiom[]) {

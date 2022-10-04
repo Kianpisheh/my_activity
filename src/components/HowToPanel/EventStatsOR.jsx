@@ -4,8 +4,13 @@ function EventStatsOR(props) {
 	return Object.keys(coverages).map((act, idx) => {
 		return (
 			act !== "" &&
-			parseInt(coverages[act]) !== 0 && (
-				<div key={idx} className="single-stat-container">
+			parseInt(coverages[act].length) !== 0 && (
+				<div
+					key={idx}
+					className="single-stat-container"
+					onMouseOver={() => props.onWhyNotHover(coverages[act])}
+					onMouseLeave={() => props.onWhyNotHover([])}
+				>
 					<span className="stat-activity-title" style={{ fontSize: 13, fontWeight: 600 }}>
 						{act}
 					</span>
@@ -15,7 +20,7 @@ function EventStatsOR(props) {
 								<span style={{ fontSize: 12 }}>Occurrance:{"  "}</span>
 								<span style={{ fontSize: 25, color: "var(--explanation)" }}>
 									{" "}
-									{coverages[act] + " / " + numActivity[act]}
+									{coverages[act].length + " / " + numActivity[act]}
 								</span>
 								<span style={{ fontSize: 12, marginLeft: "0.1em" }}> time(s)</span>
 							</span>

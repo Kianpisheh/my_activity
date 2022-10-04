@@ -36,7 +36,7 @@ function HowToPanel2(props) {
 			<WhyNotExplanation
 				queryTrigger={props.queryTrigger}
 				onWhyNotWhatQuery={props.onWhyNotWhatQuery}
-				onWhyNotNumHover={props.onWhyNotNumHover}
+				onWhyNotHover={props.onWhyNotHover}
 				numInstances={numInstances}
 				activity={activity}
 				onWhyHover={props.onWhyHover}
@@ -73,6 +73,8 @@ function HowToPanel2(props) {
 				stats={props.eventStats}
 				instances={props.instances}
 				messageCallback={props.messageCallback}
+				onWhyNotHover={props.onWhyNotHover}
+				onTimeSliderChange={props.onTimeSliderChange}
 			></EventStatExplanation>
 		);
 	}
