@@ -3,7 +3,7 @@ import "./RangeVis.css";
 
 function RangeVis(props) {
 	// dimentions
-	let w = 180;
+	const w = props.sliderWidth;
 	if (props.w) {
 		w = props.w;
 	}
@@ -11,9 +11,8 @@ function RangeVis(props) {
 
 	const [thresholdChange, setThresholdChange] = useState([false, false]);
 	const [refX, setRefX] = useState(0);
-	const [sliderPos, setSliderPos] = useState([5, (2 * (w - 30)) / 3]);
 
-	const { times } = props;
+	const { times, allTimes } = props;
 
 	if (times.length === 0) {
 		return;
@@ -49,19 +48,22 @@ function RangeVis(props) {
 			height={h}
 			onMouseMove={(ev) => {
 				if (thresholdChange[0]) {
-					setSliderPos([sliderPos[0] + ev.clientX - refX, sliderPos[1]]);
+					//setSliderPos([sliderPos[0] + ev.clientX - refX, props.sliderPos[1]]);
+					props.onSliderPosChange(props.sliderPos[0] + ev.clientX - refX, props.sliderPos[1]);
 					setRefX(ev.clientX);
 					const instancesIdx = getEnclosedInstances(
-						sliderPos[0] + ev.clientX - refX,
-						sliderPos[1],
+						props.sliderPos[0] + ev.clientX - refX,
+						props.sliderPos[1],
 						props.minVal,
 						props.maxVal,
 						w,
-						times
+						times,
+						allTimes
 					);
 					props.onTimeSliderChange(instancesIdx);
 				} else if (thresholdChange[1]) {
-					setSliderPos([sliderPos[0], sliderPos[1] + ev.clientX - refX]);
+					//setSliderPos([sliderPos[0], sliderPos[1] + ev.clientX - refX]);
+					props.onSliderPosChange(props.sliderPos[0], props.sliderPos[1] + ev.clientX - refX);
 					setRefX(ev.clientX);
 				}
 			}}
@@ -86,8 +88,8 @@ function RangeVis(props) {
 			})}
 			<line
 				key={props.idx + "ln2"}
-				x1={sliderPos[0]}
-				x2={sliderPos[0]}
+				x1={props.sliderPos[0]}
+				x2={props.sliderPos[0]}
 				y1={h / 2 + 5}
 				y2={h / 2 - 5}
 				stroke="#F1258B"
@@ -102,8 +104,8 @@ function RangeVis(props) {
 			></line>
 			<line
 				key={props.idx + "ln3"}
-				x1={sliderPos[1]}
-				x2={sliderPos[1]}
+				x1={props.sliderPos[1]}
+				x2={props.sliderPos[1]}
 				y1={h / 2 + 5}
 				y2={h / 2 - 5}
 				stroke="#F1258B"
@@ -154,17 +156,19 @@ function posToTime(x, minVal, maxVal, w) {
 	return minVal + ((x - 5) * (maxVal - minVal)) / (w - 30);
 }
 
-function getEnclosedInstances(x1, x2, minVal, maxVal, w, times) {
+function getEnclosedInstances(x1, x2, minVal, maxVal, w, times, allTimes) {
 	const t1 = posToTime(x1, minVal, maxVal, w);
 	const t2 = posToTime(x2, minVal, maxVal, w);
 
 	let instancesIdx = [];
-	for (const tts of times) {
-		const idx = Object.keys(tts)[0];
-		for (const t of Object.values(tts)[0]) {
-			if (t1 <= t && t <= t2) {
-				instancesIdx.push(Number(idx));
-				break;
+	for (const act of Object.keys(allTimes)) {
+		for (const tts of allTimes[act]) {
+			const idx = Object.keys(tts)[0];
+			for (const t of Object.values(tts)[0]) {
+				if (t1 <= t && t <= t2) {
+					instancesIdx.push(Number(idx));
+					break;
+				}
 			}
 		}
 	}

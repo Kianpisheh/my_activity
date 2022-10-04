@@ -1,6 +1,10 @@
+import { useState } from "react";
 import RangeVis from "./RangeVis";
 
 function EventStatsAND(props) {
+	const sliderWidth = 180;
+	const [sliderPos, setSliderPos] = useState([5, (2 * (sliderWidth - 30)) / 3]);
+
 	const { coverages, timeDistanceRanges, numActivity, durationRanges, timeDistances, durations, onWhyNotHover } =
 		props;
 
@@ -63,10 +67,14 @@ function EventStatsAND(props) {
 									<div className="range-vis">
 										<RangeVis
 											times={timeDistances[act]}
+											allTimes={timeDistances}
 											minVal={tdMinVal}
 											maxVal={tdMaxVal}
+											sliderWidth={sliderWidth}
 											idx={idx + "timedistance" + act}
 											onTimeSliderChange={props.onTimeSliderChange}
+											sliderPos={sliderPos}
+											onSliderPosChange={(x1, x2) => setSliderPos([x1, x2])}
 										></RangeVis>
 									</div>
 								</div>
@@ -83,10 +91,14 @@ function EventStatsAND(props) {
 									<div className="range-vis">
 										<RangeVis
 											times={durations[act]}
+											allTimes={durations}
 											minVal={dMinVal}
 											maxVal={dMaxVal}
+											sliderWidth={sliderWidth}
 											idx={idx + "duration" + act}
 											onTimeSliderChange={props.onTimeSliderChange}
+											sliderPos={sliderPos}
+											onSliderPosChange={(x1, x2) => setSliderPos([x1, x2])}
 										></RangeVis>
 									</div>
 								</div>
