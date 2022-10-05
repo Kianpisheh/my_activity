@@ -3,7 +3,7 @@ import RangeVis from "./RangeVis";
 
 function EventStatsAND(props) {
 	const sliderWidth = 180;
-	const [sliderPos, setSliderPos] = useState([5, (2 * (sliderWidth - 30)) / 3]);
+	const [sliderPos, setSliderPos] = useState([10, (2 * (sliderWidth - 30)) / 3]);
 
 	const { coverages, timeDistanceRanges, numActivity, durationRanges, timeDistances, durations, onWhyNotHover } =
 		props;

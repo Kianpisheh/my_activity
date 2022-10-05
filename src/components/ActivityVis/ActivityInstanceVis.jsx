@@ -155,8 +155,6 @@ function ActivityInstanceVis(props) {
 		selectionBox = true;
 	}
 
-	console.log(quickAxiomPos);
-
 	return (
 		<div
 			id="activity-vis-container"
