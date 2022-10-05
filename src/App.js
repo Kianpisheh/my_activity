@@ -516,6 +516,7 @@ function App() {
 							merge={[true, true]}
 							onInstanceEventSelection={(ev, idx) => handleInstanceEventSelection(ev, idx)}
 							selectedInstanceEvents={selectedInstanceEvents}
+							sendMessage={onAxiomPaneMessage}
 						></ActivityInstanceVis>
 					</div>
 					<div id="activities-pane">

@@ -2,6 +2,7 @@ import "./QuickAxiom.css";
 
 import Icons from "../icons/objects/Icons";
 import { pascalCase } from "../Utils/utils";
+import AxiomTypes from "../model/AxiomTypes";
 
 function QuickAxiom(props) {
 	const iconSize = 22;
@@ -18,7 +19,17 @@ function QuickAxiom(props) {
 		<div className="quick-axiom-container">
 			<div className="quick-axiom-list">
 				<div className="qaxiom">
-					<div id="interaction-qaxiom">
+					<div
+						id="interaction-qaxiom"
+						onClick={() => {
+							props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+								events: events,
+								type: AxiomTypes.TYPE_INTERACTION,
+								th1: -1,
+								th2: -1,
+							});
+						}}
+					>
 						{events.map((ev, idx) => {
 							const Icon = Icons.getIcon(pascalCase(ev));
 							return (
@@ -34,7 +45,17 @@ function QuickAxiom(props) {
 					</div>
 				</div>
 				<div className="qaxiom">
-					<div id="interaction-qaxiom">
+					<div
+						id="interaction-qaxiom"
+						onClick={() => {
+							props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+								events: events,
+								type: AxiomTypes.TYPE_INTERACTION_NEGATION,
+								th1: -1,
+								th2: -1,
+							});
+						}}
+					>
 						{events.map((ev, idx) => {
 							const Icon = Icons.getIcon(pascalCase(ev));
 							const NotIcon = Icons.getIcon("NotFound");
@@ -71,7 +92,17 @@ function QuickAxiom(props) {
 				</div>
 				{events.length > 1 && (
 					<div className="qaxiom">
-						<div id="interaction-or-qaxiom">
+						<div
+							id="interaction-or-qaxiom"
+							onClick={() => {
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_OR_INTERACTION,
+									th1: -1,
+									th2: -1,
+								});
+							}}
+						>
 							{events.map((ev, idx) => {
 								const Icon = Icons.getIcon(pascalCase(ev));
 								const xIcon = 150 / 2 - 3 * iconSize + idx * (iconSize + 40);
@@ -101,7 +132,23 @@ function QuickAxiom(props) {
 				)}
 				{events.length === 1 && (
 					<div className="qaxiom">
-						<div id="duration-qaxiom">
+						<div
+							id="duration-qaxiom"
+							onClick={() => {
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_INTERACTION,
+									th1: -1,
+									th2: -1,
+								});
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_DURATION,
+									th1: 5,
+									th2: 20,
+								});
+							}}
+						>
 							<div className="q-icon" key={"icdu"} style={{ width: 120, height: 1.3 * iconSize }}>
 								<svg height={40}>
 									<Icon1
@@ -125,7 +172,23 @@ function QuickAxiom(props) {
 				)}
 				{events.length === 2 && (
 					<div className="qaxiom">
-						<div id="time-distance-qaxiom">
+						<div
+							id="time-distance-qaxiom"
+							onClick={() => {
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_INTERACTION,
+									th1: -1,
+									th2: -1,
+								});
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_TIME_DISTANCE,
+									th1: 5,
+									th2: 20,
+								});
+							}}
+						>
 							<div className="q-icon" key={"ictd"} style={{ width: 120, height: 1.3 * iconSize }}>
 								<svg height={40}>
 									<Icon1

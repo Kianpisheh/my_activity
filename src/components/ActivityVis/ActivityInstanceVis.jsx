@@ -177,7 +177,10 @@ function ActivityInstanceVis(props) {
 			</span>
 			{quickAxiomPos[0] > 0 && (
 				<div id="quick-axiom" style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}>
-					<QuickAxiom events={Object.keys(props.selectedInstanceEvents)}></QuickAxiom>
+					<QuickAxiom
+						events={Object.keys(props.selectedInstanceEvents)}
+						sendMessage={props.sendMessage}
+					></QuickAxiom>
 				</div>
 			)}
 			<div className="graph-container" onMouseUp={() => setCount(count + 1)}>
