@@ -21,6 +21,7 @@ import EventFilter from "./EventFilter";
 import EventIconThumb from "./EventIconThumb";
 import ScalingTab from "./ScalingTab";
 import RegionSelect from "react-region-select";
+import QuickAxiom from "../QuickAxiom";
 
 function ActivityInstanceVis(props) {
 	const [count, setCount] = useState(0);
@@ -28,6 +29,7 @@ function ActivityInstanceVis(props) {
 	const [filters, setFilters] = useState("");
 	const [regions, setRegions] = useState([]);
 	const [selected, setSelected] = useState({});
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
 
 	const { ic_w, scale, merge_th, nonlScale } = config;
 
@@ -153,14 +155,34 @@ function ActivityInstanceVis(props) {
 		selectionBox = true;
 	}
 
+	console.log(quickAxiomPos);
+
 	return (
-		<div className="activity-vis-container">
+		<div
+			id="activity-vis-container"
+			onContextMenu={(ev) => {
+				setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+			}}
+			onClick={() => setQuickAxiomPos([-1, -1])}
+			onKeyDown={(ev) => {
+				if (ev.code !== "Escape") {
+					return;
+				}
+				setQuickAxiomPos([-1, -1]);
+				props.onInstanceEventSelection("", -1);
+			}}
+		>
 			<span className="section-title" id="title">
 				Activity events
 			</span>
+			{quickAxiomPos[0] > 0 && (
+				<div id="quick-axiom" style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}>
+					<QuickAxiom events={Object.keys(props.selectedInstanceEvents)}></QuickAxiom>
+				</div>
+			)}
 			<div className="graph-container" onMouseUp={() => setCount(count + 1)}>
 				<div className="tools-div">
-					<EventFilter onNewFilter={handleNewFilter} filters={filters}></EventFilter>
+					{/* <EventFilter onNewFilter={handleNewFilter} filters={filters}></EventFilter> */}
 					<ScalingTab key={1} idx={0} onScaleChange={props.onScaleChange}></ScalingTab>
 				</div>
 				<div

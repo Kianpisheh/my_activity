@@ -283,6 +283,11 @@ function App() {
 	}
 
 	function handleInstanceEventSelection(event, idx) {
+		if (idx === -1) {
+			setSelectedInstanceEvents({});
+			return;
+		}
+
 		const selectedEvents = Object.keys(selectedInstanceEvents);
 
 		if (selectedEvents.includes(event)) {
