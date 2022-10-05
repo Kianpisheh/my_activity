@@ -39,7 +39,22 @@ function EventStatsAND(props) {
 						key={idx}
 						className="single-stat-container"
 						onMouseOver={() => onWhyNotHover(coverages[act])}
-						onMouseLeave={() => onWhyNotHover([])}
+						onMouseLeave={() => {
+							onWhyNotHover([]);
+							props.onTimeSliderChange([]);
+						}}
+						onMouseEnter={() => {
+							const instancesIdx = getEnclosedInstances(
+								sliderPos[0],
+								sliderPos[1],
+								tdMinVal === Infinity ? dMinVal : tdMinVal,
+								tdMaxVal === -Infinity ? dMaxVal : tdMaxVal,
+								sliderWidth,
+								timeDistances[act] ? timeDistances[act] : durations[act],
+								timeDistances && timeDistances.length ? timeDistances : durations
+							);
+							props.onTimeSliderChange(instancesIdx);
+						}}
 					>
 						<span className="stat-activity-title" style={{ fontSize: 13, fontWeight: 600 }}>
 							{act}
@@ -109,6 +124,30 @@ function EventStatsAND(props) {
 			);
 		});
 	}
+}
+
+function posToTime(x, minVal, maxVal, w) {
+	return minVal + ((x - 5) * (maxVal - minVal)) / (w - 30);
+}
+
+function getEnclosedInstances(x1, x2, minVal, maxVal, w, times, allTimes) {
+	const t1 = posToTime(x1, minVal, maxVal, w);
+	const t2 = posToTime(x2, minVal, maxVal, w);
+
+	let instancesIdx = [];
+	for (const act of Object.keys(allTimes)) {
+		for (const tts of allTimes[act]) {
+			const idx = Object.keys(tts)[0];
+			for (const t of Object.values(tts)[0]) {
+				if (t1 <= t && t <= t2) {
+					instancesIdx.push(Number(idx));
+					break;
+				}
+			}
+		}
+	}
+
+	return instancesIdx;
 }
 
 export default EventStatsAND;

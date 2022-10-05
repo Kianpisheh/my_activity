@@ -114,9 +114,6 @@ function createResRects(data, type, rectSize, onRectSelection, selectedIdx, high
 						if (idx < data["TP"].length && data["AllFPs"].includes(data["TP"][idx])) {
 							color = "#4EAB2B";
 						}
-						// const fnIdx = data["FN"][idx - data["TP"].length];
-						// if (data["AllFPs"].includes(fnIdx) && data["TP"].includes(fnIdx)) {
-						// }
 					}
 
 					return (

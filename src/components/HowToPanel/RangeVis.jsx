@@ -4,9 +4,6 @@ import "./RangeVis.css";
 function RangeVis(props) {
 	// dimentions
 	const w = props.sliderWidth;
-	if (props.w) {
-		w = props.w;
-	}
 	const h = 40;
 
 	const [thresholdChange, setThresholdChange] = useState([false, false]);
@@ -47,8 +44,7 @@ function RangeVis(props) {
 			width={w}
 			height={h}
 			onMouseMove={(ev) => {
-				if (thresholdChange[0]) {
-					//setSliderPos([sliderPos[0] + ev.clientX - refX, props.sliderPos[1]]);
+				if (thresholdChange[0] && props.sliderPos[0] + ev.clientX - refX < props.sliderPos[1]) {
 					props.onSliderPosChange(props.sliderPos[0] + ev.clientX - refX, props.sliderPos[1]);
 					setRefX(ev.clientX);
 					const instancesIdx = getEnclosedInstances(
@@ -61,13 +57,13 @@ function RangeVis(props) {
 						allTimes
 					);
 					props.onTimeSliderChange(instancesIdx);
-				} else if (thresholdChange[1]) {
-					//setSliderPos([sliderPos[0], sliderPos[1] + ev.clientX - refX]);
+				} else if (thresholdChange[1] && props.sliderPos[1] + ev.clientX - refX > props.sliderPos[0]) {
 					props.onSliderPosChange(props.sliderPos[0], props.sliderPos[1] + ev.clientX - refX);
 					setRefX(ev.clientX);
 				}
 			}}
-			onMouseUp={(ev) => setThresholdChange([false, false])}
+			onMouseUp={() => setThresholdChange([false, false])}
+			onMouseLeave={() => setThresholdChange([false, false])}
 		>
 			<line
 				key={props.idx + "ln"}
