@@ -65,6 +65,16 @@ function RangeVis(props) {
 					) {
 						props.onSliderPosChange(props.sliderPos[0], props.sliderPos[1] + ev.clientX - refX);
 						setRefX(ev.clientX);
+						const instancesIdx = getEnclosedInstances(
+							props.sliderPos[0],
+							props.sliderPos[1] + ev.clientX - refX,
+							props.minVal,
+							props.maxVal,
+							w,
+							times,
+							allTimes
+						);
+						props.onTimeSliderChange(instancesIdx);
 					}
 				}
 			}}

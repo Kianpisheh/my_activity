@@ -1,6 +1,15 @@
+import { useState } from "react";
+
+import QuickAxiom from "../QuickAxiom";
+
 function EventStatsOR(props) {
+	const sliderWidth = 180;
+	const [sliderPos, setSliderPos] = useState([10, (2 * (sliderWidth - 30)) / 3]);
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
+
 	const { coverages, numActivity } = props;
 
+	const events = Object.keys(props.selectedInstanceEvents);
 	return Object.keys(coverages).map((act, idx) => {
 		return (
 			act !== "" &&
@@ -10,7 +19,19 @@ function EventStatsOR(props) {
 					className="single-stat-container"
 					onMouseOver={() => props.onWhyNotHover(coverages[act])}
 					onMouseLeave={() => props.onWhyNotHover([])}
+					onClick={() => setQuickAxiomPos([-1, -1])}
+					onContextMenu={(ev) => {
+						setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+					}}
 				>
+					{quickAxiomPos[0] > 0 && (
+						<div
+							id="quick-axiom"
+							style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}
+						>
+							<QuickAxiom events={events} sendMessage={props.messageCallback} onlyOR={true}></QuickAxiom>
+						</div>
+					)}
 					<span className="stat-activity-title" style={{ fontSize: 13, fontWeight: 600 }}>
 						{act}
 					</span>

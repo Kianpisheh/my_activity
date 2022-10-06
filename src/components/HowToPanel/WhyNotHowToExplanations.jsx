@@ -157,7 +157,7 @@ export function InteractionORAdditionAxiom(props) {
 	return (
 		<React.Fragment>
 			<div
-				className="interaction-or-axiom"
+				className="interaction-or-axiom temp-adj-axiom-container"
 				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 			>

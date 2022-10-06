@@ -76,6 +76,8 @@ function EventStatExplanation(props) {
 					durations={durations}
 					onWhyNotHover={props.onWhyNotHover}
 					onTimeSliderChange={props.onTimeSliderChange}
+					selectedInstanceEvents={props.selectedInstanceEvents}
+					messageCallback={props.messageCallback}
 				></EventStatsAND>
 			</div>
 			{events.length > 1 && <hr id="divider" style={{ marginTop: 3, marginBottom: 3 }} />}
@@ -86,6 +88,8 @@ function EventStatExplanation(props) {
 						coverages={ORCoverages}
 						numActivity={numActivity}
 						onWhyNotHover={props.onWhyNotHover}
+						selectedInstanceEvents={props.selectedInstanceEvents}
+						messageCallback={props.messageCallback}
 					></EventStatsOR>
 				</div>
 			)}

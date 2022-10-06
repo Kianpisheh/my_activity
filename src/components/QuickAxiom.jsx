@@ -18,78 +18,82 @@ function QuickAxiom(props) {
 	return (
 		<div className="quick-axiom-container">
 			<div className="quick-axiom-list">
-				<div className="qaxiom">
-					<div
-						id="interaction-qaxiom"
-						onClick={() => {
-							props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
-								events: events,
-								type: AxiomTypes.TYPE_INTERACTION,
-								th1: -1,
-								th2: -1,
-							});
-						}}
-					>
-						{events.map((ev, idx) => {
-							const Icon = Icons.getIcon(pascalCase(ev));
-							return (
-								<div className="q-icon" key={idx}>
-									<Icon
-										key={idx}
-										fill={Icons.getColor(pascalCase(ev))}
-										style={{ width: iconSize, height: iconSize }}
-									/>
-								</div>
-							);
-						})}
-					</div>
-				</div>
-				<div className="qaxiom">
-					<div
-						id="interaction-qaxiom"
-						onClick={() => {
-							props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
-								events: events,
-								type: AxiomTypes.TYPE_INTERACTION_NEGATION,
-								th1: -1,
-								th2: -1,
-							});
-						}}
-					>
-						{events.map((ev, idx) => {
-							const Icon = Icons.getIcon(pascalCase(ev));
-							const NotIcon = Icons.getIcon("NotFound");
-							return (
-								<div
-									className="q-icon"
-									key={idx + "neg"}
-									style={{ width: 1.3 * iconSize, height: 1.3 * iconSize }}
-								>
-									<svg height={40}>
+				{!props.onlyOR && (
+					<div className="qaxiom">
+						<div
+							id="interaction-qaxiom"
+							onClick={() => {
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_INTERACTION,
+									th1: -1,
+									th2: -1,
+								});
+							}}
+						>
+							{events.map((ev, idx) => {
+								const Icon = Icons.getIcon(pascalCase(ev));
+								return (
+									<div className="q-icon" key={idx}>
 										<Icon
-											key={idx + "neg"}
-											x={2}
+											key={idx}
 											fill={Icons.getColor(pascalCase(ev))}
-											width={iconSize}
-											height={iconSize}
+											style={{ width: iconSize, height: iconSize }}
 										/>
-										<NotIcon
-											key={idx + "neg"}
-											fill={Icons.getColor(pascalCase(ev))}
-											opacity={0.5}
-											width={1.2 * iconSize}
-											height={1.2 * iconSize}
-											style={{
-												fill: "red",
-												padding: 2,
-											}}
-										/>
-									</svg>
-								</div>
-							);
-						})}
+									</div>
+								);
+							})}
+						</div>
 					</div>
-				</div>
+				)}
+				{!props.onlyOR && (
+					<div className="qaxiom">
+						<div
+							id="interaction-qaxiom"
+							onClick={() => {
+								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+									events: events,
+									type: AxiomTypes.TYPE_INTERACTION_NEGATION,
+									th1: -1,
+									th2: -1,
+								});
+							}}
+						>
+							{events.map((ev, idx) => {
+								const Icon = Icons.getIcon(pascalCase(ev));
+								const NotIcon = Icons.getIcon("NotFound");
+								return (
+									<div
+										className="q-icon"
+										key={idx + "neg"}
+										style={{ width: 1.3 * iconSize, height: 1.3 * iconSize }}
+									>
+										<svg height={40}>
+											<Icon
+												key={idx + "neg"}
+												x={2}
+												fill={Icons.getColor(pascalCase(ev))}
+												width={iconSize}
+												height={iconSize}
+											/>
+											<NotIcon
+												key={idx + "neg"}
+												fill={Icons.getColor(pascalCase(ev))}
+												opacity={0.5}
+												width={1.2 * iconSize}
+												height={1.2 * iconSize}
+												style={{
+													fill: "red",
+													padding: 2,
+												}}
+											/>
+										</svg>
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				)}
 				{events.length > 1 && (
 					<div className="qaxiom">
 						<div
@@ -130,7 +134,7 @@ function QuickAxiom(props) {
 						</div>
 					</div>
 				)}
-				{events.length === 1 && (
+				{!props.onlyOR && events.length === 1 && (
 					<div className="qaxiom">
 						<div
 							id="duration-qaxiom"
@@ -170,7 +174,7 @@ function QuickAxiom(props) {
 						</div>
 					</div>
 				)}
-				{events.length === 2 && (
+				{!props.onlyOR && events.length === 2 && (
 					<div className="qaxiom">
 						<div
 							id="time-distance-qaxiom"

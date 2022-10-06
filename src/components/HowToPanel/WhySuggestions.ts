@@ -166,6 +166,11 @@ function getInteractionORAxiom(
 
 		// any improvements?
 		const improvement = selectedFPs.filter((idx) => !whatIfRes["newFPs"][currentActivity.getName()].includes(idx));
+		if (!improvement.length) {
+			continue;
+		}
+
+		// sort based on the improvement
 		improvments.push({ i: improvement.length });
 		suggestions.push(
 			new HowToAxiom(
@@ -197,7 +202,6 @@ function getInteractionORAxiom(
 			}
 		}
 	}
-	// sort suggestion based on num of FP resolvings
 
 	return rankedSuggestions;
 }

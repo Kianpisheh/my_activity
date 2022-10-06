@@ -605,6 +605,7 @@ function App() {
 							unsatisfiedAxioms={unsatisfiedAxioms}
 							queriedAxiom={queriedAxiom}
 							explanationStatus={explanationStatus}
+							selectedInstanceEvents={selectedInstanceEvents}
 							onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
 								logEvent(ax, "axiom", "queried_axiom_why_not_what", dataset + "-" + enteredUser);
 								setQueriedAxiom(ax);

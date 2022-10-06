@@ -75,6 +75,7 @@ function HowToPanel2(props) {
 				messageCallback={props.messageCallback}
 				onWhyNotHover={props.onWhyNotHover}
 				onTimeSliderChange={props.onTimeSliderChange}
+				selectedInstanceEvents={props.selectedInstanceEvents}
 			></EventStatExplanation>
 		);
 	}
