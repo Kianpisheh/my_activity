@@ -96,7 +96,7 @@ function WhyExplanation(props) {
 	}
 
 	return (
-		<div style={{ width: "90%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+		<div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
 			<div style={{ marginBottom: 10 }}>
 				<span className="text-explanation" style={{ color: "#5F5656", fontSize: 14, paddingBottom: 15 }}>
 					The selected {samples} {satisfies} all the defined conditions for activity

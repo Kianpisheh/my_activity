@@ -163,6 +163,20 @@ class AxiomData {
 		return true;
 	}
 
+	static updateTemporalAxiom(axioms: AxiomData[], axiomQ: AxiomData) {
+		// precondition: axiomQ is a termporal axiom
+		for (const ax of axioms) {
+			if (ax.getType() === axiomQ.getType()) {
+				if (isEqual(ax.getEvents(), axiomQ.getEvents())) {
+					ax.setTh1(axiomQ.getTh1());
+					ax.setTh2(axiomQ.getTh2());
+				}
+			}
+		}
+
+		return axioms;
+	}
+
 	static removeSubsetOR(axioms: AxiomData[]) {
 		let newAxioms: AxiomData[] = [];
 

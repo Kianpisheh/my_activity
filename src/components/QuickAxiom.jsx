@@ -148,8 +148,8 @@ function QuickAxiom(props) {
 								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
 									events: events,
 									type: AxiomTypes.TYPE_DURATION,
-									th1: 5,
-									th2: 20,
+									th1: Math.round(props.startTime),
+									th2: Math.round(props.endTime),
 								});
 							}}
 						>
@@ -188,8 +188,8 @@ function QuickAxiom(props) {
 								props.sendMessage(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
 									events: events,
 									type: AxiomTypes.TYPE_TIME_DISTANCE,
-									th1: 5,
-									th2: 20,
+									th1: Math.round(props.startTime),
+									th2: Math.round(props.endTime),
 								});
 							}}
 						>

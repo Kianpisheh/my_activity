@@ -12,6 +12,7 @@ import NoSuggestions from "./NoSuggestions";
 
 import QueryTrigger from "../../model/QueryTrigger";
 import ExpStatus from "../../model/ExpStatus";
+import AxiomTypes from "../../model/AxiomTypes";
 
 function HowToPanel2(props) {
 	const {
@@ -45,6 +46,7 @@ function HowToPanel2(props) {
 				explanationStatus={props.explanationStatus}
 				onWhyNotAxiomClick={props.onWhyNotAxiomClick}
 				ruleitems={ruleitems}
+				messageCallback={props.messageCallback}
 			></WhyNotExplanation>
 		);
 	} else if (
@@ -62,6 +64,7 @@ function HowToPanel2(props) {
 				explanationStatus={props.explanationStatus}
 				activity={activity}
 				onWhyHover={props.onWhyHover}
+				messageCallback={props.messageCallback}
 			></WhyExplanation>
 		);
 	}
@@ -118,6 +121,7 @@ function HowToPanel2(props) {
 				suggestions={whyNotHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 				ruleitems={ruleitems}
+				messageCallback={props.messageCallback}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
@@ -126,6 +130,7 @@ function HowToPanel2(props) {
 				suggestions={whyHowTosuggestions}
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 				currentActivity={activity}
+				messageCallback={props.messageCallback}
 			></WhyHowToExplanations>
 		);
 	}
@@ -156,8 +161,28 @@ function HowToPanel2(props) {
 				</span>
 			)}
 			{whyExplanation.length > 0 && (
-				<div className="why-explanation-container" style={{ marginBottom: 20 }}>
-					{[...whyExplanation]}
+				<div style={{ display: "flex", width: "85%", justifyContent: "center" }}>
+					<div className="why-explanation-container" style={{ marginBottom: 20 }}>
+						{[...whyExplanation]}
+					</div>
+					<div style={{ width: 0 }}>
+						<button
+							key={0}
+							style={{ backgroundColor: "#E26F5F" }}
+							className="remove-axiom-btn"
+							onClick={() => {
+								let message = "";
+								if (props.expStatus === ExpStatus.WHY_LIST) {
+									message = AxiomTypes.MSG_GO_TO_FP_SELECTED_STATUS;
+								} else if (props.expStatus === ExpStatus.WHY_NOT_LIST) {
+									message = AxiomTypes.MSG_GO_TO_FN_SELECTED_STATUS;
+								}
+								props.messageCallback(message, {});
+							}}
+						>
+							X
+						</button>
+					</div>
 				</div>
 			)}
 			{whyExplanation.length > 0 && <hr id="exp-divider" style={{ marginTop: 13, marginBottom: 13 }} />}
@@ -173,7 +198,31 @@ function HowToPanel2(props) {
 			{suggestions.length > 0 && howStatus && (
 				<span style={{ fontSize: 22, fontWeight: 700, color: "var(--explanation)" }}>How?</span>
 			)}
-			{<div className="how-to-explanations-container">{[...suggestions]}</div>}
+			{
+				<div style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+					<div className="how-to-explanations-container">{[...suggestions]}</div>
+					{suggestions.length > 0 && (
+						<div style={{ width: 0 }}>
+							<button
+								key={0}
+								style={{ marginLeft: 15, backgroundColor: "#E26F5F" }}
+								className="remove-axiom-btn"
+								onClick={() => {
+									let message = "";
+									if (props.expStatus === ExpStatus.WHY_HOW_TO_LIST) {
+										message = AxiomTypes.MSG_GO_TO_WHY_LIST_STATUS;
+									} else if (props.expStatus === ExpStatus.WHY_NOT_HOW_TO_LIST) {
+										message = AxiomTypes.MSG_GO_TO_WHY_NOT_LIST_STATUS;
+									}
+									props.messageCallback(message, {});
+								}}
+							>
+								X
+							</button>
+						</div>
+					)}
+				</div>
+			}
 			<div className="event-instance-container">{eventInstanceExplanation}</div>
 		</div>
 	);

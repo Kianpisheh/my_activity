@@ -82,7 +82,10 @@ function handleAxiomPaneMessages(
 		logEvent(newActivities?.[currentActivtyIdx], "activity", "time_limit_update", datasetUser);
 		logEvent(newActivities, "activities", "activities", datasetUser);
 	} else if (message === AxiomTypes.MSG_RESET_ACTIVITY) {
-		newActivities = [TaskDefaults.getDefault(datasetUser.split("-")[0])];
+		const defaultActivities = TaskDefaults.getDefault(datasetUser.split("-")[0]);
+		if (defaultActivities) {
+			newActivities = [TaskDefaults.getDefault(datasetUser.split("-")[0])];
+		}
 	} else if (message === AxiomTypes.MSG_OR_EVENTS_AXIOM_EDIT) {
 		// find the corresponding axiom
 		let newAxioms = newActivities?.[currentActivtyIdx]?.getAxioms();

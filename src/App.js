@@ -66,8 +66,9 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-	const DATASETS = ["CASAS8", "Opportunity", "Opportunity_gesture", "Epic", "Task1", "Task2", "Task3", "Task4"];
-	const [dataset, setDataset] = useState(DATASETS[1]);
+	const DATASETS = ["CASAS8", "Opportunity", "Task1", "Task2", "Task3", "Task4"];
+	// const DATASETS = ["Task1", "Task2"];
+	const [dataset, setDataset] = useState(DATASETS[5]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
 	const [loggedin, setLoggedin] = useState(false);
@@ -85,6 +86,33 @@ function App() {
 			handleActInstanceChange(currentActInstanceIdx, instances);
 		} else if (message === AxiomTypes.MSG_CLOSE_EVENT_STATS) {
 			setSelectedInstanceEvents({});
+		} else if (message === AxiomTypes.MSG_GO_TO_WHY_LIST_STATUS) {
+			setExplanationStatus(ExpStatus.WHY_LIST);
+			setWhyNotWhat(null);
+			setWhyWhat(null);
+			setWhyNotHowToSuggestions(null);
+			setWhyHowToSuggestions(null);
+		} else if (message === AxiomTypes.MSG_GO_TO_FP_SELECTED_STATUS) {
+			setExplanationStatus(ExpStatus.FP_SELECTED);
+			setWhyQueryMode(false);
+			setWhyNotWhat(null);
+			setWhyWhat(null);
+			setWhyNotHowToSuggestions(null);
+			setWhyHowToSuggestions(null);
+		} else if (message === AxiomTypes.MSG_GO_TO_FN_SELECTED_STATUS) {
+			setExplanationStatus(ExpStatus.FN_SELECTED);
+			setUnsatisfiedAxioms({});
+			setWhyNotWhat(null);
+			setWhyWhat(null);
+			setWhyNotHowToSuggestions(null);
+			setWhyHowToSuggestions(null);
+		} else if (message === AxiomTypes.MSG_GO_TO_WHY_NOT_LIST_STATUS) {
+			setExplanationStatus(ExpStatus.FN_SELECTED);
+			setUnsatisfiedAxioms({});
+			setWhyNotWhat(null);
+			setWhyWhat(null);
+			setWhyNotHowToSuggestions(null);
+			setWhyHowToSuggestions(null);
 		} else {
 			let newActivities = handleAxiomPaneMessages(
 				message,
@@ -227,7 +255,7 @@ function App() {
 			}
 			setActivities(newActivities);
 			setCurrentActivityIdx(newActivities.length - 1);
-			updateDatabase(newActivities[newActivities.length - 1], "update", dataset);
+			updateDatabase(newActivities[newActivities.length - 1], "update", dataset, enteredUser);
 		} else if (message === AxiomTypes.MSG_REMOVE_ACTIVITY) {
 			let newActivities = [...activities];
 			newActivities = newActivities.filter((activity) => {
@@ -236,7 +264,7 @@ function App() {
 			logEvent(activities[activityID].getName(), "activity", "activity_removal", dataset + "-" + enteredUser);
 			setActivities(newActivities);
 			setCurrentActivityIdx(newActivities.length - 1);
-			updateDatabase(activities[activityID], "remove", dataset);
+			updateDatabase(activities[activityID], "remove", dataset, enteredUser);
 		}
 	}
 

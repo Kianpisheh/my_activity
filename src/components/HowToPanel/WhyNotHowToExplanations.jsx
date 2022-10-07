@@ -1,10 +1,11 @@
 import "./WhyNotHowToExplanations.css";
 
 import AxiomTypes from "../../model/AxiomTypes";
+import QuickAxiom from "../QuickAxiom";
 
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/objects/Icons";
-import React from "react";
+import React, { useState } from "react";
 
 function WhyNotHowToExplanations(props) {
 	const { suggestions, onWhyHowToAxiomHover } = props;
@@ -112,7 +113,15 @@ export function TemporalAdjustmentAxiom(props) {
 				className="temp-adj-axiom-container"
 				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-				style={{ position: "relative" }}
+				onClick={() => {
+					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+						events: events,
+						type: AxiomTypes.TYPE_TIME_DISTANCE,
+						th1: th1,
+						th2: th2,
+					});
+				}}
+				style={{ width: "100%" }}
 			>
 				<div className="temp-adj-icons">
 					<div className="icon-container">
@@ -153,6 +162,7 @@ export function TemporalAdjustmentAxiom(props) {
 export function InteractionORAdditionAxiom(props) {
 	const { axiom, newTPs, newFPs } = props.suggestion;
 	const events = axiom.getEvents();
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
 
 	return (
 		<React.Fragment>
@@ -160,7 +170,28 @@ export function InteractionORAdditionAxiom(props) {
 				className="interaction-or-axiom temp-adj-axiom-container"
 				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+				onClick={() => {
+					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+						events: events,
+						type: AxiomTypes.TYPE_OR_INTERACTION,
+						th1: -1,
+						th2: -1,
+					});
+					setQuickAxiomPos([-1, -1]);
+				}}
+				onContextMenu={(ev) => {
+					setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+				}}
+				style={{ width: "80%" }}
 			>
+				{quickAxiomPos[0] > 0 && (
+					<div
+						id="quick-axiom"
+						style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}
+					>
+						<QuickAxiom events={events} sendMessage={props.messageCallback} onlyOR={true}></QuickAxiom>
+					</div>
+				)}
 				{events.map((ev, idx) => {
 					const Icon = Icons.getIcon(pascalCase(ev), true);
 					return (
@@ -186,6 +217,8 @@ export function InteractionORAdditionAxiom(props) {
 }
 
 export function InteractionAdditionAxiom(props) {
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
+
 	const { axiom, newTPs, newFPs } = props.suggestion;
 	const newEvents = axiom.getEvents();
 
@@ -215,8 +248,25 @@ export function InteractionAdditionAxiom(props) {
 			className="temp-adj-axiom-container"
 			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
-			style={{ position: "relative", cursor: "pointer" }}
+			onClick={() => {
+				props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+					events: newEvents,
+					type: AxiomTypes.TYPE_INTERACTION,
+					th1: -1,
+					th2: -1,
+				});
+				setQuickAxiomPos([-1, -1]);
+			}}
+			onContextMenu={(ev) => {
+				setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+			}}
+			style={{ cursor: "pointer", width: "80%" }}
 		>
+			{quickAxiomPos[0] > 0 && (
+				<div id="quick-axiom" style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}>
+					<QuickAxiom events={newEvents} sendMessage={props.messageCallback}></QuickAxiom>
+				</div>
+			)}
 			<div className="icon-container3">
 				{[...currentIcons]}
 				<svg height={10} width={70}>
@@ -258,6 +308,14 @@ export function DurationAdjustmentAxiom(props) {
 				className="temp-adj-axiom-container"
 				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
+				onClick={() => {
+					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
+						events: events,
+						type: AxiomTypes.TYPE_DURATION,
+						th1: th1,
+						th2: th2,
+					});
+				}}
 				style={{ position: "relative" }}
 			>
 				<div className="duration-adj-icons">

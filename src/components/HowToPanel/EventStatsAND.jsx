@@ -69,7 +69,22 @@ function EventStatsAND(props) {
 							id="quick-axiom"
 							style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}
 						>
-							<QuickAxiom events={events} sendMessage={props.messageCallback}></QuickAxiom>
+							<QuickAxiom
+								events={events}
+								sendMessage={props.messageCallback}
+								startTime={posToTime(
+									sliderPos[0],
+									tdMinVal === Infinity ? dMinVal : tdMinVal,
+									tdMaxVal === -Infinity ? dMaxVal : tdMaxVal,
+									sliderWidth
+								)}
+								endTime={posToTime(
+									sliderPos[1],
+									tdMinVal === Infinity ? dMinVal : tdMinVal,
+									tdMaxVal === -Infinity ? dMaxVal : tdMaxVal,
+									sliderWidth
+								)}
+							></QuickAxiom>
 						</div>
 					)}
 					<span className="stat-activity-title" style={{ fontSize: 13, fontWeight: 600 }}>

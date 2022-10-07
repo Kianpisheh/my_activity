@@ -326,7 +326,7 @@ class ActivityInstance {
 
 	isSatisfied(axioms: AxiomData[]) {
 		// empty activity -> FN
-		if (axioms.length === 0 || axioms[0].getEvents().length === 0) {
+		if (axioms.length === 0 || axioms.every((ax) => ax.getEvents().length === 0)) {
 			return false;
 		}
 

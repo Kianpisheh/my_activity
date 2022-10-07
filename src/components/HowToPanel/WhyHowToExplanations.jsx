@@ -25,6 +25,7 @@ function WhyHowToExplanations(props) {
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
+						messageCallback={props.messageCallback}
 					></DurationAdjustmentAxiom>
 				);
 			} else if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -34,6 +35,7 @@ function WhyHowToExplanations(props) {
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
+						messageCallback={props.messageCallback}
 					></TemporalAdjustmentAxiom>
 				);
 			}
@@ -44,6 +46,7 @@ function WhyHowToExplanations(props) {
 					suggestion={suggestion}
 					currentActivity={currentActivity}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+					messageCallback={props.messageCallback}
 				></InteractionAdditionAxiom>
 			);
 		} else if (suggestionType === "interaction_or") {
@@ -51,6 +54,7 @@ function WhyHowToExplanations(props) {
 				<InteractionORAdditionAxiom
 					suggestion={suggestion}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+					messageCallback={props.messageCallback}
 				></InteractionORAdditionAxiom>
 			);
 		}
@@ -58,10 +62,7 @@ function WhyHowToExplanations(props) {
 	}
 
 	return (
-		<div
-			className="suggestions-container"
-			style={{ width: props.width, overflow: "scroll", maxHeight: "inherit", boxSizing: "border-box" }}
-		>
+		<div className="suggestions-container" style={{ maxHeight: "inherit", boxSizing: "border-box" }}>
 			{suggestionItems}
 		</div>
 	);

@@ -37,6 +37,12 @@ class AxiomManager {
 			},
 			opSize
 		);
+
+		// replace (update) time distance and duration if required
+		if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE || axiom.getType() === AxiomTypes.TYPE_DURATION) {
+			newAxioms = AxiomData.updateTemporalAxiom(newAxioms, axiom);
+		}
+
 		// check for duplicate axioms and subset
 		if (!AxiomData.isUnique(newAxioms, axiom)) {
 			return newAxioms;

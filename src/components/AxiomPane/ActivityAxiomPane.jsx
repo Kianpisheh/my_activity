@@ -12,6 +12,7 @@ import Icons from "../../icons/objects/Icons";
 import AxiomNavBar from "./AxiomNavbar";
 import ActivityDefinition from "../../model/ActivityDefinition";
 import { logEvent } from "../../APICalls/activityAPICalls";
+import { useEffect } from "react";
 
 function ActivityAxiomPane(props) {
 	const [definingRule, setDefiningRule] = useState("");
@@ -158,7 +159,7 @@ function ActivityAxiomPane(props) {
 							marginBottom: 5,
 						}}
 					>
-						<span className="sub-section-title" style={{ width: 170 }}>
+						<span className="sub-section-title" style={{ width: 180 }}>
 							<p>Must include</p>
 							<p
 								style={{
@@ -169,7 +170,7 @@ function ActivityAxiomPane(props) {
 							>
 								all
 							</p>
-							<p style={{ marginLeft: 3 }}>the following</p>
+							<p style={{ marginLeft: 3 }}>of the following</p>
 						</span>
 						{currAxiomSetIdx === 0 && (
 							<div style={{ display: "flex", marginLeft: 10 }}>
@@ -226,12 +227,25 @@ function ActivityAxiomPane(props) {
 						style={{
 							display: "flex",
 							width: "100%",
-							alignContent: "center",
+							alignItems: "center",
 							height: "30px",
 						}}
 					>
-						<span className="sub-section-title" style={{ width: 270 }}>
-							Excluding Interaction with objects and appliances
+						<span
+							className="sub-section-title"
+							style={{ width: 190, display: "flex", justifyContent: "center", alignItems: "center" }}
+						>
+							<p>Must include</p>
+							<p
+								style={{
+									fontWeight: 600,
+									color: "#E10B86",
+									marginLeft: 3,
+								}}
+							>
+								none
+							</p>
+							<p style={{ marginLeft: 3 }}> of the following</p>
 						</span>
 						{currAxiomSetIdx === 0 && (
 							<div style={{ display: "flex", marginLeft: 10 }}>
