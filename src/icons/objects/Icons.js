@@ -44,6 +44,9 @@ import SvgSalt from "./Salt";
 import SvgToaster from "./Toaster";
 import SvgSpice from "./Spice";
 import SvgSauceBottle from "./SauceBottle";
+import SvgShaver from "./Shaver";
+import SvgElectricalShaver from "./ElectricalShaver";
+import SvgToothpaste from "./Toothpaste";
 
 import SvgStraw from "./Straw";
 import SvgTap from "./Tap";
@@ -196,6 +199,9 @@ class Icons {
 		Saucepan: SvgSaucepan,
 		SauceBottle: SvgSauceBottle,
 		Spice: SvgSpice,
+		Shaver: SvgShaver,
+		ElectricalShaver: SvgElectricalShaver,
+		Toothpaste: SvgToothbrush,
 	};
 
 	static others = {
@@ -235,8 +241,8 @@ class Icons {
 		WaterBottle: "#3ca9ae",
 		StoveTop: "#7C4513",
 		StoveLighter: "#f95d6a",
-		Toothbrush: "#d45087",
-		ToothBrush: "#d45087",
+		Toothbrush: "#2796DA",
+		ToothBrush: "#2796DA",
 		CoffeeMachine: "#233599",
 		Peeler: "#483D8B",
 		Tap: "#483D8B",
@@ -325,6 +331,9 @@ class Icons {
 		Ladle: "#676B87",
 		SauceBottle: "#E15839",
 		BottleOpener: "#635653",
+		Shaver: "#70BA48",
+		ElectricalShaver: "#BA488B",
+		Toothpaste: "#7F48BA",
 	};
 
 	static getIcons() {

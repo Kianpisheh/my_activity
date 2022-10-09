@@ -3,7 +3,7 @@ import RangeVis from "./RangeVis";
 import QuickAxiom from "../QuickAxiom";
 
 function EventStatsAND(props) {
-	const sliderWidth = 180;
+	const sliderWidth = 220;
 	const [sliderPos, setSliderPos] = useState([10, (2 * (sliderWidth - 30)) / 3]);
 	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
 

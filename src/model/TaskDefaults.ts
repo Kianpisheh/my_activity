@@ -14,7 +14,7 @@ class TaskDefaults {
 			});
 		} else if (task === "Task2") {
 			activity = new Activity({
-				name: "SandwichTime",
+				name: "Sandwich_time",
 				id: 0,
 				events: ["Bread", "Salami", "Fridge", "Cheese"],
 				excludedEvents: [],

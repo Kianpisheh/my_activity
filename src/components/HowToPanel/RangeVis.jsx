@@ -61,7 +61,8 @@ function RangeVis(props) {
 					}
 				} else if (thresholdChange[1] && props.sliderPos[1] + ev.clientX - refX > props.sliderPos[0]) {
 					if (
-						posToTime(props.sliderPos[1] + ev.clientX - refX, props.minVal, props.maxVal, w) <= props.maxVal
+						posToTime(props.sliderPos[1] + ev.clientX - refX, props.minVal, props.maxVal, w) <=
+						props.maxVal + 1
 					) {
 						props.onSliderPosChange(props.sliderPos[0], props.sliderPos[1] + ev.clientX - refX);
 						setRefX(ev.clientX);
@@ -85,7 +86,7 @@ function RangeVis(props) {
 				<line
 					key={props.idx + "ln"}
 					x1={0}
-					x2={w - 30}
+					x2={w - 20}
 					y1={h / 2}
 					y2={h / 2}
 					stroke="#666666"
@@ -113,7 +114,6 @@ function RangeVis(props) {
 					}}
 					strokeOpacity={0.8}
 					strokeLinecap="round"
-					onClick={() => console.log("asd")}
 				></line>
 				<line
 					key={props.idx + "ln3"}
@@ -130,8 +130,37 @@ function RangeVis(props) {
 					}}
 					strokeLinecap="round"
 				></line>
+				<line
+					key={props.idx + "ln3-area"}
+					x1={props.sliderPos[1]}
+					x2={props.sliderPos[1]}
+					y1={h / 2 + 20}
+					y2={h / 2 - 20}
+					stroke="#F1258B"
+					strokeOpacity={0.8}
+					strokeWidth={30}
+					onMouseDown={(ev) => {
+						setThresholdChange([false, true]);
+						setRefX(ev.clientX);
+					}}
+					opacity={0}
+				></line>
+				<line
+					key={props.idx + "ln2-area"}
+					x1={props.sliderPos[0]}
+					x2={props.sliderPos[0]}
+					y1={h / 2 + 20}
+					y2={h / 2 - 20}
+					stroke="#F1258B"
+					strokeWidth={30}
+					onMouseDown={(ev) => {
+						setThresholdChange([true, false]);
+						setRefX(ev.clientX);
+					}}
+					opacity={0}
+				></line>
 				{secs.map((s, idx) => {
-					let x = ((s - props.minVal) / (props.maxVal - props.minVal)) * (w - 30) + 2;
+					let x = ((s - props.minVal) / (props.maxVal - props.minVal)) * (w - 50) + 2;
 					if (props.minVal === props.maxVal) {
 						x = w / 2;
 					}
@@ -163,11 +192,11 @@ function onePrecision(value) {
 }
 
 function timeToPos(s, minVal, maxVal, w) {
-	return ((s - minVal) / (maxVal - minVal)) * (w - 30) + 5;
+	return ((s - minVal) / (maxVal - minVal)) * (w - 50) + 5;
 }
 
 function posToTime(x, minVal, maxVal, w) {
-	return minVal + ((x - 5) * (maxVal - minVal)) / (w - 30);
+	return minVal + ((x - 5) * (maxVal - minVal)) / (w - 50);
 }
 
 function getEnclosedInstances(x1, x2, minVal, maxVal, w, times, allTimes) {
