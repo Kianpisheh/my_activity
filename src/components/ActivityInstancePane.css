@@ -22,7 +22,7 @@
 	align-items: center;
 }
 
-.activity-instances ul {
+.activity-instances ol {
 	display: flex;
 	flex-direction: column;
 	row-gap: 5px;
@@ -34,7 +34,7 @@
 	width: 100%;
 }
 
-.activity-instances ul li {
+.activity-instances ol li {
 	display: flex;
 	flex-direction: row;
 	border-radius: 5px;
@@ -55,7 +55,7 @@
 	justify-content: center;
 }
 
-.activity-instances ul li text {
+.activity-instances ol li text {
 	font-size: 13px;
 	width: fit-content;
 }

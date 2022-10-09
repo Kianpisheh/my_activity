@@ -8,7 +8,7 @@ function ActivtityInstancePane(props) {
 				Activity instances
 			</span>
 			<div className="activity-instances">
-				<ul>
+				<ol>
 					{props.activtiyInstances.map((activity, idx) => {
 						let style = props.currentActInstanceIdx === idx ? { background: "#E3DDCA" } : {};
 						// get activity class color
@@ -50,7 +50,7 @@ function ActivtityInstancePane(props) {
 							</li>
 						);
 					})}
-				</ul>
+				</ol>
 			</div>
 		</div>
 	);

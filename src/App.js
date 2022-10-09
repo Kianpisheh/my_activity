@@ -68,7 +68,7 @@ function App() {
 	const [queryTrigger, setQueryTrigger] = useState("");
 	const DATASETS = ["Practice", "CASAS8", "Opportunity", "Task1", "Task2", "Task3", "Task4"];
 	// const DATASETS = ["Task1", "Task2"];
-	const [dataset, setDataset] = useState(DATASETS[5]);
+	const [dataset, setDataset] = useState(DATASETS[3]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
 	const [loggedin, setLoggedin] = useState(false);
@@ -356,6 +356,7 @@ function App() {
 			instancesPromise.then((data) => {
 				let instances = data.data;
 				let instanceItems = [];
+
 				instances.forEach((instance) => {
 					instanceItems.push(new ActivityInstance(instance));
 				});
