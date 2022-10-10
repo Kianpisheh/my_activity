@@ -83,9 +83,9 @@ export function updateClassificationResults(
 	const newClassificationResult = getClassificationResult(actInstances, newPredictions, newActivities);
 
 	let newTPss: { [activity: string]: number[] } = {};
-	let newFPss: { [activity: string]: number[] } = {};
+	let newFPss: { [activity: string]: { [act: string]: number[] } } = {};
 	for (const act of Object.keys(newClassificationResult)) {
-		newFPss[act] = newClassificationResult[act]["FP"]["all"];
+		newFPss[act] = newClassificationResult[act]["FP"];
 		newTPss[act] = newClassificationResult[act]["TP"];
 	}
 

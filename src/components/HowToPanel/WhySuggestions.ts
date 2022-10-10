@@ -165,7 +165,9 @@ function getInteractionORAxiom(
 		);
 
 		// any improvements?
-		const improvement = selectedFPs.filter((idx) => !whatIfRes["newFPs"][currentActivity.getName()].includes(idx));
+		const improvement = selectedFPs.filter(
+			(idx) => !whatIfRes["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
+		);
 		if (!improvement.length) {
 			continue;
 		}
@@ -194,7 +196,7 @@ function getInteractionORAxiom(
 		const imp = Object.values(improvments[i])[0];
 		for (let j = 0; j < rankedSuggestions.length; j++) {
 			const improvement = selectedFPs.filter(
-				(idx) => !rankedSuggestions[j]["newFPs"][currentActivity.getName()].includes(idx)
+				(idx) => !rankedSuggestions[j]["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
 			);
 			if (imp >= improvement.length) {
 				rankedSuggestions.splice(j, 0, suggestions[i]);
@@ -536,7 +538,11 @@ export function getInteractionAdditionAxiomSuggestions(
 
 		// check if it removes any of the selected FPs or FNs
 		if (instanceType === "FP") {
-			if (selectedInstances.every((fpIdx) => whatIfRes["newFPs"]?.[currentActivity.getName()]?.includes(fpIdx))) {
+			if (
+				selectedInstances.every((fpIdx) =>
+					whatIfRes["newFPs"]?.[currentActivity.getName()]?.["all"]?.includes(fpIdx)
+				)
+			) {
 				continue;
 			}
 		} else if (instanceType === "FN") {

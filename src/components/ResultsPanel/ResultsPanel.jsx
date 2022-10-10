@@ -75,7 +75,7 @@ function ResultsPanel(props) {
 					createResRects(
 						{
 							FP: fp,
-							newFPs: newFPs[activity],
+							newFPs: newFPs[activity]?.[activityName],
 							newFPsLabel: newFPsLabel,
 							queryMode: props.queryMode,
 							fpActivity: activityName,

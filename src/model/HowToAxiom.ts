@@ -6,7 +6,7 @@ class HowToAxiom {
 	axIdx: number;
 	suggestedAxiomData: number[] | any;
 	policy: string;
-	newFPs: { [activity: string]: number[] };
+	newFPs: { [activity: string]: { [activity: string]: number[] } };
 	newTPs: { [activity: string]: number[] };
 
 	constructor(
@@ -16,7 +16,7 @@ class HowToAxiom {
 		data: any,
 		policy: string,
 		newTPs: { [activity: string]: number[] },
-		newFPs: { [activity: string]: number[] }
+		newFPs: { [activity: string]: { [activity: string]: number[] } }
 	) {
 		this.type = type;
 		this.axiom = axiom;
