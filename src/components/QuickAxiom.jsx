@@ -65,10 +65,10 @@ function QuickAxiom(props) {
 								return (
 									<div
 										className="q-icon"
-										key={idx + "neg"}
+										key={idx + "divneg"}
 										style={{ width: 1.3 * iconSize, height: 1.3 * iconSize }}
 									>
-										<svg height={40}>
+										<svg key={idx + "qsvg"} height={40}>
 											<Icon
 												key={idx + "neg"}
 												x={2}
@@ -77,7 +77,7 @@ function QuickAxiom(props) {
 												height={iconSize}
 											/>
 											<NotIcon
-												key={idx + "neg"}
+												key={idx + "notneg"}
 												fill={Icons.getColor(pascalCase(ev))}
 												opacity={0.5}
 												width={1.2 * iconSize}

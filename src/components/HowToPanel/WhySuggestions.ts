@@ -511,7 +511,7 @@ export function getInteractionAdditionAxiomSuggestions(
 	// now create the suggestions
 	let suggestions = [];
 	const timeTiedEvents = currentActivity.getTimeTiedEvents();
-	for (const ruleitem of candidateRuleitems2.slice(0, 3)) {
+	for (const ruleitem of candidateRuleitems2.slice(0, 30)) {
 		// check if current items is a subset of the ruleitmes
 		const isSubset = timeTiedEvents.every((ev) => ruleitem.items.includes(ev));
 		if (!isSubset) {
@@ -546,7 +546,9 @@ export function getInteractionAdditionAxiomSuggestions(
 				continue;
 			}
 		} else if (instanceType === "FN") {
-			if (selectedInstances.every((fnIdx) => whatIfRes["newTPs"]?.[currentActivity.getName()]?.includes(fnIdx))) {
+			if (
+				selectedInstances.every((fnIdx) => !whatIfRes["newTPs"]?.[currentActivity.getName()]?.includes(fnIdx))
+			) {
 				continue;
 			}
 		}

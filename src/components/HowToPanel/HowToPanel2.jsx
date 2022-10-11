@@ -122,6 +122,7 @@ function HowToPanel2(props) {
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 				ruleitems={ruleitems}
 				messageCallback={props.messageCallback}
+				activity={activity}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {

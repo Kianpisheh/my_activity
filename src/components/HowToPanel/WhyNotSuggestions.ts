@@ -51,18 +51,18 @@ export function getWhyNotHowToSuggestions(
 			suggestions.push(suggestion2);
 		}
 	} else if (axType === AxiomTypes.TYPE_INTERACTION) {
-		const suggestion1 = getInteractionAxiomRemovalSuggestion(
-			axiom,
-			axiomIdx,
-			currentActivity,
-			selectedFNs,
-			classificationResult,
-			instances,
-			[...activities]
-		);
-		if (suggestion1) {
-			suggestions.push(suggestion1);
-		}
+		// const suggestion1 = getInteractionAxiomRemovalSuggestion(
+		// 	axiom,
+		// 	axiomIdx,
+		// 	currentActivity,
+		// 	selectedFNs,
+		// 	classificationResult,
+		// 	instances,
+		// 	[...activities]
+		// );
+		// if (suggestion1) {
+		// 	suggestions.push(suggestion1);
+		// }
 
 		const suggestion2 = getInteractionAdditionAxiomSuggestions(
 			axiom,
@@ -75,7 +75,7 @@ export function getWhyNotHowToSuggestions(
 			"FN"
 		);
 		if (suggestion2) {
-			//suggestions.push(suggestion2);
+			suggestions.push(...suggestion2);
 		}
 	}
 

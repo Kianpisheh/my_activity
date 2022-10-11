@@ -48,7 +48,12 @@ class AxiomManager {
 			return newAxioms;
 		}
 
-		newAxioms.push(axiom);
+		if (axiom.getType() === AxiomTypes.TYPE_INTERACTION && props["replace"]) {
+			newAxioms[0] = axiom; // replace the interaction axiom
+		} else {
+			newAxioms.push(axiom); // add the new axiom
+		}
+
 		// check subset axiom for OR_interaction axiom
 		newAxioms = AxiomData.removeSubsetOR(newAxioms);
 

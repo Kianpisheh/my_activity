@@ -24,6 +24,7 @@ function WhyNotHowToExplanations(props) {
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
+						messageCallback={props.messageCallback}
 					></DurationAdjustmentAxiom>
 				);
 			} else if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -32,6 +33,7 @@ function WhyNotHowToExplanations(props) {
 						suggestion={suggestion}
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
+						messageCallback={props.messageCallback}
 					></TemporalAdjustmentAxiom>
 				);
 			}
@@ -41,6 +43,15 @@ function WhyNotHowToExplanations(props) {
 					suggestion={suggestion}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 				></InteractionRemovalAxiom>
+			);
+		} else if (suggestionType === "interaction_addition") {
+			suggestionItems.push(
+				<InteractionAdditionAxiom
+					suggestion={suggestion}
+					currentActivity={props.activity}
+					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+					messageCallback={props.messageCallback}
+				></InteractionAdditionAxiom>
 			);
 		}
 	}
@@ -82,6 +93,8 @@ export function InteractionRemovalAxiom(props) {
 }
 
 export function TemporalAdjustmentAxiom(props) {
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
+
 	const { axiom, suggestedAxiomData, newTPs, newFPs } = props.suggestion;
 	const th1 = Math.round(suggestedAxiomData[0] * 10) / 10;
 	const th2 = Math.round(suggestedAxiomData[1] * 10) / 10;
@@ -121,8 +134,19 @@ export function TemporalAdjustmentAxiom(props) {
 						th2: th2,
 					});
 				}}
+				onContextMenu={(ev) => {
+					setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+				}}
 				style={{ width: "100%" }}
 			>
+				{quickAxiomPos[0] > 0 && (
+					<div
+						id="quick-axiom"
+						style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}
+					>
+						<QuickAxiom events={events} sendMessage={props.messageCallback}></QuickAxiom>
+					</div>
+				)}
 				<div className="temp-adj-icons">
 					<div className="icon-container">
 						<Icon1 style={{ fill: color, width: 25, height: 25 }}></Icon1>
@@ -254,6 +278,7 @@ export function InteractionAdditionAxiom(props) {
 					type: AxiomTypes.TYPE_INTERACTION,
 					th1: -1,
 					th2: -1,
+					replace: true,
 				});
 				setQuickAxiomPos([-1, -1]);
 			}}
@@ -280,6 +305,8 @@ export function InteractionAdditionAxiom(props) {
 }
 
 export function DurationAdjustmentAxiom(props) {
+	const [quickAxiomPos, setQuickAxiomPos] = useState([-1, -1]);
+
 	const { axiom, suggestedAxiomData, newFPs, newTPs } = props.suggestion;
 	const th1 = Math.round(suggestedAxiomData[0] * 10) / 10;
 	const th2 = Math.round(suggestedAxiomData[1] * 10) / 10;
@@ -316,8 +343,19 @@ export function DurationAdjustmentAxiom(props) {
 						th2: th2,
 					});
 				}}
+				onContextMenu={(ev) => {
+					setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+				}}
 				style={{ position: "relative" }}
 			>
+				{quickAxiomPos[0] > 0 && (
+					<div
+						id="quick-axiom"
+						style={{ position: "absolute", left: quickAxiomPos[0], top: quickAxiomPos[1] }}
+					>
+						<QuickAxiom events={events} sendMessage={props.messageCallback}></QuickAxiom>
+					</div>
+				)}
 				<div className="duration-adj-icons">
 					<div className="icon-container">
 						<Icon1 style={{ fill: color, width: 25, height: 25, marginTop: -15 }}></Icon1>

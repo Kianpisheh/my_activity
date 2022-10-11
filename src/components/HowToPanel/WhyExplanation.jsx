@@ -4,6 +4,7 @@ import TimeDistanceAxiomRepr from "./TimeDistanceAxiomRepr";
 import DurationAxiomRepr from "./DurationAxiomRepr";
 import InteractionAxiomRepr from "./InteractionAxiomRepr";
 import InteractionNegationAxiomRepr from "./InteractionNegationAxiomRepr";
+import InteractionORAxiomRepr from "./InteractionORAxiomRepr";
 import QueryTrigger from "../../model/QueryTrigger";
 import isEqual from "lodash.isequal";
 import ExpStatus from "../../model/ExpStatus";
@@ -89,6 +90,21 @@ function WhyExplanation(props) {
 					idx={i}
 					expType={QueryTrigger.WHY}
 				></InteractionNegationAxiomRepr>
+			);
+		} else if (axiom.getType() === AxiomTypes.TYPE_OR_INTERACTION) {
+			axComp = (
+				<InteractionORAxiomRepr
+					queryTrigger={props.queryTrigger}
+					onWhyNotWhatQuery={props.onWhyNotWhatQuery}
+					numInstances={numInstances}
+					onWhyHover={props.onWhyHover}
+					activity={activity}
+					axiom={axiom}
+					unsatisfiedAxioms={null}
+					idx={i}
+					expType={QueryTrigger.WHY_NOT}
+					onWhyNotAxiomClick={props.onWhyNotAxiomClick}
+				></InteractionORAxiomRepr>
 			);
 		}
 		whyAxioms.push(axComp);
