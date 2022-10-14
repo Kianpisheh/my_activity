@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { logEvent } from "../../APICalls/activityAPICalls";
 
 import QuickAxiom from "../QuickAxiom";
 
@@ -17,7 +18,22 @@ function EventStatsOR(props) {
 				<div
 					key={idx}
 					className="single-stat-container"
-					onMouseOver={() => props.onWhyNotHover(coverages[act])}
+					onMouseOver={() => {
+						logEvent(
+							{
+								activity: act,
+								events: props.events,
+								coverageOR: coverages.length,
+								coverageORIdx: coverages,
+								numActivity: numActivity,
+							},
+
+							"event_stats_hover_what_if",
+							"event_stats_OR_what_if",
+							props.dataUser
+						);
+						props.onWhyNotHover(coverages[act]);
+					}}
 					onMouseLeave={() => props.onWhyNotHover([])}
 					onClick={() => setQuickAxiomPos([-1, -1])}
 					onContextMenu={(ev) => {

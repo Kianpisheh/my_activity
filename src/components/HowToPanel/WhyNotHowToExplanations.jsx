@@ -91,7 +91,7 @@ export function InteractionRemovalAxiom(props) {
 				className="temp-adj-axiom-container"
 				onMouseOver={() => {
 					logEvent(
-						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.suggestion },
 						"interaction_removal_hover_what_if",
 						"what_if",
 						props.dataUser
@@ -148,7 +148,7 @@ export function TemporalAdjustmentAxiom(props) {
 				className="temp-adj-axiom-container"
 				onMouseOver={() => {
 					logEvent(
-						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.suggestion },
 						"time_distance_adj_hover_what_if",
 						"what_if",
 						props.dataUser
@@ -224,7 +224,7 @@ export function InteractionORAdditionAxiom(props) {
 				className="interaction-or-axiom temp-adj-axiom-container"
 				onMouseOver={() => {
 					logEvent(
-						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.suggestion },
 						"interaction_or_hover_what_if",
 						"what_if",
 						props.dataUser
@@ -310,7 +310,7 @@ export function InteractionAdditionAxiom(props) {
 			className="temp-adj-axiom-container"
 			onMouseOver={() => {
 				logEvent(
-					{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+					{ newFPs: newFPs, newTPs: newTPs, suggestion: props.suggestion },
 					"interaction_addition_hover_what_if",
 					"what_if",
 					props.dataUser
@@ -381,7 +381,7 @@ export function DurationAdjustmentAxiom(props) {
 				className="temp-adj-axiom-container"
 				onMouseOver={() => {
 					logEvent(
-						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.suggestion },
 						"duration_hover_what_if",
 						"what_if",
 						props.dataUser

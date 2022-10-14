@@ -125,7 +125,7 @@ function HowToPanel2(props) {
 				ruleitems={ruleitems}
 				messageCallback={props.messageCallback}
 				activity={activity}
-				dataUser={props.dataUser}
+				dataUser={props.dataset + "-" + props.user}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
@@ -135,7 +135,7 @@ function HowToPanel2(props) {
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 				currentActivity={activity}
 				messageCallback={props.messageCallback}
-				dataUser={props.dataUser}
+				dataUser={props.dataset + "-" + props.user}
 			></WhyHowToExplanations>
 		);
 	}

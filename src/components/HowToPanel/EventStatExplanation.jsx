@@ -44,22 +44,22 @@ function EventStatExplanation(props) {
 		}
 	}
 
-	logEvent(
-		{
-			coverageAND: coverages.length,
-			coverageANDIdx: coverages,
-			coverageOR: ORCoverages.length,
-			coverageORIdx: ORCoverages,
-			numActivity: numActivity,
-			timeDistances: timeDistances,
-			timeDistanceRanges: timeDistanceRanges,
-			durations: durations,
-			durationRanges: durationRanges,
-		},
-		"stats",
-		"event_stats",
-		props.dataset + "-" + props.user
-	);
+	// logEvent(
+	// 	{
+	// 		coverageAND: coverages.length,
+	// 		coverageANDIdx: coverages,
+	// 		coverageOR: ORCoverages.length,
+	// 		coverageORIdx: ORCoverages,
+	// 		numActivity: numActivity,
+	// 		timeDistances: timeDistances,
+	// 		timeDistanceRanges: timeDistanceRanges,
+	// 		durations: durations,
+	// 		durationRanges: durationRanges,
+	// 	},
+	// 	"stats",
+	// 	"event_stats",
+	// 	props.dataset + "-" + props.user
+	// );
 
 	return (
 		<div className="stats-container">
@@ -79,6 +79,7 @@ function EventStatExplanation(props) {
 					onTimeSliderChange={props.onTimeSliderChange}
 					selectedInstanceEvents={props.selectedInstanceEvents}
 					messageCallback={props.messageCallback}
+					events={stats[0].events}
 					dataUser={props.dataset + "-" + props.user}
 				></EventStatsAND>
 			</div>
@@ -92,6 +93,8 @@ function EventStatExplanation(props) {
 						onWhyNotHover={props.onWhyNotHover}
 						selectedInstanceEvents={props.selectedInstanceEvents}
 						messageCallback={props.messageCallback}
+						events={stats[0].events}
+						dataUser={props.dataset + "-" + props.user}
 					></EventStatsOR>
 				</div>
 			)}
