@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { logEvent } from "../../APICalls/activityAPICalls";
 import "./RangeVis.css";
 
 function RangeVis(props) {
@@ -79,7 +80,20 @@ function RangeVis(props) {
 					}
 				}
 			}}
-			onMouseUp={() => setThresholdChange([false, false])}
+			onMouseUp={() => {
+				logEvent(
+					{
+						sliderPos: [props.sliderPos[0], props.sliderPos[1]],
+						sliderTimeStart: posToTime(props.sliderPos[0], props.minVal, props.maxVal, w),
+						sliderTimeEnd: posToTime(props.sliderPos[1], props.minVal, props.maxVal, w),
+						activity: props.activity,
+					},
+					"time_slider_start",
+					"time_slider_change",
+					props.dataUser
+				);
+				setThresholdChange([false, false]);
+			}}
 			onMouseLeave={() => setThresholdChange([false, false])}
 		>
 			<svg key={props.idx + "svg"} width={w} height={h}>

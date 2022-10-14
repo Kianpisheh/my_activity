@@ -6,6 +6,7 @@ import QuickAxiom from "../QuickAxiom";
 import { pascalCase } from "../../Utils/utils";
 import Icons from "../../icons/objects/Icons";
 import React, { useState } from "react";
+import { logEvent } from "../../APICalls/activityAPICalls";
 
 function WhyNotHowToExplanations(props) {
 	const { suggestions, onWhyHowToAxiomHover } = props;
@@ -25,6 +26,7 @@ function WhyNotHowToExplanations(props) {
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
 						messageCallback={props.messageCallback}
+						dataUser={props.dataUser}
 					></DurationAdjustmentAxiom>
 				);
 			} else if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -34,6 +36,7 @@ function WhyNotHowToExplanations(props) {
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
 						messageCallback={props.messageCallback}
+						dataUser={props.dataUser}
 					></TemporalAdjustmentAxiom>
 				);
 			}
@@ -42,6 +45,7 @@ function WhyNotHowToExplanations(props) {
 				<InteractionRemovalAxiom
 					suggestion={suggestion}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+					dataUser={props.dataUser}
 				></InteractionRemovalAxiom>
 			);
 		} else if (suggestionType === "interaction_addition") {
@@ -51,7 +55,17 @@ function WhyNotHowToExplanations(props) {
 					currentActivity={props.activity}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 					messageCallback={props.messageCallback}
+					dataUser={props.dataUser}
 				></InteractionAdditionAxiom>
+			);
+		} else if (suggestionType === "interaction_or") {
+			suggestionItems.push(
+				<InteractionORAdditionAxiom
+					suggestion={suggestion}
+					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
+					messageCallback={props.messageCallback}
+					dataUser={props.dataUser}
+				></InteractionORAdditionAxiom>
 			);
 		}
 	}
@@ -75,7 +89,15 @@ export function InteractionRemovalAxiom(props) {
 			<span className="suggestion-subtitle">Removing the interaction condition</span>
 			<div
 				className="temp-adj-axiom-container"
-				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseOver={() => {
+					logEvent(
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						"interaction_removal_hover_what_if",
+						"what_if",
+						props.dataUser
+					);
+					props.onWhyHowToAxiomHover(newTPs, newFPs, true);
+				}}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 				style={{ position: "relative", cursor: "pointer" }}
 			>
@@ -124,7 +146,15 @@ export function TemporalAdjustmentAxiom(props) {
 			{!props.timeRemoval && <span className="suggestion-subtitle">{changing} the time limits</span>}
 			<div
 				className="temp-adj-axiom-container"
-				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseOver={() => {
+					logEvent(
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						"time_distance_adj_hover_what_if",
+						"what_if",
+						props.dataUser
+					);
+					props.onWhyHowToAxiomHover(newTPs, newFPs, true);
+				}}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 				onClick={() => {
 					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
@@ -192,7 +222,15 @@ export function InteractionORAdditionAxiom(props) {
 		<React.Fragment>
 			<div
 				className="interaction-or-axiom temp-adj-axiom-container"
-				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseOver={() => {
+					logEvent(
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						"interaction_or_hover_what_if",
+						"what_if",
+						props.dataUser
+					);
+					props.onWhyHowToAxiomHover(newTPs, newFPs, true);
+				}}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 				onClick={() => {
 					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
@@ -270,7 +308,15 @@ export function InteractionAdditionAxiom(props) {
 		<div
 			key={props.suggestionId}
 			className="temp-adj-axiom-container"
-			onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+			onMouseOver={() => {
+				logEvent(
+					{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+					"interaction_addition_hover_what_if",
+					"what_if",
+					props.dataUser
+				);
+				props.onWhyHowToAxiomHover(newTPs, newFPs, true);
+			}}
 			onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 			onClick={() => {
 				props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {
@@ -333,7 +379,15 @@ export function DurationAdjustmentAxiom(props) {
 			{!props.timeRemoval && <span className="suggestion-subtitle">{changing} the time limits</span>}
 			<div
 				className="temp-adj-axiom-container"
-				onMouseOver={() => props.onWhyHowToAxiomHover(newTPs, newFPs, true)}
+				onMouseOver={() => {
+					logEvent(
+						{ newFPs: newFPs, newTPs: newTPs, suggestion: props.ssuggestion },
+						"duration_hover_what_if",
+						"what_if",
+						props.dataUser
+					);
+					props.onWhyHowToAxiomHover(newTPs, newFPs, true);
+				}}
 				onMouseLeave={() => props.onWhyHowToAxiomHover([], [], false)}
 				onClick={() => {
 					props.messageCallback(AxiomTypes.MSG_AXIOM_CREATION_DONE, {

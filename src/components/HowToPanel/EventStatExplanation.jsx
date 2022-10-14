@@ -57,7 +57,8 @@ function EventStatExplanation(props) {
 			durationRanges: durationRanges,
 		},
 		"stats",
-		"event_stats"
+		"event_stats",
+		props.dataset + "-" + props.user
 	);
 
 	return (
@@ -78,6 +79,7 @@ function EventStatExplanation(props) {
 					onTimeSliderChange={props.onTimeSliderChange}
 					selectedInstanceEvents={props.selectedInstanceEvents}
 					messageCallback={props.messageCallback}
+					dataUser={props.dataset + "-" + props.user}
 				></EventStatsAND>
 			</div>
 			{events.length > 1 && <hr id="divider" style={{ marginTop: 3, marginBottom: 3 }} />}

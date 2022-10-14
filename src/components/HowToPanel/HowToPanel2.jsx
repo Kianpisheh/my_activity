@@ -79,6 +79,8 @@ function HowToPanel2(props) {
 				onWhyNotHover={props.onWhyNotHover}
 				onTimeSliderChange={props.onTimeSliderChange}
 				selectedInstanceEvents={props.selectedInstanceEvents}
+				user={props.user}
+				dataset={props.dataset}
 			></EventStatExplanation>
 		);
 	}
@@ -123,6 +125,7 @@ function HowToPanel2(props) {
 				ruleitems={ruleitems}
 				messageCallback={props.messageCallback}
 				activity={activity}
+				dataUser={props.dataUser}
 			></WhyNotHowToExplanations>
 		);
 	} else if (whyHowTosuggestions && whyHowTosuggestions.length) {
@@ -132,6 +135,7 @@ function HowToPanel2(props) {
 				onWhyHowToAxiomHover={props.onWhyHowToAxiomHover}
 				currentActivity={activity}
 				messageCallback={props.messageCallback}
+				dataUser={props.dataUser}
 			></WhyHowToExplanations>
 		);
 	}

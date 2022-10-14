@@ -26,6 +26,7 @@ function WhyHowToExplanations(props) {
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
 						messageCallback={props.messageCallback}
+						dataUser={props.dataUser}
 					></DurationAdjustmentAxiom>
 				);
 			} else if (axiom.getType() === AxiomTypes.TYPE_TIME_DISTANCE) {
@@ -36,6 +37,7 @@ function WhyHowToExplanations(props) {
 						onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 						timeRemoval={suggestionType === "time_removal"}
 						messageCallback={props.messageCallback}
+						dataUser={props.dataUser}
 					></TemporalAdjustmentAxiom>
 				);
 			}
@@ -47,6 +49,7 @@ function WhyHowToExplanations(props) {
 					currentActivity={currentActivity}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 					messageCallback={props.messageCallback}
+					dataUser={props.dataUser}
 				></InteractionAdditionAxiom>
 			);
 		} else if (suggestionType === "interaction_or") {
@@ -55,6 +58,7 @@ function WhyHowToExplanations(props) {
 					suggestion={suggestion}
 					onWhyHowToAxiomHover={onWhyHowToAxiomHover}
 					messageCallback={props.messageCallback}
+					dataUser={props.dataUser}
 				></InteractionORAdditionAxiom>
 			);
 		}

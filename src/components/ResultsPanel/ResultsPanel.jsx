@@ -30,6 +30,10 @@ function ResultsPanel(props) {
 	let allClassesResults = [];
 	let i = 0;
 	for (const [activity, classificationResult] of Object.entries(props.classificationResult)) {
+		if (activity !== currentActivity.getName()) {
+			continue;
+		}
+
 		const { FP, FN, TP, N, TN } = classificationResult;
 
 		if (!FP || !N || !TP || !FN || !TN) {
@@ -61,7 +65,11 @@ function ResultsPanel(props) {
 		);
 
 		for (const act in newFPs) {
-			if (act !== activity && !(act in FP) && newFPs[activity].some((idx) => instances[idx].getType() === act)) {
+			if (
+				act !== activity &&
+				!(act in FP) &&
+				newFPs[activity]["all"].some((idx) => instances[idx].getType() === act)
+			) {
 				FP[act] = [];
 			}
 		}

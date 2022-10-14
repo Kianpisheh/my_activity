@@ -66,7 +66,17 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
-	const DATASETS = ["Practice", "CASAS8", "Opportunity", "Task1", "Task2", "Task3", "Task4"];
+	const DATASETS = [
+		"Practice",
+		"PracticeFN",
+		"PracticeFP",
+		"CASAS8",
+		"Opportunity",
+		"Task1",
+		"Task2",
+		"Task3",
+		"Task4",
+	];
 	// const DATASETS = ["Task1", "Task2"];
 	const [dataset, setDataset] = useState(DATASETS[3]);
 	const [enteredUser, setEnteredUser] = useState("");
@@ -651,6 +661,8 @@ function App() {
 							selectedIdx={selectedInstancesIdx}
 							ruleitems={ruleitems}
 							onQuery={handleQuery}
+							user={enteredUser}
+							dataset={dataset}
 							onWhyHover={(xx, yy, axiom) => {
 								if (
 									explanationStatus === ExpStatus.WHY_LIST ||
@@ -698,6 +710,8 @@ function App() {
 							newTPs={newTPs}
 							newFPs={newFPs}
 							queryMode={queryMode}
+							user={enteredUser}
+							dataset={dataset}
 							onQuery={handleQuery}
 							explanationStatus={explanationStatus}
 							onInstanceSelection={(idx, type, activity) => {

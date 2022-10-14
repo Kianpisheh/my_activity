@@ -79,16 +79,17 @@ export function getWhyHowToSuggestions(
 	return suggestions;
 }
 
-function getInteractionORAxiom(
+export function getInteractionORAxiom(
 	activities: Activity[],
 	currentActivity: Activity,
 	instances: ActivityInstance[],
-	selectedFPs: number[],
+	selectedInstancesIdx: number[],
 	classificationResult: { [resType: string]: any },
-	TPNumTh: number
+	TPNumTh: number,
+	errType: string = "FP"
 ) {
 	const targetInstances = instances.filter((instance) => instance.getType() === currentActivity.getName());
-	const selectedInstances = selectedFPs.map((idx) => instances[idx]);
+	const selectedInstances = selectedInstancesIdx.map((idx) => instances[idx]);
 	let targetInstancesEventsUnion = targetInstances.map((instance) => instance.getUniqueEvents()).flat();
 
 	let selectedFPInstancesEventsUnion: string[] = [];
@@ -165,9 +166,16 @@ function getInteractionORAxiom(
 		);
 
 		// any improvements?
-		const improvement = selectedFPs.filter(
-			(idx) => !whatIfRes["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
-		);
+		let improvement = null;
+		if (errType === "FP") {
+			improvement = selectedInstancesIdx.filter(
+				(idx) => !whatIfRes["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
+			);
+		} else if (errType === "FN") {
+			improvement = selectedInstancesIdx.filter(
+				(idx) => !whatIfRes["newTPs"][currentActivity.getName()]?.includes(idx)
+			);
+		}
 		if (!improvement.length) {
 			continue;
 		}
@@ -195,10 +203,17 @@ function getInteractionORAxiom(
 	for (let i = 1; i < suggestions.length; i++) {
 		const imp = Object.values(improvments[i])[0];
 		for (let j = 0; j < rankedSuggestions.length; j++) {
-			const improvement = selectedFPs.filter(
-				(idx) => !rankedSuggestions[j]["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
-			);
-			if (imp >= improvement.length) {
+			let imp2 = null;
+			if (errType === "FP") {
+				imp2 = selectedInstancesIdx.filter(
+					(idx) => !rankedSuggestions[j]["newFPs"][currentActivity.getName()]?.["all"]?.includes(idx)
+				);
+			} else if (errType === "FN") {
+				imp2 = selectedInstancesIdx.filter(
+					(idx) => !rankedSuggestions[j]["newTPs"][currentActivity.getName()]?.includes(idx)
+				);
+			}
+			if (imp >= imp2.length) {
 				rankedSuggestions.splice(j, 0, suggestions[i]);
 				break;
 			}
@@ -472,7 +487,7 @@ export function getInteractionAdditionAxiomSuggestions(
 	activities: Activity[],
 	instanceType: string
 ) {
-	const SUPP_TH = 0.75;
+	const SUPP_TH = 0.6;
 	const CONF_TH = 0.5;
 	const activityNum = ActivityInstance.getNum(currentActivity.getName(), instances);
 	let candidateRuleitems: RuleitemData[] = [];

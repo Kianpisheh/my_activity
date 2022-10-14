@@ -152,8 +152,8 @@ class Icons {
 		Fork: SvgFork,
 		CoffeeMaker: SvgCoffeeMaker,
 		CoffeeGrinder: SvgCoffeeGrinder,
-		CuttingBoard: SvgCuttingBoard,
-		ChoppingBoard: SvgCuttingBoard,
+		// CuttingBoard: SvgCuttingBoard,
+		// ChoppingBoard: SvgCuttingBoard,
 		Cabinet: SvgCabinet,
 		Spatula: SvgSpatula,
 		Teaspoon: SvgTeaspoon,
@@ -201,7 +201,7 @@ class Icons {
 		Spice: SvgSpice,
 		Shaver: SvgShaver,
 		ElectricalShaver: SvgElectricalShaver,
-		Toothpaste: SvgToothbrush,
+		Toothpaste: SvgToothpaste,
 		Cup: SvgCup,
 	};
 
@@ -234,7 +234,7 @@ class Icons {
 	};
 
 	static colors = {
-		Mug: "#A4D774",
+		Mug: "#DE9831",
 		CoffeeCup: "#003f5c",
 		Pitcher: "#2f4b7c",
 		Stove: "#f95d6a",

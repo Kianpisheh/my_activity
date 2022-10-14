@@ -7,7 +7,7 @@ import HowToAxiom from "../../model/HowToAxiom";
 
 import { updateClassificationResults } from "../../Classification";
 
-import { getInteractionAdditionAxiomSuggestions } from "./WhySuggestions";
+import { getInteractionAdditionAxiomSuggestions, getInteractionORAxiom } from "./WhySuggestions";
 
 import isEqual from "lodash.isequal";
 import RuleitemData from "../../model/RuleitemData";
@@ -77,6 +77,19 @@ export function getWhyNotHowToSuggestions(
 		if (suggestion2) {
 			suggestions.push(...suggestion2);
 		}
+
+		// const suggestions5 = getInteractionORAxiom(
+		// 	[...activities],
+		// 	currentActivity,
+		// 	instances,
+		// 	selectedFNs,
+		// 	classificationResult,
+		// 	-1,
+		// 	"FN"
+		// );
+		// if (suggestions5) {
+		// 	suggestions.push(...suggestions5);
+		// }
 	}
 
 	return suggestions;

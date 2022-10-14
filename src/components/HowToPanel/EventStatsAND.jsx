@@ -121,6 +121,8 @@ function EventStatsAND(props) {
 										onTimeSliderChange={props.onTimeSliderChange}
 										sliderPos={sliderPos}
 										onSliderPosChange={(x1, x2) => setSliderPos([x1, x2])}
+										activity={act}
+										dataUser={props.dataUser}
 									></RangeVis>
 								</div>
 							</div>
@@ -145,6 +147,8 @@ function EventStatsAND(props) {
 										onTimeSliderChange={props.onTimeSliderChange}
 										sliderPos={sliderPos}
 										onSliderPosChange={(x1, x2) => setSliderPos([x1, x2])}
+										activity={act}
+										dataUser={props.dataUser}
 									></RangeVis>
 								</div>
 							</div>
