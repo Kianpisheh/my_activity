@@ -336,6 +336,12 @@ function App() {
 			let temp = { ...selectedInstanceEvents };
 			temp[event] = idx;
 			setSelectedInstanceEvents(temp);
+			logEvent(
+				{ event: event, all_events: Object.keys(temp), activity: activities[currentActInstanceIdx]?.getName() },
+				"event_activity",
+				"event_clicked",
+				dataset + "-" + enteredUser
+			);
 		}
 	}
 
@@ -609,14 +615,14 @@ function App() {
 							whyNotHowTosuggestions={whyNotHowToSuggestions}
 							width={"100%"}
 							onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
-								if (queryMode) {
-									logEvent(
-										{ newTPs: newTPs, newFPs: newFPs },
-										"what_if",
-										"what_if_explanation",
-										dataset + "-" + enteredUser
-									);
-								}
+								// if (queryMode) {
+								// 	logEvent(
+								// 		{ newTPs: newTPs, newFPs: newFPs },
+								// 		"what_if",
+								// 		"what_if_explanation",
+								// 		dataset + "-" + enteredUser
+								// 	);
+								// }
 								setNewTPs(newTPs);
 								setNewFPs(newFPs);
 								setQueryMode(queryMode);
