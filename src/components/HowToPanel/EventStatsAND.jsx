@@ -43,36 +43,7 @@ function EventStatsAND(props) {
 				<div
 					key={idx}
 					className="single-stat-container"
-					onMouseOver={() => {
-						const instancesIdx = getEnclosedInstances(
-							sliderPos[0],
-							sliderPos[1],
-							tdMinVal === Infinity ? dMinVal : tdMinVal,
-							tdMaxVal === -Infinity ? dMaxVal : tdMaxVal,
-							sliderWidth,
-							timeDistances[act] ? timeDistances[act] : durations[act],
-							timeDistances && Object.keys(timeDistances).length ? timeDistances : durations
-						);
-						logEvent(
-							{
-								activity: act,
-								enclosedInstances: instancesIdx,
-								events: props.events,
-								coverageAND: coverages.length,
-								coverageANDIdx: coverages,
-								timeDistanceRanges: timeDistanceRanges,
-								numActivity: numActivity,
-								durationRanges: durationRanges,
-								timeDistances: timeDistances,
-								durations: durations,
-							},
-
-							"event_stats_hover_what_if",
-							"event_stats_AND_what_if",
-							props.dataUser
-						);
-						onWhyNotHover(coverages[act]);
-					}}
+					onMouseOver={() => onWhyNotHover(coverages[act])}
 					onMouseLeave={() => {
 						onWhyNotHover([]);
 						props.onTimeSliderChange([]);
@@ -90,6 +61,24 @@ function EventStatsAND(props) {
 							sliderWidth,
 							timeDistances[act] ? timeDistances[act] : durations[act],
 							timeDistances && Object.keys(timeDistances).length ? timeDistances : durations
+						);
+
+						logEvent(
+							{
+								activity: act,
+								enclosedInstances: instancesIdx,
+								events: props.events,
+								coverageAND: coverages.length,
+								coverageANDIdx: coverages,
+								timeDistanceRanges: timeDistanceRanges,
+								numActivity: numActivity,
+								durationRanges: durationRanges,
+								timeDistances: timeDistances,
+								durations: durations,
+							},
+							"event_stats_hover_what_if",
+							"event_stats_AND_what_if",
+							props.dataUser
 						);
 						props.onTimeSliderChange(instancesIdx);
 					}}

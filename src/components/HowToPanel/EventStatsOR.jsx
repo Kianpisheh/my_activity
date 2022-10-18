@@ -19,6 +19,14 @@ function EventStatsOR(props) {
 					key={idx}
 					className="single-stat-container"
 					onMouseOver={() => {
+						props.onWhyNotHover(coverages[act]);
+					}}
+					onMouseLeave={() => props.onWhyNotHover([])}
+					onClick={() => setQuickAxiomPos([-1, -1])}
+					onContextMenu={(ev) => {
+						setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
+					}}
+					onMouseEnter={() => {
 						logEvent(
 							{
 								activity: act,
@@ -32,12 +40,6 @@ function EventStatsOR(props) {
 							"event_stats_OR_what_if",
 							props.dataUser
 						);
-						props.onWhyNotHover(coverages[act]);
-					}}
-					onMouseLeave={() => props.onWhyNotHover([])}
-					onClick={() => setQuickAxiomPos([-1, -1])}
-					onContextMenu={(ev) => {
-						setQuickAxiomPos([ev.pageX + 7, ev.pageY + 7]);
 					}}
 				>
 					{quickAxiomPos[0] > 0 && (

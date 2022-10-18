@@ -19,6 +19,7 @@ function handleAxiomPaneMessages(
 	if (message === AxiomTypes.MSG_AXIOM_CREATION_DONE) {
 		let newAxioms = AxiomManager.createAxiom(currentActivity.getAxioms(), values);
 		newActivities?.[currentActivtyIdx]?.updateAxioms(newAxioms);
+		logEvent(values["type"], "axiom_type", "new_axiom_type");
 		logEvent(newActivities?.[currentActivtyIdx], "activity", "new_axiom", datasetUser);
 		logEvent(newActivities, "activities", "activities", datasetUser);
 	} else if (message === AxiomTypes.MSG_TIME_CONSTRAINT_UPDATED) {
