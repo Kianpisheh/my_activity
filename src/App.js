@@ -707,7 +707,7 @@ function App() {
 							}}
 						></HowToPanel2>
 					</div>
-					<div id="explanations" onClick={() => setDefiningRule("">
+					<div id="explanations" onClick={() => setDefiningRule("")}>
 						<ResultsPanel
 							parentWidth={leftPaneWidth}
 							instances={activityInstances}
