@@ -12,10 +12,8 @@ import Icons from "../../icons/objects/Icons";
 import AxiomNavBar from "./AxiomNavbar";
 import ActivityDefinition from "../../model/ActivityDefinition";
 import { logEvent } from "../../APICalls/activityAPICalls";
-import { useEffect } from "react";
 
 function ActivityAxiomPane(props) {
-	const [definingRule, setDefiningRule] = useState("");
 	const [ruleType, setRuleType] = useState(AxiomTypes.TYPE_INTERACTION);
 	const [ORIdx, setORIdx] = useState(null);
 	const [currAxiomSetIdx, setCurrAxiomSetIdx] = useState(0);
@@ -62,7 +60,7 @@ function ActivityAxiomPane(props) {
 	}
 
 	function handleAxiomCreation(data, editOR = false) {
-		setDefiningRule("");
+		props.handleDefiningRule("");
 		if (data) {
 			if (data.type.includes(AxiomTypes.TYPE_TIME_DISTANCE)) {
 				setRuleType(AxiomTypes.TYPE_TIME_DISTANCE);
@@ -178,7 +176,7 @@ function ActivityAxiomPane(props) {
 									className="add-int-btn"
 									onClick={() => {
 										setRuleType(AxiomTypes.TYPE_INTERACTION);
-										setDefiningRule(AxiomTypes.TYPE_INTERACTION);
+										props.handleDefiningRule(AxiomTypes.TYPE_INTERACTION);
 									}}
 								>
 									+
@@ -212,7 +210,7 @@ function ActivityAxiomPane(props) {
 						></Axiom>
 					</div>
 					<div className="axiom-crafter-container">
-						{definingRule === AxiomTypes.TYPE_INTERACTION && (
+						{props.definingRule === AxiomTypes.TYPE_INTERACTION && (
 							<AxiomCrafter
 								config={props.config}
 								objects={objectList}
@@ -253,7 +251,7 @@ function ActivityAxiomPane(props) {
 									className="add-int-btn"
 									onClick={() => {
 										setRuleType(AxiomTypes.TYPE_INTERACTION_NEGATION);
-										setDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
+										props.handleDefiningRule(AxiomTypes.TYPE_INTERACTION_NEGATION);
 									}}
 								>
 									+
@@ -288,7 +286,7 @@ function ActivityAxiomPane(props) {
 						</div>
 					)}
 					<div className="axiom-crafter-container">
-						{definingRule === AxiomTypes.TYPE_INTERACTION_NEGATION && (
+						{props.definingRule === AxiomTypes.TYPE_INTERACTION_NEGATION && (
 							<AxiomCrafter
 								config={props.config}
 								objects={objectList}
@@ -319,7 +317,7 @@ function ActivityAxiomPane(props) {
 									className="add-int-btn"
 									onClick={() => {
 										setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
-										setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+										props.handleDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
 										setORIdx(props.activity.excludedEvents.length ? 2 : 1);
 									}}
 								>
@@ -357,7 +355,7 @@ function ActivityAxiomPane(props) {
 								</div>
 								<div key={idx + "craft"} className="axiom-crafter-container">
 									{ORIdx === idx + (props.activity.hasNegation() ? 2 : 1) &&
-										definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+										props.definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
 											<AxiomCrafter
 												key={idx + "craft"}
 												config={props.config}
@@ -397,7 +395,7 @@ function ActivityAxiomPane(props) {
 												className="add-int-btn"
 												onClick={() => {
 													setRuleType(AxiomTypes.TYPE_OR_INTERACTION);
-													setDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
+													props.handleDefiningRule(AxiomTypes.TYPE_OR_INTERACTION);
 													setORIdx(idx + interactionORAxStartIdx + 1);
 												}}
 											>
@@ -408,7 +406,7 @@ function ActivityAxiomPane(props) {
 								</div>
 							</React.Fragment>
 						))}
-					{ORIdx === interactionORAxLastIdx && definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
+					{ORIdx === interactionORAxLastIdx && props.definingRule === AxiomTypes.TYPE_OR_INTERACTION && (
 						<div key={777 + "craft"} className="axiom-crafter-container">
 							<AxiomCrafter
 								config={props.config}
@@ -431,7 +429,7 @@ function ActivityAxiomPane(props) {
 									className="add-int-btn"
 									onClick={() => {
 										setRuleType(AxiomTypes.TYPE_TEMPORAL);
-										setDefiningRule("temporal");
+										props.handleDefiningRule("temporal");
 									}}
 								>
 									+
@@ -467,7 +465,7 @@ function ActivityAxiomPane(props) {
 						</div>
 					)}
 					<div className="axiom-crafter-container">
-						{definingRule === "temporal" && (
+						{props.definingRule === "temporal" && (
 							<AxiomCrafter
 								config={props.config}
 								objects={objectList}

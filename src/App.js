@@ -66,6 +66,7 @@ function App() {
 	const [queriedAxiom, setQueriedAxiom] = useState(null);
 	const [selectedInstanceEvents, setSelectedInstanceEvents] = useState({});
 	const [queryTrigger, setQueryTrigger] = useState("");
+	const [definingRule, setDefiningRule] = useState("");
 	const DATASETS = [
 		"Practice",
 		"PracticeFN",
@@ -587,6 +588,8 @@ function App() {
 								config={config}
 								ruleitems={ruleitems}
 								user={enteredUser}
+								definingRule={definingRule}
+								handleDefiningRule={(type) => setDefiningRule(type)}
 								onWhyNotWhatQuery={(x, y, ax, queryTrigger) => {
 									logEvent(ax, "axiom", "queried_axiom_why_not_what", dataset + "-" + enteredUser);
 									setQueriedAxiom(ax);
@@ -609,7 +612,7 @@ function App() {
 							></ActivityAxiomPane>
 						)}
 					</div>
-					<div id="how-to-panel">
+					<div id="how-to-panel" onClick={() => setDefiningRule("")}>
 						<HowToPanel2
 							whyHowTosuggestions={whyHowToSuggestions}
 							whyNotHowTosuggestions={whyNotHowToSuggestions}
@@ -704,7 +707,7 @@ function App() {
 							}}
 						></HowToPanel2>
 					</div>
-					<div id="explanations">
+					<div id="explanations" onClick={() => setDefiningRule("">
 						<ResultsPanel
 							parentWidth={leftPaneWidth}
 							instances={activityInstances}
