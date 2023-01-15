@@ -176,7 +176,7 @@ function _inverseNonlinearScale(n: number): number {
 	return 6 * (Math.pow(10, n / 2) - 1);
 }
 
-export function getEventIconPlacement(X: IInterval[], ic_w: number, offset: number = 30): number[] {
+export function getEventIconPlacement(X: IInterval[], ic_w: number, offset: number = 40): number[] {
 	const overlapTh = 2;
 	let optionsY = new Set([-offset + 5, offset + 5, -2 * offset, 2 * offset + 10]);
 	let Y: number[] = [];
