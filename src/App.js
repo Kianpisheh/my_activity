@@ -8,6 +8,8 @@ import {
 	logEvent,
 } from "./APICalls/activityAPICalls";
 
+import {getData, sortDataTypes} from "./Utils/utils"
+
 import { classifyInstances, getClassificationResult } from "./Classification";
 
 import "./App.css";
@@ -42,10 +44,13 @@ import { getNewDurationAxiom } from "./components/HowToPanel/WhySuggestions";
 
 import handleInstanceSelection from "./components/ResultsPanel/handler";
 import QueryTrigger from "./model/QueryTrigger";
+import { CLIEngine } from "eslint";
 
 function App() {
 	const [activities, setActivities] = useState([]);
 	const [activityInstances, setActivityInstances] = useState([]);
+	const [testActivityInstances, setTestActivityInstances] = useState([]);
+	const [reservedActivityInstances, setReservedActivityInstances] = useState([]);
 	const [predictedActivities, setPredictedActivities] = useState([]);
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 	const [ruleitems, setRuleitems] = useState({});
@@ -78,8 +83,9 @@ function App() {
 		"Task3",
 		"Task4",
 	];
+	const TEST_PORTION = 0.2;
 	// const DATASETS = ["Task1", "Task2"];
-	const [dataset, setDataset] = useState(DATASETS[2]);
+	const [dataset, setDataset] = useState(DATASETS[4]);
 	const [enteredUser, setEnteredUser] = useState("");
 	const [enteredPass, setEnteredPass] = useState("");
 	const [loggedin, setLoggedin] = useState(false);
@@ -377,7 +383,30 @@ function App() {
 				instances.forEach((instance) => {
 					instanceItems.push(new ActivityInstance(instance));
 				});
-				setActivityInstances(instanceItems);
+
+				// split data for training and test
+				if (dataset === "Opportunity" || dataset === "CASAS8") {
+					instanceItems = sortDataTypes(instanceItems)
+					let testItems = [];
+					let trainingItems = [...instanceItems]
+					let numPerClass = 20;
+					let numClass = 4;
+					if (dataset === "CASAS8") {
+						numPerClass = 21;
+						numClass = 8;
+					}
+
+					const testDataPerClassNum = Math.round(TEST_PORTION * numPerClass);
+					const {sampledData, restOfData} = getData(instanceItems, testDataPerClassNum, numClass, numPerClass);
+					setTestActivityInstances(sampledData);
+					const dd = getData(restOfData, 1, numClass, numPerClass-testDataPerClassNum);
+					setActivityInstances(dd["sampledData"]);
+					setReservedActivityInstances(dd["restOfData"]);
+
+				} else {
+					setActivityInstances(instanceItems);
+				}
+				
 				if (instanceItems.length) {
 					let PredActs = classifyInstances(instanceItems, activityItems);
 					setCurrentActInstanceIdx(0);
