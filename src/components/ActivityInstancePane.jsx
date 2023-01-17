@@ -21,6 +21,7 @@ function ActivtityInstancePane(props) {
 								}
 							});
 						}
+
 						return (
 							<li
 								key={idx}

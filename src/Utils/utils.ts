@@ -267,13 +267,13 @@ export function findTimeOverlap(startTimes: number[], endTimes: number[], timest
 export function getRandomNumList(randNum: number, maxNum: number) {
 	let numList: number[] = []
 
-	let maxIteration = 1000;
+	let maxIteration = 10000;
 	let i = 0;
 	while (numList.length < maxNum || i > maxIteration) {
-		let randomIdx = Math.round(Math.random() * maxNum)
+		let randomIdx = Math.floor(Math.random() * maxNum)
 		if (!numList.includes(randomIdx)) {
 			numList.push(randomIdx)
-			if (numList.length == randNum) {
+			if (numList.length === randNum) {
 				break;
 			}
 		}
@@ -314,21 +314,31 @@ export function sortDataTypes(data: any[]) {
 export function getData(data: any[], dataPerClassNum: number, classNum: number, samplesPerClass: number) {
 
 	// data is sorted with respect to activty type
-
 	let sampledData: any[] = [];
 	let restOfData: any[] = [];
 
-	for (let k=0; k < classNum; k++) {
-		const samplesIdx = getRandomNumList(dataPerClassNum, samplesPerClass);
-		// samples per class
-		for (let i =0; i < samplesPerClass; i++) {
-			if (samplesIdx.includes(i)) {
-				sampledData.push(data[i+k*samplesPerClass]);
-			} else {
-				restOfData.push(data[i+k*samplesPerClass]);
+
+	console.log("samplesPerClass", samplesPerClass)
+
+	if (data.length >= dataPerClassNum*classNum) {
+		for (let k=0; k < classNum; k++) {
+			const samplesIdx = getRandomNumList(dataPerClassNum, samplesPerClass);
+
+			console.log(samplesIdx);
+
+			// samples per class
+			for (let i =0; i < samplesPerClass; i++) {
+				if (samplesIdx.includes(i)) {
+					sampledData.push(data[i+k*samplesPerClass]);
+				} else {
+					restOfData.push(data[i+k*samplesPerClass]);
+				}
 			}
 		}
-	}	
+	
+	}
+	
+	console.log("sampledData", sampledData);
 
 	return {"sampledData": sampledData, "restOfData": restOfData};
 }

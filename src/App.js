@@ -38,6 +38,8 @@ import ResultsPanel from "./components/ResultsPanel/ResultsPanel";
 
 import EventStat from "./model/EventStat";
 
+import {getData, sortDataTypes} from "./Utils/utils"
+
 import { getNewDurationAxiom } from "./components/HowToPanel/WhySuggestions";
 
 import handleInstanceSelection from "./components/ResultsPanel/handler";
@@ -46,6 +48,8 @@ import QueryTrigger from "./model/QueryTrigger";
 function App() {
 	const [activities, setActivities] = useState([]);
 	const [activityInstances, setActivityInstances] = useState([]);
+	const [testActivityInstances, setTestActivityInstances] = useState([]);
+	const [reservedActivityInstances, setReservedActivityInstances] = useState([]);
 	const [predictedActivities, setPredictedActivities] = useState([]);
 	const [currentActivtyIdx, setCurrentActivityIdx] = useState(-1);
 	const [ruleitems, setRuleitems] = useState({});
@@ -78,6 +82,7 @@ function App() {
 		"Task3",
 		"Task4",
 	];
+	const TEST_PORTION = 0.2;
 	// const DATASETS = ["Task1", "Task2"];
 	const [dataset, setDataset] = useState(DATASETS[2]);
 	const [enteredUser, setEnteredUser] = useState("");
@@ -87,6 +92,9 @@ function App() {
 	const [explanationStatus, setExplanationStatus] = useState(ExpStatus.NONE);
 	const [floatingCoords, setFloatingCoords] = useState([-1, -1]);
 	const [enclosedTimeSliderInstances, setEnclosedTimeSliderInstances] = useState([]);
+
+	const numClass = {"Opportunity": 4, "CASAS8": 8};
+	const numPerClass = {"Opportunity": 20, "CASAS8": 21}
 
 	function onAxiomPaneMessage(message, values) {
 		if (message === AxiomTypes.MSG_CLASSIFY_CURRENT_INSTANCE) {
@@ -282,9 +290,13 @@ function App() {
 	function handleActInstanceChange(id) {
 		let predActs = classifyInstances(activityInstances, activities);
 		let res = getClassificationResult(activityInstances, predActs, activities);
+		let testPredActs = classifyInstances(testActivityInstances, activities);
+		let testRes = getClassificationResult(testActivityInstances, testPredActs, activities);
 		logEvent(id, "idx", "instance_change", dataset + "-" + enteredUser);
 		logEvent(predActs, "predictions", "prediction_result", dataset + "-" + enteredUser);
 		logEvent(res, "classification", "classification_result", dataset + "-" + enteredUser);
+		logEvent(testPredActs, "Testpredictions", "Testprediction_result", dataset + "-" + enteredUser);
+		logEvent(testRes, "Testclassification", "Testclassification_result", dataset + "-" + enteredUser);
 		logEvent(activities, "activities", "activities", dataset + "-" + enteredUser);
 		setClassificationRes(res);
 		setPredictedActivities(predActs);
@@ -377,7 +389,24 @@ function App() {
 				instances.forEach((instance) => {
 					instanceItems.push(new ActivityInstance(instance));
 				});
-				setActivityInstances(instanceItems);
+
+
+				// split data for training and test
+				if (dataset === "Opportunity" || dataset === "CASAS8") {
+					instanceItems = sortDataTypes(instanceItems);
+
+					const testDataPerClassNum = Math.round(TEST_PORTION * numPerClass[dataset]);
+					const {sampledData, restOfData} = getData(instanceItems, testDataPerClassNum, numClass[dataset], numPerClass[dataset]);
+					setTestActivityInstances(sampledData);
+					const dd = getData(restOfData, 1, numClass[dataset], numPerClass[dataset]-testDataPerClassNum);
+					setActivityInstances(dd["sampledData"]);
+					setReservedActivityInstances(dd["restOfData"]);
+
+				} else {
+					setActivityInstances(instanceItems);
+				}
+
+
 				if (instanceItems.length) {
 					let PredActs = classifyInstances(instanceItems, activityItems);
 					setCurrentActInstanceIdx(0);
@@ -618,14 +647,6 @@ function App() {
 							whyNotHowTosuggestions={whyNotHowToSuggestions}
 							width={"100%"}
 							onWhyHowToAxiomHover={(newTPs, newFPs, queryMode) => {
-								// if (queryMode) {
-								// 	logEvent(
-								// 		{ newTPs: newTPs, newFPs: newFPs },
-								// 		"what_if",
-								// 		"what_if_explanation",
-								// 		dataset + "-" + enteredUser
-								// 	);
-								// }
 								setNewTPs(newTPs);
 								setNewFPs(newFPs);
 								setQueryMode(queryMode);
@@ -703,7 +724,6 @@ function App() {
 							}}
 							onTimeSliderChange={(instancesIdx) => {
 								setEnclosedTimeSliderInstances(instancesIdx);
-								console.log(instancesIdx);
 							}}
 						></HowToPanel2>
 					</div>
@@ -783,6 +803,14 @@ function App() {
 							}}
 							highlightedInstancesIdx={highlightedInstancesIdx}
 						></ResultsPanel>
+						<button onClick={() => {
+							const testDataPerClassNum = Math.round(TEST_PORTION * numPerClass[dataset]);
+							const dd = getData(reservedActivityInstances, 1, numClass[dataset], numPerClass[dataset]-testDataPerClassNum - Math.round(activityInstances.length / numClass[dataset]));
+							let actInstances = [...activityInstances];
+							actInstances = actInstances.concat(dd["sampledData"]);
+							setActivityInstances(actInstances);
+							setReservedActivityInstances(dd["restOfData"]);
+						}}>Add data</button>
 					</div>
 				</React.Fragment>
 			)}
