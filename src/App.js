@@ -397,8 +397,18 @@ function App() {
 
 					const testDataPerClassNum = Math.round(TEST_PORTION * numPerClass[dataset]);
 					const {sampledData, restOfData} = getData(instanceItems, testDataPerClassNum, numClass[dataset], numPerClass[dataset]);
+					let actNames = [];
+					for (const act of sampledData) {
+						actNames.push(act["name"]);
+					}
+					logEvent(actNames, "DataAddedTest", "data_added_test", dataset + "-" + enteredUser);
 					setTestActivityInstances(sampledData);
 					const dd = getData(restOfData, 1, numClass[dataset], numPerClass[dataset]-testDataPerClassNum);
+					let actNames2 = [];
+					for (const act of dd["sampledData"]) {
+						actNames2.push(act["name"]);
+					}
+					logEvent(actNames2, "DataAddedTraining", "data_added_training", dataset + "-" + enteredUser);
 					setActivityInstances(dd["sampledData"]);
 					setReservedActivityInstances(dd["restOfData"]);
 
@@ -810,6 +820,11 @@ function App() {
 							actInstances = actInstances.concat(dd["sampledData"]);
 							setActivityInstances(actInstances);
 							setReservedActivityInstances(dd["restOfData"]);
+							let actNames = [];
+							for (const act of dd["sampledData"]) {
+								actNames.push(act["name"]);
+							}
+							logEvent(actNames, "DataAdded", "data_added", dataset + "-" + enteredUser);
 						}}>Add data</button>
 					</div>
 				</React.Fragment>
