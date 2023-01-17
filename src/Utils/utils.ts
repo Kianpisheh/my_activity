@@ -317,8 +317,9 @@ export function getData(data: any[], dataPerClassNum: number, classNum: number, 
 	let sampledData: any[] = [];
 	let restOfData: any[] = [];
 
-
-	console.log("samplesPerClass", samplesPerClass)
+	if (data.length < dataPerClassNum*classNum) {
+		dataPerClassNum -= 1
+	}
 
 	if (data.length >= dataPerClassNum*classNum) {
 		for (let k=0; k < classNum; k++) {
@@ -338,7 +339,6 @@ export function getData(data: any[], dataPerClassNum: number, classNum: number, 
 	
 	}
 	
-	console.log("sampledData", sampledData);
 
 	return {"sampledData": sampledData, "restOfData": restOfData};
 }

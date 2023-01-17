@@ -805,7 +805,7 @@ function App() {
 						></ResultsPanel>
 						<button onClick={() => {
 							const testDataPerClassNum = Math.round(TEST_PORTION * numPerClass[dataset]);
-							const dd = getData(reservedActivityInstances, 1, numClass[dataset], numPerClass[dataset]-testDataPerClassNum - Math.round(activityInstances.length / numClass[dataset]));
+							const dd = getData(reservedActivityInstances, 2, numClass[dataset], numPerClass[dataset]-testDataPerClassNum - Math.round(activityInstances.length / numClass[dataset]));
 							let actInstances = [...activityInstances];
 							actInstances = actInstances.concat(dd["sampledData"]);
 							setActivityInstances(actInstances);
